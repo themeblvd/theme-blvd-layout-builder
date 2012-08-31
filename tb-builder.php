@@ -91,6 +91,9 @@ function themeblvd_builder_init() {
 	// we added above.
 	add_filter( 'themeblvd_homepage_content', 'themeblvd_builder_homepage_content' );
 	
+	// Trigger customizer support for custom homepage options.
+	add_filter( 'themeblvd_customizer_modify_sections', 'themeblvd_modify_customizer_homepage' );
+	
 	// Admin Layout Builder
 	if( is_admin() ){
 		// Check to make sure admin interface isn't set to be 
@@ -140,6 +143,17 @@ function themeblvd_builder_warning() {
 function themeblvd_builder_homepage_content( $content ) {
 	$content = themeblvd_get_option( 'homepage_content', null, 'posts' );
 	return $content;
+}
+
+/**
+ * Add custom homepage options to customizer framework.
+ *
+ * @since 1.0.0
+ */
+
+function themeblvd_modify_customizer_homepage( $sections ) {
+	$sections[] = 'static_front_page';
+	return $sections;
 }
 
 /**
