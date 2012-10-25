@@ -3,7 +3,7 @@
 Plugin Name: Theme Blvd Layout Builder
 Plugin URI: 
 Description: This plugins gives you a slick interface that ties int the Theme Blvd framework to create custom layouts for your WordPress pages.
-Version: 1.0.0
+Version: 1.0.1
 Author: Jason Bobich
 Author URI: http://jasonbobich.com
 License: GPL2
@@ -89,7 +89,7 @@ function themeblvd_builder_init() {
 	
 	// Filter homepage content according to options section 
 	// we added above.
-	add_filter( 'themeblvd_homepage_content', 'themeblvd_builder_homepage_content' );
+	add_filter( 'template_include', 'themeblvd_builder_homepage' );
 	
 	// Trigger customizer support for custom homepage options.
 	add_filter( 'themeblvd_customizer_modify_sections', 'themeblvd_modify_customizer_homepage' );
@@ -134,15 +134,22 @@ function themeblvd_builder_warning() {
 }
 
 /**
- * Filter homepage content var for when index.php of 
- * the theme runs.
+ * Redirect homepage to index.php to the custom 
+ * layout template if option is set. This is 
+ * filtered to template_include.
  *
- * @since 1.0.0
+ * @since 1.0.1
  */
 
-function themeblvd_builder_homepage_content( $content ) {
-	$content = themeblvd_get_option( 'homepage_content', null, 'posts' );
-	return $content;
+function themeblvd_builder_homepage( $template ) {
+	
+	// If this is the homepage and the user has 
+	// selected to show a custom layout, redirect 
+	// index.php to template_builder.php
+	if( is_home() && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
+		$template = locate_template( 'template_builder.php' );
+			
+	return $template;
 }
 
 /**
@@ -167,7 +174,7 @@ function themeblvd_modify_customizer_homepage( $sections ) {
  * function do to allow those elements to be indidivually 
  * edited from a child theme.
  *
- * @since 2.0.0
+ * @since 1.0.0
  *
  * @param string $layout Post slug for layout
  * @param string $location Location of elements, featured or primary
