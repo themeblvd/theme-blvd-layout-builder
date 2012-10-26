@@ -26,7 +26,7 @@ License: GPL2
 
 */
 
-define( 'TB_BUILDER_PLUGIN_VERSION', '1.0.0' );
+define( 'TB_BUILDER_PLUGIN_VERSION', '1.0.1' );
 define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) ); 
 define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
