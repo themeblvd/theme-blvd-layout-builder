@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
 		add_layout : function( object )
     	{
     		var value = object.val(), parent = object.closest('.subgroup');
-    		
+
     		// Always remove the warning.
 			$('#section-layout_sidebar .controls .warning').remove();
     		
@@ -143,8 +143,8 @@ jQuery(document).ready(function($) {
     		}
     		else
     		{
-	    		parent.find('#section-layout_existing').fadeOut('fast');
-	    		parent.find('#section-layout_sample').fadeOut('fast');
+	    		parent.find('#section-layout_existing').hide();
+	    		parent.find('#section-layout_sample').hide();
 	    		$('#layout_sidebar').show().closest('.tb-fancy-select').show();
     		}			
     	},
