@@ -240,7 +240,7 @@ class Theme_Blvd_Layout_Builder {
 		// Starting point
 		$options[] = array( 
 			'name' 		=> __( 'Starting Point', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select if you\'d like to start building your layout from scratch or from a pre-built sample layout.', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select if you\'d like to start building your layout from scratch, from a pre-existing layout, or from a sample layout.', 'themeblvd_builder' ),
 			'id' 		=> 'layout_start',
 			'type' 		=> 'select',
 			'options' 	=> array(
