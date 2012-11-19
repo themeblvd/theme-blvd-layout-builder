@@ -149,6 +149,7 @@ jQuery(document).ready(function($) {
     		}			
     	},
     	
+    	// Toggle sample layout previews
     	sample_preview : function( select )
     	{
     		var parent = select.closest('.controls');
