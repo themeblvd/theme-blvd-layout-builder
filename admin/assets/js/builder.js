@@ -122,25 +122,38 @@ jQuery(document).ready(function($) {
 		// Manage add new layout form elements
 		add_layout : function( object )
     	{
-    		var value = object.val(), parent = object.closest('.controls');
-		
-			// Always remove the warning.
+    		var value = object.val(), parent = object.closest('.subgroup');
+    		
+    		// Always remove the warning.
 			$('#section-layout_sidebar .controls .warning').remove();
-			
-			// Finish it up depending on if the user selected to 
-			// start from scratch or a sample layout.
-			if(value != '0')
-			{
-				$('#section-layout_sidebar select').hide();
-				$('#section-layout_sidebar .controls').prepend('<p class="warning">The starting sample layout you\'ve chosen already has a sidebar layout.</p>');
-				parent.find('.sample-layouts div').hide();
-				parent.find('#sample-'+value).show();
-			}
-			else
-			{
-				$('#section-layout_sidebar select').fadeIn('fast');
-				parent.find('.sample-layouts div').hide();
-			}
+    		
+    		if( value == 'layout' )
+    		{
+    			parent.find('#section-layout_sample').hide();
+	    		parent.find('#section-layout_existing').fadeIn('fast');
+	    		$('#section-layout_sidebar .controls').prepend('<p class="warning">'+themeblvd.sidebar_layout_set+'</p>');
+	    		$('#layout_sidebar').hide().closest('.tb-fancy-select').hide();
+    		}
+    		else if( value == 'sample' )
+    		{
+	    		parent.find('#section-layout_existing').hide();
+	    		parent.find('#section-layout_sample').fadeIn('fast');
+	    		$('#section-layout_sidebar .controls').prepend('<p class="warning">'+themeblvd.sidebar_layout_set+'</p>');
+	    		$('#layout_sidebar').hide().closest('.tb-fancy-select').hide();
+    		}
+    		else
+    		{
+	    		parent.find('#section-layout_existing').fadeOut('fast');
+	    		parent.find('#section-layout_sample').fadeOut('fast');
+	    		$('#layout_sidebar').show().closest('.tb-fancy-select').show();
+    		}			
+    	},
+    	
+    	sample_preview : function( select )
+    	{
+    		var parent = select.closest('.controls');
+    		parent.find('.sample-layouts div').hide();	
+    		parent.find('#sample-'+select.val()).show();
     	},
     	
     	// Enter into editing a layout
@@ -259,6 +272,14 @@ jQuery(document).ready(function($) {
 	
 	$('#layout_start').change(function(){ 
 		builder_blvd.add_layout( $(this) );
+	});
+	
+	$('#layout_sample').each( function(){
+		builder_blvd.sample_preview( $(this) );
+	});
+	
+	$('#layout_sample').change(function(){ 
+		builder_blvd.sample_preview( $(this) );
 	});
 	
 	// Add new layout

@@ -81,7 +81,8 @@ class Theme_Blvd_Layout_Builder {
 		wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
-		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		// @todo -- Put this back to .min
+		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/admin/assets/js/builder.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 		wp_localize_script( 'themeblvd_builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 	}
 
@@ -208,11 +209,18 @@ class Theme_Blvd_Layout_Builder {
 		$samples = themeblvd_get_sample_layouts();
 		$sample_layouts = array();
 		if( $samples ) {
-			$sample_layouts = array( false => '- Start From Scratch -' );
 			foreach( $samples as $sample )
 				$sample_layouts[$sample['id']] = $sample['name'];
 		}
-			
+		
+		// Setup existing layouts
+		$layouts = get_posts('post_type=tb_layout&numberposts=-1');
+		$custom_layouts = array();
+		if( $layouts ) {
+			foreach( $layouts as $layout )
+				$custom_layouts[$layout->ID] = $layout->post_title;
+		}
+		
 		// Setup options array to display form
 		$options = array();
 		
@@ -224,17 +232,55 @@ class Theme_Blvd_Layout_Builder {
 			'type' 		=> 'text'
 		);
 		
+		// Start subgroup for starting point
+		$options[] = array(
+			'type'		=> 'subgroup_start' 
+		);
+		
+		// Starting point
+		$options[] = array( 
+			'name' 		=> __( 'Starting Point', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select if you\'d like to start building your layout from scratch or from a pre-built sample layout.', 'themeblvd_builder' ),
+			'id' 		=> 'layout_start',
+			'type' 		=> 'select',
+			'options' 	=> array(
+				'scratch'	=> __( 'Start From Scratch', 'themeblvd_builder' ),
+				'layout'	=> __( 'Start From Existing Layout', 'themeblvd_builder' ),
+				'sample'	=> __( 'Start From Sample Layout', 'themeblvd_builder' )
+			)
+		);
+		if( ! $sample_layouts )
+			unset( $options[2]['options']['sample'] );
+		if( ! $custom_layouts )
+			unset( $options[2]['options']['layout'] );
+		
+		// Existing Layout
+		if( $custom_layouts ) {
+			$options[] = array( 
+				'name' 		=> __( 'Custom Layouts', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select one of the layouts you created previously to start this new one.', 'themeblvd_builder' ),
+				'id' 		=> 'layout_existing',
+				'type' 		=> 'select',
+				'options' 	=> $custom_layouts,
+			);
+		}
+		
 		// Sample Layouts (only show if there are sample layouts)
 		if( $sample_layouts ) {
 			$options[] = array( 
-				'name' 		=> __( 'Starting Point', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select if you\'d like to start building your layout from scratch or from a pre-built sample layout.', 'themeblvd_builder' ),
-				'id' 		=> 'layout_start',
+				'name' 		=> __( 'Sample Layout', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select a sample layout to start from.', 'themeblvd_builder' ),
+				'id' 		=> 'layout_sample',
 				'type' 		=> 'select',
 				'options' 	=> $sample_layouts,
 				'class'		=> 'builder_samples'
 			);
 		}
+		
+		// End subgroup for starting point
+		$options[] = array(
+			'type'		=> 'subgroup_end' 
+		);
 		
 		// Sidebar Layout
 		$options[] = array( 

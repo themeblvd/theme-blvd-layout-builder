@@ -54,20 +54,34 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$post_id = wp_insert_post( $args );
 		
 		// Setup meta
-		if( $config['options']['layout_start'] ) {
-			// Configure meta for sample layout
-			$samples = themeblvd_get_sample_layouts();
-			$current_sample = $samples[$config['options']['layout_start']];
-			$elements = array(
-				'featured' => $current_sample['featured'],
-				'primary' => $current_sample['primary'],
-				'featured_below' => $current_sample['featured_below']
-			);
-			$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
-		} else {
-			// Configure meta for blank layout
-			$elements = array();
-			$settings = array( 'sidebar_layout' => $config['options']['layout_sidebar'] );
+		if( ! empty( $config['options']['layout_start'] ) ) {
+			
+			if( $config['options']['layout_start'] == 'layout' ){
+			
+				// Configure meta for pre-existing layout
+				$layout_id = $config['options']['layout_existing'];
+				$elements = get_post_meta( $layout_id, 'elements', true );
+				$settings = get_post_meta( $layout_id, 'settings', true );
+				
+			} else if( $config['options']['layout_start'] == 'sample' ){
+			
+				// Configure meta for sample layout
+				$samples = themeblvd_get_sample_layouts();
+				$current_sample = $samples[$config['options']['layout_sample']];
+				$elements = array(
+					'featured' => $current_sample['featured'],
+					'primary' => $current_sample['primary'],
+					'featured_below' => $current_sample['featured_below']
+				);
+				$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
+			
+			} else {
+				
+				// Configure meta for blank layout
+				$elements = array();
+				$settings = array( 'sidebar_layout' => $config['options']['layout_sidebar'] );
+			
+			}	
 		}
 	
 		// Update even if they're empty
