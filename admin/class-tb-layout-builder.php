@@ -7,6 +7,7 @@ class Theme_Blvd_Layout_Builder {
 	public $id;
 	public $args;
 	public $elements;
+	public $ajax;
 	
 	/**
 	 * Constructor.
@@ -24,8 +25,8 @@ class Theme_Blvd_Layout_Builder {
 		
 		// Setup arguments for admin page		
 		$defaults = array(
-			'page_title' 	=> __( 'Layout Builder', 'themeblvd' ),
-			'menu_title' 	=> __( 'Builder', 'themeblvd' ),
+			'page_title' 	=> __( 'Layout Builder', 'themeblvd_builder' ),
+			'menu_title' 	=> __( 'Builder', 'themeblvd_builder' ),
 			'icon'			=> 'div',
 			'cap'			=> themeblvd_admin_module_cap( 'builder' ),
 			'priority'		=> 30
@@ -35,12 +36,16 @@ class Theme_Blvd_Layout_Builder {
 		// Elements for builder
 		$this->elements = $elements ? $elements : themeblvd_get_elements();
 		
-		// Add slider admin page
+		// Add Builder admin page
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
+		
+		// Add Custom Layouts meta box
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'save_post', array( $this, 'save_meta_box' ) );
 		
 		// Add ajax functionality to slider admin page
 		include_once( TB_BUILDER_PLUGIN_DIR . '/admin/class-tb-layout-builder-ajax.php' );
-		$ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
+		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
 	
 	}
 	
@@ -56,6 +61,65 @@ class Theme_Blvd_Layout_Builder {
 		add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_mlu_css', 0 );
 		add_action( 'admin_print_scripts-'.$admin_page, 'optionsframework_mlu_js', 0 );
 	}
+	
+	/**
+	 * Add a meta box for editing/adding layout.
+	 *
+	 * @since 1.1.0 
+	 */
+	function add_meta_box() {
+		
+		global $pagenow;
+		global $typenow;
+			
+		$args = apply_filters( 'themeblvd_builder_meta_box', array(
+			'id' 		=> 'tb_builder',
+			'name'		=> __('Custom Layout', 'themeblvd_builder'),
+			'callback'	=> array( $this, 'meta_box' ),
+			'post_type'	=> array( 'page' ),
+			'context'	=> 'normal',
+			'priority'	=> 'default'
+		));
+		
+		if( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
+			// Include assets
+			foreach( $args['post_type'] as $post_type ){
+				// Include assets
+				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
+					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
+					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+				}
+				// Add meta box
+				add_meta_box( $args['id'], $args['name'], $args['callback'], $post_type, $args['context'], $args['priority'] );		
+			}
+		}
+	}
+	/**
+	 * Save metabox for editing layouts from Edit Page screen.
+	 *
+	 * @since 1.1.0 
+	 */
+	function save_meta_box() {
+		
+		// Verify that this coming from the edit post page.
+		if( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' )
+			return;
+		
+		// Verfiy nonce
+		if( ! wp_verify_nonce( $_POST['_tb_save_builder_nonce'], 'themeblvd_save_builder' ) )
+			return;
+		
+		// Verify this is not an autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+			return;
+		
+		// Use our ajax function, which will allow us 
+		// to save the custom layout manually.
+		$this->ajax->save_layout();
+		
+	}
 
 	/**
 	 * Loads the CSS
@@ -66,7 +130,8 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
-		wp_enqueue_style( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/admin/assets/css/builder-style.min.css', null, TB_BUILDER_PLUGIN_VERSION );
+		// @todo -- Put this back to .min
+		wp_enqueue_style( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/admin/assets/css/builder-style.css', null, TB_BUILDER_PLUGIN_VERSION );
 	}
 
 	/**
@@ -113,7 +178,7 @@ class Theme_Blvd_Layout_Builder {
 			    		<?php 
 			    		$manage_nonce = wp_create_nonce( 'themeblvd_manage_builder' );
 						echo '<input type="hidden" name="option_page" value="themeblvd_manage_builder" />';
-						echo '<input type="hidden" name="_wpnonce" value="'.$manage_nonce.'" />';
+						echo '<input type="hidden" name="_tb_manage_builder_nonce" value="'.$manage_nonce.'" />';
 						?>
 						<div class="ajax-mitt"><?php $this->manage_layouts(); ?></div>
 					</form><!-- #manage_builder (end) -->
@@ -128,7 +193,7 @@ class Theme_Blvd_Layout_Builder {
 						<?php
 						$add_nonce = wp_create_nonce( 'themeblvd_new_builder' );
 						echo '<input type="hidden" name="option_page" value="themeblvd_new_builder" />';
-						echo '<input type="hidden" name="_wpnonce" value="'.$add_nonce.'" />';
+						echo '<input type="hidden" name="_tb_new_builder_nonce" value="'.$add_nonce.'" />';
 						$this->add_layout( null );
 						?>
 					</form><!-- #add_new_builder (end) -->
@@ -144,7 +209,7 @@ class Theme_Blvd_Layout_Builder {
 						$edit_nonce = wp_create_nonce( 'themeblvd_save_builder' );
 						echo '<input type="hidden" name="action" value="update" />';
 						echo '<input type="hidden" name="option_page" value="themeblvd_save_builder" />';
-						echo '<input type="hidden" name="_wpnonce" value="'.$edit_nonce.'" />';
+						echo '<input type="hidden" name="_tb_save_builder_nonce" value="'.$edit_nonce.'" />';
 						?>
 						<div class="ajax-mitt"><!-- AJAX inserts edit builder page here. --></div>				
 					</form>
@@ -159,7 +224,71 @@ class Theme_Blvd_Layout_Builder {
 		</div><!-- #builder_blvd (end) -->
 		<?php
 	}
-
+	
+	/**
+	 * Builds out the meta box to edit a page's custom layout.
+	 *
+	 * @since 1.1.0
+	 */
+	function meta_box() {
+		global $post;
+		$current_layout = get_post_meta( $post->ID, '_tb_custom_layout', true );
+		?>
+		<div id="builder_blvd">
+			<div id="optionsframework">
+				
+				<!-- HEADER (start) -->
+				
+				<div class="meta-box-nav">
+					<div class="select-layout">
+						<div class="ajax-overlay"></div>
+						<div class="icon-holder">
+							<span class="tb-loader ajax-loading"></span>
+							<?php screen_icon( 'tb_builder' ); ?>
+						</div>
+						<?php echo $this->layout_select( $current_layout ); ?>
+						<span class="note"><?php _e('Select a custom layout.', 'themeblvd_builder'); ?></span>
+					</div>
+					<ul>
+						<li><a href="#edit_layout"><?php _e('Edit Layout', 'themeblvd_builder'); ?></a></li>
+						<li><a href="#add_layout"><?php _e('Add New', 'themeblvd_builder'); ?></a></li>
+					</ul>
+					<div class="clear"></div>
+				</div><!-- .meta-box-nav (end) -->
+				
+				<!-- HEADER (end) -->
+				
+				<!-- EDIT LAYOUT (start) -->
+				
+				<div id="edit_layout" class="group">
+					<?php
+					$edit_nonce = wp_create_nonce( 'themeblvd_save_builder' );
+					echo '<input type="hidden" name="_tb_save_builder_nonce" value="'.$edit_nonce.'" />';
+					?>
+					<div class="ajax-mitt">
+						<?php $this->mini_edit_layout( themeblvd_post_id_by_name( $current_layout, 'tb_layout' ) ); ?>
+					</div><!-- .ajax-mitt (end) -->			
+				</div><!-- #edit_layout (end) -->
+			
+				<!-- EDIT LAYOUT (end) -->
+				
+				<!-- ADD LAYOUT (start) -->
+				
+				<div id="add_layout" class="group">
+					<?php
+					$add_nonce = wp_create_nonce( 'themeblvd_new_builder' );
+					echo '<input type="hidden" name="_tb_new_builder_nonce" value="'.$add_nonce.'" />';
+					$this->add_layout( null );
+					?>
+				</div><!-- #manage (end) -->
+				
+				<!-- ADD LAYOUT (end) -->
+			    
+			</div><!-- #optionsframework (end) -->
+		</div><!-- #builder_blvd (end) -->
+		<?php
+	}
+	
 	/**
 	 * Generates the the interface to manage layouts.
 	 *
@@ -294,21 +423,19 @@ class Theme_Blvd_Layout_Builder {
 		$options = apply_filters( 'themeblvd_add_layout', $options );
 		
 		// Build form
-		$form = themeblvd_option_fields( 'options', $options, null, false );
+		$form = themeblvd_option_fields( 'tb_new_layout', $options, null, false );
 		?>
 		<div class="metabox-holder">
 			<div class="postbox">
 				<h3><?php _e( 'Add New Layout', 'themeblvd_builder' ); ?></h3>
-				<form id="add_new_slider">
-					<div class="inner-group">
-						<?php echo $form[0]; ?>
-					</div><!-- .group (end) -->
-					<div id="optionsframework-submit">
-						<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Layout', 'themeblvd_builder' ); ?>">
-						<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
-			            <div class="clear"></div>
-					</div>
-				</form><!-- #add_new_slider (end) -->
+				<div class="inner-group">
+					<?php echo $form[0]; ?>
+				</div><!-- .group (end) -->
+				<div id="optionsframework-submit">
+					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Layout', 'themeblvd_builder' ); ?>">
+					<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
+		            <div class="clear"></div>
+				</div>
 			</div><!-- .postbox (end) -->
 		</div><!-- .metabox-holder (end) -->
 		<?php
@@ -329,16 +456,17 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function edit_element( $element_type, $element_id, $element_settings = null, $visibility = null ) {
 		$elements = $this->elements;
-		$form = themeblvd_option_fields( 'elements['.$element_id.'][options]', $elements[$element_type]['options'], $element_settings, false );
+		$form = themeblvd_option_fields( 'tb_elements['.$element_id.'][options]', $elements[$element_type]['options'], $element_settings, false );
 		?>
 		<div id="<?php echo $element_id; ?>" class="widget element-options"<?php if( $visibility == 'hide' ) echo ' style="display:none"'; ?>>					
 			<div class="widget-name">
 				<a href="#" class="widget-name-arrow">Toggle</a>
 				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
+				<div class="clear"></div>
 			</div><!-- .element-name (end) -->
 			<div class="widget-content">
-				<input type="hidden" class="element-type" name="elements[<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
-				<input type="hidden" class="element-query" name="elements[<?php echo $element_id; ?>][query_type]" value="<?php echo $elements[$element_type]['info']['query']; ?>" />
+				<input type="hidden" class="element-type" name="tb_elements[<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
+				<input type="hidden" class="element-query" name="tb_elements[<?php echo $element_id; ?>][query_type]" value="<?php echo $elements[$element_type]['info']['query']; ?>" />
 				<?php echo $form[0]; ?>
 				<div class="submitbox widget-footer">
 					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-me" title="<?php _e( 'Are you sure you want to delete this element?', 'themeblvd_builder' ); ?>"><?php _e( 'Delete Element', 'themeblvd_builder' ); ?></a>
@@ -357,12 +485,12 @@ class Theme_Blvd_Layout_Builder {
 	 * @param $id string ID of layout to edit
 	 */
 	public function edit_layout( $id ) {
-		$elements = $this->elements;
+		$elements = $this->elements; // Elements that can be used in Builder, and NOT elements saved to current layout
 		$layout = get_post($id);
 		$layout_elements = get_post_meta( $id, 'elements', true );
 		$layout_settings = get_post_meta( $id, 'settings', true );
 		?>
-		<input type="hidden" name="layout_id" value="<?php echo $id; ?>" />
+		<input type="hidden" name="tb_layout_id" value="<?php echo $id; ?>" />
 		<div id="poststuff" class="metabox-holder full-width has-right-sidebar">
 			<div class="inner-sidebar">
 				<div class="postbox postbox-publish">
@@ -406,7 +534,7 @@ class Theme_Blvd_Layout_Builder {
 					);
 	
 					// Display form element
-					$form = themeblvd_option_fields( 'info', $info_options, $info_settings, false );
+					$form = themeblvd_option_fields( 'tb_layout_info', $info_options, $info_settings, false );
 					echo $form[0]; 
 					?>
 				</div><!-- .post-box (end) -->
@@ -429,7 +557,7 @@ class Theme_Blvd_Layout_Builder {
 					);
 	
 					// Display form element
-					$form = themeblvd_option_fields( 'options', $options, $layout_settings, false );
+					$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
 					echo $form[0]; 
 					?>
 				</div><!-- .post-box (end) -->
@@ -465,7 +593,7 @@ class Theme_Blvd_Layout_Builder {
 							</div><!-- .sortable (end) -->
 						</div><!-- #featured (end) -->
 						<div id="primary">
-							<input type="hidden" name="elements[divider]" value="" />
+							<input type="hidden" name="tb_elements[divider]" value="" />
 							<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
 							<div class="sortable">
 								<?php
@@ -480,7 +608,7 @@ class Theme_Blvd_Layout_Builder {
 							</div><!-- .sortable (end) -->
 						</div><!-- #primary (end) -->
 						<div id="featured_below">
-							<input type="hidden" name="elements[divider_2]" value="" />
+							<input type="hidden" name="tb_elements[divider_2]" value="" />
 							<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
 							<div class="sortable">
 								<?php
@@ -502,6 +630,136 @@ class Theme_Blvd_Layout_Builder {
 	}
 	
 	/**
+	 * Generates the the interface to edit the layout 
+	 * when in the metabox interface of editing Pages.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param $id string ID of layout to edit
+	 */
+	public function mini_edit_layout( $id ) {
+		// If no layout (i.e. User selected "none" or one hasn't been chosen yet)
+		if( ! $id ){
+			echo '<p class="warning">'.__('Select a layout to apply and edit it, or create a new one.', 'themeblvd_builder').'</p>';
+			return;	
+		}
+		// Get custom layout post
+		$elements = $this->elements;
+		$layout = get_post($id);
+		// Check if valid layout
+		if( ! $layout ){
+			echo '<p class="warning">'.__('The layout currently selected no longer exists. Select a different layout to edit, or create a new one.', 'themeblvd_builder').'</p>';
+			return;	
+		}
+		// Grab elements and settings for the layout we're editing
+		$layout_elements = get_post_meta( $id, 'elements', true );
+		$layout_settings = get_post_meta( $id, 'settings', true );
+		?>
+		<input type="hidden" name="tb_layout_id" value="<?php echo $id; ?>" />
+		<h3><?php _e('Edit Layout', 'themeblvd_builder'); ?>: <?php echo $layout->post_title; ?></h3>
+		<div id="metabox-builder">
+			<div class="edit-layout-wrap">
+				<div id="titlediv">
+					<div class="ajax-overlay"></div>
+					<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
+					<select>
+						<?php
+						foreach( $elements as $element )
+							echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+						?>
+					</select>
+					<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add New Element', 'themeblvd_builder' ); ?></a>
+					<span class="tb-loader ajax-loading"></span>
+					<div class="clear"></div>
+				</div><!-- #titlediv (end) -->
+				<div id="builder">
+					<div id="featured">
+						<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
+						<div class="sortable">
+							<?php
+							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
+								foreach( $layout_elements['featured'] as $id => $element ) {
+									if( $this->is_element( $element['type'] ) ) {
+										$this->edit_element( $element['type'], $id, $element['options'] );
+									}
+								}
+							}
+							?>
+						</div><!-- .sortable (end) -->
+					</div><!-- #featured (end) -->
+					<div id="primary">
+						<input type="hidden" name="tb_elements[divider]" value="" />
+						<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
+						<div class="sortable">
+							<?php
+							if( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
+								foreach( $layout_elements['primary'] as $id => $element ) {
+									if( $this->is_element( $element['type'] ) ) {
+										$this->edit_element( $element['type'], $id, $element['options'] );
+									}
+								}
+							}
+							?>
+						</div><!-- .sortable (end) -->
+					</div><!-- #primary (end) -->
+					<div id="featured_below">
+						<input type="hidden" name="tb_elements[divider_2]" value="" />
+						<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
+						<div class="sortable">
+							<?php
+							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
+								foreach( $layout_elements['featured_below'] as $id => $element ) {
+									if( $this->is_element( $element['type'] ) ) {
+										$this->edit_element( $element['type'], $id, $element['options'] );
+									}
+								}
+							}
+							?>
+						</div><!-- .sortable (end) -->
+					</div><!-- #primary (end) -->
+				</div><!-- #builder (end) -->
+			</div><!-- .edit-layout-wrap (end) -->
+			
+			<div class="sidebar-layout-wrap">			
+				<div class="title">
+					<h2><?php _e( 'Sidebar Layout', 'themeblvd_builder' ); ?></h2>
+					<div class="clear"></div>
+				</div><!-- #titlediv (end) -->
+				<div class="sidebar-layout">
+					<?php
+					// Setup sidebar layouts
+					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
+					$sidebar_layouts = array();
+					$layouts = themeblvd_sidebar_layouts();
+					foreach( $layouts as $layout )
+						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
+					
+					// Now convert it to options form
+					$options = array( 
+						array( 
+							'id' 		=> 'sidebar_layout',
+							'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+							'type' 		=> 'images',
+							'options' 	=> $sidebar_layouts
+						)
+					);
+	
+					// Display form element
+					$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
+					echo $form[0]; 
+					?>
+				</div>
+			</div><!-- .sidebar-layout-wrap (end) -->
+			
+			<div class="custom-layout-note">
+				<p><?php _e('Note: For this custom layout to be applied to the current page, you must select the "Custom Layout" page template from your Page Attributes.', 'themeblvd_builder'); ?></p>
+			</div>
+			
+		</div><!-- #metabox-builder (end) -->
+		<?php
+	}
+	
+	/**
 	 * Check if element is currently registered.
 	 *
 	 * @since 1.0.0
@@ -514,6 +772,31 @@ class Theme_Blvd_Layout_Builder {
 		if( array_key_exists ( $element_id, $this->elements ) )
 			$exists = true;
 		return $exists;
+	}
+	
+	/**
+	 * Builds out the full admin page.
+	 *
+	 * @since 1.0.0 
+	 *
+	 * @param string $current Current custom layout to be selected
+	 */
+	function layout_select( $current = '' ) {
+		$output = '';
+		$custom_layouts = get_posts('post_type=tb_layout&numberposts=-1');
+		if( ! empty( $custom_layouts ) ) {
+			$output .= '<div class="tb-fancy-select">';
+			$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
+			$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
+			foreach( $custom_layouts as $custom_layout ) {
+				$output .= '<option value="'.$custom_layout->post_name.'" '.selected( $custom_layout->post_name, $current, false ).'>'.$custom_layout->post_title.'</option>';
+			}
+			$output .= '</select>';
+			$output .= '<span class="trigger"></span>';
+			$output .= '<span class="textbox"></span>';
+			$output .= '</div><!-- .tb-fancy-select (end) -->';
+		}
+		return $output;
 	}
 
 }
