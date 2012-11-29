@@ -775,9 +775,9 @@ class Theme_Blvd_Layout_Builder {
 	}
 	
 	/**
-	 * Builds out the full admin page.
+	 * Builds a select menu of current custom layouts.
 	 *
-	 * @since 1.0.0 
+	 * @since 1.1.0 
 	 *
 	 * @param string $current Current custom layout to be selected
 	 */
