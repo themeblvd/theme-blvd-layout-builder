@@ -46,6 +46,16 @@ function themeblvd_builder_init() {
 		return;
 	}
 	
+	// If using framework v2.2.0, tell them they should now update to 2.2.1
+	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
+		add_action( 'admin_notices', 'themeblvd_builder_warning_2' );
+	}
+	
+	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
+	if( ! function_exists( 'themeblvd_disable_nag' ) ){
+		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
+	}
+	
 	// Frontend actions -- These work in conjuction with framework theme files, 
 	// header.php, template_builder.php, and footer.php
 	add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
@@ -120,6 +130,18 @@ function themeblvd_builder_textdomain() {
 add_action( 'plugins_loaded', 'themeblvd_builder_textdomain' );
 
 /**
+ * Disable a nag message.
+ *
+ * @since 1.1.0
+ */
+
+function themeblvd_builder_disable_nag() {
+	global $current_user;
+    if ( isset( $_GET['tb_nag_ignore'] ) )
+         add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+}
+
+/**
  * Display warning telling the user they must have a 
  * theme with Theme Blvd framework v2.2+ installed in 
  * order to run this plugin.
@@ -131,6 +153,23 @@ function themeblvd_builder_warning() {
 	echo '<div class="updated">';
 	echo '<p>'.__( 'You currently have the "Theme Blvd Layout Builder" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_builder' ).'</p>';
 	echo '</div>';
+}
+
+/**
+ * Display warning telling the user they should be using 
+ * theme with Theme Blvd framework v2.2.1+.
+ *
+ * @since 1.1.0
+ */
+
+function themeblvd_builder_warning_2() {
+	global $current_user;
+    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning_2' ) ) {
+        echo '<div class="updated">';
+        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of the Theme Blvd Layout Builder, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_builder' ).'</p>';
+        echo '<p><a href="?tb_nag_ignore=tb_builder_warning_2">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
+        echo '</div>';
+    }
 }
 
 /**
