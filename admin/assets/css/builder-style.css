@@ -65,10 +65,10 @@
 #builder_blvd .meta-box-nav .icon-holder { float: left; margin: 5px 8px 0 0; position: relative; width: 20px; height: 20px; }
 #builder_blvd .meta-box-nav .icon-holder #icon-tb_builder { background-position: -10px -5px; background-size: 82px 30px; position: absolute; margin: 0; width: 20px; height: 20px; z-index: 1; }
 #builder_blvd .meta-box-nav .select-layout { float: left; position: relative; }
-#optionsframework .meta-box-nav .tb-fancy-select { background-position: 0 -2px; float: left; margin: 0; }
-#optionsframework .meta-box-nav .tb-fancy-select select { height: 28px; min-width: 220px; }
-#optionsframework .meta-box-nav .tb-fancy-select .trigger { background-position: 0 -2px; height: 28px; }
-#optionsframework .meta-box-nav .tb-fancy-select .textbox { line-height: 28px; }
+#builder_blvd .meta-box-nav .tb-fancy-select { background-position: 0 -2px; float: left; margin: 0; }
+#builder_blvd .meta-box-nav .tb-fancy-select select { height: 28px; min-width: 220px; }
+#builder_blvd .meta-box-nav .tb-fancy-select .trigger { background-position: 0 -2px; height: 28px; }
+#builder_blvd .meta-box-nav .tb-fancy-select .textbox { line-height: 28px; }
 #builder_blvd .meta-box-nav .select-layout span.note { float: left; line-height: 28px; margin: 0 0 0 10px; padding: 0; }
 #builder_blvd .meta-box-nav ul { margin: 0; padding: 0; position: absolute; right: 5px; bottom: -1px; }
 #builder_blvd .meta-box-nav li { float: left; margin: 0 5px 0 0; padding: 0; }
@@ -84,7 +84,7 @@
 .postbox #builder_blvd #edit_layout #titlediv { -moz-box-shadow: 0 0 0 #000; -webkit-box-shadow: 0 0 0 #000; box-shadow: 0 0 0 #000;}
 .postbox #builder_blvd #builder #featured span.label, .postbox  #builder_blvd #builder #primary span.label, .postbox #builder_blvd #builder #featured_below span.label { background-color: #ffffff; }
 .postbox #builder_blvd #builder #featured .sortable, .postbox #builder_blvd #builder #primary .sortable, .postbox #builder_blvd #builder #featured_below .sortable { background-color: #ffffff; }
-.postbox #optionsframework .widget-name h3 { background-color: transparent; background-image: none; border-bottom: none; -moz-box-shadow: 0 0 0 #000; -webkit-box-shadow: 0 0 0 #000; box-shadow: 0 0 0 #000;}
+.postbox #builder_blvd .widget-name h3 { background-color: transparent; background-image: none; border-bottom: none; -moz-box-shadow: 0 0 0 #000; -webkit-box-shadow: 0 0 0 #000; box-shadow: 0 0 0 #000;}
 .postbox #builder_blvd .sidebar-layout-wrap { padding: 0 10px; }
 .postbox #builder_blvd .sidebar-layout-wrap h2 { margin-left: 12px; }
 .postbox #builder_blvd #optionsframework .sidebar-layout-wrap .section { border-bottom: none; padding: 0 10px 10px 10px; }
