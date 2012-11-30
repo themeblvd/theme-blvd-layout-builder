@@ -96,6 +96,7 @@ class Theme_Blvd_Layout_Builder {
 			}
 		}
 	}
+	
 	/**
 	 * Save metabox for editing layouts from Edit Page screen.
 	 *
