@@ -54,6 +54,7 @@
 .postbox #builder_blvd #optionsframework { background: #f9f9f9; }
 .postbox #builder_blvd .warning { background: #FFFFE0; border: 1px solid #E6DB55; margin: 10px; }
 #tb_builder #tb-alert { top: 40px; }
+.postbox #builder_blvd #optionsframework { max-width: inherit; }
 
 /* Loader */
 .postbox #builder_blvd .tb-loader { background: #ffffff url(../images/loader_48.gif) no-repeat; background-size: 20px 20px; display:none; position: absolute; width: 20px; height: 20px; visibility: visible; z-index: 4; }
