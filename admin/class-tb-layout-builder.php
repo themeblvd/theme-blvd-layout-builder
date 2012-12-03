@@ -109,7 +109,7 @@ class Theme_Blvd_Layout_Builder {
 			return;
 		
 		// Verfiy nonce
-		if( ! wp_verify_nonce( $_POST['_tb_save_builder_nonce'], 'themeblvd_save_builder' ) )
+		if( ! isset( $_POST['_tb_save_builder_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_save_builder_nonce'], 'themeblvd_save_builder' ) )
 			return;
 		
 		// Verify this is not an autosave
