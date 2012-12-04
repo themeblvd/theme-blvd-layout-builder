@@ -345,7 +345,7 @@ jQuery(document).ready(function($) {
     	// load (i.e. the meta box when editing pages).
     	edit_now : function ( object )
     	{
-    		
+
     		// Setup hints
 			object.find('.sortable:not(:has(div))').addClass('empty');
 			object.find('.sortable:has(div)').removeClass('empty');
@@ -645,10 +645,10 @@ jQuery(document).ready(function($) {
 				$('#builder_blvd #edit_layout #primary .sortable').removeClass('empty');
 				$('#'+element_id).themeblvd('widgets');
 				$('#'+element_id).themeblvd('options', 'setup');
+				$('#'+element_id).themeblvd('options', 'bind');
 				$('#'+element_id).fadeIn();									
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
-				
 			}
 		});
 		return false;
