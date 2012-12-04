@@ -64,12 +64,14 @@ function themeblvd_builder_init() {
 	
 	// Get custom layouts
 	$custom_layouts = array();
-	$custom_layout_posts = get_posts('post_type=tb_layout&numberposts=-1');
-	if( ! empty( $custom_layout_posts ) ) {
-		foreach( $custom_layout_posts as $layout )
-			$custom_layouts[$layout->post_name] = $layout->post_title;
-	} else {
-		$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
+	if( is_admin() ) {
+		$custom_layout_posts = get_posts('post_type=tb_layout&numberposts=-1');
+		if( ! empty( $custom_layout_posts ) ) {
+			foreach( $custom_layout_posts as $layout )
+				$custom_layouts[$layout->post_name] = $layout->post_title;
+		} else {
+			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
+		}
 	}
 	
 	// Add option to theme options page allowing user to 
@@ -215,16 +217,15 @@ function themeblvd_modify_customizer_homepage( $sections ) {
  *
  * @since 1.0.0
  *
- * @param string $layout Post slug for layout
+ * @param string $layout_id Post ID for custom layout
  * @param string $location Location of elements, featured or primary
  */
  
-function themeblvd_builder_elements( $layout, $location ) {
+function themeblvd_builder_elements( $layout_id, $location ) {
 	
 	// Setup
 	$counter = 0;
 	$primary_query = false;
-	$layout_id = themeblvd_post_id_by_name( $layout, 'tb_layout' );
 	if( ! $layout_id ) {
 		// This should rarely happen. A common scenario might 
 		// be the user setup a page with a layout, but then 
@@ -430,7 +431,7 @@ function themeblvd_builder_elements( $layout, $location ) {
 
 function themeblvd_builder_content() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'primary' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );	
 }
 
 /**
@@ -441,7 +442,7 @@ function themeblvd_builder_content() {
 
 function themeblvd_builder_featured() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'featured' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' );	
 }
 
 /**
@@ -452,5 +453,5 @@ function themeblvd_builder_featured() {
  
 function themeblvd_builder_featured_below() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'featured_below' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' );	
 }
