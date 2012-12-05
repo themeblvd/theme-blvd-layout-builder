@@ -2,15 +2,13 @@
 Author URI: http://www.jasonbobich.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 1.0.0
+Stable Tag: 1.0.1
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
 == Description ==
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core element functions. These custom layouts can then be applied to individual pages or your homepage. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend this fuctionality to standard posts and custom post types.
-
-Quick video run-through will be here after it's made ...
 
 **NOTE: For this plugin to do anything, you must have a theme with Theme Blvd framework v2.2+ activated.**
 
@@ -38,6 +36,10 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 3. Edit a custom layout with the Builder interface.
 
 == Changelog ==
+
+= 1.0.1 =
+
+* Fixed issues with applying custom layouts to as homepage from Appearance > Theme Options > Content > Homepage.
 
 = 1.0.0 =
 
