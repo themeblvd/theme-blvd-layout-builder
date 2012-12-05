@@ -3,7 +3,7 @@
 Plugin Name: Theme Blvd Layout Builder
 Plugin URI: 
 Description: This plugins gives you a slick interface that ties int the Theme Blvd framework to create custom layouts for your WordPress pages.
-Version: 1.1.0
+Version: 1.0.1
 Author: Jason Bobich
 Author URI: http://jasonbobich.com
 License: GPL2
@@ -26,7 +26,7 @@ License: GPL2
 
 */
 
-define( 'TB_BUILDER_PLUGIN_VERSION', '1.1.0' );
+define( 'TB_BUILDER_PLUGIN_VERSION', '1.0.1' );
 define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) ); 
 define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
@@ -46,16 +46,6 @@ function themeblvd_builder_init() {
 		return;
 	}
 	
-	// If using framework v2.2.0, tell them they should now update to 2.2.1
-	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
-		add_action( 'admin_notices', 'themeblvd_builder_warning_2' );
-	}
-	
-	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
-	if( ! function_exists( 'themeblvd_disable_nag' ) ){
-		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
-	}
-	
 	// Frontend actions -- These work in conjuction with framework theme files, 
 	// header.php, template_builder.php, and footer.php
 	add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
@@ -64,14 +54,12 @@ function themeblvd_builder_init() {
 	
 	// Get custom layouts
 	$custom_layouts = array();
-	if( is_admin() ) {
-		$custom_layout_posts = get_posts('post_type=tb_layout&numberposts=-1');
-		if( ! empty( $custom_layout_posts ) ) {
-			foreach( $custom_layout_posts as $layout )
-				$custom_layouts[$layout->post_name] = $layout->post_title;
-		} else {
-			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
-		}
+	$custom_layout_posts = get_posts('post_type=tb_layout&numberposts=-1');
+	if( ! empty( $custom_layout_posts ) ) {
+		foreach( $custom_layout_posts as $layout )
+			$custom_layouts[$layout->post_name] = $layout->post_title;
+	} else {
+		$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
 	}
 	
 	// Add option to theme options page allowing user to 
@@ -132,18 +120,6 @@ function themeblvd_builder_textdomain() {
 add_action( 'plugins_loaded', 'themeblvd_builder_textdomain' );
 
 /**
- * Disable a nag message.
- *
- * @since 1.1.0
- */
-
-function themeblvd_builder_disable_nag() {
-	global $current_user;
-    if ( isset( $_GET['tb_nag_ignore'] ) )
-         add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
-}
-
-/**
  * Display warning telling the user they must have a 
  * theme with Theme Blvd framework v2.2+ installed in 
  * order to run this plugin.
@@ -155,23 +131,6 @@ function themeblvd_builder_warning() {
 	echo '<div class="updated">';
 	echo '<p>'.__( 'You currently have the "Theme Blvd Layout Builder" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_builder' ).'</p>';
 	echo '</div>';
-}
-
-/**
- * Display warning telling the user they should be using 
- * theme with Theme Blvd framework v2.2.1+.
- *
- * @since 1.1.0
- */
-
-function themeblvd_builder_warning_2() {
-	global $current_user;
-    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning_2' ) ) {
-        echo '<div class="updated">';
-        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of the Theme Blvd Layout Builder, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_builder' ).'</p>';
-        echo '<p><a href="?tb_nag_ignore=tb_builder_warning_2">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
-        echo '</div>';
-    }
 }
 
 /**
@@ -217,15 +176,16 @@ function themeblvd_modify_customizer_homepage( $sections ) {
  *
  * @since 1.0.0
  *
- * @param string $layout_id Post ID for custom layout
+ * @param string $layout Post slug for layout
  * @param string $location Location of elements, featured or primary
  */
  
-function themeblvd_builder_elements( $layout_id, $location ) {
+function themeblvd_builder_elements( $layout, $location ) {
 	
 	// Setup
 	$counter = 0;
 	$primary_query = false;
+	$layout_id = themeblvd_post_id_by_name( $layout, 'tb_layout' );
 	if( ! $layout_id ) {
 		// This should rarely happen. A common scenario might 
 		// be the user setup a page with a layout, but then 
@@ -431,7 +391,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 function themeblvd_builder_content() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'primary' );	
 }
 
 /**
@@ -442,7 +402,7 @@ function themeblvd_builder_content() {
 
 function themeblvd_builder_featured() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'featured' );	
 }
 
 /**
@@ -453,5 +413,5 @@ function themeblvd_builder_featured() {
  
 function themeblvd_builder_featured_below() {
 	if( themeblvd_config( 'builder' ) )
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' );	
+		themeblvd_builder_elements( themeblvd_config( 'builder' ), 'featured_below' );	
 }
