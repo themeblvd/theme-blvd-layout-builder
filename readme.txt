@@ -2,19 +2,19 @@
 Author URI: http://www.jasonbobich.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 1.0.1
+Stable Tag: 1.1.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
 == Description ==
 
-When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core element functions. These custom layouts can then be applied to individual pages or your homepage. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend this fuctionality to standard posts and custom post types.
+**NOTE: This plugin requires Theme Blvd framework v2.2.1+**
 
-**NOTE: For this plugin to do anything, you must have a theme with Theme Blvd framework v2.2+ activated.**
+When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core element functions. These custom layouts can then be applied to individual pages or your homepage. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend this fuctionality to standard posts and custom post types.
 
 == Installation ==
 
-1. Upload `theme-blvd-widget-pack` folder to the `/wp-content/plugins/` directory
+1. Upload `theme-blvd-layout-builder` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to *Builder* in your WordPress admin panel to to use the Layout Builder.
 4. Custom layouts can then be applied to pages by selecing the "Custom Layout" page template and then selecting the desired custom layout from the dropdown that then appears.
@@ -23,7 +23,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 There are two separate methods for applying a custom layouts as your theme's homepage. Which method you use just depends on what you feel is most logical for how you're setting up your homepage.
 
-Method 1: Create your custom layout, apply it to a static page, and then assign that page as your static frontpage under Settings > Reading > Frontpage Displays.
+Method 1: Create your custom layout, apply it to a static page, and then assign that page as your static frontpage under *Settings > Reading > Frontpage Displays*.
 
 Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest posts." Create your custom layout. Then, go to *Appearance > Theme Options > Content > Homepage*, and select your new custom layout as the content for the homepage. 
 
@@ -36,6 +36,11 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 3. Edit a custom layout with the Builder interface.
 
 == Changelog ==
+
+= 1.1.0 =
+
+* Added Meta Box to apply and edit custom layouts directly from Edit page screen.
+* Minor internal improvements to cut down on database queries.
 
 = 1.0.1 =
 

@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
     	// Delete Layout
     	delete_layout : function( ids, action, location )
     	{
-    		var nonce  = $('#manage_builder').find('input[name="_wpnonce"]').val();
+    		var nonce  = $('#manage_builder').find('input[name="_tb_manage_builder_nonce"]').val();
 			tbc_confirm( themeblvd.delete_layout, {'confirm':true}, function(r)
 			{
 		    	if(r)
@@ -122,28 +122,42 @@ jQuery(document).ready(function($) {
 		// Manage add new layout form elements
 		add_layout : function( object )
     	{
-    		var value = object.val(), parent = object.closest('.controls');
-		
-			// Always remove the warning.
+    		var value = object.val(), parent = object.closest('.subgroup');
+
+    		// Always remove the warning.
 			$('#section-layout_sidebar .controls .warning').remove();
-			
-			// Finish it up depending on if the user selected to 
-			// start from scratch or a sample layout.
-			if(value != '0')
-			{
-				$('#section-layout_sidebar select').hide();
-				$('#section-layout_sidebar .controls').prepend('<p class="warning">The starting sample layout you\'ve chosen already has a sidebar layout.</p>');
-				parent.find('.sample-layouts div').hide();
-				parent.find('#sample-'+value).show();
-			}
-			else
-			{
-				$('#section-layout_sidebar select').fadeIn('fast');
-				parent.find('.sample-layouts div').hide();
-			}
+    		
+    		if( value == 'layout' )
+    		{
+    			parent.find('#section-layout_sample').hide();
+	    		parent.find('#section-layout_existing').fadeIn('fast');
+	    		$('#section-layout_sidebar .controls').prepend('<p class="warning">'+themeblvd.sidebar_layout_set+'</p>');
+	    		$('#layout_sidebar').hide().closest('.tb-fancy-select').hide();
+    		}
+    		else if( value == 'sample' )
+    		{
+	    		parent.find('#section-layout_existing').hide();
+	    		parent.find('#section-layout_sample').fadeIn('fast');
+	    		$('#section-layout_sidebar .controls').prepend('<p class="warning">'+themeblvd.sidebar_layout_set+'</p>');
+	    		$('#layout_sidebar').hide().closest('.tb-fancy-select').hide();
+    		}
+    		else
+    		{
+	    		parent.find('#section-layout_existing').hide();
+	    		parent.find('#section-layout_sample').hide();
+	    		$('#layout_sidebar').show().closest('.tb-fancy-select').show();
+    		}			
     	},
     	
-    	// Enter into editing a layout
+    	// Toggle sample layout previews
+    	sample_preview : function( select )
+    	{
+    		var parent = select.closest('.controls');
+    		parent.find('.sample-layouts div').hide();	
+    		parent.find('#sample-'+select.val()).show();
+    	},
+    	
+    	// Enter into editing a layout via Ajax
     	edit : function ( name, page )
     	{
     		// Get the ID from the beginning
@@ -181,8 +195,180 @@ jQuery(document).ready(function($) {
 			$('#builder_blvd .group').hide();
 			$('#builder_blvd .group:last').fadeIn();
 			
+    	},
+    	
+    	// Retrieve interface to edit a layout from 
+    	// meta box when editing pages.
+    	mini_edit : function ( layout_id, nonce, object, new_layout_created )
+    	{
+			var data = {
+				action: 'themeblvd_mini_edit_layout',
+				security: nonce,
+				data: layout_id
+			};
+    		$.post(ajaxurl, data, function(response) {
+				
+				// Insert response
+				object.find('.ajax-mitt').html(response);
+				
+				// Wait 1 second before bringing everything back.
+				setTimeout(function () {
+					
+					builder_blvd.edit_now(object);
+					object.find('.meta-box-nav .ajax-overlay').fadeOut('fast');
+					object.find('.meta-box-nav .ajax-loading').fadeOut('fast');
+					object.find('#edit_layout .ajax-overlay-layout-switch').fadeOut('fast').remove();
+					
+					// If a new layout was just created, we need to confirm and get the user there to edit it.
+					if( new_layout_created )
+						builder_blvd.confirm_new_layout();
+						
+				}, 1000);
+				
+			});
+    	},
+    	
+    	// Change layouts when in the meta box on Edit Page screen.
+    	change_layout : function ( object, new_layout_id, new_layout_created )
+    	{
+    		// If this is coming from the creation of a new layout, 
+			// then we should already have the new layout ID, but 
+			// if not we need to collect it.
+			if( ! new_layout_id )
+			{
+				// User has selected to eidt an existing layout, 
+				// opposed to creating a new one.
+				new_layout_id = object.val();
+			}
+			
+	    	var parent = object.closest('#builder_blvd'),
+				old_layout_id = parent.find('input[name=tb_layout_id]').val(),
+				nonce = parent.find('input[name=_tb_save_builder_nonce]').val();
+			
+			// Check if the user was previously editing another layout or not.
+			if( old_layout_id )
+			{
+				
+				// User is currently editing another layout and now wants to change.
+				
+				// Verify action with user, to save the current layout or not.	
+				tbc_confirm(themeblvd.save_switch_layout, {'verify':true}, function(r) {
+					
+					// Trigger loading indicators
+					parent.find('.meta-box-nav .ajax-overlay').css('visibility', 'visible').fadeIn('fast');
+					parent.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
+					parent.find('#edit_layout').prepend('<div class="ajax-overlay-layout-switch"></div>');
+					parent.find('#edit_layout .ajax-overlay-layout-switch').fadeIn('fast');
+					
+					// Take action based on user selection
+					if(r)
+					{ 
+						// User clicked "Yes"
+						// Save old layout
+						var data = {
+							action: 'themeblvd_save_layout',
+							security: nonce,
+							data: $('#post').serialize()
+						};
+			    		$.post(ajaxurl, data, function(response) {
+							// And now, fetch interface to edit new layout
+							builder_blvd.mini_edit( new_layout_id, nonce, parent, new_layout_created );
+						});
+					}
+					else
+					{
+						// User clicked "No"
+						// Fetch interface to edit new layout
+						builder_blvd.mini_edit( new_layout_id, nonce, parent, new_layout_created );
+					}
+					
+				});
+			}
+			else
+			{
+				// User is not currently editing another layout.
+				
+				// Trigger loading indicators
+				parent.find('.meta-box-nav .ajax-overlay').css('visibility', 'visible').fadeIn('fast');
+				parent.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
+				parent.find('#edit_layout').prepend('<div class="ajax-overlay-layout-switch"></div>');
+				parent.find('#edit_layout .ajax-overlay-layout-switch').fadeIn('fast');
+				
+				// No previous layout, so we don't need to ask the user if they want to save it.
+				builder_blvd.mini_edit( new_layout_id, nonce, parent );
+			}
+    	},
+    	
+    	// Update the layout toggle select menu
+    	update_layout_toggle : function ( current_layout_id )
+    	{
+	    	// Prep and exececute first Ajax call.
+			var data = {
+				action: 'themeblvd_layout_toggle',
+				data: current_layout_id
+			};			
+			$.post(ajaxurl, data, function(response) {
+				$('#tb-layout-toggle').closest('.tb-fancy-select').replaceWith(response); // Why isn't this replacing the layout toggle select???
+			});
+    	},
+    	
+    	// Confirm creation of new layout from Meta Box 
+    	// builder.
+    	confirm_new_layout : function ()
+    	{
+    		
+    		var meta_box = $('#tb_builder');
+    		
+    		// Hide loader
+    		meta_box.find('#add_layout .ajax-loading').hide();
+    		
+    		// Switch user to editing the new layout
+			meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
+			meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
+			meta_box.find('.group').hide();
+			meta_box.find('#edit_layout').show();
+			
+			// Put user at the start of meta box
+			$('html,body').animate({
+				scrollTop: $('#tb_builder').offset().top - 30
+			}, 'fast');
+			
+			// Show success message
+			tbc_alert.init(themeblvd.layout_created, 'success', '#tb_builder');
+			
+			// Clear name field back on new layout form
+			meta_box.find('#layout_name').val('');
+
+    	},
+    	
+    	// Setup editing a layout when loaded on page 
+    	// load (i.e. the meta box when editing pages).
+    	edit_now : function ( object )
+    	{
+
+    		// Setup hints
+			object.find('.sortable:not(:has(div))').addClass('empty');
+			object.find('.sortable:has(div)').removeClass('empty');
+			
+			// Setup sortables
+			object.find('.sortable').sortable({
+				handle: '.widget-name',
+				connectWith: '.sortable'
+			});
+			
+			// Sortable binded events
+			object.find('.sortable').bind( 'sortreceive', function(event, ui) {
+				object.find('.sortable:not(:has(div))').addClass('empty');
+				object.find('.sortable:has(div)').removeClass('empty');
+			});
+			
+			// Setup widgets
+			object.find('.widget').themeblvd('widgets');
+			
+			// Setup options
+			object.themeblvd('options', 'setup');
+			
     	}
-		
 	};
 	
 	/*-----------------------------------------------------------------------------------*/
@@ -207,11 +393,83 @@ jQuery(document).ready(function($) {
 	}
 	
 	/*-----------------------------------------------------------------------------------*/
+	/* Meta Box (layout builder used when editing pages directly)
+	/*-----------------------------------------------------------------------------------*/
+	
+	// Setup Tabs for Builder meta box (extends 
+	// basic process above from Builder section).
+	// 
+	// The reason we're using this revised method 
+	// for tab switching is to avoid issues with 
+	// fading tabs in/out in the Edit Page envionment 
+	// where there are more factors surrounding the 
+	// height and location of the tabs.
+	$('#tb_builder').each(function(){
+		var meta_box = $(this);
+		meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
+		meta_box.find('.group').hide();
+		meta_box.find('#edit_layout').show();
+		meta_box.find('.meta-box-nav li a').click(function(){
+			var anchor = $(this), target = anchor.attr('href');
+			meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
+			anchor.addClass('nav-tab-active');
+			meta_box.find('.group').hide();
+			meta_box.find(target).show();
+			return false;
+		});
+	});
+	
+	// Initiate Builder interface when loaded on page 
+	// load with the meta box on Edit Page screen.
+	$('#tb_builder').each( function(){
+		builder_blvd.edit_now( $(this) );
+	});
+	
+	// Switch layouts
+	$(document).on('change', '#tb-layout-toggle', function(){
+		builder_blvd.change_layout( $(this) );
+	});
+	
+	// Add new layout
+	$('#tb_builder #add_layout .button-primary').click(function(){
+		
+		var el = $(this),
+			parent = el.closest('#builder_blvd'),
+			meta_box = el.closest('#tb_builder'),
+			name = parent.find('#layout_name').val(),
+			nonce = parent.find('input[name=_tb_new_builder_nonce]').val(),
+			form_data = $('#post').serialize();
+
+		// Tell user they forgot a name
+		if(!name)
+		{
+			tbc_confirm(themeblvd.no_name, {'textOk':'Ok'});
+		    return false;
+		}
+
+		// Loader
+		el.closest('.metabox-holder').find('.ajax-loading').fadeIn('fast');
+		
+		// Prep and exececute first Ajax call.
+		var data = {
+			action: 'themeblvd_add_layout',
+			security: nonce,
+			data: form_data
+		};
+		$.post(ajaxurl, data, function(new_layout_id) {
+			builder_blvd.update_layout_toggle(new_layout_id);
+			builder_blvd.change_layout(el, new_layout_id, true);
+		});
+		
+		return false;
+	});
+	
+	/*-----------------------------------------------------------------------------------*/
 	/* Manage Layouts Page
 	/*-----------------------------------------------------------------------------------*/
 	
 	// Edit layout (via Edit Link on manage page)
-	$('#builder_blvd #manage_layouts .edit-tb_layout').live( 'click', function(){
+	$(document).on('click', '#builder_blvd #manage_layouts .edit-tb_layout', function(){
 		var name = $(this).closest('tr').find('.post-title .title-link').text(),
 			id = $(this).attr('href'), 
 			id = id.replace('#', '');
@@ -233,14 +491,14 @@ jQuery(document).ready(function($) {
 	});
 	
 	// Delete layout (via Delete Link on manage page)
-	$('#builder_blvd .row-actions .trash a').live( 'click', function(){
+	$(document).on('click', '#builder_blvd .row-actions .trash a', function(){
 		var href = $(this).attr('href'), id = href.replace('#', ''), ids = 'posts%5B%5D='+id;
 		builder_blvd.delete_layout( ids, 'click' );
 		return false;
 	});
 	
 	// Delete layouts via bulk action
-	$('#manage_builder').live( 'submit', function(){
+	$(document).on('submit', '#manage_builder', function(){
 		var value = $(this).find('select[name="action"]').val(), ids = $(this).serialize();
 		if(value == 'trash')
 		{
@@ -261,13 +519,21 @@ jQuery(document).ready(function($) {
 		builder_blvd.add_layout( $(this) );
 	});
 	
+	$('#layout_sample').each( function(){
+		builder_blvd.sample_preview( $(this) );
+	});
+	
+	$('#layout_sample').change(function(){ 
+		builder_blvd.sample_preview( $(this) );
+	});
+	
 	// Add new layout
 	$('#optionsframework #add_new_builder').submit(function(){		
 		var el = $(this),
 			data = el.serialize(),
 			load = el.find('.ajax-loading'),
-			name = el.find('input[name="options[layout_name]"]').val(),
-			nonce = el.find('input[name="_wpnonce"]').val();
+			name = el.find('input[name="tb_new_layout[layout_name]"]').val(),
+			nonce = el.find('input[name="_tb_new_builder_nonce"]').val();
 		
 		// Tell user they forgot a name
 		if(!name)
@@ -315,7 +581,7 @@ jQuery(document).ready(function($) {
 	/*-----------------------------------------------------------------------------------*/
 	
 	// Add new element
-	$('#optionsframework #add_new_element').live( 'click', function(){
+	$(document).on('click', '#optionsframework #add_new_element', function(){
 		var el = $(this),
 			id,
 			trim_front,
@@ -379,21 +645,21 @@ jQuery(document).ready(function($) {
 				$('#builder_blvd #edit_layout #primary .sortable').removeClass('empty');
 				$('#'+element_id).themeblvd('widgets');
 				$('#'+element_id).themeblvd('options', 'setup');
+				$('#'+element_id).themeblvd('options', 'bind');
 				$('#'+element_id).fadeIn();									
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
-				
 			}
 		});
 		return false;
 	});
 	
 	// Save Layout
-	$('#optionsframework #edit_builder').live('submit', function(){
+	$(document).on('submit', '#optionsframework #edit_builder', function(){
 		var el = $(this),
 			data = el.serialize(),
 			load = el.find('.publishing-action .ajax-loading'),
-			nonce = el.find('input[name="_wpnonce"]').val(),
+			nonce = el.find('input[name="_tb_save_builder_nonce"]').val(),
 			current_name;
 			
 		$.ajax({
@@ -447,7 +713,7 @@ jQuery(document).ready(function($) {
 	});
 	
 	// Delete layout (via Delete Link on edit layout page)
-	$('#builder_blvd #edit_layout .delete_layout').live( 'click', function(){
+	$(document).on('click', '#builder_blvd #edit_layout .delete_layout', function(){
 		var href = $(this).attr('href'), id = href.replace('#', ''), ids = 'posts%5B%5D='+id;
 		builder_blvd.delete_layout( ids, 'click', 'edit_page' );
 		return false;

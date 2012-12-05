@@ -25,6 +25,8 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		add_action( 'wp_ajax_themeblvd_update_builder_table', array( $this, 'update_table' ) );
 		add_action( 'wp_ajax_themeblvd_delete_layout', array( $this, 'delete_layout' ) );
 		add_action( 'wp_ajax_themeblvd_edit_layout', array( $this, 'edit_layout' ) );
+		add_action( 'wp_ajax_themeblvd_mini_edit_layout', array( $this, 'mini_edit_layout' ) );
+		add_action( 'wp_ajax_themeblvd_layout_toggle', array( $this, 'layout_toggle' ) );
 		
 	}
 	
@@ -44,7 +46,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Setup arguments for new 'layout' post
 		$args = array(	
 			'post_type'			=> 'tb_layout', 
-			'post_title'		=> $config['options']['layout_name'],
+			'post_title'		=> $config['tb_new_layout']['layout_name'],
 			'post_status' 		=> 'publish',
 			'comment_status'	=> 'closed', 
 			'ping_status'		=> 'closed'
@@ -54,53 +56,99 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$post_id = wp_insert_post( $args );
 		
 		// Setup meta
-		if( $config['options']['layout_start'] ) {
-			// Configure meta for sample layout
-			$samples = themeblvd_get_sample_layouts();
-			$current_sample = $samples[$config['options']['layout_start']];
-			$elements = array(
-				'featured' => $current_sample['featured'],
-				'primary' => $current_sample['primary'],
-				'featured_below' => $current_sample['featured_below']
-			);
-			$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
-		} else {
-			// Configure meta for blank layout
-			$elements = array();
-			$settings = array( 'sidebar_layout' => $config['options']['layout_sidebar'] );
+		if( ! empty( $config['tb_new_layout']['layout_start'] ) ) {
+			
+			if( $config['tb_new_layout']['layout_start'] == 'layout' ){
+			
+				// Configure meta for pre-existing layout
+				$layout_id = $config['tb_new_layout']['layout_existing'];
+				$elements = get_post_meta( $layout_id, 'elements', true );
+				$settings = get_post_meta( $layout_id, 'settings', true );
+				
+			} else if( $config['tb_new_layout']['layout_start'] == 'sample' ){
+			
+				// Configure meta for sample layout
+				$samples = themeblvd_get_sample_layouts();
+				$current_sample = $samples[$config['tb_new_layout']['layout_sample']];
+				$elements = array(
+					'featured' => $current_sample['featured'],
+					'primary' => $current_sample['primary'],
+					'featured_below' => $current_sample['featured_below']
+				);
+				$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
+			
+			} else {
+				
+				// Configure meta for blank layout
+				$elements = array();
+				$settings = array( 'sidebar_layout' => $config['tb_new_layout']['layout_sidebar'] );
+			
+			}	
 		}
 	
 		// Update even if they're empty
 		update_post_meta( $post_id, 'elements', $elements );
 		update_post_meta( $post_id, 'settings', $settings );
 		
-		// Respond with edit page for the new layout and ID
-		echo $post_id.'[(=>)]';
-		$this->admin_page->edit_layout( $post_id );
-		
+		// Adjust response depending on where the creation 
+		// of the layout happenned.
+		if( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
+			// If this coming from the Builder, send back Post 
+			// ID and edit layout interface.
+			echo $post_id.'[(=>)]';
+			$this->admin_page->edit_layout( $post_id );
+		} else {
+			// If this is coming from the Edit Page meta box,
+			// send back post slug (i.e. layout ID).
+			$post = get_post( $post_id );
+			echo $post->post_name;
+		}
 		die();
 	}
 
 	/**
 	 * Save layout
 	 *
+	 * Note: In v1.1.0, this function was configured 
+	 * to be used from both an ajax process and when 
+	 * saving a WP page.
+	 *
 	 * @since 1.0.0
 	 */
 	public function save_layout() {
 		
-		// Make sure Satan isn't lurking
-		check_ajax_referer( 'themeblvd_save_builder', 'security' );
+		// Determine if this is an AJAX process or not.
+		$ajax = defined( 'DOING_AJAX' ) ? true : false;
 		
-		// Handle form data
-		parse_str( $_POST['data'], $data );
+		// Setup the data depending on whether this 
+		// is coming from an Ajax process or not.
+		if( $ajax ){
+		
+			// Make sure Satan isn't lurking
+			check_ajax_referer( 'themeblvd_save_builder', 'security' );
+			
+			// Handle form data
+			parse_str( $_POST['data'], $data );
+		
+		} else {
+			
+			// Setup data
+			$data = $_POST;
+			
+		}
+		
+		// Check to make sure we're coming from 
+		// the right place.
+		if( ! isset( $data['tb_layout_id'] ) )
+			return;
 		
 		// Layout ID
-		$layout_id = $data['layout_id'];
+		$layout_id = $data['tb_layout_id'];
 		
 		// Setup elements
 		$location = 'featured';
 		$elements = array();
-		if( isset( $data['elements'] ) ) {
+		if( isset( $data['tb_elements'] ) ) {
 	
 			// Get default element options
 			$default_element_options = $this->admin_page->elements;
@@ -110,12 +158,13 @@ class Theme_Blvd_Layout_Builder_Ajax {
 			// continue putting them into the 'primary' area, 
 			// and then when we hit divider_2, set location to 
 			// 'featured_below'.
-			foreach ( $data['elements'] as $id => $element ) {
+			foreach( $data['tb_elements'] as $id => $element ) {
+				// Featured area elements get assigned first.
 				if( $id == 'divider' ) {
-					// Now the primary area
+					// ... And now the primary area
 					$location = 'primary';
 				} else if( $id == 'divider_2' ) {
-					// And now the featured below area
+					// ... And now the featured below area
 					$location = 'featured_below';
 				} else {
 					
@@ -159,17 +208,19 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		}
 		
 		// Setup options	
-		if( isset( $data['options'] ) )
-			$options = $data['options'];
-		else
-			$options = null;
+		$options = isset( $data['tb_layout_options'] ) ? $options = $data['tb_layout_options'] : $options = null;
 		
 		// Update even if they're empty
 		update_post_meta( $layout_id, 'elements', $elements );
 		update_post_meta( $layout_id, 'settings', $options );
 		
+		// If this is not an ajax process, we're done here. 
+		// Move on, already. Get over it.
+		if( ! $ajax )
+			return;
+		
 		// Layout Information
-		if( isset( $data['info'] ) ) {
+		if( isset( $data['tb_layout_info'] ) ) {
 			
 			// Start post data to be updated with the ID
 			$post_atts = array(
@@ -273,6 +324,31 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$layout_id = $_POST['data'];
 		echo $layout_id.'[(=>)]';
 		$this->admin_page->edit_layout( $layout_id );
+		die();
+	}
+	
+	/**
+	 * Edit a layout from a meta box on 
+	 * Edit Page screen.
+	 *
+	 * @since 1.1.0 
+	 */
+	public function mini_edit_layout() {
+		// Security
+		check_ajax_referer( 'themeblvd_save_builder', 'security' );
+		// Send back interface to edit layout
+		$layout_id = themeblvd_post_id_by_name( $_POST['data'], 'tb_layout' );
+		$this->admin_page->mini_edit_layout( $layout_id );
+		die();
+	}
+	
+	/**
+	 * Send back updated layout toggle menu.
+	 *
+	 * @since 1.1.0 
+	 */
+	public function layout_toggle() {
+		echo $this->admin_page->layout_select( $_POST['data'] );
 		die();
 	}
 		
