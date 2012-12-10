@@ -373,6 +373,14 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list_slider' :
 				themeblvd_post_slider( $id, $element['options'], 'list', $location );
 				break;
+			
+			/*------------------------------------------------------*/
+			/* Post Slider (mimics standard slider)
+			/*------------------------------------------------------*/
+
+			case 'post_slider' :
+				themeblvd_slider_auto( $id, $element['options'] );
+				break;
 				
 			/*------------------------------------------------------*/
 			/* Slider

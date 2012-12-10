@@ -40,6 +40,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 = 1.1.0 =
 
 * Added Meta Box to apply and edit custom layouts directly from Edit page screen.
+* Added support for "Post Slider" when used with [Theme Blvd Sliders](http://wordpress.org/extend/plugins/theme-blvd-sliders) plugin.
 * Minor internal improvements to cut down on database queries.
 
 = 1.0.1 =
