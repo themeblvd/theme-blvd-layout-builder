@@ -127,7 +127,7 @@ add_action( 'after_setup_theme', 'themeblvd_builder_init' );
  */
 
 function themeblvd_builder_textdomain() {
-	load_plugin_textdomain( 'themeblvd_builder', false, TB_SIDEBARS_PLUGIN_DIR . '/lang' );
+	load_plugin_textdomain( 'themeblvd_builder', false, TB_BUILDER_PLUGIN_DIR . '/lang' );
 }
 add_action( 'plugins_loaded', 'themeblvd_builder_textdomain' );
 
