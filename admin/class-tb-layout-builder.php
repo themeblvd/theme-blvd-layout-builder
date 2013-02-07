@@ -728,7 +728,7 @@ class Theme_Blvd_Layout_Builder {
 					<?php
 					// Setup sidebar layouts
 					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
-					$sidebar_layouts = array();
+					$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
 					$layouts = themeblvd_sidebar_layouts();
 					foreach( $layouts as $layout )
 						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
