@@ -271,7 +271,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			$classes .= $element['type'];
 		if( isset( $element['options']['visibility'] ) )
 			$classes .= themeblvd_responsive_visibility_class( $element['options']['visibility'], true );
-		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'] );
+		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
 		
 		// Start ouput
 		do_action( 'themeblvd_element_'.$element['type'].'_before', $id, $element['options'], $location ); // Before element: themeblvd_element_{type}_before
