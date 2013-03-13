@@ -183,11 +183,11 @@ function themeblvd_builder_warning_2() {
  */
 
 function themeblvd_builder_homepage( $template ) {
-	
-	// If this is the homepage and the user has 
-	// selected to show a custom layout, redirect 
-	// index.php to template_builder.php
-	if( is_home() && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
+
+	// If this is the homepage (but NOT the "posts page") 
+	// and the user has selected to show a custom layout, 
+	// redirect index.php to template_builder.php
+	if( is_home() && ! get_option( 'page_for_posts' ) && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
 		$template = locate_template( 'template_builder.php' );
 			
 	return $template;
