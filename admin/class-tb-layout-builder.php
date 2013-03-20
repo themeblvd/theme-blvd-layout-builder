@@ -158,7 +158,7 @@ class Theme_Blvd_Layout_Builder {
 	function admin_page() {
 		?>
 		<div id="builder_blvd">
-			<div id="optionsframework" class="wrap">
+			<div id="optionsframework" class="wrap tb-options-js">
 				
 				<div class="admin-module-header">
 			    	<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
@@ -234,7 +234,7 @@ class Theme_Blvd_Layout_Builder {
 		$current_layout = get_post_meta( $post->ID, '_tb_custom_layout', true );
 		?>
 		<div id="builder_blvd">
-			<div id="optionsframework">
+			<div id="optionsframework" class="tb-options-js">
 				
 				<!-- HEADER (start) -->
 				
