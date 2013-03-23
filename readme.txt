@@ -43,6 +43,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Added support for "Post Slider" when used with [Theme Blvd Sliders](http://wordpress.org/extend/plugins/theme-blvd-sliders) plugin.
 * Minor internal improvements to cut down on database queries.
 * Added check so if user designates a "posts page" under Settings > Reading, the homepage custom layout option will not get applied (many people do this by accident).
+* Update requires Theme Blvd framework v2.2.1+.
 
 = 1.0.1 =
 
