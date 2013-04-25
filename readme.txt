@@ -39,6 +39,8 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 = 1.1.1 =
 
+* Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.2.2+).
+
 = 1.1.0 =
 
 * Added Meta Box to apply and edit custom layouts directly from Edit page screen.

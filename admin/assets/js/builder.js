@@ -188,6 +188,7 @@ jQuery(document).ready(function($) {
 			
 			// Setup options
 			$('#builder_blvd').themeblvd('options', 'setup');
+			$('#builder_blvd').themeblvd('options', 'media-uploader');
 			
 			// Take us to the tab
 			$('#builder_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
@@ -367,6 +368,7 @@ jQuery(document).ready(function($) {
 			
 			// Setup options
 			object.themeblvd('options', 'setup');
+			object.themeblvd('options', 'media-uploader');
 			
     	}
 	};
@@ -637,7 +639,7 @@ jQuery(document).ready(function($) {
 				load.fadeIn('fast');
 			},
 			success: function(response)
-			{	
+			{
 				trim_front = response.split('<div id="');
 				trim_back = trim_front[1].split('" class="widget element-options"');
 				element_id = trim_back[0];
@@ -646,6 +648,7 @@ jQuery(document).ready(function($) {
 				$('#'+element_id).themeblvd('widgets');
 				$('#'+element_id).themeblvd('options', 'setup');
 				$('#'+element_id).themeblvd('options', 'bind');
+				$('#'+element_id).themeblvd('options', 'media-uploader');
 				$('#'+element_id).fadeIn();									
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
