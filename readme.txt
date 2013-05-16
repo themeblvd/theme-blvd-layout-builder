@@ -39,7 +39,8 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 = 1.1.1 =
 
-* Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.2.2+).
+* Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).
+* Fixed issue of homepage layout not displaying after toggling WP Reading settings back and forth.
 
 = 1.1.0 =
 
