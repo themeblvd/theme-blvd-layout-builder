@@ -34,7 +34,8 @@ class Theme_Blvd_Layout_Builder {
 		$this->args = wp_parse_args( $args, $defaults );
 		
 		// Elements for builder
-		$this->elements = $elements ? $elements : themeblvd_get_elements();
+		$this->elements = $elements;
+		add_action( 'after_setup_theme', array( $this, 'set_elements' ), 1001 ); // After client API
 		
 		// Add Builder admin page
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
@@ -50,11 +51,21 @@ class Theme_Blvd_Layout_Builder {
 	}
 	
 	/**
+	 * Setup elements for builder after client has had a chance to use Builder API to modify elements.
+	 *
+	 * @since 1.0.0 
+	 */
+	public function set_elements() {
+		if( ! $this->elements )
+			$this->elements = themeblvd_get_elements();
+	}
+
+	/**
 	 * Add a menu page for Builder
 	 *
 	 * @since 1.0.0 
 	 */
-	function add_page() {
+	public function add_page() {
 		$admin_page = add_object_page( $this->args['page_title'], $this->args['menu_title'], $this->args['cap'], $this->id, array( $this, 'admin_page' ), $this->args['icon'], $this->args['priority'] );
 		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
 		add_action( 'admin_print_scripts-'.$admin_page, array( $this, 'load_scripts' ) );
@@ -65,7 +76,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.1.0 
 	 */
-	function add_meta_box() {
+	public function add_meta_box() {
 		
 		global $pagenow;
 		global $typenow;
@@ -100,7 +111,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.1.0 
 	 */
-	function save_meta_box() {
+	public function save_meta_box() {
 		
 		// Verify that this coming from the edit post page.
 		if( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' )
@@ -125,7 +136,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 */
-	function load_styles() {
+	public function load_styles() {
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
@@ -137,7 +148,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0 
 	 */
-	function load_scripts() {
+	public function load_scripts() {
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		if( function_exists( 'wp_enqueue_media' ) ) 
@@ -154,7 +165,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0 
 	 */
-	function admin_page() {
+	public function admin_page() {
 		?>
 		<div id="builder_blvd">
 			<div id="optionsframework" class="wrap tb-options-js">
@@ -228,7 +239,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.1.0
 	 */
-	function meta_box() {
+	public function meta_box() {
 		global $post;
 		$current_layout = get_post_meta( $post->ID, '_tb_custom_layout', true );
 		?>
@@ -779,7 +790,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @param string $current Current custom layout to be selected
 	 */
-	function layout_select( $current = '' ) {
+	public function layout_select( $current = '' ) {
 		$output = '';
 		$custom_layouts = get_posts('post_type=tb_layout&numberposts=-1');
 		if( ! empty( $custom_layouts ) ) {
