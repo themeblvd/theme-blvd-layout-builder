@@ -56,8 +56,10 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0 
 	 */
 	public function set_elements() {
-		if( ! $this->elements )
-			$this->elements = themeblvd_get_elements();
+		if( ! $this->elements ) {
+			$api = Theme_Blvd_Builder_API::get_instance();
+			$this->elements = $api->get_elements();
+		}
 	}
 
 	/**

@@ -50,11 +50,14 @@ function themeblvd_builder_init() {
 	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
 		add_action( 'admin_notices', 'themeblvd_builder_warning_2' );
 	}
-	
-	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
-	if( ! function_exists( 'themeblvd_disable_nag' ) ){
-		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
+
+	// If using framework version prior to v2.3, tell them API functions won't work.
+	if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
+		add_action( 'admin_notices', 'themeblvd_builder_warning_3' );
 	}
+	
+	// Hook in check for nag to dismiss.
+	add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
 	
 	// Frontend actions -- These work in conjuction with framework theme files, 
 	// header.php, template_builder.php, and footer.php
@@ -131,6 +134,24 @@ function themeblvd_builder_init() {
 add_action( 'after_setup_theme', 'themeblvd_builder_init' );
 
 /**
+ * Setup Layout Builder API
+ *
+ * @since 1.1.1
+ */
+function themeblvd_builder_api_init() {
+
+	// Include Theme_Blvd_Builder_API class.
+	include_once( TB_BUILDER_PLUGIN_DIR . '/api/class-tb-builder-api.php' );
+
+	// Instantiate single object for Builder API. 
+	// Helper functions are located within theme 
+	// framework.
+	Theme_Blvd_Builder_API::get_instance(); 
+
+}
+add_action( 'themeblvd_api', 'themeblvd_builder_api_init' );
+
+/**
  * Register text domain for localization.
  *
  * @since 1.0.0
@@ -184,6 +205,23 @@ function themeblvd_builder_warning_2() {
         echo '<div class="updated">';
         echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of the Theme Blvd Layout Builder, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_builder' ).'</p>';        
         echo '<p><a href="?tb_nag_ignore=tb_builder_warning_2">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
+        echo '</div>';
+    }
+}
+
+/**
+ * Display warning telling the user they should be using 
+ * theme with Theme Blvd framework v2.2.1+.
+ *
+ * @since 1.1.1
+ */
+
+function themeblvd_builder_warning_3() {
+	global $current_user;
+    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning_3' ) ) {
+        echo '<div class="updated">';
+        echo '<p>'.__( 'If you\'re using any Layout Builder API functions to <a href="http://dev.themeblvd.com/tutorial/add-remove-builder-elements/" target="_blank">modify elements</a> or <a href="http://dev.themeblvd.com/tutorial/add-remove-sample-layout/" target="_blank">modify sample layouts</a>, you need to update your current theme to its latest version, which will contain framework v2.3+, in order for these API functions to continue working properly.', 'themeblvd_builder' ).'</p>';        
+        echo '<p><a href="?tb_nag_ignore=tb_builder_warning_3">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
         echo '</div>';
     }
 }
@@ -266,6 +304,8 @@ function themeblvd_modify_customizer_homepage( $sections ) {
  
 function themeblvd_builder_elements( $layout_id, $location ) {
 	
+	$api = Theme_Blvd_Builder_API::get_instance();
+
 	// Setup
 	$counter = 0;
 	$primary_query = false;
@@ -291,7 +331,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 	foreach( $elements as $id => $element ) {
 		
 		// Skip element if its type isn't registered
-		if( ! themeblvd_is_element( $element['type'] ) )
+		if( ! $api->is_element( $element['type'] ) )
 			continue;
 		
 		// Increase counter

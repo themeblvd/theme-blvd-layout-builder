@@ -42,6 +42,8 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).
 * Added support for Theme Blvd framework v2.3's Builder API modifications.
 * Fixed issue of homepage layout not displaying after toggling WP Reading settings back and forth.
+* Deprecated setting homepage layout over your "posts page" from Theme Options. Should now set layout to static frontpage if using Theme Blvd framework v2.3+.
+* Optimized API functionality and moved to plugin from framework.
 
 = 1.1.0 =
 
