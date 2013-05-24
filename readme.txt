@@ -45,6 +45,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Deprecated setting homepage layout over your "posts page" from Theme Options. Should now set layout to static frontpage if using Theme Blvd framework v2.3+.
 * Improved Builder API functionality and moved to plugin.
 * Fixed bug with creating a new layout from Edit Page meta box when no current layout is selected.
+* Some minor admin javascript improvements.
 
 = 1.1.0 =
 

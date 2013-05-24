@@ -43,6 +43,10 @@ class Theme_Blvd_Layout_Builder {
 		// Add Custom Layouts meta box
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_meta_box' ) );
+
+		// Filter on javascript locals specifically for Builder onto 
+		// Theme Blvd framework locals.
+		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 		
 		// Add ajax functionality to slider admin page
 		include_once( TB_BUILDER_PLUGIN_DIR . '/admin/class-tb-layout-builder-ajax.php' );
@@ -155,16 +159,43 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0
 	 */
 	public function load_scripts() {
+		
+		global $pagenow;
+
+		// WP-packaged scripts
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'postbox' );
 		if( function_exists( 'wp_enqueue_media' ) ) 
 			wp_enqueue_media();
+		
+		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
 		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		
+		// Add JS locals. Not needed for Edit Page screen, already exists.
+		if( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
+			wp_localize_script( 'themeblvd_builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+
+	}
+
+	/**
+	 * Add javascript locals for Builder onto framework js 
+	 * locals that are already established.
+	 *
+	 * @since 1.1.1
+	 */
+	public function add_js_locals( $current ) {
+		$new = array(
+			'edit_layout'			=> __( 'Edit Layout', 'themeblvd_builder' ),
+			'delete_layout'			=> __( 'Are you sure you want to delete the layout(s)?', 'themeblvd_builder' ),
+			'layout_created'		=> __( 'Layout created!', 'themeblvd_builder' ),
+			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'themeblvd_builder' )
+		);
+		return array_merge($current, $new);
 	}
 
 	/**
