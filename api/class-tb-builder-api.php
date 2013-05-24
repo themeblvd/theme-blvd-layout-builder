@@ -1,6 +1,10 @@
 <?php
 /**
  * Theme Blvd Layout Builder API
+ *
+ * This sets up the default Builder elements and sample 
+ * layouts. Also, this class adds and API to add/remove 
+ * these elements and sample layouts.
  * 
  * @author		Jason Bobich
  * @copyright	Copyright (c) Jason Bobich
@@ -17,7 +21,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * A single instance of this class.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private static $instance = null;
 
@@ -26,7 +30,7 @@ class Theme_Blvd_Builder_API {
 	 * API moves along. Can be accesed from admin or 
 	 * frontend.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $registered_elements = array();
 
@@ -34,7 +38,7 @@ class Theme_Blvd_Builder_API {
 	 * Core framework builder elements and settings.
 	 * WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $core_elements = array();
 
@@ -42,7 +46,7 @@ class Theme_Blvd_Builder_API {
 	 * Elements and settings added through client API 
 	 * mutators. WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $client_elements = array();
 
@@ -50,7 +54,7 @@ class Theme_Blvd_Builder_API {
 	 * Elements to remove from Layout Builder. 
 	 * WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $remove_elements = array();
 
@@ -58,14 +62,14 @@ class Theme_Blvd_Builder_API {
 	 * Final array of elements and settings. This combines 
 	 * $core_elements and $client_elements. WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $elements = array();
 
 	/**
 	 * Core framework sample layouts. WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $core_layouts = array();
 
@@ -73,7 +77,7 @@ class Theme_Blvd_Builder_API {
 	 * Sample layouts added through client API mutators.
 	 * WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $client_layouts = array();
 
@@ -81,7 +85,7 @@ class Theme_Blvd_Builder_API {
 	 * Sample layouts to remove from Layout Builder. 
 	 * WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $remove_layouts = array();
 
@@ -89,7 +93,7 @@ class Theme_Blvd_Builder_API {
 	 * Final array of sample layouts. This combines 
 	 * $core_layouts and $client_layouts. WP-Admin only.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private $layouts = array();
 
@@ -100,7 +104,7 @@ class Theme_Blvd_Builder_API {
 	/**
      * Creates or returns an instance of this class.
      *
-     * @since 2.3.0
+     * @since 1.1.1
      *
      * @return Theme_Blvd_Builder_API A single instance of this class.
      */
@@ -115,9 +119,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Constructor. Hook everything in.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
-	public function __construct() {
+	private function __construct() {
 		
 		// Setup registered elements reference for frontend and 
 		// admin. This allows us to keep track of elements without 
@@ -150,7 +154,7 @@ class Theme_Blvd_Builder_API {
 	 * along, this will be modified, allowing elements to be 
 	 * registered or de-registered.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private function set_registered_elements() {
 		$this->registered_elements = array(
@@ -175,7 +179,7 @@ class Theme_Blvd_Builder_API {
 	 * Set original core elements. These will be later merged 
 	 * with API client-added elements. WP-Admin only, see constructer.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private function set_core_elements() {
 
@@ -1931,7 +1935,7 @@ class Theme_Blvd_Builder_API {
 	 * be removed. This happens at the "after_setup_theme" hook 
 	 * with a priority of 1000.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	public function set_elements() {
 
@@ -1956,7 +1960,7 @@ class Theme_Blvd_Builder_API {
 	 * Set original core layouts. These will be later merged 
 	 * with API client-added elements. WP-Admin only, see constructer.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	private function set_core_layouts() {
 
@@ -2596,7 +2600,7 @@ class Theme_Blvd_Builder_API {
 	 * be removed. This happens at the "after_setup_theme" hook 
 	 * with a priority of 1000.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 */
 	public function set_layouts() {
 
@@ -2681,9 +2685,47 @@ class Theme_Blvd_Builder_API {
 	/*--------------------------------------------*/
 
 	/**
+	 * Manually register an element. 
+	 *
+	 * Note: This won't be used in most cases, as registration 
+	 * of elements is taken care of automatically when adding 
+	 * and removing.
+	 *
+	 * @since 1.1.1
+	 *
+	 * @param string $id ID of element to register
+	 */
+	public function register_element( $id ) {
+		$this->registered_elements[] = $id;
+	}
+
+	/**
+	 * Manually de-register an element. 
+	 *
+	 * Note: This won't be used in most cases, as registration 
+	 * of elements is taken care of automatically when adding 
+	 * and removing.
+	 *
+	 * @since 1.1.1
+	 *
+	 * @param string $id ID of element to register
+	 */
+	public function de_register_element( $id ) {
+		
+		if( ! $this->registered_elements )
+			return;
+		
+		foreach( $this->registered_elements as $key => $element ) {
+			if( $id == $element )
+				unset( $this->registered_elements[$key] );
+		}
+		
+	}
+
+	/**
 	 * Add element to Builder.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 *
 	 * @param string $element_id ID of element to add
 	 * @param string $element_name Name of element to add
@@ -2719,7 +2761,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Remove element from Builder.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 *
 	 * @param string $element_id ID of element to remove
 	 */
@@ -2756,7 +2798,7 @@ class Theme_Blvd_Builder_API {
 	 *		)
 	 * );
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 *
 	 * @param string $layout_id ID of sample layout to add
 	 * @param string $layout_name Name of sample layout to add
@@ -2782,7 +2824,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Remove sample layout from Builder.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 *
 	 * @param string $layout_id ID of sample layout to remove
 	 */
@@ -2802,7 +2844,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get registered elements.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $registered_elements
 	 */
 	public function get_registered_elements() {
 		return $this->registered_elements;
@@ -2811,7 +2855,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get core elements and options.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $core_elements
 	 */
 	public function get_core_elements() {
 		return $this->core_elements;
@@ -2820,7 +2866,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get client API-added elements and options.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $client_elements
 	 */
 	public function get_client_elements() {
 		return $this->client_elements;
@@ -2831,7 +2879,9 @@ class Theme_Blvd_Builder_API {
 	 * core elements and client API-added elements. This 
 	 * is available after WP's "after_setup_theme" hook. 
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $elements
 	 */
 	public function get_elements() {
 		return $this->elements;
@@ -2840,7 +2890,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get core sample layouts.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $core_layouts
 	 */
 	public function get_core_layouts() {
 		return $this->core_layouts;
@@ -2849,7 +2901,9 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get client API-added sample layouts.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $client_layouts
 	 */
 	public function get_client_layouts() {
 		return $this->client_layouts;
@@ -2860,7 +2914,9 @@ class Theme_Blvd_Builder_API {
 	 * of core layouts and client API-added layouts. This 
 	 * is available after WP's "after_setup_theme" hook.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
+	 *
+	 * @return array $layouts
 	 */
 	public function get_layouts() {
 		return $this->layouts;
@@ -2873,7 +2929,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Check if an elements is currently registered.
 	 *
-	 * @since 2.3.0
+	 * @since 1.1.1
 	 *
 	 * @param string $element_id ID of element to check
 	 * @return bool Whether or not the element is registerd
@@ -2885,4 +2941,5 @@ class Theme_Blvd_Builder_API {
 
 		return false;
 	}
-}
+
+} // End class Theme_Blvd_Builder_API
