@@ -133,6 +133,14 @@
 #builder_blvd #optionsframework .inner-sidebar .section-radio .heading { 
 	margin-bottom: 12px;
 }
+#builder_blvd .postbox.postbox-publish.closed h3 { /* Hack to preserve the publish box's open state when clicked */
+	border-bottom: 1px solid #dfdfdf;
+	-webkit-box-shadow: 0 1px 0 #ffffff;
+	box-shadow: 0 1px 0 #ffffff;
+}
+#builder_blvd .postbox.hide .tb-widget-content {
+	display: none;
+}
 
 /* =Meta Box (for Edit Page screen)
 ----------------------------------------------- */

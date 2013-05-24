@@ -93,8 +93,10 @@ class Theme_Blvd_Layout_Builder {
 		));
 		
 		if( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
+			
 			// Include assets
 			foreach( $args['post_type'] as $post_type ){
+			
 				// Include assets
 				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
@@ -102,8 +104,10 @@ class Theme_Blvd_Layout_Builder {
 					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
 					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
 				}
+			
 				// Add meta box
 				add_meta_box( $args['id'], $args['name'], $args['callback'], $post_type, $args['context'], $args['priority'] );		
+			
 			}
 		}
 	}
@@ -148,11 +152,12 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Loads the javascript
 	 *
-	 * @since 1.0.0 
+	 * @since 1.0.0
 	 */
 	public function load_scripts() {
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'postbox' );
 		if( function_exists( 'wp_enqueue_media' ) ) 
 			wp_enqueue_media();
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
@@ -505,7 +510,7 @@ class Theme_Blvd_Layout_Builder {
 		<input type="hidden" name="tb_layout_id" value="<?php echo $id; ?>" />
 		<div id="poststuff" class="metabox-holder full-width has-right-sidebar">
 			<div class="inner-sidebar">
-				<div class="postbox postbox-publish">
+				<div id="layout-publish" class="postbox postbox-publish">
 					<h3 class="hndle"><?php _e( 'Publish', 'themeblvd_builder' ); ?> <?php echo stripslashes($layout->post_title); ?></h3>
 					<div class="submitbox">
 						<div id="major-publishing-actions">
@@ -520,58 +525,65 @@ class Theme_Blvd_Layout_Builder {
 						</div>
 					</div><!-- .submitbox (end) -->
 				</div><!-- .post-box (end) -->
-				<div class="postbox postbox-layout-info">
+				<div id="layout-info" class="postbox postbox-layout-info closed">
+					<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
 					<h3 class="hndle"><?php _e('Layout Information', 'themeblvd_builder' ); ?></h3>
-					<?php
-					// Current settings
-					$info_settings = array(
-						'post_title' 	=> $layout->post_title,
-						'post_name'		=> $layout->post_name
-					);
-					
-					// Setup attribute options
-					$info_options = array( 
-						array( 
-							'name'		=> __('Layout Name', 'themeblvd_builder' ),
-							'id' 		=> 'post_title',
-							'desc'		=> __('This title is just for you. It\'ll never be used outside of your WordPress admin panel.', 'themeblvd_builder'),
-							'type' 		=> 'text'
-						),
-						array( 
-							'name' 		=> __('Layout ID', 'themeblvd_builder' ),
-							'id' 		=> 'post_name',
-							'desc'		=> __( 'Custom layouts are assigned based on this ID. So if you change this at any point, make sure to also update any pages or options in which you\'ve assigned this specific layout.', 'themeblvd_builder' ),
-							'type' 		=> 'text'
-						)
-					);
-	
-					// Display form element
-					$form = themeblvd_option_fields( 'tb_layout_info', $info_options, $info_settings, false );
-					echo $form[0]; 
-					?>
+					<div class="tb-widget-content hide">
+						<?php
+						// Current settings
+						$info_settings = array(
+							'post_title' 	=> $layout->post_title,
+							'post_name'		=> $layout->post_name
+						);
+						
+						// Setup attribute options
+						$info_options = array( 
+							array( 
+								'name'		=> __('Layout Name', 'themeblvd_builder' ),
+								'id' 		=> 'post_title',
+								'desc'		=> __('This title is just for you. It\'ll never be used outside of your WordPress admin panel.', 'themeblvd_builder'),
+								'type' 		=> 'text'
+							),
+							array( 
+								'name' 		=> __('Layout ID', 'themeblvd_builder' ),
+								'id' 		=> 'post_name',
+								'desc'		=> __( 'Custom layouts are assigned based on this ID. So if you change this at any point, make sure to also update any pages or options in which you\'ve assigned this specific layout.', 'themeblvd_builder' ),
+								'type' 		=> 'text'
+							)
+						);
+		
+						// Display form element
+						$form = themeblvd_option_fields( 'tb_layout_info', $info_options, $info_settings, false );
+						echo $form[0]; 
+						?>
+					</div><!-- .tb-widget-content (end) -->
 				</div><!-- .post-box (end) -->
-				<div class="postbox postbox-sidebar-layout">
+				<div id="layout-options" class="postbox postbox-sidebar-layout closed">
+					<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
 					<h3 class="hndle"><?php _e('Sidebar Layout', 'themeblvd_builder' ); ?></h3>
-					<?php
-					// Setup sidebar layouts
-					$layouts = themeblvd_sidebar_layouts();
-					$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
-					foreach( $layouts as $layout )
-						$sidebar_layouts[$layout['id']] = $layout['name'];
-					
-					$options = array( 
-						array( 
-							'id' 		=> 'sidebar_layout',
-							'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
-							'type' 		=> 'select',
-							'options' 	=> $sidebar_layouts
-						)
-					);
-	
-					// Display form element
-					$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
-					echo $form[0]; 
-					?>
+					<div class="tb-widget-content hide">	
+						<?php
+						// Setup sidebar layouts
+						$layouts = themeblvd_sidebar_layouts();
+						$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
+						
+						foreach( $layouts as $layout )
+							$sidebar_layouts[$layout['id']] = $layout['name'];
+						
+						$options = array( 
+							array( 
+								'id' 		=> 'sidebar_layout',
+								'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+								'type' 		=> 'select',
+								'options' 	=> $sidebar_layouts
+							)
+						);
+		
+						// Display form element
+						$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
+						echo $form[0]; 
+						?>
+					</div><!-- .tb-widget-content (end) -->
 				</div><!-- .post-box (end) -->
 			</div><!-- .inner-sidebar (end) -->
 			<div id="post-body">

@@ -176,6 +176,13 @@ jQuery(document).ready(function($) {
 				handle: '.widget-name',
 				connectWith: '.sortable'
 			});
+
+			// Enable WP's post box toggles
+			// requires: wp_enqueue_script('postbox');
+			postboxes.add_postbox_toggles(pagenow, { 
+				pbshow: builder_blvd.show_widget,
+				pbhide: builder_blvd.hide_widget 
+			});
 			
 			// Sortable binded events
 			$('.sortable').bind( 'sortreceive', function(event, ui) {
@@ -196,6 +203,22 @@ jQuery(document).ready(function($) {
 			$('#builder_blvd .group').hide();
 			$('#builder_blvd .group:last').fadeIn();
 			
+    	},
+
+    	// These methods are passed into WP's postboxes.add_postbox_toggles 
+    	// as the pbshow and bphide parameters. They allow the widgets to
+    	// be toggled open and close.
+    	hide_widget : function( id )
+    	{
+    		// Don't apply to Publish box
+    		if( $('#'+id).hasClass('postbox-publish') )
+    			return;
+
+    		$('#'+id+' .tb-widget-content').hide();
+    	},
+    	show_widget : function( id )
+    	{
+    		$('#'+id+' .tb-widget-content').show();
     	},
     	
     	// Retrieve interface to edit a layout from 
