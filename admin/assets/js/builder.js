@@ -255,6 +255,7 @@ jQuery(document).ready(function($) {
     	// Change layouts when in the meta box on Edit Page screen.
     	change_layout : function ( object, new_layout_id, new_layout_created )
     	{
+
     		// If this is coming from the creation of a new layout, 
 			// then we should already have the new layout ID, but 
 			// if not we need to collect it.
@@ -317,9 +318,9 @@ jQuery(document).ready(function($) {
 				parent.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
 				parent.find('#edit_layout').prepend('<div class="ajax-overlay-layout-switch"></div>');
 				parent.find('#edit_layout .ajax-overlay-layout-switch').fadeIn('fast');
-				
+
 				// No previous layout, so we don't need to ask the user if they want to save it.
-				builder_blvd.mini_edit( new_layout_id, nonce, parent );
+				builder_blvd.mini_edit( new_layout_id, nonce, parent, new_layout_created );
 			}
     	},
     	
@@ -340,7 +341,7 @@ jQuery(document).ready(function($) {
     	// builder.
     	confirm_new_layout : function ()
     	{
-    		
+    	
     		var meta_box = $('#tb_builder');
     		
     		// Hide loader

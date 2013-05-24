@@ -44,6 +44,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Fixed issue of homepage layout not displaying after toggling WP Reading settings back and forth.
 * Deprecated setting homepage layout over your "posts page" from Theme Options. Should now set layout to static frontpage if using Theme Blvd framework v2.3+.
 * Improved Builder API functionality and moved to plugin.
+* Fixed bug with creating a new layout from Edit Page meta box when no current layout is selected.
 
 = 1.1.0 =
 
@@ -59,4 +60,4 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 = 1.0.0 =
 
-* This is the first release.release.
+* This is the first release.
