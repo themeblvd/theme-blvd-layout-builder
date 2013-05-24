@@ -34,7 +34,7 @@ class Theme_Blvd_Layout_Builder {
 		$this->args = wp_parse_args( $args, $defaults );
 		
 		// Elements for builder
-		$this->elements = $elements;
+		$this->elements = $elements; // If elements passed in
 		add_action( 'after_setup_theme', array( $this, 'set_elements' ), 1001 ); // After client API
 		
 		// Add Builder admin page
@@ -496,6 +496,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @param $id string ID of layout to edit
 	 */
 	public function edit_layout( $id ) {
+		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->elements; // Elements that can be used in Builder, and NOT elements saved to current layout
 		$layout = get_post($id);
 		$layout_elements = get_post_meta( $id, 'elements', true );
@@ -580,8 +581,11 @@ class Theme_Blvd_Layout_Builder {
 						<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
 						<select>
 						<?php
-						foreach( $elements as $element )
-							echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+						foreach( $elements as $element ) {
+							if( $api->is_element( $element['info']['id'] ) ) {
+								echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+							}
+						}
 						?>
 						</select>
 						<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add New Element', 'themeblvd_builder' ); ?></a>
@@ -595,7 +599,7 @@ class Theme_Blvd_Layout_Builder {
 								<?php
 								if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
 									foreach( $layout_elements['featured'] as $id => $element ) {
-										if( $this->is_element( $element['type'] ) ) {
+										if( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -610,7 +614,7 @@ class Theme_Blvd_Layout_Builder {
 								<?php
 								if( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
 									foreach( $layout_elements['primary'] as $id => $element ) {
-										if( $this->is_element( $element['type'] ) ) {
+										if( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -625,7 +629,7 @@ class Theme_Blvd_Layout_Builder {
 								<?php
 								if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
 									foreach( $layout_elements['featured_below'] as $id => $element ) {
-										if( $this->is_element( $element['type'] ) ) {
+										if( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -649,19 +653,25 @@ class Theme_Blvd_Layout_Builder {
 	 * @param $id string ID of layout to edit
 	 */
 	public function mini_edit_layout( $id ) {
+		
+		$api = Theme_Blvd_Builder_API::get_instance();
+
 		// If no layout (i.e. User selected "none" or one hasn't been chosen yet)
 		if( ! $id ){
 			echo '<p class="warning">'.__('Select a layout to apply and edit it, or create a new one.', 'themeblvd_builder').'</p>';
 			return;	
 		}
+		
 		// Get custom layout post
 		$elements = $this->elements;
 		$layout = get_post($id);
+		
 		// Check if valid layout
 		if( ! $layout ){
 			echo '<p class="warning">'.__('The layout currently selected no longer exists. Select a different layout to edit, or create a new one.', 'themeblvd_builder').'</p>';
 			return;	
 		}
+
 		// Grab elements and settings for the layout we're editing
 		$layout_elements = get_post_meta( $id, 'elements', true );
 		$layout_settings = get_post_meta( $id, 'settings', true );
@@ -690,7 +700,7 @@ class Theme_Blvd_Layout_Builder {
 							<?php
 							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
 								foreach( $layout_elements['featured'] as $id => $element ) {
-									if( $this->is_element( $element['type'] ) ) {
+									if( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -705,7 +715,7 @@ class Theme_Blvd_Layout_Builder {
 							<?php
 							if( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
 								foreach( $layout_elements['primary'] as $id => $element ) {
-									if( $this->is_element( $element['type'] ) ) {
+									if( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -720,7 +730,7 @@ class Theme_Blvd_Layout_Builder {
 							<?php
 							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
 								foreach( $layout_elements['featured_below'] as $id => $element ) {
-									if( $this->is_element( $element['type'] ) ) {
+									if( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -771,21 +781,6 @@ class Theme_Blvd_Layout_Builder {
 	}
 	
 	/**
-	 * Check if element is currently registered.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $element_id ID of element type to check for
-	 * @return boolean $exists If element exists or not
-	 */
-	public function is_element( $element_id ) {		
-		$exists = false;
-		if( array_key_exists ( $element_id, $this->elements ) )
-			$exists = true;
-		return $exists;
-	}
-	
-	/**
 	 * Builds a select menu of current custom layouts.
 	 *
 	 * @since 1.1.0 
@@ -793,19 +788,32 @@ class Theme_Blvd_Layout_Builder {
 	 * @param string $current Current custom layout to be selected
 	 */
 	public function layout_select( $current = '' ) {
+		
 		$output = '';
-		$custom_layouts = get_posts('post_type=tb_layout&numberposts=-1');
+		
+		$args = array(
+			'post_type'		=> 'tb_layout',
+			'order'			=> 'ASC',
+			'orderby'		=> 'title',
+			'numberposts'	=> -1
+		);
+		$custom_layouts = get_posts($args);
+		
 		if( ! empty( $custom_layouts ) ) {
+			
 			$output .= '<div class="tb-fancy-select">';
 			$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
 			$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
+			
 			foreach( $custom_layouts as $custom_layout ) {
 				$output .= '<option value="'.$custom_layout->post_name.'" '.selected( $custom_layout->post_name, $current, false ).'>'.$custom_layout->post_title.'</option>';
 			}
+			
 			$output .= '</select>';
 			$output .= '<span class="trigger"></span>';
 			$output .= '<span class="textbox"></span>';
 			$output .= '</div><!-- .tb-fancy-select (end) -->';
+		
 		}
 		return $output;
 	}
