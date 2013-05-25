@@ -68,7 +68,7 @@ function themeblvd_builder_init() {
 	// Get custom layouts
 	$custom_layouts = array();
 	if( is_admin() ) {
-		$custom_layout_posts = get_posts('post_type=tb_layout&numberposts=-1');
+		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
 		if( ! empty( $custom_layout_posts ) ) {
 			foreach( $custom_layout_posts as $layout )
 				$custom_layouts[$layout->post_name] = $layout->post_title;
@@ -76,41 +76,31 @@ function themeblvd_builder_init() {
 			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
 		}
 	}
-	
+
 	// Add option to theme options page allowing user to 
-	// select custom layout for their homepage. --
-	// NOTE: This process is @deprecated. In phasing it out, 
-	// the option is only present if the user is using it 
-	// or forced in with the below filter.
-	if( themeblvd_builder_legacy_home_options() ) {
-		
-		$desc = null;
-		if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '>=' ) )
-			$desc = __('<p>WARNING: You are currently using an out-dated method of applying your homepage layout. To use a custom layout as your homepage, apply it to a <a href="edit.php?post_type=page">static page</a> and set that page as your frontpage under <a href="options-reading.php">Settings > Reading > Front page displays</a>.</p><p>Note that after saving the "Homepage Content" option below to "Posts," this option section will become unavailable, this warning will be gone, and the universe will be restored once again.</p>', 'themeblvd_builder');
-		
-		$options = array(
-			'homepage_content' => array( 
-				'name' 		=> __( 'Homepage Content', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'themeblvd_builder' ),
-				'id' 		=> 'homepage_content',
-				'std' 		=> 'posts',
-				'type' 		=> 'radio',
-				'options' 	=> array(
-					'posts'			=> __( 'Posts', 'themeblvd_builder' ),
-					'custom_layout' => __( 'Custom Layout', 'themeblvd_builder' )
-				)
-			),
-			'homepage_custom_layout' => array( 
-				'name' 		=> __( 'Select Custom Layout', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select from the custom layouts you\'ve built under the <a href="admin.php?page=themeblvd_builder">Builder</a> section.', 'themeblvd_builder' ),
-				'id' 		=> 'homepage_custom_layout',
-				'std' 		=> '',
-				'type' 		=> 'select',
-				'options' 	=> $custom_layouts
+	// select custom layout for their homepage.
+	$options = array(
+		'homepage_content' => array( 
+			'name' 		=> __( 'Homepage Content', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'themeblvd_builder' ),
+			'id' 		=> 'homepage_content',
+			'std' 		=> 'posts',
+			'type' 		=> 'radio',
+			'options' 	=> array(
+				'posts'			=> __( 'Posts', 'themeblvd_builder' ),
+				'custom_layout' => __( 'Custom Layout', 'themeblvd_builder' )
 			)
-		);
-		themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'themeblvd_builder' ), $desc, $options, true );
-	}
+		),
+		'homepage_custom_layout' => array( 
+			'name' 		=> __( 'Select Custom Layout', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select from the custom layouts you\'ve built under the <a href="admin.php?page=themeblvd_builder">Builder</a> section.', 'themeblvd_builder' ),
+			'id' 		=> 'homepage_custom_layout',
+			'std' 		=> '',
+			'type' 		=> 'select',
+			'options' 	=> $custom_layouts
+		)
+	);
+	themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'themeblvd_builder' ), null, $options, true );
 
 	// Filter homepage content according to options section 
 	// we added above.
@@ -227,29 +217,6 @@ function themeblvd_builder_warning_3() {
 }
 
 /**
- * Determine if the options should show to apply a 
- * custom layout to the home "posts page".
- *
- * @since 1.1.1
- */
-
-function themeblvd_builder_legacy_home_options() {
-
-	if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) )
-		return true;
-
-	if( apply_filters( 'themeblvd_builder_force_home_options', false ) )
-		return true;
-
-	$settings = get_option( themeblvd_get_option_name() );
-	if( isset( $settings['homepage_content'] ) && $settings['homepage_content'] == 'custom_layout' )
-		return true;
-
-	return false;
-}
-
-
-/**
  * Redirect homepage to index.php to the custom 
  * layout template if option is set. This is 
  * filtered to template_include.
@@ -259,16 +226,10 @@ function themeblvd_builder_legacy_home_options() {
 
 function themeblvd_builder_homepage( $template ) {
 
-	// @todo -- This method of applying a homepage layout 
-	// is @deprecated. In the future, as we phase this out, 
-	// we can output a message on the frontend, telling the 
-	// user to apply layout to a static frontpage. For now, 
-	// we'll just let it work.
-
 	// If this is the homepage (but NOT the "posts page") 
 	// and the user has selected to show a custom layout, 
 	// redirect index.php to template_builder.php
-	if( is_home() && get_option('show_on_front') == 'posts' && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
+	if( is_home() && 'posts' == get_option('show_on_front') && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
 		$template = locate_template( 'template_builder.php' );
 			
 	return $template;
