@@ -914,6 +914,108 @@ class Theme_Blvd_Builder_API {
 			),
 			'thumbs' => array(
 				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array( 
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				) 
+			),
+			'posts_per_page' => array(
+		    	'id' 		=> 'posts_per_page',
+				'name'		=> __( 'Posts per page', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of posts <strong>per page</strong> you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '6'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				)
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				)
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Posts per page, Orderby, and Order</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			),
+		    'visibility' => array(
+		    	'id' 		=> 'visibility',
+				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.<br><br><em>Example: Hide an element on tablets and mobile devices & then create a second element that\'s hidden only on standard screen resolutions to take its place.</em>', 'themeblvd_builder' ),
+				'type'		=> 'multicheck',
+				'options'	=> array(
+					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
+					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
+					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* (9) Post List
+		/*--------------------------------------------*/
+
+		$this->core_elements['post_list'] = array();
+
+		// Information
+		$this->core_elements['post_list']['info'] = array(
+			'name'		=> __( 'Post List', 'themeblvd_builder' ),
+			'id'		=> 'post_list',
+			'query'		=> 'secondary',
+			'hook'		=> 'themeblvd_post_list',
+			'shortcode'	=> '[post_list]',
+			'desc'		=> __( 'List of posts followed by optional link', 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['post_list']['options'] = array(
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck
+			),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
 				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
 				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
 				'std' 		=> 'default',
@@ -1024,108 +1126,6 @@ class Theme_Blvd_Builder_API {
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
 		    ),
-		    'visibility' => array(
-		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.<br><br><em>Example: Hide an element on tablets and mobile devices & then create a second element that\'s hidden only on standard screen resolutions to take its place.</em>', 'themeblvd_builder' ),
-				'type'		=> 'multicheck',
-				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
-				)
-			)
-		);
-
-		/*--------------------------------------------*/
-		/* (9) Post List
-		/*--------------------------------------------*/
-
-		$this->core_elements['post_list'] = array();
-
-		// Information
-		$this->core_elements['post_list']['info'] = array(
-			'name'		=> __( 'Post List', 'themeblvd_builder' ),
-			'id'		=> 'post_list',
-			'query'		=> 'secondary',
-			'hook'		=> 'themeblvd_post_list',
-			'shortcode'	=> '[post_list]',
-			'desc'		=> __( 'List of posts followed by optional link', 'themeblvd_builder' )
-		);
-
-		// Options
-		$this->core_elements['post_list']['options'] = array(
-			'categories' => array(
-		    	'id' 		=> 'categories',
-				'name'		=> __( 'Categories', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
-				'std'		=> array( 'all' => 1 ),
-				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
-			),
-			'thumbs' => array(
-				'id' 		=> 'thumbs',
-				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
-					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
-					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
-				)
-			),
-			'content' => array( 
-				'id' 		=> 'content',
-				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
-					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				) 
-			),
-			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
-				'name'		=> __( 'Posts per page', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the number of posts <strong>per page</strong> you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> '6'
-			),
-			'orderby' => array(
-		    	'id' 		=> 'orderby',
-				'name'		=> __( 'Order By', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'date',
-				'options'	=> array(
-			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
-			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
-			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
-			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
-			),
-			'order' => array(
-		    	'id' 		=> 'order',
-				'name'		=> __( 'Order', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'DESC',
-				'options'	=> array(
-			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
-			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
-			),
-			'query' => array(
-		    	'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Posts per page, Orderby, and Order</em>', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> ''
-			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
 				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
