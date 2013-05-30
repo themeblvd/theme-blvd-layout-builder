@@ -43,6 +43,7 @@ function themeblvd_builder_init() {
 	// Check to make sure Theme Blvd Framework 2.2+ is running
 	if( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
 		add_action( 'admin_notices', 'themeblvd_builder_warning' );
+		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
 		return;
 	}
 	
