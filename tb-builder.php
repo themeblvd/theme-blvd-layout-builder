@@ -59,6 +59,9 @@ function themeblvd_builder_init() {
 	
 	// Hook in check for nag to dismiss.
 	add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
+
+	// Register custom layout hidden post type
+	add_action( 'init', 'themeblvd_builder_register_post_type' );
 	
 	// Frontend actions -- These work in conjuction with framework theme files, 
 	// header.php, template_builder.php, and footer.php
@@ -127,7 +130,7 @@ add_action( 'after_setup_theme', 'themeblvd_builder_init' );
 /**
  * Setup Layout Builder API
  *
- * @since 1.1.1
+ * @since 1.2.0
  */
 function themeblvd_builder_api_init() {
 
@@ -204,7 +207,7 @@ function themeblvd_builder_warning_2() {
  * Display warning telling the user they should be using 
  * theme with Theme Blvd framework v2.2.1+.
  *
- * @since 1.1.1
+ * @since 1.2.0
  */
 
 function themeblvd_builder_warning_3() {
@@ -215,6 +218,27 @@ function themeblvd_builder_warning_3() {
         echo '<p><a href="?tb_nag_ignore=tb_builder_warning_3">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
         echo '</div>';
     }
+}
+
+/**
+ * Register hidden custom post type for layouts.
+ *
+ * @since 1.2.0
+ */
+
+function themeblvd_builder_register_post_type() {
+	$args = apply_filters( 'themeblvd_builder_post_type_args', array(
+		'labels' 			=> array( 'name' => 'Layouts', 'singular_name' => 'Layout' ),
+		'public'			=> false,
+		//'show_ui' 		=> true,	// Can uncomment for debugging
+		'query_var' 		=> true,
+		'capability_type' 	=> 'post',
+		'hierarchical' 		=> false,
+		'rewrite' 			=> false,
+		'supports' 			=> array( 'title', 'custom-fields' ), 
+		'can_export'		=> true
+	));
+	register_post_type( 'tb_layout', $args );
 }
 
 /**
