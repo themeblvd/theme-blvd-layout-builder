@@ -2,7 +2,7 @@
 Author URI: http://www.jasonbobich.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 1.1.1
+Stable Tag: 1.2.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -37,7 +37,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 == Changelog ==
 
-= 1.1.1 =
+= 1.2.0 =
 
 * Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).
 * Added support for Theme Blvd framework v2.3's Builder API modifications.
