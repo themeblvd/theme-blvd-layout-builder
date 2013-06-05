@@ -180,7 +180,7 @@ function themeblvd_builder_disable_url( $id ) {
 
 	$url = admin_url( $pagenow );
 
-	if( $_SERVER['QUERY_STRING'] )
+	if( ! empty( $_SERVER['QUERY_STRING'] ) )
 		$url .= sprintf( '?%s&tb_nag_ignore=%s', $_SERVER['QUERY_STRING'], $id );
 	else
 		$url .= sprintf( '?tb_nag_ignore=%s', $id );
