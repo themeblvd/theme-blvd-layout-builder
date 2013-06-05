@@ -295,7 +295,6 @@
 }
 .postbox #edit_layout { 
 	overflow: hidden;
-	min-height: 500px;
 	position: relative;
 }
 .postbox #builder_blvd .ajax-overlay-layout-switch { 

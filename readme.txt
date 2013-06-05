@@ -42,9 +42,10 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).
 * Added support for Theme Blvd framework v2.3's Builder API modifications.
 * Fixed issue of homepage layout not displaying after toggling WP Reading settings back and forth.
-* Improved Builder API functionality and moved to plugin.
+* Improved Builder API functionality and moved here to the plugin.
 * Fixed bug with creating a new layout from Edit Page meta box when no current layout is selected.
 * Some minor admin javascript improvements.
+* Styled Custom Layout meta box to take up less visual space when no layout is selected (i.e. it isn't being used).
 * Fixed Layout Information not saving properly from Builder.
 * Fixed custom layout selection not displaying on Edit Page screen when no layouts exist yet.
 
