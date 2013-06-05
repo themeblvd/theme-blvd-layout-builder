@@ -221,20 +221,20 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		
 		// Layout Information
 		if( isset( $data['tb_layout_info'] ) ) {
-			
+
 			// Start post data to be updated with the ID
 			$post_atts = array(
 				'ID' => $layout_id
 			);
 			
 			// Post Title (only used in admin for reference)
-			if( isset( $data['info']['post_title'] ) )
-				$post_atts['post_title'] = $data['info']['post_title'];
+			if( isset( $data['tb_layout_info']['post_title'] ) )
+				$post_atts['post_title'] = $data['tb_layout_info']['post_title'];
 			
 			// Post Slug (used as custom layout ID, important! )
-			if( isset( $data['info']['post_name'] ) )
-				$post_atts['post_name'] = $data['info']['post_name'];
-			
+			if( isset( $data['tb_layout_info']['post_name'] ) )
+				$post_atts['post_name'] = $data['tb_layout_info']['post_name'];
+
 			// Update Post info
 			wp_update_post( $post_atts );
 		

@@ -45,6 +45,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Improved Builder API functionality and moved to plugin.
 * Fixed bug with creating a new layout from Edit Page meta box when no current layout is selected.
 * Some minor admin javascript improvements.
+* Fixed Layout Information not saving properly from Builder.
 
 = 1.1.0 =
 
