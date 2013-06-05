@@ -847,23 +847,22 @@ class Theme_Blvd_Layout_Builder {
 			'numberposts'	=> -1
 		);
 		$custom_layouts = get_posts($args);
+
+		$output .= '<div class="tb-fancy-select">';
+		$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
+		$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
 		
-		if( ! empty( $custom_layouts ) ) {
-			
-			$output .= '<div class="tb-fancy-select">';
-			$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
-			$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
-			
+		if( $custom_layouts ) {
 			foreach( $custom_layouts as $custom_layout ) {
 				$output .= '<option value="'.$custom_layout->post_name.'" '.selected( $custom_layout->post_name, $current, false ).'>'.$custom_layout->post_title.'</option>';
 			}
-			
-			$output .= '</select>';
-			$output .= '<span class="trigger"></span>';
-			$output .= '<span class="textbox"></span>';
-			$output .= '</div><!-- .tb-fancy-select (end) -->';
-		
 		}
+		
+		$output .= '</select>';
+		$output .= '<span class="trigger"></span>';
+		$output .= '<span class="textbox"></span>';
+		$output .= '</div><!-- .tb-fancy-select (end) -->';
+		
 		return $output;
 	}
 
