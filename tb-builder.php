@@ -169,7 +169,7 @@ function themeblvd_builder_disable_nag() {
 }
 
 /**
- * Disable a nag message.
+ * Disable a nag message URL.
  *
  * @since 1.2.0
  */
