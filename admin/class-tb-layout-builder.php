@@ -103,10 +103,16 @@ class Theme_Blvd_Layout_Builder {
 			
 				// Include assets
 				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+					
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
-					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
-					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+					
+					// Prior to WP 3.5 or Theme Blvd framework v2.3
+					if( ! function_exists( 'wp_enqueue_media' ) || ! function_exists( 'themeblvd_media_uploader' ) ) {
+						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
+						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+					}
+
 				}
 			
 				// Add meta box
