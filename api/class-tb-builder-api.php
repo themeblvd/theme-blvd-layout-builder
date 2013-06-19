@@ -2616,6 +2616,7 @@ class Theme_Blvd_Builder_API {
 				// Loop through and format elements, splitting them into 
 				// their areas -- featured, primary, & featured_below
 				if( $layouts['elements'] ) {
+					$i = 1;
 					foreach( $layouts['elements'] as $element ) {
 
 						// Skip if the element isn't registered
@@ -2657,6 +2658,7 @@ class Theme_Blvd_Builder_API {
 							'options'		=> $options
 						);
 
+						$i++;
 					}
 				}
 
