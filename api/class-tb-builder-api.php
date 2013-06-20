@@ -2,10 +2,10 @@
 /**
  * Theme Blvd Layout Builder API
  *
- * This sets up the default Builder elements and sample 
- * layouts. Also, this class adds and API to add/remove 
+ * This sets up the default Builder elements and sample
+ * layouts. Also, this class adds and API to add/remove
  * these elements and sample layouts.
- * 
+ *
  * @author		Jason Bobich
  * @copyright	Copyright (c) Jason Bobich
  * @link		http://jasonbobich.com
@@ -13,7 +13,7 @@
  * @package 	Theme Blvd WordPress Framework
  */
 class Theme_Blvd_Builder_API {
-	
+
 	/*--------------------------------------------*/
 	/* Properties, private
 	/*--------------------------------------------*/
@@ -26,8 +26,8 @@ class Theme_Blvd_Builder_API {
 	private static $instance = null;
 
 	/**
-	 * A quick overview of registered elements as the 
-	 * API moves along. Can be accesed from admin or 
+	 * A quick overview of registered elements as the
+	 * API moves along. Can be accesed from admin or
 	 * frontend.
 	 *
 	 * @since 1.1.1
@@ -43,7 +43,7 @@ class Theme_Blvd_Builder_API {
 	private $core_elements = array();
 
 	/**
-	 * Elements and settings added through client API 
+	 * Elements and settings added through client API
 	 * mutators. WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -51,7 +51,7 @@ class Theme_Blvd_Builder_API {
 	private $client_elements = array();
 
 	/**
-	 * Elements to remove from Layout Builder. 
+	 * Elements to remove from Layout Builder.
 	 * WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -59,7 +59,7 @@ class Theme_Blvd_Builder_API {
 	private $remove_elements = array();
 
 	/**
-	 * Final array of elements and settings. This combines 
+	 * Final array of elements and settings. This combines
 	 * $core_elements and $client_elements. WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -82,7 +82,7 @@ class Theme_Blvd_Builder_API {
 	private $client_layouts = array();
 
 	/**
-	 * Sample layouts to remove from Layout Builder. 
+	 * Sample layouts to remove from Layout Builder.
 	 * WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -90,7 +90,7 @@ class Theme_Blvd_Builder_API {
 	private $remove_layouts = array();
 
 	/**
-	 * Final array of sample layouts. This combines 
+	 * Final array of sample layouts. This combines
 	 * $core_layouts and $client_layouts. WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -112,7 +112,7 @@ class Theme_Blvd_Builder_API {
 
 		if( self::$instance == null )
             self::$instance = new self;
-        
+
         return self::$instance;
 	}
 
@@ -122,27 +122,27 @@ class Theme_Blvd_Builder_API {
 	 * @since 1.1.1
 	 */
 	private function __construct() {
-		
-		// Setup registered elements reference for frontend and 
-		// admin. This allows us to keep track of elements without 
-		// consuming as much memory on the frontend. 
+
+		// Setup registered elements reference for frontend and
+		// admin. This allows us to keep track of elements without
+		// consuming as much memory on the frontend.
 		$this->set_registered_elements();
-		
+
 		if( is_admin() ) {
-			
-			// Setup framework default elements and sample 
+
+			// Setup framework default elements and sample
 			// layouts to build onto for Builder interface.
 			$this->set_core_elements();
 			$this->set_core_layouts();
 
-			// Establish elements and sample layouts based on 
+			// Establish elements and sample layouts based on
 			// client modifications combined with framework defaults.
 			add_action( 'after_setup_theme', array( $this, 'set_elements' ), 1000 );
 			add_action( 'after_setup_theme', array( $this, 'set_layouts' ), 1000 );
 
 		}
 
-		
+
 	}
 
 	/*--------------------------------------------*/
@@ -150,8 +150,8 @@ class Theme_Blvd_Builder_API {
 	/*--------------------------------------------*/
 
 	/**
-	 * Set originally registered elements. As client API moves 
-	 * along, this will be modified, allowing elements to be 
+	 * Set originally registered elements. As client API moves
+	 * along, this will be modified, allowing elements to be
 	 * registered or de-registered.
 	 *
 	 * @since 1.1.1
@@ -176,7 +176,7 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Set original core elements. These will be later merged 
+	 * Set original core elements. These will be later merged
 	 * with API client-added elements. WP-Admin only, see constructer.
 	 *
 	 * @since 1.1.1
@@ -188,20 +188,20 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 		/* Option helpers
 		/*--------------------------------------------*/
-		
+
 		// Setup array for floating sidebars
 		$sidebars = array();
 		if( defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
 			$sidebars = themeblvd_get_select( 'sidebars' );
-			if( ! $sidebars ) 
+			if( ! $sidebars )
 				$sidebars['null'] = __( 'You haven\'t created any floating widget areas yet.', 'themeblvd' );
 			if( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) )
 				$sidebars['null'] = __( 'You need to have the Theme Blvd Widget Areas plugin installed for this feature.', 'themeblvd' );
 		}
-		
+
 		// Setup array for categories select
 		$categories_select = themeblvd_get_select( 'categories' );
-		
+
 		// Setup array for categories group of checkboxes
 		$categories_multicheck = $categories_select;
 		unset( $categories_multicheck['null'] );
@@ -296,7 +296,7 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 
 		$this->core_elements['content'] = array();
-		
+
 		// Information
 		$this->core_elements['content']['info'] = array(
 			'name' 		=> __('Content', 'themeblvd_builder'),
@@ -371,8 +371,8 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
-		
-		// The selection of a floating widget area is only 
+
+		// The selection of a floating widget area is only
 		// possible if the Widget Areas plugin is installed.
 		if( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
 			unset( $this->core_elements['content']['options']['source']['options']['widget_area'] );
@@ -406,7 +406,7 @@ class Theme_Blvd_Builder_API {
 			        'dashed' 	=> __( 'Dashed Line', 'themeblvd_builder' ),
 			        'shadow' 	=> __( 'Shadow Line', 'themeblvd_builder' ),
 					'solid' 	=> __( 'Solid Line', 'themeblvd_builder' )
-				) 
+				)
 			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
@@ -424,7 +424,7 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 		/* (4) Headline
 		/*--------------------------------------------*/
-		
+
 		$this->core_elements['headline'] = array();
 
 		// Information
@@ -463,7 +463,7 @@ class Theme_Blvd_Builder_API {
 					'h4' => __( '&lt;h4&gt;Your Headline&lt;/h4&gt;', 'themeblvd_builder' ),
 					'h5' => __( '&lt;h5&gt;Your Headline&lt;/h5&gt;', 'themeblvd_builder' ),
 					'h6' => __( '&lt;h6&gt;Your Headline&lt;/h6&gt;', 'themeblvd_builder' )
-				)   
+				)
 			),
 			'align' => array(
 				'id' 		=> 'align',
@@ -474,7 +474,7 @@ class Theme_Blvd_Builder_API {
 			        'left' 		=> __( 'Align Left', 'themeblvd_builder' ),
 			        'center' 	=> __( 'Center', 'themeblvd_builder' ),
 					'right' 	=> __( 'Align Right', 'themeblvd_builder' )
-				) 
+				)
 			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
@@ -616,7 +616,7 @@ class Theme_Blvd_Builder_API {
 				'options'		=> array(
 			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
 			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
@@ -925,7 +925,7 @@ class Theme_Blvd_Builder_API {
 					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
 				)
 			),
-			'content' => array( 
+			'content' => array(
 				'id' 		=> 'content',
 				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
 				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
@@ -935,7 +935,7 @@ class Theme_Blvd_Builder_API {
 					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
 					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
 					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'posts_per_page' => array(
 		    	'id' 		=> 'posts_per_page',
@@ -1027,7 +1027,7 @@ class Theme_Blvd_Builder_API {
 					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
 				)
 			),
-			'content' => array( 
+			'content' => array(
 				'id' 		=> 'content',
 				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
 				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
@@ -1037,7 +1037,7 @@ class Theme_Blvd_Builder_API {
 					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
 					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
 					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'numberposts' => array(
 		    	'id' 		=> 'numberposts',
@@ -1121,7 +1121,7 @@ class Theme_Blvd_Builder_API {
 				'options'		=> array(
 			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
 			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
@@ -1229,7 +1229,7 @@ class Theme_Blvd_Builder_API {
 					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
 				)
 			),
-			'content' => array( 
+			'content' => array(
 				'id' 		=> 'content',
 				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
 				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
@@ -1239,7 +1239,7 @@ class Theme_Blvd_Builder_API {
 					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
 					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
 					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'posts_per_slide' => array(
 		    	'id' 		=> 'posts_per_slide',
@@ -1304,7 +1304,7 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 
 		if( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
-			
+
 			$this->core_elements['post_slider'] = array();
 
 			// Information
@@ -1555,7 +1555,7 @@ class Theme_Blvd_Builder_API {
 					)
 				)
 			);
-		
+
 		}
 
 		/*--------------------------------------------*/
@@ -1563,7 +1563,7 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 
 		if( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
-			
+
 			$this->core_elements['slider'] = array();
 
 			// Information
@@ -1701,7 +1701,7 @@ class Theme_Blvd_Builder_API {
 			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
 			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
 			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
-				) 
+				)
 			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
@@ -1930,9 +1930,9 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Set elements by combining core elements and client-added 
-	 * elements. Then remove any elements that have been set to 
-	 * be removed. This happens at the "after_setup_theme" hook 
+	 * Set elements by combining core elements and client-added
+	 * elements. Then remove any elements that have been set to
+	 * be removed. This happens at the "after_setup_theme" hook
 	 * with a priority of 1000.
 	 *
 	 * @since 1.1.1
@@ -1957,7 +1957,7 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Set original core layouts. These will be later merged 
+	 * Set original core layouts. These will be later merged
 	 * with API client-added elements. WP-Admin only, see constructer.
 	 *
 	 * @since 1.1.1
@@ -1968,7 +1968,7 @@ class Theme_Blvd_Builder_API {
 
 		// Path to images used in sample layouts on frontend.
 		$imgpath = TB_BUILDER_PLUGIN_URI . '/admin/assets/images';
-		
+
 		/*--------------------------------------------*/
 		/* (1) Business Homepage #1
 		/*--------------------------------------------*/
@@ -1980,7 +1980,7 @@ class Theme_Blvd_Builder_API {
 			'preview' 			=> $imgpath . '/sample-business_1.png',
 			'sidebar_layout' 	=> 'full_width'
 		);
-		
+
 		// Featured Elements
 		$this->core_layouts['business_1']['featured'] = array(
 			'element_1' => array(
@@ -2052,10 +2052,10 @@ class Theme_Blvd_Builder_API {
                 )
 			)
 		);
-		
+
 		// Featured Below Elements
 		$this->core_layouts['business_1']['featured_below'] = array();
-		
+
 		/*--------------------------------------------*/
 		/* (2) Business Homepage #2
 		/*--------------------------------------------*/
@@ -2078,7 +2078,7 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
-		
+
 		// Main Elements
 		$this->core_layouts['business_2']['primary'] = array(
 			'element_2' => array(
@@ -2139,10 +2139,10 @@ class Theme_Blvd_Builder_API {
                 )
 			)
 		);
-		
+
 		// Featured Below Elements
 		$this->core_layouts['business_2']['featured_below'] = array();
-		
+
 		/*--------------------------------------------*/
 		/* (3) Business Homepage #3
 		/*--------------------------------------------*/
@@ -2154,7 +2154,7 @@ class Theme_Blvd_Builder_API {
 			'preview'			=> $imgpath . '/sample-business_3.png',
 			'sidebar_layout'	=> 'sidebar_right'
 		);
-		
+
 		// Featured Elements
 		$this->core_layouts['business_3']['featured'] = array(
 			'element_1' => array(
@@ -2191,7 +2191,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 		);
-		
+
 		// Featured Below Elements
 		$this->core_layouts['business_3']['featured_below'] = array();
 
@@ -2209,7 +2209,7 @@ class Theme_Blvd_Builder_API {
 
 		// Featured Elements
 		$this->core_layouts['business_4']['featured'] = array();
-		
+
 		// Main Elements
 		$this->core_layouts['business_4']['primary'] = array(
 			'element_2' => array(
@@ -2217,7 +2217,7 @@ class Theme_Blvd_Builder_API {
 				'query_type' 	=> 'none',
 				'options' 		=> array(
 					'text' 			=> 'Welcome to our website',
-					'tagline' 		=> '', 
+					'tagline' 		=> '',
 					'tag' 			=> 'h1',
 					'align' 		=> 'left'
 				)
@@ -2286,7 +2286,7 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
-		
+
 		// Featured Below Elements
 		$this->core_layouts['business_4']['featured_below'] = array();
 
@@ -2304,7 +2304,7 @@ class Theme_Blvd_Builder_API {
 
 		// Featured Elements
 		$this->core_layouts['magazine_1']['featured'] = array();
-		
+
 		// Main Elements
 		$this->core_layouts['magazine_1']['primary'] = array(
 			'element_1' => array(
@@ -2345,7 +2345,7 @@ class Theme_Blvd_Builder_API {
 
 		// Featured Elements
 		$this->core_layouts['magazine_2']['featured'] = array();
-		
+
 		// Main Elements
 		$this->core_layouts['magazine_2']['primary'] = array(
 			'element_1' => array(
@@ -2387,7 +2387,7 @@ class Theme_Blvd_Builder_API {
 
 		// Featured Below Elements
 		$this->core_layouts['magazine_2']['featured_below'] = array();
-		
+
 		/*--------------------------------------------*/
 		/* (7) Design Agency
 		/*--------------------------------------------*/
@@ -2482,7 +2482,7 @@ class Theme_Blvd_Builder_API {
                 )
 			)
 		);
-		
+
 		// Featured Below Elements
 		$this->core_layouts['agency']['featured_below'] = array();
 
@@ -2508,7 +2508,7 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
-		
+
 		// Primary Elements
 		$this->core_layouts['portfolio']['primary'] = array(
 			'element_2' => array(
@@ -2595,9 +2595,9 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Set sample layouts by combining core elements and client-added 
-	 * layouts. Then remove any layouts that have been set to 
-	 * be removed. This happens at the "after_setup_theme" hook 
+	 * Set sample layouts by combining core elements and client-added
+	 * layouts. Then remove any layouts that have been set to
+	 * be removed. This happens at the "after_setup_theme" hook
 	 * with a priority of 1000.
 	 *
 	 * @since 1.1.1
@@ -2613,7 +2613,7 @@ class Theme_Blvd_Builder_API {
 				$this->client_layouts[$id]['primary'] = array();
 				$this->client_layouts[$id]['featured_below'] = array();
 
-				// Loop through and format elements, splitting them into 
+				// Loop through and format elements, splitting them into
 				// their areas -- featured, primary, & featured_below
 				if( $layouts['elements'] ) {
 					$i = 1;
@@ -2636,15 +2636,15 @@ class Theme_Blvd_Builder_API {
 
 								// Did the client put in a default value for this element?
 								foreach( $element['defaults'] as $key => $value )
-									if( $key == $option['id'] )	
+									if( $key == $option['id'] )
 										$default_value = $value;
 
-								// Is there a default value for the element in the builder 
+								// Is there a default value for the element in the builder
 								// we can use instead if client didn't pass one?
 								if( $default_value === null && isset( $option['std'] ) )
 									$default_value = $option['std'];
 
-								// Apply value 
+								// Apply value
 								$options[$option['id']] = $default_value;
 
 							}
@@ -2662,7 +2662,7 @@ class Theme_Blvd_Builder_API {
 					}
 				}
 
-				// Remove overall elements array, now that it's been 
+				// Remove overall elements array, now that it's been
 				// split into areas.
 				unset( $this->client_layouts[$id]['elements'] );
 			}
@@ -2687,10 +2687,10 @@ class Theme_Blvd_Builder_API {
 	/*--------------------------------------------*/
 
 	/**
-	 * Manually register an element. 
+	 * Manually register an element.
 	 *
-	 * Note: This won't be used in most cases, as registration 
-	 * of elements is taken care of automatically when adding 
+	 * Note: This won't be used in most cases, as registration
+	 * of elements is taken care of automatically when adding
 	 * and removing.
 	 *
 	 * @since 1.1.1
@@ -2702,10 +2702,10 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Manually de-register an element. 
+	 * Manually de-register an element.
 	 *
-	 * Note: This won't be used in most cases, as registration 
-	 * of elements is taken care of automatically when adding 
+	 * Note: This won't be used in most cases, as registration
+	 * of elements is taken care of automatically when adding
 	 * and removing.
 	 *
 	 * @since 1.1.1
@@ -2713,15 +2713,15 @@ class Theme_Blvd_Builder_API {
 	 * @param string $id ID of element to register
 	 */
 	public function de_register_element( $id ) {
-		
+
 		if( ! $this->registered_elements )
 			return;
-		
+
 		foreach( $this->registered_elements as $key => $element ) {
 			if( $id == $element )
 				unset( $this->registered_elements[$key] );
 		}
-		
+
 	}
 
 	/**
@@ -2739,7 +2739,7 @@ class Theme_Blvd_Builder_API {
 
 		// Register element
 		$this->registered_elements[] = $element_id;
-		
+
 		// Add in element
 		if( is_admin() ) {
 			$this->client_elements[$element_id] = array(
@@ -2769,10 +2769,10 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function remove_element( $element_id ) {
 
-		// Add to removal array, and process in set_elements() 
+		// Add to removal array, and process in set_elements()
 		$this->remove_elements[] = $element_id;
 
-		// De-register Element		
+		// De-register Element
 		if( $this->registered_elements ) {
 			foreach( $this->registered_elements as $key => $value ) {
 				if( $value == $element_id ) {
@@ -2832,7 +2832,7 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function remove_layout( $layout_id ) {
 
-		// Add to removal array, and process in set_elements() 
+		// Add to removal array, and process in set_elements()
 		if( is_admin() ) {
 			$this->remove_layouts[] = $layout_id;
 		}
@@ -2877,9 +2877,9 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Get final elements. This is the merged result of 
-	 * core elements and client API-added elements. This 
-	 * is available after WP's "after_setup_theme" hook. 
+	 * Get final elements. This is the merged result of
+	 * core elements and client API-added elements. This
+	 * is available after WP's "after_setup_theme" hook.
 	 *
 	 * @since 1.1.1
 	 *
@@ -2912,8 +2912,8 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
-	 * Get final sample layouts. This is the merged result 
-	 * of core layouts and client API-added layouts. This 
+	 * Get final sample layouts. This is the merged result
+	 * of core layouts and client API-added layouts. This
 	 * is available after WP's "after_setup_theme" hook.
 	 *
 	 * @since 1.1.1

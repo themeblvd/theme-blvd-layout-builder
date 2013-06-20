@@ -20,10 +20,10 @@ function themeblvd_get_sample_layouts() {
  * @return string $output HTML to display
  */
 function themeblvd_builder_sample_previews() {
-	
+
 	// Get sample layouts
 	$samples = themeblvd_get_sample_layouts();
-	
+
 	// Construct output
 	$output = '<div class="sample-layouts">';
 	foreach( $samples as $sample ) {
@@ -34,6 +34,6 @@ function themeblvd_builder_sample_previews() {
 		$output .= '</div>';
 	}
 	$output .= '</div><!-- .sample-layouts (end) -->';
-	
+
 	return $output;
 }
