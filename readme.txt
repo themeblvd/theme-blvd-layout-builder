@@ -48,6 +48,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Styled Custom Layout meta box to take up less visual space when no layout is selected (i.e. it isn't being used).
 * Fixed Layout Information not saving properly from Builder.
 * Fixed custom layout selection not displaying on Edit Page screen when no layouts exist yet.
+* Removed "Tweet" element. Use [Tweeple](http://wordpress.org/extend/plugins/tweeple) instead.
 
 = 1.1.0 =
 

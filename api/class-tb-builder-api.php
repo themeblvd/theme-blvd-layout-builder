@@ -169,8 +169,7 @@ class Theme_Blvd_Builder_API {
 			'post_list',
 			'post_list_slider',
 			'slogan',
-			'tabs',
-			'tweet'
+			'tabs'
 		);
 		$this->registered_elements = apply_filters( 'themeblvd_registered_elements', $this->registered_elements );
 	}
@@ -1855,73 +1854,6 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (15) Tweet
-		/*--------------------------------------------*/
-
-		$this->core_elements['tweet'] = array();
-
-		// Information
-		$this->core_elements['tweet']['info'] = array(
-			'name' 		=> __( 'Tweet', 'themeblvd_builder' ),
-			'id'		=> 'tweet',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_tweet',
-			'shortcode'	=> null,
-			'desc' 		=> __( 'Shows the most recent tweet from a Twitter account', 'themeblvd_builder' )
-		);
-
-		// Options
-		$this->core_elements['tweet']['options'] = array(
-			'account' => array(
-		    	'id' 		=> 'account',
-				'name'		=> __( 'Twitter Account', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the Twitter username you\'d like to pull the most recent tweet from.', 'themeblvd_builder' ),
-				'std'		=> 'themeblvd_builder',
-				'type'		=> 'text'
-			),
-			'icon' => array(
-		    	'id' 		=> 'icon',
-				'name'		=> __( 'Icon', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter any Font Awesome icon ID; this icon will then display next to the Tweet. Set this option blank to not use any icon. Examples: twitter, pencil, warning-sign, etc. ', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> 'twitter'
-			),
-			'meta' => array(
-		    	'id' 		=> 'meta',
-				'name'		=> __( 'Tweet Meta Info', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select whether you\'d like information about the current tweet displayed below it.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'show',
-				'options'	=> array(
-			        'show' 	=> __( 'Show meta info below tweet.', 'themeblvd_builder' ),
-			        'hide' 	=> __( 'Hide meta info below tweet.', 'themeblvd_builder' )
-				)
-			),
-			'replies' => array(
-		    	'id' 		=> 'replies',
-				'name'		=> __( 'Exclude @replies?', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select whether or not you\'d like to exclude @replies for the current tweet.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'no',
-				'options'	=> array(
-			        'yes' 	=> __( 'Yes, exclude @replies.', 'themeblvd_builder' ),
-			        'no' 	=> __( 'No, do not exclude @replies.', 'themeblvd_builder' )
-				)
-			),
-		    'visibility' => array(
-		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.<br><br><em>Example: Hide an element on tablets and mobile devices & then create a second element that\'s hidden only on standard screen resolutions to take its place.</em>', 'themeblvd_builder' ),
-				'type'		=> 'multicheck',
-				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
-				)
-			)
-		);
-
-		/*--------------------------------------------*/
 		/* Extend
 		/*--------------------------------------------*/
 
@@ -2587,7 +2519,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_layouts['showcase']['featured_below'] = array();
 
 		/*--------------------------------------------*/
-		/* (9) Extend
+		/* Extend
 		/*--------------------------------------------*/
 
 		$this->core_layouts = apply_filters( 'themeblvd_core_layouts', $this->core_layouts );

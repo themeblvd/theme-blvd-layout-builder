@@ -495,14 +495,6 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				echo themeblvd_tabs( $id, $element['options'] );
 				break;
 
-			/*------------------------------------------------------*/
-			/* Recent Tweet
-			/*------------------------------------------------------*/
-
-			case 'tweet' :
-				echo themeblvd_tweet( $element['options'] );
-				break;
-
 		} // End switch
 
 		// Allow to add on custom element that's
