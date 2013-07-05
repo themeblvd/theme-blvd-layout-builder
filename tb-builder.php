@@ -34,7 +34,7 @@ define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
 define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
-if( !function_exists( 'themeblvd_builder_init' ) ) : // Avoid activation errors with Bundle
+if ( !function_exists( 'themeblvd_builder_init' ) ) : // Avoid activation errors with Bundle
 /**
  * Run Layout Builder plugin
  *
@@ -48,19 +48,19 @@ function themeblvd_builder_init() {
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
 
 	// Check to make sure Theme Blvd Framework 2.2+ is running
-	if( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
+	if ( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
 		add_action( 'admin_notices', 'themeblvd_builder_warning' );
 		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
 		return;
 	}
 
 	// If using framework v2.2.0, tell them they should now update to 2.2.1
-	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
 		add_action( 'admin_notices', 'themeblvd_builder_warning_2' );
 	}
 
 	// If using framework version prior to v2.3, tell them API functions won't work.
-	if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
 		add_action( 'admin_notices', 'themeblvd_builder_warning_3' );
 	}
 
@@ -78,9 +78,9 @@ function themeblvd_builder_init() {
 
 	// Get custom layouts
 	$custom_layouts = array();
-	if( is_admin() ) {
+	if ( is_admin() ) {
 		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
-		if( ! empty( $custom_layout_posts ) ) {
+		if ( ! empty( $custom_layout_posts ) ) {
 			foreach( $custom_layout_posts as $layout )
 				$custom_layouts[$layout->post_name] = $layout->post_title;
 		} else {
@@ -121,7 +121,7 @@ function themeblvd_builder_init() {
 	add_filter( 'themeblvd_customizer_modify_sections', 'themeblvd_modify_customizer_homepage' );
 
 	// Admin Layout Builder
-	if( is_admin() ){
+	if ( is_admin() ){
 		// Check to make sure admin interface isn't set to be
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'builder' ) && current_user_can( themeblvd_admin_module_cap( 'builder' ) ) ) {
@@ -135,7 +135,7 @@ function themeblvd_builder_init() {
 add_action( 'after_setup_theme', 'themeblvd_builder_init' );
 endif;
 
-if( !function_exists( 'themeblvd_builder_api_init' ) ) : // Avoid activation errors with Bundle
+if ( !function_exists( 'themeblvd_builder_api_init' ) ) : // Avoid activation errors with Bundle
 /**
  * Setup Layout Builder API
  *
@@ -155,7 +155,7 @@ function themeblvd_builder_api_init() {
 add_action( 'themeblvd_api', 'themeblvd_builder_api_init' );
 endif;
 
-if( !function_exists( 'themeblvd_builder_textdomain' ) ) : // Avoid activation errors with Bundle
+if ( !function_exists( 'themeblvd_builder_textdomain' ) ) : // Avoid activation errors with Bundle
 /**
  * Register text domain for localization.
  *
