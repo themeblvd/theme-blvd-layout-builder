@@ -27,7 +27,7 @@ License: GPL2
 */
 
 // Avoid potential conflicts on activation when Bundle exists.
-if( defined('TB_BUILDER_PLUGIN_VERSION') )
+if ( defined('TB_BUILDER_PLUGIN_VERSION') )
 	return;
 
 define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
