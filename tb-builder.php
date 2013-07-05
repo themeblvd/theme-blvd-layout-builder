@@ -1,14 +1,13 @@
 <?php
 /*
 Plugin Name: Theme Blvd Layout Builder
-Plugin URI:
 Description: This plugins gives you a slick interface that ties int the Theme Blvd framework to create custom layouts for your WordPress pages.
 Version: 1.2.0
-Author: Jason Bobich
-Author URI: http://jasonbobich.com
+Author: Theme Blvd
+Author URI: http://themeblvd.com
 License: GPL2
 
-    Copyright 2012  Jason Bobich
+    Copyright 2013  Theme Blvd
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -26,13 +25,14 @@ License: GPL2
 
 */
 
-// Avoid potential conflicts on activation when Bundle exists.
-if ( defined('TB_BUILDER_PLUGIN_VERSION') )
-	return;
+// Avoid potential conflicts on activation with Bundle.
+if ( !defined( 'TB_BUILDER_PLUGIN_VERSION' ) ) {
 
-define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
-define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
+	define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
+	define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
+	define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
+
+}
 
 if ( !function_exists( 'themeblvd_builder_init' ) ) : // Avoid activation errors with Bundle
 /**
