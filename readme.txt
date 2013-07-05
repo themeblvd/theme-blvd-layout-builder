@@ -49,6 +49,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 * Fixed Layout Information not saving properly from Builder.
 * Fixed custom layout selection not displaying on Edit Page screen when no layouts exist yet.
 * Removed "Tweet" element. Use [Tweeple](http://wordpress.org/extend/plugins/tweeple) instead.
+* Fixed any conflicts when activated with [Theme Blvd Bundle](http://wordpress.org/extend/plugins/theme-blvd-bundle).
 
 = 1.1.0 =
 
