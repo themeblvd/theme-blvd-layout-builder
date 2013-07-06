@@ -25,16 +25,10 @@ License: GPL2
 
 */
 
-// Avoid potential conflicts on activation with Bundle.
-if ( !defined( 'TB_BUILDER_PLUGIN_VERSION' ) ) {
+define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
+define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
+define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
-	define( 'TB_BUILDER_PLUGIN_VERSION', '1.2.0' );
-	define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
-	define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
-
-}
-
-if ( !function_exists( 'themeblvd_builder_init' ) ) : // Avoid activation errors with Bundle
 /**
  * Run Layout Builder plugin
  *
@@ -133,9 +127,7 @@ function themeblvd_builder_init() {
 
 }
 add_action( 'after_setup_theme', 'themeblvd_builder_init' );
-endif;
 
-if ( !function_exists( 'themeblvd_builder_api_init' ) ) : // Avoid activation errors with Bundle
 /**
  * Setup Layout Builder API
  *
@@ -153,9 +145,7 @@ function themeblvd_builder_api_init() {
 
 }
 add_action( 'themeblvd_api', 'themeblvd_builder_api_init' );
-endif;
 
-if ( !function_exists( 'themeblvd_builder_textdomain' ) ) : // Avoid activation errors with Bundle
 /**
  * Register text domain for localization.
  *
@@ -165,4 +155,3 @@ function themeblvd_builder_textdomain() {
 	load_plugin_textdomain( 'themeblvd_builder', false, TB_BUILDER_PLUGIN_DIR . '/lang' );
 }
 add_action( 'plugins_loaded', 'themeblvd_builder_textdomain' );
-endif;
