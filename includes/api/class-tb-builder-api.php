@@ -506,14 +506,212 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['post_grid_paginated']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
 			'categories' => array(
 		    	'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
 				'std'		=> array( 'all' => 1 ),
 				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
 			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: The number of posts displayed is determined from the rows and columns.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> __( 'Columns', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '3',
+				'options'	=> array(
+			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
+			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
+			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
+			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
+				)
+			),
+			'rows' => array(
+		    	'id' 		=> 'rows',
+				'name'		=> __( 'Rows per page', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of rows <strong>per page</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each page. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'crop' => array(
+		    	'id' 		=> 'crop',
+				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			),
+		    'visibility' => array(
+		    	'id' 		=> 'visibility',
+				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.<br><br><em>Example: Hide an element on tablets and mobile devices & then create a second element that\'s hidden only on standard screen resolutions to take its place.</em>', 'themeblvd_builder' ),
+				'type'		=> 'multicheck',
+				'options'	=> array(
+					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
+					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
+					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* (6) Post Grid
+		/*--------------------------------------------*/
+
+		$this->core_elements['post_grid'] = array();
+
+		// Information
+		$this->core_elements['post_grid']['info'] = array(
+			'name'		=> __( 'Post Grid', 'themeblvd_builder' ),
+			'id'		=> 'post_grid',
+			'query'		=> 'secondary',
+			'hook'		=> 'themeblvd_post_grid',
+			'shortcode'	=> '[post_grid]',
+			'desc'		=> __( 'Grid of posts followed by optional link', 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['post_grid']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a grid based on the rows and columns.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
 			'columns' => array(
 		    	'id' 		=> 'columns',
 				'name'		=> __( 'Columns', 'themeblvd_builder' ),
@@ -534,52 +732,14 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text',
 				'std'		=> '3'
 			),
-			'orderby' => array(
-		    	'id' 		=> 'orderby',
-				'name'		=> __( 'Order By', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'date',
-				'options'	=> array(
-			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
-			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
-			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
-			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
-			),
-			'order' => array(
-		    	'id' 		=> 'order',
-				'name'		=> __( 'Order', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'DESC',
-				'options'	=> array(
-			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
-			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
-			),
-			'offset' => array(
-		    	'id' 		=> 'offset',
-				'name'		=> __( 'Offset', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> '0'
-			),
-			'query' => array(
-		    	'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Orderby, Order, and Offset</em>', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> ''
-			),
 			'crop' => array(
 		    	'id' 		=> 'crop',
 				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here; when left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> ''
 			),
-			'subgroup_start' => array(
+			'subgroup_start_2' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide'
 		    ),
@@ -617,106 +777,9 @@ class Theme_Blvd_Builder_API {
 			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
 				)
 			),
-			'subgroup_end' => array(
+			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    ),
-		    'visibility' => array(
-		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.<br><br><em>Example: Hide an element on tablets and mobile devices & then create a second element that\'s hidden only on standard screen resolutions to take its place.</em>', 'themeblvd_builder' ),
-				'type'		=> 'multicheck',
-				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
-				)
-			)
-		);
-
-		/*--------------------------------------------*/
-		/* (6) Post Grid
-		/*--------------------------------------------*/
-
-		$this->core_elements['post_grid'] = array();
-
-		// Information
-		$this->core_elements['post_grid']['info'] = array(
-			'name'		=> __( 'Post Grid', 'themeblvd_builder' ),
-			'id'		=> 'post_grid',
-			'query'		=> 'secondary',
-			'hook'		=> 'themeblvd_post_grid',
-			'shortcode'	=> '[post_grid]',
-			'desc'		=> __( 'Grid of posts followed by optional link', 'themeblvd_builder' )
-		);
-
-		// Options
-		$this->core_elements['post_grid']['options'] = array(
-			'categories' => array(
-		    	'id' 		=> 'categories',
-				'name'		=> __( 'Categories', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
-				'std'		=> array( 'all' => 1 ),
-				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
-			),
-			'columns' => array(
-		    	'id' 		=> 'columns',
-				'name'		=> __( 'Columns', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> '3',
-				'options'	=> array(
-			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
-			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
-			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
-			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
-				)
-			),
-			'rows' => array(
-		    	'id' 		=> 'rows',
-				'name'		=> __( 'Rows per page', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the number of rows <strong>per page</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each page. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> '3'
-			),
-			'orderby' => array(
-		    	'id' 		=> 'orderby',
-				'name'		=> __( 'Order By', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'date',
-				'options'	=> array(
-			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
-			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
-			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
-			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
-			),
-			'order' => array(
-		    	'id' 		=> 'order',
-				'name'		=> __( 'Order', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'DESC',
-				'options'	=> array(
-			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
-			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
-			),
-			'query' => array(
-		    	'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Orderby, and Order. Additionally, you can\'t use "posts_per_page" as this is generated in a grid based on the rows and columns.</em>', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> ''
-			),
-			'crop' => array(
-		    	'id' 		=> 'crop',
-				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here; when left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> ''
-			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
 				'name'		=> __( 'Responsive Visibility ', 'themeblvd_builder' ),
@@ -799,14 +862,92 @@ class Theme_Blvd_Builder_API {
 		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
 				)
 			),
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
 			'categories' => array(
 		    	'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
 				'std'		=> array( 'all' => 1 ),
 				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
 			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'numberposts' => array(
+		    	'id' 		=> 'numberposts',
+				'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '-1',
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
 			'columns' => array(
 		    	'id' 		=> 'columns',
 				'name'		=> __( 'Columns', 'themeblvd_builder' ),
@@ -827,48 +968,10 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text',
 				'std'		=> '3'
 			),
-			'numberposts' => array(
-		    	'id' 		=> 'numberposts',
-				'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> '-1'
-			),
-			'orderby' => array(
-		    	'id' 		=> 'orderby',
-				'name'		=> __( 'Order By', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'date',
-				'options'	=> array(
-			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
-			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
-			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
-			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
-			),
-			'order' => array(
-		    	'id' 		=> 'order',
-				'name'		=> __( 'Order', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'DESC',
-				'options'	=> array(
-			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
-			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
-			),
-			'offset' => array(
-		    	'id' 		=> 'offset',
-				'name'		=> __( 'Offset', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> '0'
-			),
 			'crop' => array(
 		    	'id' 		=> 'crop',
 				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here; when left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> ''
 			),
@@ -886,7 +989,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (8) 'Post List (paginated)
+		/* (8) Post List (paginated)
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list_paginated'] = array();
@@ -903,45 +1006,46 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['post_list_paginated']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
 			'categories' => array(
 		    	'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
 				'std'		=> array( 'all' => 1 ),
 				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
 			),
-			'thumbs' => array(
-				'id' 		=> 'thumbs',
-				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
-					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
-					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
-				)
-			),
-			'content' => array(
-				'id' 		=> 'content',
-				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
-					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				)
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
 		    	'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Posts per page', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the number of posts <strong>per page</strong> you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '6'
+				'std'		=> '6',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
 		    	'id' 		=> 'orderby',
@@ -954,7 +1058,8 @@ class Theme_Blvd_Builder_API {
 			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -965,14 +1070,44 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Posts per page, Orderby, and Order</em>', 'themeblvd_builder' ),
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> ''
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end',
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
 			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
@@ -1005,45 +1140,46 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['post_list']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
 			'categories' => array(
 		    	'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
 				'std'		=> array( 'all' => 1 ),
 				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
 			),
-			'thumbs' => array(
-				'id' 		=> 'thumbs',
-				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
-					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
-					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
-				)
-			),
-			'content' => array(
-				'id' 		=> 'content',
-				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
-					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				)
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'numberposts' => array(
 		    	'id' 		=> 'numberposts',
 				'name'		=> __( 'Number of Posts', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the <strong>total number</strong> of posts you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected.', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '6'
+				'std'		=> '6',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
 		    	'id' 		=> 'orderby',
@@ -1056,7 +1192,8 @@ class Theme_Blvd_Builder_API {
 			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -1067,23 +1204,54 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
 		    	'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '0'
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: Putting anything in this option will cause the following options to not have any effect: Categories, Number of Posts, Orderby, Order, and Offset</em>', 'themeblvd_builder' ),
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> ''
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
 			),
-			'subgroup_start' => array(
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
+			),
+			'subgroup_start_2' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide'
 		    ),
@@ -1122,7 +1290,7 @@ class Theme_Blvd_Builder_API {
 			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
 				)
 			),
-			'subgroup_end' => array(
+			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    ),
 		    'visibility' => array(
@@ -1207,52 +1375,46 @@ class Theme_Blvd_Builder_API {
 		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
 				)
 			),
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
 			'categories' => array(
 		    	'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
 				'std'		=> array( 'all' => 1 ),
 				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
 			),
-			'thumbs' => array(
-				'id' 		=> 'thumbs',
-				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
-					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
-					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
-				)
-			),
-			'content' => array(
-				'id' 		=> 'content',
-				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
-				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
-				'std' 		=> 'default',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'default'	=> __( 'Use default blog setting.', 'themeblvd_builder' ),
-					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
-					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
-				)
-			),
-			'posts_per_slide' => array(
-		    	'id' 		=> 'posts_per_slide',
-				'name'		=> __( 'Posts per slide', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the number of posts <strong>per slide</strong> you\'d like to show.', 'themeblvd_builder' ),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '3'
+				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'numberposts' => array(
 		    	'id' 		=> 'numberposts',
 				'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '-1'
+				'std'		=> '-1',
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
 			),
 			'orderby' => array(
 		    	'id' 		=> 'orderby',
@@ -1265,7 +1427,8 @@ class Theme_Blvd_Builder_API {
 			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -1276,14 +1439,59 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
-				)
+				),
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
 			),
 			'offset' => array(
 		    	'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
 				'type'		=> 'text',
-				'std'		=> '0'
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-tag receiver-category'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
+			),
+			'posts_per_slide' => array(
+		    	'id' 		=> 'posts_per_slide',
+				'name'		=> __( 'Posts per slide', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of posts <strong>per slide</strong> you\'d like to show.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
 			),
 		    'visibility' => array(
 		    	'id' 		=> 'visibility',
