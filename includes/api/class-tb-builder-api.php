@@ -551,7 +551,7 @@ class Theme_Blvd_Builder_API {
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -563,7 +563,7 @@ class Theme_Blvd_Builder_API {
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
@@ -679,7 +679,7 @@ class Theme_Blvd_Builder_API {
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -691,7 +691,7 @@ class Theme_Blvd_Builder_API {
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
 		    	'id' 		=> 'offset',
@@ -699,7 +699,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '0',
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
@@ -901,7 +901,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '-1',
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
 		    	'id' 		=> 'orderby',
@@ -915,7 +915,7 @@ class Theme_Blvd_Builder_API {
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -927,7 +927,7 @@ class Theme_Blvd_Builder_API {
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
 		    	'id' 		=> 'offset',
@@ -935,7 +935,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '0',
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
@@ -1414,7 +1414,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '-1',
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
 		    	'id' 		=> 'orderby',
@@ -1428,7 +1428,7 @@ class Theme_Blvd_Builder_API {
 			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
 		    	'id' 		=> 'order',
@@ -1440,7 +1440,7 @@ class Theme_Blvd_Builder_API {
 			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
 				),
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
 		    	'id' 		=> 'offset',
@@ -1448,7 +1448,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '0',
-				'class' 	=> 'hide receiver receiver-tag receiver-category'
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
 		    	'id' 		=> 'query',
@@ -1674,18 +1674,11 @@ class Theme_Blvd_Builder_API {
 					'type'		=> 'select',
 					'std'		=> 'tag',
 					'options'	=> array(
-				        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
 				        'category' 	=> __( 'Category', 'themeblvd_builder' ),
+				        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
 				        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
 					),
 					'class' 	=> 'trigger'
-				),
-				'tag' => array(
-			    	'id' 		=> 'tag',
-					'name'		=> __( 'Tag', 'themeblvd_builder' ),
-					'desc'		=> __( 'Enter a tag to pull most recent posts from.', 'themeblvd_builder' ),
-					'type'		=> 'text',
-					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'category' => array(
 			    	'id' 		=> 'category',
@@ -1694,13 +1687,20 @@ class Theme_Blvd_Builder_API {
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-category'
 				),
+				'tag' => array(
+			    	'id' 		=> 'tag',
+					'name'		=> __( 'Tag', 'themeblvd_builder' ),
+					'desc'		=> __( 'Enter a tag to pull most recent posts from.', 'themeblvd_builder' ),
+					'type'		=> 'text',
+					'class' 	=> 'hide receiver receiver-tag'
+				),
 				'numberposts' => array(
 			    	'id' 		=> 'numberposts',
 					'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
 					'desc'		=> __( 'Enter the maximum number of posts you\'d like to pull. You can use <em>-1</em> to show all posts from the selected criteria.', 'themeblvd_builder' ),
 					'type'		=> 'text',
 					'std'		=> '5',
-					'class' 	=> 'hide receiver receiver-tag receiver-category'
+					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
 			    	'id' 		=> 'orderby',
@@ -1714,7 +1714,7 @@ class Theme_Blvd_Builder_API {
 				        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
 				        'rand' 			=> __( 'Random', 'themeblvd_builder' )
 					),
-					'class' 	=> 'hide receiver receiver-tag receiver-category'
+					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
 			    	'id' 		=> 'order',
@@ -1726,7 +1726,7 @@ class Theme_Blvd_Builder_API {
 				        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
 				        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
 					),
-					'class' 	=> 'hide receiver receiver-tag receiver-category'
+					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
 			    	'id' 		=> 'query',
