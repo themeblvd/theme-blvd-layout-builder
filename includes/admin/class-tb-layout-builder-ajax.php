@@ -151,7 +151,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		if( isset( $data['tb_elements'] ) ) {
 
 			// Get default element options
-			$default_element_options = $this->admin_page->elements;
+			$default_element_options = $this->admin_page->get_elements();
 
 			// Loop through setting items in 'featured' location
 			// until we arrive at the divider line, then

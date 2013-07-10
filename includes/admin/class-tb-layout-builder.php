@@ -55,7 +55,8 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/**
-	 * Setup elements for builder after client has had a chance to use Builder API to modify elements.
+	 * Setup elements for builder after client has had
+	 * a chance to use Builder API to modify elements.
 	 *
 	 * @since 1.0.0
 	 */
@@ -64,6 +65,23 @@ class Theme_Blvd_Layout_Builder {
 			$api = Theme_Blvd_Builder_API::get_instance();
 			$this->elements = $api->get_elements();
 		}
+	}
+
+	/**
+	 * Get elements with filter applied. This is the less
+	 * optimal way to filter elements, but does give an
+	 * oppertunity to filter elements at the latest possible
+	 * stage.
+	 *
+	 * If you're trying to add element options that involve
+	 * things that come later in the WP loading process,
+	 * like using get_terms() for a registered taxonomy, this
+	 * is your filter.
+	 *
+	 * @since 1.2.0
+	 */
+	public function get_elements() {
+		return apply_filters( 'themeblvd_get_elements', $this->elements );
 	}
 
 	/**
@@ -519,7 +537,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @param array $element_settings any current options for current element
 	 */
 	public function edit_element( $element_type, $element_id, $element_settings = null, $visibility = null ) {
-		$elements = $this->elements;
+		$elements = $this->get_elements();
 		$form = themeblvd_option_fields( 'tb_elements['.$element_id.'][options]', $elements[$element_type]['options'], $element_settings, false );
 		?>
 		<div id="<?php echo $element_id; ?>" class="widget element-options"<?php if( $visibility == 'hide' ) echo ' style="display:none"'; ?>>
@@ -550,7 +568,7 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function edit_layout( $id ) {
 		$api = Theme_Blvd_Builder_API::get_instance();
-		$elements = $this->elements; // Elements that can be used in Builder, and NOT elements saved to current layout
+		$elements = $this->get_elements(); // Elements that can be used in Builder, and NOT elements saved to current layout
 		$layout = get_post($id);
 		$layout_elements = get_post_meta( $id, 'elements', true );
 		$layout_settings = get_post_meta( $id, 'settings', true );
@@ -723,7 +741,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Get custom layout post
-		$elements = $this->elements;
+		$elements = $this->get_elements();
 		$layout = get_post($id);
 
 		// Check if valid layout
