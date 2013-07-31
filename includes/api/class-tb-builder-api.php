@@ -2107,7 +2107,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_layouts = array();
 
 		// Path to images used in sample layouts on frontend.
-		$imgpath = TB_BUILDER_PLUGIN_URI . '/admin/assets/images';
+		$imgpath = TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images';
 
 		/*--------------------------------------------*/
 		/* (1) Business Homepage #1
