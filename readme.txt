@@ -39,6 +39,9 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 = 1.2.1 =
 
+* Added "Screen Options" tab to Builder interface.
+* Added "CSS Classes" advanced option for all elements.
+
 = 1.2.0 =
 
 * Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).

@@ -418,6 +418,38 @@ jQuery(document).ready(function($) {
 		}
 	}
 
+	// Screen Options
+	$(document).on('change', '#adv-settings input', function(){
+
+		var checkbox = $(this),
+			id = checkbox.attr('name'),
+			section = 'section-'+id,
+			section = section.replace('-hide', ''),
+			nonce = $(this).closest('form').find('.security').val();
+
+		if ( checkbox.is(":checked") ) {
+
+			var value = new Array( id, "on" );
+			$( '.'+section ).show();
+
+		} else {
+
+			var value = new Array( id, "off" );
+			$( '.'+section ).hide();
+
+		}
+
+		var data = {
+			action: 'themeblvd_save_screen_settings',
+			security: nonce,
+			data: value
+		};
+		$.post(ajaxurl, data, function(response) {
+			// do nothing ...
+		});
+
+	});
+
 	/*-----------------------------------------------------------------------------------*/
 	/* Meta Box (layout builder used when editing pages directly)
 	/*-----------------------------------------------------------------------------------*/

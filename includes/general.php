@@ -178,10 +178,12 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 		// CSS classes for element
 		$classes = 'element '.$location.'-element-'.$counter.' element-'.$element['type'];
-		if( $counter == 1 )
+		if( $counter == 1 ) {
 			$classes .= ' first-element';
-		if( $num_elements == $counter )
+		}
+		if( $num_elements == $counter ) {
 			$classes .= ' last-element';
+		}
 		if( $element['type'] == 'slider' ) {
 			if( isset( $element['options']['slider_id'] ) ) {
 				$slider_id = themeblvd_post_id_by_name( $element['options']['slider_id'], 'tb_slider' );
@@ -189,10 +191,15 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				$classes .= ' element-slider-'.$type;
 			}
 		}
-		if( $element['type'] == 'paginated_post_lst' || $element['type'] == 'paginated_post_grid' )
+		if( $element['type'] == 'paginated_post_lst' || $element['type'] == 'paginated_post_grid' ) {
 			$classes .= $element['type'];
-		if( isset( $element['options']['visibility'] ) )
+		}
+		if ( ! empty( $element['options']['classes'] ) ) {
+			$classes .= ' '.$element['options']['classes'];
+		}
+		if( isset( $element['options']['visibility'] ) ) {
 			$classes .= themeblvd_responsive_visibility_class( $element['options']['visibility'], true );
+		}
 		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
 
 		// Start ouput

@@ -1,6 +1,13 @@
 /* =Options Framework Overrides
 ----------------------------------------------- */
 
+#optionsframework {
+	background: transparent; /* Needed for screen options tab to show */
+}
+#screen-meta-links a.show-settings {
+	position: relative;
+	z-index: 2;
+}
 #builder_blvd #optionsframework .section {
 	padding-bottom: 30px;
 }

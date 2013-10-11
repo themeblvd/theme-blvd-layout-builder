@@ -49,7 +49,6 @@ class Theme_Blvd_Layout_Builder {
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 
 		// Add ajax functionality to slider admin page
-		include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
 
 	}
@@ -90,9 +89,14 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0
 	 */
 	public function add_page() {
+
+		// Create admin page
 		$admin_page = add_object_page( $this->args['page_title'], $this->args['menu_title'], $this->args['cap'], $this->id, array( $this, 'admin_page' ), $this->args['icon'], $this->args['priority'] );
+
+		// Add scripts and styles
 		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
 		add_action( 'admin_print_scripts-'.$admin_page, array( $this, 'load_scripts' ) );
+
 	}
 
 	/**
@@ -190,14 +194,17 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'postbox' );
-		if( function_exists( 'wp_enqueue_media' ) )
+
+		if( function_exists( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
+		}
 
 		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
-		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		// @TODO change back to min
+		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
 		// Add JS locals when needed.
 		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
@@ -205,8 +212,9 @@ class Theme_Blvd_Layout_Builder {
 			// Edit Page Screen: This is a fallback for prior to
 			// framework v2.3 where framework metabox scripts were
 			// not localized by default.
-			if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) )
+			if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
 				wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+			}
 
 		} else {
 
@@ -420,8 +428,9 @@ class Theme_Blvd_Layout_Builder {
 		$samples = themeblvd_get_sample_layouts();
 		$sample_layouts = array();
 		if( $samples ) {
-			foreach( $samples as $sample )
+			foreach( $samples as $sample ) {
 				$sample_layouts[$sample['id']] = $sample['name'];
+			}
 		}
 
 		// Setup existing layouts

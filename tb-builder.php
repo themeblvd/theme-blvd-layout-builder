@@ -120,6 +120,7 @@ function themeblvd_builder_init() {
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'builder' ) && current_user_can( themeblvd_admin_module_cap( 'builder' ) ) ) {
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/builder-samples.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder.php' );
 			$_themeblvd_layout_builder = new Theme_Blvd_Layout_Builder();
 		}
@@ -134,6 +135,9 @@ add_action( 'after_setup_theme', 'themeblvd_builder_init' );
  * @since 1.2.0
  */
 function themeblvd_builder_api_init() {
+
+	// Include screen options class (used in API)
+	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-screen.php' );
 
 	// Include Theme_Blvd_Builder_API class.
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/api/class-tb-builder-api.php' );
