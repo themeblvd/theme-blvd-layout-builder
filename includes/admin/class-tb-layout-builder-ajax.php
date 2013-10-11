@@ -56,16 +56,16 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$post_id = wp_insert_post( $args );
 
 		// Setup meta
-		if( ! empty( $config['tb_new_layout']['layout_start'] ) ) {
+		if ( ! empty( $config['tb_new_layout']['layout_start'] ) ) {
 
-			if( $config['tb_new_layout']['layout_start'] == 'layout' ){
+			if ( $config['tb_new_layout']['layout_start'] == 'layout' ) {
 
 				// Configure meta for pre-existing layout
 				$layout_id = $config['tb_new_layout']['layout_existing'];
 				$elements = get_post_meta( $layout_id, 'elements', true );
 				$settings = get_post_meta( $layout_id, 'settings', true );
 
-			} else if( $config['tb_new_layout']['layout_start'] == 'sample' ){
+			} else if ( $config['tb_new_layout']['layout_start'] == 'sample' ) {
 
 				// Configure meta for sample layout
 				$samples = themeblvd_get_sample_layouts();
@@ -92,7 +92,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		// Adjust response depending on where the creation
 		// of the layout happenned.
-		if( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
+		if ( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
 			// If this coming from the Builder, send back Post
 			// ID and edit layout interface.
 			echo $post_id.'[(=>)]';
@@ -122,7 +122,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		// Setup the data depending on whether this
 		// is coming from an Ajax process or not.
-		if( $ajax ){
+		if ( $ajax ) {
 
 			// Make sure Satan isn't lurking
 			check_ajax_referer( 'themeblvd_save_builder', 'security' );
@@ -139,8 +139,9 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		// Check to make sure we're coming from
 		// the right place.
-		if( ! isset( $data['tb_layout_id'] ) )
+		if ( ! isset( $data['tb_layout_id'] ) ) {
 			return;
+		}
 
 		// Layout ID
 		$layout_id = $data['tb_layout_id'];
@@ -148,7 +149,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Setup elements
 		$location = 'featured';
 		$elements = array();
-		if( isset( $data['tb_elements'] ) ) {
+		if ( isset( $data['tb_elements'] ) ) {
 
 			// Get default element options
 			$default_element_options = $this->admin_page->get_elements();
@@ -158,39 +159,42 @@ class Theme_Blvd_Layout_Builder_Ajax {
 			// continue putting them into the 'primary' area,
 			// and then when we hit divider_2, set location to
 			// 'featured_below'.
-			foreach( $data['tb_elements'] as $id => $element ) {
+			foreach ( $data['tb_elements'] as $id => $element ) {
 				// Featured area elements get assigned first.
-				if( $id == 'divider' ) {
+				if ( $id == 'divider' ) {
 					// ... And now the primary area
 					$location = 'primary';
-				} else if( $id == 'divider_2' ) {
+				} else if ( $id == 'divider_2' ) {
 					// ... And now the featured below area
 					$location = 'featured_below';
 				} else {
 
 					// Sanitize element's options
 					$clean = array();
-					foreach( $default_element_options[$element['type']]['options'] as $option ) {
+					foreach ( $default_element_options[$element['type']]['options'] as $option ) {
 
-						if ( ! isset( $option['id'] ) )
+						if ( ! isset( $option['id'] ) ) {
 							continue;
+						}
 
-						if ( ! isset( $option['type'] ) )
+						if ( ! isset( $option['type'] ) ) {
 							continue;
+						}
 
 						$option_id = $option['id'];
 
 						// Set checkbox to false if it wasn't sent in the $_POST
 						if ( 'checkbox' == $option['type'] ) {
-							if( isset( $element['options'][$option_id] ) )
+							if ( isset( $element['options'][$option_id] ) ) {
 								$element['options'][$option_id] = '1';
-							else
+							} else {
 								$element['options'][$option_id] = '0';
+							}
 						}
 
 						// Set each item in the multicheck to false if it wasn't sent in the $_POST
 						if ( 'multicheck' == $option['type'] ) {
-							if( ! isset( $element['options'][$option_id] ) ) {
+							if ( ! isset( $element['options'][$option_id] ) ) {
 								$element['options'][$option_id] = array();
 							}
 						}
@@ -216,11 +220,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		// If this is not an ajax process, we're done here.
 		// Move on, already. Get over it.
-		if( ! $ajax )
+		if ( ! $ajax ) {
 			return;
+		}
 
 		// Layout Information
-		if( isset( $data['tb_layout_info'] ) ) {
+		if ( isset( $data['tb_layout_info'] ) ) {
 
 			// Start post data to be updated with the ID
 			$post_atts = array(
@@ -228,12 +233,14 @@ class Theme_Blvd_Layout_Builder_Ajax {
 			);
 
 			// Post Title (only used in admin for reference)
-			if( isset( $data['tb_layout_info']['post_title'] ) )
+			if ( isset( $data['tb_layout_info']['post_title'] ) ) {
 				$post_atts['post_title'] = $data['tb_layout_info']['post_title'];
+			}
 
 			// Post Slug (used as custom layout ID, important! )
-			if( isset( $data['tb_layout_info']['post_name'] ) )
+			if ( isset( $data['tb_layout_info']['post_name'] ) ) {
 				$post_atts['post_name'] = $data['tb_layout_info']['post_name'];
+			}
 
 			// Update Post info
 			wp_update_post( $post_atts );
@@ -290,10 +297,10 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		parse_str( $_POST['data'], $data );
 
 		// Only run if user selected some layouts to delete
-		if( isset( $data['posts'] ) ) {
+		if ( isset( $data['posts'] ) ) {
 
 			// Delete slider posts
-			foreach( $data['posts'] as $id ) {
+			foreach ( $data['posts'] as $id ) {
 
 				// Can still be recovered from trash
 				// if post type's admin UI is turned on.

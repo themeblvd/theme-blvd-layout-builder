@@ -60,7 +60,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0
 	 */
 	public function set_elements() {
-		if( ! $this->elements ) {
+		if ( ! $this->elements ) {
 			$api = Theme_Blvd_Builder_API::get_instance();
 			$this->elements = $api->get_elements();
 		}
@@ -118,19 +118,19 @@ class Theme_Blvd_Layout_Builder {
 			'priority'	=> 'default'
 		));
 
-		if( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
+		if ( $args['post_type'] ) { // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
 
 			// Include assets
-			foreach( $args['post_type'] as $post_type ){
+			foreach ( $args['post_type'] as $post_type ) {
 
 				// Include assets
-				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ) {
 
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
 					// Prior to WP 3.5 or Theme Blvd framework v2.3
-					if( ! function_exists( 'wp_enqueue_media' ) || ! function_exists( 'themeblvd_media_uploader' ) ) {
+					if ( ! function_exists( 'wp_enqueue_media' ) || ! function_exists( 'themeblvd_media_uploader' ) ) {
 						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
 						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
 					}
@@ -152,16 +152,19 @@ class Theme_Blvd_Layout_Builder {
 	public function save_meta_box() {
 
 		// Verify that this coming from the edit post page.
-		if( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' )
+		if ( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' ) {
 			return;
+		}
 
 		// Verfiy nonce
-		if( ! isset( $_POST['_tb_save_builder_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_save_builder_nonce'], 'themeblvd_save_builder' ) )
+		if ( ! isset( $_POST['_tb_save_builder_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_save_builder_nonce'], 'themeblvd_save_builder' ) ) {
 			return;
+		}
 
 		// Verify this is not an autosave
-		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
+		}
 
 		// Use our ajax function, which will allow us
 		// to save the custom layout manually.
@@ -195,7 +198,7 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'postbox' );
 
-		if( function_exists( 'wp_enqueue_media' ) ) {
+		if ( function_exists( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
 
@@ -207,12 +210,12 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
 		// Add JS locals when needed.
-		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
+		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
 
 			// Edit Page Screen: This is a fallback for prior to
 			// framework v2.3 where framework metabox scripts were
 			// not localized by default.
-			if( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
 				wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
 			}
 
@@ -421,14 +424,15 @@ class Theme_Blvd_Layout_Builder {
 		// Setup sidebar layouts
 		$layouts = themeblvd_sidebar_layouts();
 		$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
-		foreach( $layouts as $layout )
+		foreach ( $layouts as $layout ) {
 			$sidebar_layouts[$layout['id']] = $layout['name'];
+		}
 
 		// Setup sample layouts
 		$samples = themeblvd_get_sample_layouts();
 		$sample_layouts = array();
-		if( $samples ) {
-			foreach( $samples as $sample ) {
+		if ( $samples ) {
+			foreach ( $samples as $sample ) {
 				$sample_layouts[$sample['id']] = $sample['name'];
 			}
 		}
@@ -436,9 +440,10 @@ class Theme_Blvd_Layout_Builder {
 		// Setup existing layouts
 		$layouts = get_posts('post_type=tb_layout&numberposts=-1');
 		$custom_layouts = array();
-		if( $layouts ) {
-			foreach( $layouts as $layout )
+		if ( $layouts ) {
+			foreach ( $layouts as $layout ) {
 				$custom_layouts[$layout->ID] = $layout->post_title;
+			}
 		}
 
 		// Setup options array to display form
@@ -469,13 +474,15 @@ class Theme_Blvd_Layout_Builder {
 				'sample'	=> __( 'Start From Sample Layout', 'themeblvd_builder' )
 			)
 		);
-		if( ! $sample_layouts )
+		if ( ! $sample_layouts ) {
 			unset( $options[2]['options']['sample'] );
-		if( ! $custom_layouts )
+		}
+		if ( ! $custom_layouts ) {
 			unset( $options[2]['options']['layout'] );
+		}
 
 		// Existing Layout
-		if( $custom_layouts ) {
+		if ( $custom_layouts ) {
 			$options[] = array(
 				'name' 		=> __( 'Custom Layouts', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Select one of the layouts you created previously to start this new one.', 'themeblvd_builder' ),
@@ -486,7 +493,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Sample Layouts (only show if there are sample layouts)
-		if( $sample_layouts ) {
+		if ( $sample_layouts ) {
 			$options[] = array(
 				'name' 		=> __( 'Sample Layout', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Select a sample layout to start from.', 'themeblvd_builder' ),
@@ -549,7 +556,7 @@ class Theme_Blvd_Layout_Builder {
 		$elements = $this->get_elements();
 		$form = themeblvd_option_fields( 'tb_elements['.$element_id.'][options]', $elements[$element_type]['options'], $element_settings, false );
 		?>
-		<div id="<?php echo $element_id; ?>" class="widget element-options"<?php if( $visibility == 'hide' ) echo ' style="display:none"'; ?>>
+		<div id="<?php echo $element_id; ?>" class="widget element-options"<?php if ( $visibility == 'hide' ) echo ' style="display:none"'; ?>>
 			<div class="widget-name">
 				<a href="#" class="widget-name-arrow">Toggle</a>
 				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
@@ -642,7 +649,7 @@ class Theme_Blvd_Layout_Builder {
 						$layouts = themeblvd_sidebar_layouts();
 						$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
 
-						foreach( $layouts as $layout )
+						foreach ( $layouts as $layout )
 							$sidebar_layouts[$layout['id']] = $layout['name'];
 
 						$options = array(
@@ -668,8 +675,8 @@ class Theme_Blvd_Layout_Builder {
 						<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
 						<select>
 						<?php
-						foreach( $elements as $element ) {
-							if( $api->is_element( $element['info']['id'] ) ) {
+						foreach ( $elements as $element ) {
+							if ( $api->is_element( $element['info']['id'] ) ) {
 								echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
 							}
 						}
@@ -684,9 +691,9 @@ class Theme_Blvd_Layout_Builder {
 							<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
 							<div class="sortable">
 								<?php
-								if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-									foreach( $layout_elements['featured'] as $id => $element ) {
-										if( $api->is_element( $element['type'] ) ) {
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
+									foreach ( $layout_elements['featured'] as $id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -699,9 +706,9 @@ class Theme_Blvd_Layout_Builder {
 							<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
 							<div class="sortable">
 								<?php
-								if( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-									foreach( $layout_elements['primary'] as $id => $element ) {
-										if( $api->is_element( $element['type'] ) ) {
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
+									foreach ( $layout_elements['primary'] as $id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -714,9 +721,9 @@ class Theme_Blvd_Layout_Builder {
 							<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
 							<div class="sortable">
 								<?php
-								if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-									foreach( $layout_elements['featured_below'] as $id => $element ) {
-										if( $api->is_element( $element['type'] ) ) {
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
+									foreach ( $layout_elements['featured_below'] as $id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
 											$this->edit_element( $element['type'], $id, $element['options'] );
 										}
 									}
@@ -744,7 +751,7 @@ class Theme_Blvd_Layout_Builder {
 		$api = Theme_Blvd_Builder_API::get_instance();
 
 		// If no layout (i.e. User selected "none" or one hasn't been chosen yet)
-		if( ! $id ){
+		if ( ! $id ) {
 			echo '<p class="warning">'.__('Select a layout to apply and edit it, or create a new one.', 'themeblvd_builder').'</p>';
 			return;
 		}
@@ -754,7 +761,7 @@ class Theme_Blvd_Layout_Builder {
 		$layout = get_post($id);
 
 		// Check if valid layout
-		if( ! $layout ){
+		if ( ! $layout ) {
 			echo '<p class="warning">'.__('The layout currently selected no longer exists. Select a different layout to edit, or create a new one.', 'themeblvd_builder').'</p>';
 			return;
 		}
@@ -772,7 +779,7 @@ class Theme_Blvd_Layout_Builder {
 					<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
 					<select>
 						<?php
-						foreach( $elements as $element )
+						foreach ( $elements as $element )
 							echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
 						?>
 					</select>
@@ -785,9 +792,9 @@ class Theme_Blvd_Layout_Builder {
 						<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
 						<div class="sortable">
 							<?php
-							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-								foreach( $layout_elements['featured'] as $id => $element ) {
-									if( $api->is_element( $element['type'] ) ) {
+							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
+								foreach ( $layout_elements['featured'] as $id => $element ) {
+									if ( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -800,9 +807,9 @@ class Theme_Blvd_Layout_Builder {
 						<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
 						<div class="sortable">
 							<?php
-							if( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-								foreach( $layout_elements['primary'] as $id => $element ) {
-									if( $api->is_element( $element['type'] ) ) {
+							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
+								foreach ( $layout_elements['primary'] as $id => $element ) {
+									if ( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -815,9 +822,9 @@ class Theme_Blvd_Layout_Builder {
 						<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
 						<div class="sortable">
 							<?php
-							if( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-								foreach( $layout_elements['featured_below'] as $id => $element ) {
-									if( $api->is_element( $element['type'] ) ) {
+							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
+								foreach ( $layout_elements['featured_below'] as $id => $element ) {
+									if ( $api->is_element( $element['type'] ) ) {
 										$this->edit_element( $element['type'], $id, $element['options'] );
 									}
 								}
@@ -839,7 +846,7 @@ class Theme_Blvd_Layout_Builder {
 					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
 					$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
 					$layouts = themeblvd_sidebar_layouts();
-					foreach( $layouts as $layout )
+					foreach ( $layouts as $layout )
 						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
 
 					// Now convert it to options form
@@ -890,8 +897,8 @@ class Theme_Blvd_Layout_Builder {
 		$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
 		$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
 
-		if( $custom_layouts ) {
-			foreach( $custom_layouts as $custom_layout ) {
+		if ( $custom_layouts ) {
+			foreach ( $custom_layouts as $custom_layout ) {
 				$output .= '<option value="'.$custom_layout->post_name.'" '.selected( $custom_layout->post_name, $current, false ).'>'.$custom_layout->post_title.'</option>';
 			}
 		}

@@ -75,8 +75,9 @@ function themeblvd_builder_init() {
 	if ( is_admin() ) {
 		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
 		if ( ! empty( $custom_layout_posts ) ) {
-			foreach( $custom_layout_posts as $layout )
+			foreach( $custom_layout_posts as $layout ) {
 				$custom_layouts[$layout->post_name] = $layout->post_title;
+			}
 		} else {
 			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
 		}

@@ -6,8 +6,9 @@
  */
 function themeblvd_builder_disable_nag() {
 	global $current_user;
-    if ( isset( $_GET['tb_nag_ignore'] ) )
+    if ( isset( $_GET['tb_nag_ignore'] ) ) {
          add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+	}
 }
 
 /**
@@ -21,10 +22,11 @@ function themeblvd_builder_disable_url( $id ) {
 
 	$url = admin_url( $pagenow );
 
-	if( ! empty( $_SERVER['QUERY_STRING'] ) )
+	if ( ! empty( $_SERVER['QUERY_STRING'] ) ) {
 		$url .= sprintf( '?%s&tb_nag_ignore=%s', $_SERVER['QUERY_STRING'], $id );
-	else
+	} else {
 		$url .= sprintf( '?tb_nag_ignore=%s', $id );
+	}
 
 	return $url;
 }
@@ -38,7 +40,7 @@ function themeblvd_builder_disable_url( $id ) {
  */
 function themeblvd_builder_warning() {
 	global $current_user;
-    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning' ) ) {
+    if ( ! get_user_meta( $current_user->ID, 'tb_builder_warning' ) ) {
 		echo '<div class="updated">';
 		echo '<p>'.__( 'You currently have the "Theme Blvd Layout Builder" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_builder' ).'</p>';
 		echo '<p><a href="'.themeblvd_builder_disable_url('tb_builder_warning').'">'.__('Dismiss this notice', 'themeblvd_builder').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_builder').'</a></p>';
@@ -54,7 +56,7 @@ function themeblvd_builder_warning() {
  */
 function themeblvd_builder_warning_2() {
 	global $current_user;
-    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning_2' ) ) {
+    if ( ! get_user_meta( $current_user->ID, 'tb_builder_warning_2' ) ) {
         echo '<div class="updated">';
         echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of the Theme Blvd Layout Builder, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_builder' ).'</p>';
         echo '<p><a href="'.themeblvd_builder_disable_url('tb_builder_warning_2').'">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
@@ -70,7 +72,7 @@ function themeblvd_builder_warning_2() {
  */
 function themeblvd_builder_warning_3() {
 	global $current_user;
-    if( ! get_user_meta( $current_user->ID, 'tb_builder_warning_3' ) ) {
+    if ( ! get_user_meta( $current_user->ID, 'tb_builder_warning_3' ) ) {
         echo '<div class="updated">';
         echo '<p>'.__( 'If you\'re using any Layout Builder API functions to <a href="http://dev.themeblvd.com/tutorial/add-remove-builder-elements/" target="_blank">modify elements</a> or <a href="http://dev.themeblvd.com/tutorial/add-remove-sample-layout/" target="_blank">modify sample layouts</a>, you need to update your current theme to its latest version, which will contain framework v2.3+, in order for these API functions to continue working properly.', 'themeblvd_builder' ).'</p>';
         echo '<p><a href="'.themeblvd_builder_disable_url('tb_builder_warning_3').'">'.__('Dismiss this notice', 'themeblvd_builder').'</a></p>';
@@ -109,8 +111,9 @@ function themeblvd_builder_homepage( $template ) {
 	// If this is the homepage (but NOT the "posts page")
 	// and the user has selected to show a custom layout,
 	// redirect index.php to template_builder.php
-	if( is_home() && 'posts' == get_option('show_on_front') && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) )
+	if ( is_home() && 'posts' == get_option('show_on_front') && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) ) {
 		$template = locate_template( 'template_builder.php' );
+	}
 
 	return $template;
 }
@@ -148,7 +151,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 	// Setup
 	$counter = 0;
 	$primary_query = false;
-	if( ! $layout_id ) {
+	if ( ! $layout_id ) {
 		// This should rarely happen. A common scenario might
 		// be the user setup a page with a layout, but then
 		// deleted the layout after page was already published.
@@ -157,7 +160,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 	}
 	// Gather elements and only move forward if we have elements to show.
 	$elements = get_post_meta( $layout_id, 'elements', true );
-	if( ! empty( $elements ) && ! empty( $elements[$location] ) ) {
+	if ( ! empty( $elements ) && ! empty( $elements[$location] ) ) {
 		$elements = $elements[$location];
 		$num_elements = count($elements);
 	} else {
@@ -167,37 +170,38 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 	}
 
 	// Loop through elements
-	foreach( $elements as $id => $element ) {
+	foreach ( $elements as $id => $element ) {
 
 		// Skip element if its type isn't registered
-		if( ! $api->is_element( $element['type'] ) )
+		if ( ! $api->is_element( $element['type'] ) ) {
 			continue;
+		}
 
 		// Increase counter
 		$counter++;
 
 		// CSS classes for element
 		$classes = 'element '.$location.'-element-'.$counter.' element-'.$element['type'];
-		if( $counter == 1 ) {
+		if ( $counter == 1 ) {
 			$classes .= ' first-element';
 		}
-		if( $num_elements == $counter ) {
+		if ( $num_elements == $counter ) {
 			$classes .= ' last-element';
 		}
-		if( $element['type'] == 'slider' ) {
-			if( isset( $element['options']['slider_id'] ) ) {
+		if ( $element['type'] == 'slider' ) {
+			if ( isset( $element['options']['slider_id'] ) ) {
 				$slider_id = themeblvd_post_id_by_name( $element['options']['slider_id'], 'tb_slider' );
 				$type = get_post_meta( $slider_id, 'type', true );
 				$classes .= ' element-slider-'.$type;
 			}
 		}
-		if( $element['type'] == 'paginated_post_lst' || $element['type'] == 'paginated_post_grid' ) {
+		if ( $element['type'] == 'paginated_post_lst' || $element['type'] == 'paginated_post_grid' ) {
 			$classes .= $element['type'];
 		}
 		if ( ! empty( $element['options']['classes'] ) ) {
 			$classes .= ' '.$element['options']['classes'];
 		}
-		if( isset( $element['options']['visibility'] ) ) {
+		if ( isset( $element['options']['visibility'] ) ) {
 			$classes .= themeblvd_responsive_visibility_class( $element['options']['visibility'], true );
 		}
 		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
@@ -218,7 +222,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				$i = 1;
 				$columns = array();
 				$num = $element['options']['setup']['num'];
-				while( $i <= $num ) {
+				while ( $i <= $num ) {
 					$columns[] = $element['options']['col_'.$i];
 					$i++;
 				}
@@ -262,7 +266,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			/*------------------------------------------------------*/
 
 			case 'post_grid_paginated' :
-				if( ! $primary_query ) {
+				if ( ! $primary_query ) {
 					themeblvd_posts_paginated( $element['options'], 'grid', $location );
 					$primary_query = true;
 				}
@@ -289,7 +293,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			/*------------------------------------------------------*/
 
 			case 'post_list_paginated' :
-				if( ! $primary_query ) {
+				if ( ! $primary_query ) {
 					themeblvd_posts_paginated( $element['options'], 'list', $location );
 					$primary_query = true;
 				}
@@ -359,8 +363,9 @@ function themeblvd_builder_elements( $layout_id, $location ) {
  */
 
 function themeblvd_builder_content() {
-	if( themeblvd_config( 'builder' ) )
+	if ( themeblvd_config( 'builder' ) ) {
 		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );
+	}
 }
 /**
  * Display builder elements above the primary area.
@@ -368,8 +373,9 @@ function themeblvd_builder_content() {
  * @since 1.0.0
  */
 function themeblvd_builder_featured() {
-	if( themeblvd_config( 'builder' ) )
+	if ( themeblvd_config( 'builder' ) ) {
 		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' );
+	}
 }
 
 /**
@@ -378,6 +384,7 @@ function themeblvd_builder_featured() {
  * @since 1.0.0
  */
 function themeblvd_builder_featured_below() {
-	if( themeblvd_config( 'builder' ) )
+	if ( themeblvd_config( 'builder' ) ) {
 		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' );
+	}
 }

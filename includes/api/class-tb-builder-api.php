@@ -129,7 +129,7 @@ class Theme_Blvd_Builder_API {
 		// consuming as much memory on the frontend.
 		$this->set_registered_elements();
 
-		if( is_admin() ) {
+		if ( is_admin() ) {
 
 			// Setup framework default elements and sample
 			// layouts to build onto for Builder interface.
@@ -191,12 +191,14 @@ class Theme_Blvd_Builder_API {
 
 		// Setup array for floating sidebars
 		$sidebars = array();
-		if( defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
+		if ( defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
 			$sidebars = themeblvd_get_select( 'sidebars' );
-			if( ! $sidebars )
+			if ( ! $sidebars ) {
 				$sidebars['null'] = __( 'You haven\'t created any floating widget areas yet.', 'themeblvd_builder' );
-			if( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) )
+			}
+			if ( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
 				$sidebars['null'] = __( 'You need to have the Theme Blvd Widget Areas plugin installed for this feature.', 'themeblvd_builder' );
+			}
 		}
 
 		// Setup array for categories select
@@ -352,7 +354,7 @@ class Theme_Blvd_Builder_API {
 
 		// The selection of a floating widget area is only
 		// possible if the Widget Areas plugin is installed.
-		if( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
+		if ( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
 			unset( $this->core_elements['content']['options']['source']['options']['widget_area'] );
 			unset( $this->core_elements['content']['options']['widget_area'] );
 		}
@@ -1401,7 +1403,7 @@ class Theme_Blvd_Builder_API {
 		/* (11) Post Slider
 		/*--------------------------------------------*/
 
-		if( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
+		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
 
 			$this->core_elements['post_slider'] = array();
 
@@ -1649,7 +1651,7 @@ class Theme_Blvd_Builder_API {
 		/* (12) Slider
 		/*--------------------------------------------*/
 
-		if( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
+		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
 
 			$this->core_elements['slider'] = array();
 
@@ -1972,9 +1974,9 @@ class Theme_Blvd_Builder_API {
 		$this->elements = array_merge( $this->core_elements, $this->client_elements );
 
 		// Remove elements
-		if( $this->remove_elements ) {
-			foreach( $this->remove_elements as $element_id ) {
-				if( isset( $this->elements[$element_id] ) ) {
+		if ( $this->remove_elements ) {
+			foreach ( $this->remove_elements as $element_id ) {
+				if ( isset( $this->elements[$element_id] ) ) {
 					unset( $this->elements[$element_id] );
 				}
 			}
@@ -2634,8 +2636,8 @@ class Theme_Blvd_Builder_API {
 	public function set_layouts() {
 
 		// Format client API-added sample layouts
-		if( $this->client_layouts ) {
-			foreach( $this->client_layouts as $id => $layouts ) {
+		if ( $this->client_layouts ) {
+			foreach ( $this->client_layouts as $id => $layouts ) {
 
 				// Establish areas
 				$this->client_layouts[$id]['featured'] = array();
@@ -2644,34 +2646,39 @@ class Theme_Blvd_Builder_API {
 
 				// Loop through and format elements, splitting them into
 				// their areas -- featured, primary, & featured_below
-				if( $layouts['elements'] ) {
+				if ( $layouts['elements'] ) {
 					$i = 1;
-					foreach( $layouts['elements'] as $element ) {
+					foreach ( $layouts['elements'] as $element ) {
 
 						// Skip if the element isn't registered
-						if( ! $this->is_element( $element['type'] ) )
+						if ( ! $this->is_element( $element['type'] ) ) {
 							continue;
+						}
 
 						// Setup default option values
 						$options = array();
-						if( ! empty( $element['defaults'] ) ) {
-							foreach( $this->elements[$element['type']]['options'] as $option ) {
+						if ( ! empty( $element['defaults'] ) ) {
+							foreach ( $this->elements[$element['type']]['options'] as $option ) {
 
 								// Is this an actual configurable option?
-								if( ! isset( $option['id'] ) )
+								if ( ! isset( $option['id'] ) ) {
 									continue;
+								}
 
 								$default_value = null;
 
 								// Did the client put in a default value for this element?
-								foreach( $element['defaults'] as $key => $value )
-									if( $key == $option['id'] )
+								foreach ( $element['defaults'] as $key => $value ) {
+									if ( $key == $option['id'] ) {
 										$default_value = $value;
+									}
+								}
 
 								// Is there a default value for the element in the builder
 								// we can use instead if client didn't pass one?
-								if( $default_value === null && isset( $option['std'] ) )
+								if ( $default_value === null && isset( $option['std'] ) ) {
 									$default_value = $option['std'];
+								}
 
 								// Apply value
 								$options[$option['id']] = $default_value;
@@ -2701,8 +2708,8 @@ class Theme_Blvd_Builder_API {
 		$this->layouts = array_merge( $this->core_layouts, $this->client_layouts );
 
 		// Remove layouts
-		if( $this->remove_layouts ) {
-			foreach( $this->remove_layouts as $layout ) {
+		if ( $this->remove_layouts ) {
+			foreach ( $this->remove_layouts as $layout ) {
 				unset( $this->layouts[$layout] );
 			}
 		}
@@ -2743,12 +2750,14 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function de_register_element( $id ) {
 
-		if( ! $this->registered_elements )
+		if ( ! $this->registered_elements ) {
 			return;
+		}
 
-		foreach( $this->registered_elements as $key => $element ) {
-			if( $id == $element )
+		foreach ( $this->registered_elements as $key => $element ) {
+			if ( $id == $element ) {
 				unset( $this->registered_elements[$key] );
+			}
 		}
 
 	}
@@ -2770,7 +2779,7 @@ class Theme_Blvd_Builder_API {
 		$this->registered_elements[] = $element_id;
 
 		// Add in element
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			$this->client_elements[$element_id] = array(
 				'info' => array(
 					'name' 		=> $element_name,
@@ -2802,9 +2811,9 @@ class Theme_Blvd_Builder_API {
 		$this->remove_elements[] = $element_id;
 
 		// De-register Element
-		if( $this->registered_elements ) {
-			foreach( $this->registered_elements as $key => $value ) {
-				if( $value == $element_id ) {
+		if ( $this->registered_elements ) {
+			foreach ( $this->registered_elements as $key => $value ) {
+				if ( $value == $element_id ) {
 					unset( $this->registered_elements[$key] );
 				}
 			}
@@ -2840,7 +2849,7 @@ class Theme_Blvd_Builder_API {
 	public function add_layout( $layout_id, $layout_name, $preview, $sidebar_layout, $elements ) {
 
 		// WP-Admin only
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			$this->client_layouts[$layout_id] = array(
 				'name' 				=> $layout_name,
 				'id' 				=> $layout_id,
@@ -2862,7 +2871,7 @@ class Theme_Blvd_Builder_API {
 	public function remove_layout( $layout_id ) {
 
 		// Add to removal array, and process in set_elements()
-		if( is_admin() ) {
+		if ( is_admin() ) {
 			$this->remove_layouts[] = $layout_id;
 		}
 
@@ -2967,8 +2976,9 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function is_element( $element_id ) {
 
-		if( in_array( $element_id, $this->registered_elements ) )
+		if ( in_array( $element_id, $this->registered_elements ) ) {
 			return true;
+		}
 
 		return false;
 	}
