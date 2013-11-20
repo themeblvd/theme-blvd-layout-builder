@@ -39,6 +39,8 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 = 1.2.2 =
 
+* Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
+
 = 1.2.1 =
 
 * Added "Screen Options" tab to Builder interface.

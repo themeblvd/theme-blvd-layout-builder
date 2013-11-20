@@ -337,7 +337,7 @@ class Theme_Blvd_Layout_Builder {
 						<div class="ajax-overlay"></div>
 						<div class="icon-holder">
 							<span class="tb-loader ajax-loading"></span>
-							<?php screen_icon( 'tb_builder' ); ?>
+							<i class="tb-icon-commercial-building"></i>
 						</div>
 						<?php echo $this->layout_select( $current_layout ); ?>
 						<span class="note"><?php _e('Select a custom layout.', 'themeblvd_builder'); ?></span>
