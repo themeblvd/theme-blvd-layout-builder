@@ -394,31 +394,31 @@
 /* =WordPress 3.8 (MP6)
 -----------------------------------------------*/
 
-.mp6 .postbox #builder_blvd #optionsframework {
+.themeblvd-ui .postbox #builder_blvd #optionsframework {
 	background: #ffffff;
 }
-.mp6 #metabox-builder .ajax-overlay {
+.themeblvd-ui #metabox-builder .ajax-overlay {
 	background-color: #f9f9f9;
 }
-.mp6 #optionsframework .meta-box-nav .ajax-overlay {
+.themeblvd-ui #optionsframework .meta-box-nav .ajax-overlay {
 	background: #ffffff;
 }
-.mp6 #builder_blvd #edit_layout h2 {
+.themeblvd-ui #builder_blvd #edit_layout h2 {
 	font-size: 16px;
 }
-.mp6 #builder_blvd #edit_layout #titlediv select,
-.mp6 #builder_blvd #edit_layout #titlediv .button-secondary {
+.themeblvd-ui #builder_blvd #edit_layout #titlediv select,
+.themeblvd-ui #builder_blvd #edit_layout #titlediv .button-secondary {
 	margin-top: 0;
 }
-.mp6 .postbox #builder_blvd h3 {
+.themeblvd-ui .postbox #builder_blvd h3 {
 	background: #f5f5f5;
 	border-bottom: 1px solid #dfdfdf;
 }
-.mp6 .postbox #builder_blvd .widget-name h3 {
+.themeblvd-ui .postbox #builder_blvd .widget-name h3 {
 	background-color: #ffffff;
 	border-bottom: none;
 }
-.mp6 #builder_blvd .meta-box-nav li a {
+.themeblvd-ui #builder_blvd .meta-box-nav li a {
 	-webkit-border-top-left-radius: 0;
 	-webkit-border-top-right-radius: 0;
 	-moz-border-radius-topleft: 0;
@@ -426,26 +426,26 @@
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
-.mp6 #builder_blvd .meta-box-nav li a.nav-tab-active {
+.themeblvd-ui #builder_blvd .meta-box-nav li a.nav-tab-active {
 	background: #f5f5f5;
 	border-bottom-color: #f5f5f5;
 }
-.mp6 #builder_blvd #builder #featured .sortable,
-.mp6 #builder_blvd #builder #primary .sortable,
-.mp6 #builder_blvd #builder #featured_below .sortable {
+.themeblvd-ui #builder_blvd #builder #featured .sortable,
+.themeblvd-ui #builder_blvd #builder #primary .sortable,
+.themeblvd-ui #builder_blvd #builder #featured_below .sortable {
 	padding-bottom: 0;
 }
-.mp6 #builder_blvd #builder #featured .sortable.empty,
-.mp6 #builder_blvd #builder #primary .sortable.empty,
-.mp6 #builder_blvd #builder #featured_below .sortable.empty {
+.themeblvd-ui #builder_blvd #builder #featured .sortable.empty,
+.themeblvd-ui #builder_blvd #builder #primary .sortable.empty,
+.themeblvd-ui #builder_blvd #builder #featured_below .sortable.empty {
 	padding-bottom: 10px;
 }
-.mp6 #builder_blvd #builder #featured .sortable,
-.mp6 #builder_blvd #builder #primary .sortable,
-.mp6 #builder_blvd #builder #featured_below .sortable,
-.mp6 #builder_blvd #builder #featured span.label,
-.mp6 #builder_blvd #builder #primary span.label,
-.mp6 #builder_blvd #builder #featured_below span.label {
+.themeblvd-ui #builder_blvd #builder #featured .sortable,
+.themeblvd-ui #builder_blvd #builder #primary .sortable,
+.themeblvd-ui #builder_blvd #builder #featured_below .sortable,
+.themeblvd-ui #builder_blvd #builder #featured span.label,
+.themeblvd-ui #builder_blvd #builder #primary span.label,
+.themeblvd-ui #builder_blvd #builder #featured_below span.label {
 	background-color: #f8f8f8;
 	border-color: #cccccc;
 	-moz-border-radius: 0;
