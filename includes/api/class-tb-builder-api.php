@@ -163,6 +163,7 @@ class Theme_Blvd_Builder_API {
 			'content',
 			'divider',
 			'headline',
+			'jumbotron',
 			'post_grid_paginated',
 			'post_grid',
 			'post_grid_slider',
@@ -448,7 +449,127 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (5) Post Grid (paginated)
+		/* (5) Jumbotron
+		/*--------------------------------------------*/
+
+		$this->core_elements['jumbotron'] = array();
+
+		// Information
+		$this->core_elements['jumbotron']['info'] = array(
+			'name'		=> __( 'Jumbotron', 'themeblvd_builder' ),
+			'id'		=> 'jumbotron',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_post_grid_paginated',
+			'shortcode'	=> '[jumbotron]',
+			'desc'		=> __( 'Bootstrap\'s Jumbotron unit, also knows as a "Hero" unit.' , 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['jumbotron']['options'] = array(
+			'jumbotron_slider_desc' => array(
+				'id' 		=> 'jumbotron_slider_desc',
+				'desc' 		=> __( 'This element utilizes the Jumbotron component of Twitter Bootstrap.', 'themeblvd_builder' ),
+				'type' 		=> 'info'
+			),
+			'title' => array(
+				'id' 		=> 'title',
+				'name' 		=> __( 'Title', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the text you\'d like to show for a title.', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Content', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder'),
+				'type'		=> 'textarea'
+		    ),
+		    'wpautop' => array(
+		    	'id' 		=> 'wpautop',
+				'name'		=> __( 'Content Formatting', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+		    'text_align' => array(
+				'id' 		=> 'text_align',
+				'name' 		=> __( 'Text Alignment', 'themeblvd_builder'),
+				'desc'		=> __( 'Select how you\'d like the text within the unit aligned.', 'themeblvd_builder'),
+				'std'		=> 'left',
+				'type'		=> 'select',
+				'options'	=> array(
+					'left' 		=> __( 'Left', 'themeblvd_builder' ),
+					'right' 	=> __( 'Right', 'themeblvd_builder' ),
+					'center' 	=> __( 'Center', 'themeblvd_builder' )
+				)
+		    ),
+		    'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide'
+		    ),
+			'button' => array(
+		    	'id' 		=> 'button',
+				'name'		=> __( 'Button', 'themeblvd_builder' ),
+				'desc'		=> __( 'Show button at the bottom of unit?', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'button_text' => array(
+				'id' 		=> 'button_text',
+				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
+				'std'		=> 'Get Started Today!',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> themeblvd_colors()
+			),
+			'button_size' => array(
+				'id' 		=> 'button_size',
+				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'large',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' )
+				)
+			),
+			'button_url' => array(
+				'id' 		=> 'button_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
+				'std'		=> 'http://www.your-site.com/your-landing-page',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_target' => array(
+				'id' 		=> 'button_target',
+				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
+			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
+				)
+			),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    )
+		);
+
+		/*--------------------------------------------*/
+		/* (6) Post Grid (paginated)
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid_paginated'] = array();
@@ -565,7 +686,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (6) Post Grid
+		/* (7) Post Grid
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid'] = array();
@@ -731,7 +852,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (7) Post Grid Slider
+		/* (8) Post Grid Slider
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid_slider'] = array();
@@ -915,7 +1036,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (8) Post List (paginated)
+		/* (9) Post List (paginated)
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list_paginated'] = array();
@@ -1038,7 +1159,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (9) Post List
+		/* (10) Post List
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list'] = array();
@@ -1211,7 +1332,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (10) Post List Slider
+		/* (11) Post List Slider
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list_slider'] = array();
@@ -1400,7 +1521,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (11) Post Slider
+		/* (12) Post Slider
 		/*--------------------------------------------*/
 
 		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
@@ -1648,7 +1769,7 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* (12) Slider
+		/* (13) Slider
 		/*--------------------------------------------*/
 
 		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
@@ -1684,7 +1805,7 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* (13) Slogan
+		/* (14) Slogan
 		/*--------------------------------------------*/
 
 		$this->core_elements['slogan'] = array();
@@ -1787,7 +1908,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (14) Tabs
+		/* (15) Tabs
 		/*--------------------------------------------*/
 
 		$this->core_elements['tabs'] = array();
@@ -1941,7 +2062,7 @@ class Theme_Blvd_Builder_API {
 			$this->core_elements[$id]['options']['classes'] = array(
 		    	'id' 		=> 'classes',
 				'name'		=> __( 'CSS Classes', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.<br><br><em>Hint: Use class "element-unstyled" to remove your theme\'s styling around this element.</em>', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'class'		=> 'section-classes'
 			);

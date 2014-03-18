@@ -281,6 +281,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Jumbotron
+			/*------------------------------------------------------*/
+
+			case 'jumbotron' :
+
+				if ( ! function_exists( 'themeblvd_jumbotron' ) ) {
+					_e('Jumbotron element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				themeblvd_jumbotron( $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Post Grid
 			/*------------------------------------------------------*/
 
