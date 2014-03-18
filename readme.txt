@@ -2,7 +2,7 @@
 Author URI: http://www.jasonbobich.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 1.2.2
+Stable Tag: 1.2.3
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -25,7 +25,7 @@ There are two separate methods for applying a custom layouts as your theme's hom
 
 Method 1: Create your custom layout, apply it to a static page, and then assign that page as your static frontpage under *Settings > Reading > Frontpage Displays*.
 
-Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest posts." Create your custom layout. Then, go to *Appearance > Theme Options > Content > Homepage*, and select your new custom layout as the content for the homepage. 
+Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest posts." Create your custom layout. Then, go to *Appearance > Theme Options > Content > Homepage*, and select your new custom layout as the content for the homepage.
 
 *Note: If you're using an element in your custom layout that uses post pagination, make sure you use method #2.*
 
@@ -37,9 +37,14 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 == Changelog ==
 
+= 1.2.3 =
+
+* Added Jumbotron element (requires Theme Blvd Framework 2.4.2+).
+* Added support for "element-unstyled" CSS class (requires Theme Blvd Framework 2.4.2+).
+
 = 1.2.2 =
 
-* Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
+* Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd Framework 2.4+).
 
 = 1.2.1 =
 
