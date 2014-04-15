@@ -7,6 +7,7 @@ class Theme_Blvd_Layout_Builder {
 	public $id;
 	public $args;
 	public $elements;
+	public $blocks;
 	public $ajax;
 
 	/**
@@ -36,6 +37,7 @@ class Theme_Blvd_Layout_Builder {
 		// Elements for builder
 		$this->elements = $elements; // If elements passed in
 		add_action( 'after_setup_theme', array( $this, 'set_elements' ), 1001 ); // After client API
+		add_action( 'after_setup_theme', array( $this, 'set_blocks' ), 1001 ); // After client API
 
 		// Add Builder admin page
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
@@ -47,6 +49,10 @@ class Theme_Blvd_Layout_Builder {
 		// Filter on javascript locals specifically for Builder onto
 		// Theme Blvd framework locals.
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
+
+		// Add Editor into footer, which Builder can use for editing
+		// content of elements.
+		add_action( 'current_screen', array( $this, 'add_editor' ) );
 
 		// Add ajax functionality to slider admin page
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
@@ -81,6 +87,28 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function get_elements() {
 		return apply_filters( 'themeblvd_get_elements', $this->elements );
+	}
+
+	/**
+	 * Setup blocks for builder after client has had
+	 * a chance to use Builder API to modify blocks.
+	 *
+	 * @since 1.0.0
+	 */
+	public function set_blocks() {
+		if ( ! $this->blocks ) {
+			$api = Theme_Blvd_Builder_API::get_instance();
+			$this->blocks = $api->get_blocks();
+		}
+	}
+
+	/**
+	 * Get blocks with filter applied.
+	 *
+	 * @since 1.3.0
+	 */
+	public function get_blocks() {
+		return apply_filters( 'themeblvd_get_blocks', $this->blocks );
 	}
 
 	/**
@@ -178,10 +206,16 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0
 	 */
 	public function load_styles() {
+		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
 		wp_enqueue_style( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/css/builder-style.min.css', null, TB_BUILDER_PLUGIN_VERSION );
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+			wp_enqueue_style( 'codemirror', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css', null, '4.0' );
+			wp_enqueue_style( 'codemirror-theme', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/themeblvd.min.css', null, '4.0' );
+		}
 	}
 
 	/**
@@ -197,17 +231,25 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'postbox' );
+		wp_enqueue_script( 'wp-color-picker' );
 
 		if ( function_exists( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
 
 		// Theme Blvd scripts
+		wp_enqueue_script( 'themeblvd_modal', TB_FRAMEWORK_URI . '/admin/assets/js/modal.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
+
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
-		// @TODO change back to min
-		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+
+		// Code editor
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+			wp_enqueue_script( 'codemirror', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js', null, '4.0' );
+			wp_enqueue_script( 'codemirror-modes', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js', null, '4.0' );
+		}
 
 		// Add JS locals when needed.
 		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
@@ -237,6 +279,8 @@ class Theme_Blvd_Layout_Builder {
 	public function add_js_locals( $current ) {
 		$new = array(
 			'edit_layout'			=> __( 'Edit Layout', 'themeblvd_builder' ),
+			'delete_text'			=> __( 'Delete', 'themeblvd_builder' ),
+			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'themeblvd_builder' ),
 			'delete_layout'			=> __( 'Are you sure you want to delete the layout(s)?', 'themeblvd_builder' ),
 			'layout_created'		=> __( 'Layout created!', 'themeblvd_builder' ),
 			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'themeblvd_builder' )
@@ -261,12 +305,12 @@ class Theme_Blvd_Layout_Builder {
 			    <h2 class="nav-tab-wrapper">
 			        <a href="#manage_layouts" id="manage_layouts-tab" class="nav-tab" title="<?php _e( 'Manage Layouts', 'themeblvd_builder' ); ?>"><?php _e( 'Manage Layouts', 'themeblvd_builder' ); ?></a>
 			        <a href="#add_layout" id="add_layout-tab" class="nav-tab" title="<?php _e( 'Add New Layout', 'themeblvd_builder' ); ?>"><?php _e( 'Add New Layout', 'themeblvd_builder' ); ?></a>
-			        <a href="#edit_layout" id="edit_layout-tab" class="nav-tab nav-edit-builder" title="<?php _e( 'Edit Layout', 'themeblvd_builder' ); ?>"><?php _e( 'Edit Layout', 'themeblvd_builder' ); ?></a>
+			        <a href="#edit_layout" id="edit_layout-tab" class="nav-tab nav-edit-builder hide" title="<?php _e( 'Edit Layout', 'themeblvd_builder' ); ?>"><?php _e( 'Edit Layout', 'themeblvd_builder' ); ?></a>
 			    </h2>
 
 		    	<!-- MANAGE LAYOUT (start) -->
 
-		    	<div id="manage_layouts" class="group">
+		    	<div id="manage_layouts" class="group hide">
 			    	<form id="manage_builder">
 			    		<?php
 			    		$manage_nonce = wp_create_nonce( 'themeblvd_manage_builder' );
@@ -281,7 +325,7 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- ADD LAYOUT (start) -->
 
-				<div id="add_layout" class="group">
+				<div id="add_layout" class="group hide">
 					<form id="add_new_builder">
 						<?php
 						$add_nonce = wp_create_nonce( 'themeblvd_new_builder' );
@@ -296,7 +340,7 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- EDIT LAYOUT (start) -->
 
-				<div id="edit_layout" class="group">
+				<div id="edit_layout" class="group hide">
 					<form id="edit_builder" method="post">
 						<?php
 						$edit_nonce = wp_create_nonce( 'themeblvd_save_builder' );
@@ -336,7 +380,9 @@ class Theme_Blvd_Layout_Builder {
 					<div class="select-layout">
 						<div class="ajax-overlay"></div>
 						<div class="icon-holder">
-							<span class="tb-loader ajax-loading"></span>
+							<span class="tb-loader ajax-loading">
+								<i class="tb-icon-spinner"></i>
+							</span>
 							<i class="tb-icon-commercial-building"></i>
 						</div>
 						<?php echo $this->layout_select( $current_layout ); ?>
@@ -531,7 +577,9 @@ class Theme_Blvd_Layout_Builder {
 				</div><!-- .group (end) -->
 				<div id="optionsframework-submit">
 					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Layout', 'themeblvd_builder' ); ?>">
-					<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
+					<span class="tb-loader ajax-loading">
+						<i class="tb-icon-spinner"></i>
+					</span>
 		            <div class="clear"></div>
 				</div>
 			</div><!-- .postbox (end) -->
@@ -548,30 +596,207 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 *
+	 * @param string $layout_id ID of current custom layout element is apart of
 	 * @param string $element_type type of element
 	 * @param string $element_id ID for individual slide
-	 * @param array $element_settings any current options for current element
+	 * @param array $element_settings Any current settings for current element
+	 * @param array $column_data If we don't want column data to be pulled from meta, we can feed it in here
 	 */
-	public function edit_element( $element_type, $element_id, $element_settings = null, $visibility = null ) {
+	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $column_data = null ) {
 		$elements = $this->get_elements();
-		$form = themeblvd_option_fields( 'tb_elements['.$element_id.'][options]', $elements[$element_type]['options'], $element_settings, false );
+		$blocks = $this->get_blocks();
+		$field_name = 'tb_elements['.$element_id.'][options]';
+		$form = themeblvd_option_fields( $field_name, $elements[$element_type]['options'], $element_settings, false );
 		?>
-		<div id="<?php echo $element_id; ?>" class="widget element-options"<?php if ( $visibility == 'hide' ) echo ' style="display:none"'; ?>>
-			<div class="widget-name">
-				<a href="#" class="widget-name-arrow">Toggle</a>
+		<div id="<?php echo $element_id; ?>" class="widget element-options" data-field-name="<?php echo $field_name; ?>">
+			<div class="widget-name top-widget-name">
+				<i class="tb-icon-sort"></i>
+				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text-1="<?php _e('Show Element Options', 'themeblvd_builder'); ?>" data-tooltip-text-2="<?php _e('Hide Element Options', 'themeblvd_builder'); ?>">
+					<i class="tb-icon-up-dir"></i>
+				</a>
 				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
 				<div class="clear"></div>
 			</div><!-- .element-name (end) -->
-			<div class="widget-content">
+			<div class="widget-content <?php echo 'element-'.$element_type; ?>">
+
 				<input type="hidden" class="element-type" name="tb_elements[<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
 				<input type="hidden" class="element-query" name="tb_elements[<?php echo $element_id; ?>][query_type]" value="<?php echo $elements[$element_type]['info']['query']; ?>" />
+
+				<!-- ELEMENT OPTIONS (start) -->
+
 				<?php echo $form[0]; ?>
+
+				<!-- ELEMENT OPTIONS (end) -->
+
+				<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+
+					<?php if ( 'content' == $element_type || 'columns' == $element_type ) : ?>
+
+						<!-- COLUMNS/CONTENT (start) -->
+
+						<?php
+						$col_count = 2; // Default
+						if ( 'content' == $element_type ) {
+							$col_count = 1;
+						}
+
+						if ( $element_settings && !empty( $element_settings['setup']['num'] ) ) {
+							$col_count = $element_settings['setup']['num'];
+						}
+						?>
+						<div class="columns-config columns-<?php echo $col_count; ?>">
+
+							<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
+
+								<div class="column col-<?php echo $i; ?>">
+									<div class="column-inner">
+
+										<input class="col-num" type="hidden" value="<?php echo $i; ?>" />
+
+										<div class="column-heading">
+
+											<?php if ( $col_count > 1 ) : ?>
+												<h4><?php printf(__('Column %s', 'themeblvd_builder'), $i); ?></h4>
+											<?php else : ?>
+												<h4><?php _e('Content Blocks', 'themeblvd_builder'); ?></h4>
+											<?php endif; ?>
+
+											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Content Block', 'themeblvd_builder'); ?>" data-tooltip-position="top"><i class="tb-icon-plus-circled"></i></a>
+
+											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Content Block to Add', 'themeblvd_builder'); ?>">
+												<select class="block-type">
+													<?php
+													foreach ( $blocks as $block ) {
+														echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+													}
+													?>
+												</select>
+												<span class="trigger"></span>
+												<span class="textbox"></span>
+											</div><!-- .tb-fancy-select (end) -->
+
+											<a href="#" class="add-block button-secondary" title="<?php _e('Add Content Block', 'themeblvd_builder'); ?>"><?php _e('Add Content Block', 'themeblvd_builder'); ?></a>
+
+											<div class="clear"></div>
+										</div><!-- .column-heading (end) -->
+
+										<div class="column-blocks">
+											<?php
+											if ( isset( $column_data['col_'.$i] ) ) {
+
+												// Column data was forced in through function's parameters.
+												$saved_blocks = $column_data['col_'.$i];
+
+											} else {
+
+												// Get content blocks for column
+												$saved_blocks = get_post_meta( $layout_id, $element_id.'_col_'.$i, true );
+
+												// Check for old method of saving columns
+												if ( ! $saved_blocks ) {
+													$saved_blocks = $this->legacy_content( $element_type, $element_settings, $i );
+												}
+											}
+
+											// Display all content blocks for column
+											if ( is_array($saved_blocks) && count($saved_blocks) > 0 ) {
+												foreach ( $saved_blocks as $block_id => $block ) {
+
+													$block_options = array();
+													if ( isset( $block['options'] ) ) {
+														$block_options = $block['options'];
+													}
+
+													$this->edit_block( $element_id, $block['type'], $block_id, $i, $block_options );
+												}
+											}
+											?>
+										</div><!-- .column-blocks (end) -->
+
+									</div><!-- .column-inner (end) -->
+								</div><!-- .column (end) -->
+
+							<?php endfor; ?>
+
+							<div class="clear"></div>
+
+						</div><!-- .columns-config (end) -->
+
+						<!-- COLUMNS/CONTENT (end) -->
+
+					<?php endif; ?>
+				<?php endif; ?>
+
 				<div class="submitbox widget-footer">
-					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-me" title="<?php _e( 'Are you sure you want to delete this element?', 'themeblvd_builder' ); ?>"><?php _e( 'Delete Element', 'themeblvd_builder' ); ?></a>
+					<a href="#<?php echo $element_id; ?>" class="duplicate-element tb-tooltip-link" data-tooltip-text="<?php _e( 'Duplicate Element', 'themeblvd_builder' ); ?>"><i class="tb-icon-copy"></i></a>
+					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-element" title="<?php _e( 'Are you sure you want to delete this element?', 'themeblvd_builder' ); ?>"><?php _e( 'Delete Element', 'themeblvd_builder' ); ?></a>
 					<div class="clear"></div>
 				</div><!-- .widget-footer (end) -->
 			</div><!-- .element-content (end) -->
 		</div><!-- .element-options(end) -->
+		<?php
+	}
+
+	/**
+	 * Generates the an indivdual panel to edit a content block.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $element_id ID of element that contains this content block
+	 * @param string $block_type type of block
+	 * @param string $block_id ID for individual slide
+	 * @param int $col_num Number of column block is located in
+	 * @param array $block_settings any current options for current block
+	 */
+	public function edit_block( $element_id, $block_type, $block_id, $col_num, $block_settings = null ) {
+		$blocks = $this->get_blocks();
+		$field_name = 'tb_elements['.$element_id.'][columns][col_'.$col_num.']['.$block_id.']';
+		$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
+
+		// Whether to show options icon link
+		$options = false;
+
+		if ( count( $blocks[$block_type]['options'] ) >= 2 ) {
+			$options = true;
+		} else if ( count( $blocks[$block_type]['options'] ) == 1 ) {
+			if ( ! isset( $blocks[$block_type]['options']['content'] ) && ! isset( $blocks[$block_type]['options']['html'] ) ) {
+				$options = true;
+			}
+		}
+
+		?>
+		<div id="<?php echo $block_id; ?>" class="widget content-block" data-element-id="<?php echo $element_id; ?>" data-field-name="<?php echo $field_name.'[options]'; ?>">
+
+			<div class="content-block-handle">
+
+				<h3><?php echo $blocks[$block_type]['info']['name']; ?></h3>
+
+				<nav class="content-block-nav">
+
+					<?php if ( $options ) : ?>
+						<a href="#" class="tb-content-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'themeblvd_builder'); ?>" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>"><i class="tb-icon-cog"></i></a>
+					<?php endif; ?>
+
+					<?php if ( isset( $blocks[$block_type]['options']['content'] ) ) : ?>
+						<a href="#" class="tb-textarea-editor-link tb-content-block-editor-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Content', 'themeblvd'); ?>" data-target="themeblvd-editor-modal" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>"><i class="tb-icon-pencil"></i></a>
+					<?php endif; ?>
+
+					<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
+						<a href="#" class="tb-textarea-code-link tb-content-block-code-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Code', 'themeblvd'); ?>" data-title="<?php _e('Edit Code', 'themeblvd_builder'); ?>" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>" data-target="<?php echo $block_id; ?>"><i class="tb-icon-code"></i></a>
+					<?php endif; ?>
+
+				</nav><!--.content-block-nav (end) -->
+
+				<div class="clear"></div>
+			</div><!-- .content-block-handle (end) -->
+
+			<div class="content-block-options <?php echo 'block-'.$block_type; ?>">
+				<div id="<?php echo $block_id; ?>_options_form" class="content-block-form">
+					<input type="hidden" name="<?php echo $field_name; ?>[type]" value="<?php echo $block_type; ?>" />
+					<?php echo $block_form[0]; ?>
+				</div><!-- .widget-form (end) -->
+			</div><!-- .mini-widget-content (end) -->
+		</div>
 		<?php
 	}
 
@@ -601,7 +826,9 @@ class Theme_Blvd_Layout_Builder {
 							</div>
 							<div id="publishing-action">
 								<input class="button-primary" value="<?php _e( 'Update Layout', 'themeblvd_builder' ); ?>" type="submit" />
-								<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" />
+								<span class="tb-loader ajax-loading">
+									<i class="tb-icon-spinner"></i>
+								</span>
 							</div>
 							<div class="clear"></div>
 						</div>
@@ -673,17 +900,23 @@ class Theme_Blvd_Layout_Builder {
 					<div id="titlediv">
 						<div class="ajax-overlay"></div>
 						<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
-						<select>
-						<?php
-						foreach ( $elements as $element ) {
-							if ( $api->is_element( $element['info']['id'] ) ) {
-								echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+						<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'themeblvd_builder'); ?>">
+							<select>
+							<?php
+							foreach ( $elements as $element ) {
+								if ( $api->is_element( $element['info']['id'] ) ) {
+									echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+								}
 							}
-						}
-						?>
-						</select>
+							?>
+							</select>
+							<span class="trigger"></span>
+							<span class="textbox"></span>
+						</div><!-- .tb-fancy-select (end) -->
 						<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add New Element', 'themeblvd_builder' ); ?></a>
-						<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
+						<span class="tb-loader ajax-loading">
+							<i class="tb-icon-spinner"></i>
+						</span>
 						<div class="clear"></div>
 					</div><!-- #titlediv (end) -->
 					<div id="builder">
@@ -692,9 +925,9 @@ class Theme_Blvd_Layout_Builder {
 							<div class="sortable">
 								<?php
 								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-									foreach ( $layout_elements['featured'] as $id => $element ) {
+									foreach ( $layout_elements['featured'] as $element_id => $element ) {
 										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $element['type'], $id, $element['options'] );
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 										}
 									}
 								}
@@ -707,9 +940,9 @@ class Theme_Blvd_Layout_Builder {
 							<div class="sortable">
 								<?php
 								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-									foreach ( $layout_elements['primary'] as $id => $element ) {
+									foreach ( $layout_elements['primary'] as $element_id => $element ) {
 										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $element['type'], $id, $element['options'] );
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 										}
 									}
 								}
@@ -722,9 +955,9 @@ class Theme_Blvd_Layout_Builder {
 							<div class="sortable">
 								<?php
 								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-									foreach ( $layout_elements['featured_below'] as $id => $element ) {
+									foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
 										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $element['type'], $id, $element['options'] );
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 										}
 									}
 								}
@@ -777,14 +1010,21 @@ class Theme_Blvd_Layout_Builder {
 				<div id="titlediv">
 					<div class="ajax-overlay"></div>
 					<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
-					<select>
-						<?php
-						foreach ( $elements as $element )
-							echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
-						?>
-					</select>
+					<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'themeblvd_builder'); ?>">
+						<select>
+							<?php
+							foreach ( $elements as $element ) {
+								echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+							}
+							?>
+						</select>
+						<span class="trigger"></span>
+						<span class="textbox"></span>
+					</div><!-- .tb-fancy-select (end) -->
 					<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add New Element', 'themeblvd_builder' ); ?></a>
-					<span class="tb-loader ajax-loading"></span>
+					<span class="tb-loader ajax-loading">
+						<i class="tb-icon-spinner"></i>
+					</span>
 					<div class="clear"></div>
 				</div><!-- #titlediv (end) -->
 				<div id="builder">
@@ -793,9 +1033,9 @@ class Theme_Blvd_Layout_Builder {
 						<div class="sortable">
 							<?php
 							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-								foreach ( $layout_elements['featured'] as $id => $element ) {
+								foreach ( $layout_elements['featured'] as $element_id => $element ) {
 									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $element['type'], $id, $element['options'] );
+										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 									}
 								}
 							}
@@ -808,9 +1048,9 @@ class Theme_Blvd_Layout_Builder {
 						<div class="sortable">
 							<?php
 							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-								foreach ( $layout_elements['primary'] as $id => $element ) {
+								foreach ( $layout_elements['primary'] as $element_id => $element ) {
 									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $element['type'], $id, $element['options'] );
+										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 									}
 								}
 							}
@@ -823,9 +1063,9 @@ class Theme_Blvd_Layout_Builder {
 						<div class="sortable">
 							<?php
 							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-								foreach ( $layout_elements['featured_below'] as $id => $element ) {
+								foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
 									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $element['type'], $id, $element['options'] );
+										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
 									}
 								}
 							}
@@ -893,7 +1133,7 @@ class Theme_Blvd_Layout_Builder {
 		);
 		$custom_layouts = get_posts($args);
 
-		$output .= '<div class="tb-fancy-select">';
+		$output .= '<div class="tb-fancy-select condensed">';
 		$output .= '<select id="tb-layout-toggle" name="_tb_custom_layout">';
 		$output .= '<option value="">'.__('- None -', 'themeblvd_builder').'</option>';
 
@@ -909,6 +1149,113 @@ class Theme_Blvd_Layout_Builder {
 		$output .= '</div><!-- .tb-fancy-select (end) -->';
 
 		return $output;
+	}
+
+	/**
+	 * This takes a set of columns saved from prior to
+	 * v1.3, and arranges them into the new content block
+	 * system when displayed in the Builder.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $type Type of element - columns or content
+	 * @param array $settings All current settings for element
+	 * @param int $col_num If $type == colums, this is the number of columns
+	 * @return array $content_blocks An array containing the converted content block
+	 */
+	public function legacy_content( $type, $settings, $col_num = 0 ) {
+
+		$content_blocks = array();
+
+		if ( $type != 'columns' && $type != 'content' ) {
+			return $content_blocks;
+		}
+
+		if ( ! isset( $settings['col_'.$col_num] ) && ! isset( $settings['source'] ) ) {
+			return $content_blocks;
+		}
+
+		// Block type
+		$block_type = '';
+
+		if ( isset( $settings['col_'.$col_num] ) ) {
+			$block_type = $settings['col_'.$col_num]['type'];
+		} else if ( isset( $settings['source'] ) ) {
+			$block_type = $settings['source'];
+		}
+
+		if ( ! $block_type ) {
+			return $content_blocks;
+		}
+
+		// Generate random ID for block
+		$block_id = uniqid( 'block_'.rand() );
+
+		// Start Block
+		$content_blocks[$block_id] = array();
+		$content_blocks[$block_id]['type'] = $block_type;
+
+		// Setup options
+		$content_blocks[$block_id]['options'] = array();
+		$options = array();
+
+		switch ( $block_type  ) {
+
+			// External page
+			case 'page' :
+				if ( $type == 'columns' ) {
+					$options['page_id'] = $settings['col_'.$col_num]['page'];
+				} else {
+					$options['page_id'] = $settings['page_id'];
+				}
+				break;
+
+			// Raw Content
+			case 'raw' :
+				if ( $type == 'columns' ) {
+					$options['text'] = $settings['col_'.$col_num]['raw'];
+					$options['format'] = $settings['col_'.$col_num]['raw_format'];
+				} else {
+					$options['text'] = $settings['raw_content'];
+					$options['format'] = $settings['raw_format'];
+				}
+				break;
+
+			// Widget Area
+			case 'widget' :
+				if ( $type == 'columns' ) {
+					$options['widget_area'] = $settings['col_'.$col_num]['sidebar'];
+				} else {
+					$options['widget_area'] = $settings['widget_area'];
+				}
+				break;
+		}
+
+		$content_blocks[$block_id]['options'] = $options;
+
+		return $content_blocks;
+
+	}
+
+	/**
+	 * Hook in hidden editor modal.
+	 *
+	 * @since 1.3.0
+	 */
+	public function add_editor() {
+
+		// Requires Framework 2.5+
+		if ( function_exists( 'themeblvd_editor' ) ) {
+
+			$page = get_current_screen();
+
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+				add_action( 'in_admin_header', array( $this, 'display_editor' ) );
+			}
+		}
+	}
+	public function display_editor() {
+		themeblvd_editor( array( 'delete' => true, 'duplicate' => true ) );
 	}
 
 }

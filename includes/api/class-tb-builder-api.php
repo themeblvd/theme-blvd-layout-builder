@@ -67,6 +67,48 @@ class Theme_Blvd_Builder_API {
 	private $elements = array();
 
 	/**
+	 * A quick overview of registered content blocks
+	 * as the API moves along. Can be accesed from admin
+	 * or frontend.
+	 *
+	 * @since 1.3.0
+	 */
+	private $registered_blocks = array();
+
+	/**
+	 * Core framework content blocks and settings.
+	 * WP-Admin only.
+	 *
+	 * @since 1.3.0
+	 */
+	private $core_blocks = array();
+
+	/**
+	 * Content blocks and settings added through
+	 * client API mutators. WP-Admin only.
+	 *
+	 * @since 1.3.0
+	 */
+	private $client_blocks = array();
+
+	/**
+	 * Content blocks to remove from Layout
+	 * Builder. WP-Admin only.
+	 *
+	 * @since 1.3.0
+	 */
+	private $remove_blocks = array();
+
+	/**
+	 * Final array of content blocks and settings. This
+	 * combines $core_blocks and $client_blocks.
+	 * WP-Admin only.
+	 *
+	 * @since 1.3.0
+	 */
+	private $blocks = array();
+
+	/**
 	 * Core framework sample layouts. WP-Admin only.
 	 *
 	 * @since 1.1.1
@@ -124,21 +166,24 @@ class Theme_Blvd_Builder_API {
 	 */
 	private function __construct() {
 
-		// Setup registered elements reference for frontend and
+		// Setup registered elements/blocks reference for frontend and
 		// admin. This allows us to keep track of elements without
 		// consuming as much memory on the frontend.
 		$this->set_registered_elements();
+		$this->set_registered_blocks();
 
 		if ( is_admin() ) {
 
 			// Setup framework default elements and sample
 			// layouts to build onto for Builder interface.
 			$this->set_core_elements();
+			$this->set_core_blocks();
 			$this->set_core_layouts();
 
 			// Establish elements and sample layouts based on
 			// client modifications combined with framework defaults.
 			add_action( 'after_setup_theme', array( $this, 'set_elements' ), 1000 );
+			add_action( 'after_setup_theme', array( $this, 'set_blocks' ), 1000 );
 			add_action( 'after_setup_theme', array( $this, 'set_layouts' ), 1000 );
 
 		}
@@ -163,6 +208,7 @@ class Theme_Blvd_Builder_API {
 			'content',
 			'divider',
 			'headline',
+			'html',
 			'jumbotron',
 			'post_grid_paginated',
 			'post_grid',
@@ -210,7 +256,7 @@ class Theme_Blvd_Builder_API {
 		unset( $categories_multicheck['null'] );
 
 		/*--------------------------------------------*/
-		/* (1) Columns
+		/* Columns
 		/*--------------------------------------------*/
 
 		$this->core_elements['columns'] = array();
@@ -235,56 +281,82 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'setup',
 				'name'		=> __( 'Setup Columns', 'themeblvd_builder' ),
 				'desc'		=> __( 'Choose the number of columns along with the corresponding width configurations.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'num'		=> '2',
+					'width'		=> array(
+						'1' => 'grid_12',
+                        '2' => 'grid_6-grid_6',
+                        '3' => 'grid_4-grid_4-grid_4',
+                        '4' => 'grid_3-grid_3-grid_3-grid_3',
+                        '5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
+					)
+				),
 				'type'		=> 'columns',
 				'options'	=> 'element'
-			),
-			'col_1' => array(
-				'id' 		=> 'col_1',
-				'name'		=> __( 'Column #1', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the first column.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'class'		=> 'col_1',
-				'options'	=> array( 'widget', 'current', 'page', 'raw' )
-			),
-			'col_2' => array(
-				'id' 		=> 'col_2',
-				'name'		=> __( 'Column #2', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the second column.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'class'		=> 'col_2',
-				'options'	=> array( 'widget', 'current', 'page', 'raw' )
-			),
-			'col_3' => array(
-				'id' 		=> 'col_3',
-				'name'		=> __( 'Column #3', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the third column.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'class'		=> 'col_3',
-				'options'	=> array( 'widget', 'current', 'page', 'raw' )
-			),
-			'col_4' => array(
-				'id' 		=> 'col_4',
-				'name'		=> __( 'Column #4', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the fourth column.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'class'		=> 'col_4',
-				'options'	=> array( 'widget', 'current', 'page', 'raw' )
-			),
-			'col_5' => array(
-				'id' 		=> 'col_5',
-				'name'		=> __( 'Column #5', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the fifth column.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'class'		=> 'col_5',
-				'options'	=> array( 'widget', 'current', 'page', 'raw' )
 			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
 
+		// Options for columns element prior to dynamic content
+		// block support added in Theme Blvd framework 2.5.0
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+
+			$column_legacy_options = array(
+				'col_1' => array(
+					'id' 		=> 'col_1',
+					'name'		=> __( 'Column #1', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the first column.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'class'		=> 'col_1',
+					'options'	=> array( 'widget', 'current', 'page', 'raw' )
+				),
+				'col_2' => array(
+					'id' 		=> 'col_2',
+					'name'		=> __( 'Column #2', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the second column.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'class'		=> 'col_2',
+					'options'	=> array( 'widget', 'current', 'page', 'raw' )
+				),
+				'col_3' => array(
+					'id' 		=> 'col_3',
+					'name'		=> __( 'Column #3', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the third column.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'class'		=> 'col_3',
+					'options'	=> array( 'widget', 'current', 'page', 'raw' )
+				),
+				'col_4' => array(
+					'id' 		=> 'col_4',
+					'name'		=> __( 'Column #4', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the fourth column.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'class'		=> 'col_4',
+					'options'	=> array( 'widget', 'current', 'page', 'raw' )
+				),
+				'col_5' => array(
+					'id' 		=> 'col_5',
+					'name'		=> __( 'Column #5', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the fifth column.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'class'		=> 'col_5',
+					'options'	=> array( 'widget', 'current', 'page', 'raw' )
+				),
+				'subgroup_end' => array(
+			    	'type'		=> 'subgroup_end'
+			    )
+			);
+
+			unset( $this->core_elements['columns']['options']['subgroup_end'] );
+
+			$this->core_elements['columns']['options'] = array_merge( $this->core_elements['columns']['options'], $column_legacy_options );
+
+		}
+
 		/*--------------------------------------------*/
-		/* (2) Content
+		/* Content
 		/*--------------------------------------------*/
 
 		$this->core_elements['content'] = array();
@@ -301,67 +373,11 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['content']['options'] = array(
-			'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start'
-		    ),
-		    'source' => array(
-		    	'id' 		=> 'source',
-				'name'		=> __( 'Content Source', 'themeblvd_builder' ),
-				'desc'		=> __( 'Choose where you\'d like to have content feed from. The content can either be from the current page you\'re applying this layout to or an external page.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'options'	=> array(
-					'current' 		=> __( 'Content from current page', 'themeblvd_builder' ),
-			        'external' 		=> __( 'Content from external page', 'themeblvd_builder' ),
-			        'raw'			=> __( 'Raw content', 'themeblvd_builder' ),
-			        'widget_area'	=> __( 'Floating Widget Area', 'themeblvd_builder' )
-				),
-				'class'		=> 'custom-content-types'
-			),
-			'page_id' => array(
-		    	'id' 		=> 'page_id',
-				'name'		=> __( 'External Page', 'themeblvd_builder' ),
-				'desc'		=> __( 'Choose the external page you\'d like to pull content from.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'options'	=> themeblvd_get_select( 'pages' ),
-				'class'		=> 'hide page-content'
-			),
-			'raw_content' => array(
-		    	'id' 		=> 'raw_content',
-				'name'		=> __( 'Raw Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder' ),
-				'type'		=> 'textarea',
-				'class'		=> 'hide raw-content'
-			),
-			'raw_format' => array(
-		    	'id' 		=> 'raw_format',
-				'name'		=> __( 'Raw Content Formatting', 'themeblvd_builder' ),
-				'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'std'		=> '1',
-				'class'		=> 'hide raw-content'
-			),
-			'widget_area' => array(
-		    	'id' 		=> 'widget_area',
-				'name'		=> __( 'Floating Widget Area', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select from your floating custom widget areas. In order for a custom widget area to be "floating" you must have it configured this way in the Widget Area manager.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'options'	=> $sidebars,
-				'class'		=> 'hide widget_area-content'
-			),
-			'subgroup_end' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
+			// ... No options, implements sortable content blocks
 		);
 
-		// The selection of a floating widget area is only
-		// possible if the Widget Areas plugin is installed.
-		if ( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
-			unset( $this->core_elements['content']['options']['source']['options']['widget_area'] );
-			unset( $this->core_elements['content']['options']['widget_area'] );
-		}
-
 		/*--------------------------------------------*/
-		/* (3) Divider
+		/* Divider
 		/*--------------------------------------------*/
 
 		$this->core_elements['divider'] = array();
@@ -392,7 +408,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (4) Headline
+		/* Headline
 		/*--------------------------------------------*/
 
 		$this->core_elements['headline'] = array();
@@ -449,7 +465,33 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (5) Jumbotron
+		/* HTML Block
+		/*--------------------------------------------*/
+
+		$this->core_elements['html'] = array();
+
+		// Information
+		$this->core_elements['html']['info'] = array(
+			'name'		=> __( 'HTML', 'themeblvd_builder' ),
+			'id'		=> 'html',
+			'query'		=> 'none',
+			'hook'		=> 'html',
+			'shortcode'	=> '',
+			'desc'		=> __( 'A block of HTML/JavaScript code.' , 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['html']['options'] = array(
+			'html' => array(
+				'id' 		=> 'html',
+				'type'		=> 'code',
+				'lang'		=> 'html',
+				'class'		=> 'tight' // CSS class will remove margin from bottom of option so it looks nicer alone w/ no description or following options
+		    )
+		);
+
+		/*--------------------------------------------*/
+		/* Jumbotron
 		/*--------------------------------------------*/
 
 		$this->core_elements['jumbotron'] = array();
@@ -569,7 +611,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (6) Post Grid (paginated)
+		/* Post Grid (paginated)
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid_paginated'] = array();
@@ -686,7 +728,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (7) Post Grid
+		/* Post Grid
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid'] = array();
@@ -852,7 +894,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (8) Post Grid Slider
+		/* Post Grid Slider
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_grid_slider'] = array();
@@ -1036,7 +1078,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (9) Post List (paginated)
+		/* Post List (paginated)
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list_paginated'] = array();
@@ -1159,7 +1201,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (10) Post List
+		/* Post List
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list'] = array();
@@ -1332,7 +1374,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (11) Post List Slider
+		/* Post List Slider
 		/*--------------------------------------------*/
 
 		$this->core_elements['post_list_slider'] = array();
@@ -1521,7 +1563,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (12) Post Slider
+		/* Post Slider
 		/*--------------------------------------------*/
 
 		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
@@ -1769,7 +1811,7 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* (13) Slider
+		/* Slider
 		/*--------------------------------------------*/
 
 		if ( defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
@@ -1805,7 +1847,7 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* (14) Slogan
+		/* Slogan
 		/*--------------------------------------------*/
 
 		$this->core_elements['slogan'] = array();
@@ -1908,7 +1950,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* (15) Tabs
+		/* Tabs
 		/*--------------------------------------------*/
 
 		$this->core_elements['tabs'] = array();
@@ -2105,6 +2147,303 @@ class Theme_Blvd_Builder_API {
 
 		// Extend
 		$this->elements = apply_filters( 'themeblvd_elements', $this->elements );
+
+	}
+
+	/**
+	 * Set originally registered blocks. As client API moves
+	 * along, this will be modified, allowing blocks to be
+	 * registered or de-registered.
+	 *
+	 * @since 1.3.0
+	 */
+	private function set_registered_blocks() {
+		$this->registered_blocks = array(
+			'content',
+			'current',
+			'page',
+			'html',
+			'media',
+			'panel',
+			'raw'
+		);
+		$this->registered_blocks = apply_filters( 'themeblvd_registered_blocks', $this->registered_blocks );
+	}
+
+	/**
+	 * Set original content blocks. These will be later merged
+	 * with API client-added blocks. WP-Admin only, see constructer.
+	 *
+	 * @since 1.3.0
+	 */
+	private function set_core_blocks() {
+
+		$this->core_blocks = array();
+
+		/*--------------------------------------------*/
+		/* Option helpers
+		/*--------------------------------------------*/
+
+		// ...
+
+		/*--------------------------------------------*/
+		/* Content - Editor
+		/*--------------------------------------------*/
+
+		$this->core_blocks['content'] = array();
+
+		// Information
+		$this->core_blocks['content']['info'] = array(
+			'name' 		=> __( 'Content', 'themeblvd_builder' ),
+			'id'		=> 'content'
+		);
+
+		// Options
+		$this->core_blocks['content']['options'] = array(
+			'content' => array(
+		    	'id' 		=> 'content',
+				'name'		=> __( 'Content', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the content you\'d like to sho for this content block.', 'themeblvd_builder' ),
+				'type'		=> 'editor_modal'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Current Page
+		/*--------------------------------------------*/
+
+		$this->core_blocks['current'] = array();
+
+		// Information
+		$this->core_blocks['current']['info'] = array(
+			'name' 		=> __( 'Current Page', 'themeblvd_builder' ),
+			'id'		=> 'current'
+		);
+
+		// Options
+		$this->core_blocks['current']['options'] = array(
+			'current_info' => array(
+		    	'id' 		=> 'current_info',
+				'desc'		=> __( 'The content will be pulled from the current page the layout is applied to.', 'themeblvd_builder' ),
+				'type'		=> 'info'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* External Page
+		/*--------------------------------------------*/
+
+		$this->core_blocks['page'] = array();
+
+		// Information
+		$this->core_blocks['page']['info'] = array(
+			'name' 		=> __( 'External Page', 'themeblvd_builder' ),
+			'id'		=> 'page'
+		);
+
+		// Options
+		$this->core_blocks['page']['options'] = array(
+			'page_id' => array(
+		    	'id' 		=> 'page_id',
+				'name'		=> __( 'Page', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select from your website\'s pages to pull content from.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'select'	=> 'pages'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* HTML Block
+		/*--------------------------------------------*/
+
+		$this->core_blocks['html'] = array();
+
+		// Information
+		$this->core_blocks['html']['info'] = array(
+			'name' 		=> __( 'HTML', 'themeblvd_builder' ),
+			'id'		=> 'html'
+		);
+
+		// Options
+		$this->core_blocks['html']['options'] = array(
+			'html' => array(
+		    	'id' 		=> 'html',
+				'name'		=> __( 'HTML Content', 'themeblvd_builder' ),
+				'desc'		=> __( 'Add your HTML into the editor.', 'themeblvd_builder' ),
+				'type'		=> 'textarea' // Doesn't need to be "code" type because will be openned in modal code editor by having ID "html"
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Media
+		/*--------------------------------------------*/
+
+		$this->core_blocks['media'] = array();
+
+		// Information
+		$this->core_blocks['media']['info'] = array(
+			'name' 		=> __( 'Media', 'themeblvd_builder' ),
+			'id'		=> 'media'
+		);
+
+		// Options
+		$this->core_blocks['media']['options'] = array(
+			'media' => array(
+		    	'id' 		=> 'media',
+				'name'		=> __( 'Media', 'themeblvd_builder' ),
+				'desc'		=> __( 'Insert your media into the textarea above, similarly to how you would when editing a page or post.', 'themeblvd_builder' ),
+				'type'		=> 'media'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Panel
+		/*--------------------------------------------*/
+
+		$this->core_blocks['panel'] = array();
+
+		// Information
+		$this->core_blocks['panel']['info'] = array(
+			'name' 		=> __( 'Panel', 'themeblvd_builder' ),
+			'id'		=> 'panel'
+		);
+
+		// Options
+		$this->core_blocks['panel']['options'] = array(
+			'content' => array(
+		    	'id' 		=> 'content',
+				'name'		=> __( 'Content', 'themeblvd_builder' ),
+				'type'		=> 'textarea',
+				'class'		=> 'hide'
+			),
+			'style' => array(
+				'name' 		=> __( 'Style', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'Style of the panel.', 'themeblvd' ),
+				'id' 		=> 'style',
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default' 	=> __('Default (grey)', 'themeblvd_shortcodes'),
+					'primary' 	=> __('Primary (blue)', 'themeblvd_shortcodes'),
+					'info' 		=> __('Info (lighter blue)', 'themeblvd_shortcodes'),
+					'success' 	=> __('Success (green)', 'themeblvd_shortcodes'),
+					'danger' 	=> __('Danger (red)', 'themeblvd_shortcodes'),
+					'warning' 	=> __('Warning (yellow)', 'themeblvd_shortcodes')
+				)
+			),
+			'title' => array(
+				'name' 		=> __( 'Title (optional)', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'The title of the panel.', 'themeblvd' ),
+				'id' 		=> 'title',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			),
+			'footer' => array(
+				'name' 		=> __( 'Footer text (optional)', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'Footer text for the panel.', 'themeblvd' ),
+				'id' 		=> 'footer',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			),
+			'text_align' => array(
+				'name' 		=> __( 'Text Alignment', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'How to align text in panel.', 'themeblvd' ),
+				'id' 		=> 'text_align',
+				'std' 		=> 'left',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'left' 		=> __('Left', 'themeblvd_shortcodes'),
+					'right' 	=> __('Right', 'themeblvd_shortcodes'),
+					'center' 	=> __('Center', 'themeblvd_shortcodes')
+				)
+			),
+			'class' => array(
+				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd' ),
+				'id' 		=> 'class',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Raw Content
+		/*--------------------------------------------*/
+
+		$this->core_blocks['raw'] = array();
+
+		// Information
+		$this->core_blocks['raw']['info'] = array(
+			'name' 		=> __( 'Raw Text', 'themeblvd_builder' ),
+			'id'		=> 'raw'
+		);
+
+		// Options
+		$this->core_blocks['raw']['options'] = array(
+			'text' => array(
+		    	'id' 		=> 'text',
+				'name'		=> __( 'Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder' ),
+				'type'		=> 'textarea'
+			),
+			'format' => array(
+		    	'id' 		=> 'format',
+				'name'		=> __( 'Raw Content Formatting', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Widget Area
+		/*--------------------------------------------*/
+
+		$this->core_blocks['widget'] = array();
+
+		// Information
+		$this->core_blocks['widget']['info'] = array(
+			'name' 		=> __( 'Widget Area', 'themeblvd_builder' ),
+			'id'		=> 'widget'
+		);
+
+		// Options
+		$this->core_blocks['widget']['options'] = array(
+			'widget_area' => array(
+		    	'id' 		=> 'widget_area',
+				'name'		=> __( 'Widget Area', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select from your registered widget areas.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'select'	=> 'sidebars_all'
+			)
+		);
+
+	}
+
+	/**
+	 * Set content blocks by combining core elements and client-added
+	 * blocks. Then remove any elements that have been set to
+	 * be removed. This happens at the "after_setup_theme" hook
+	 * with a priority of 1000.
+	 *
+	 * @since 1.3.0
+	 */
+	public function set_blocks() {
+
+		// Combine core elements with client elements
+		$this->blocks = array_merge( $this->core_blocks, $this->client_blocks );
+
+		// Remove blocks
+		if ( $this->remove_blocks ) {
+			foreach ( $this->remove_blocks as $block_id ) {
+				if ( isset( $this->blocks[$block_id] ) ) {
+					unset( $this->blocks[$block_id] );
+				}
+			}
+		}
+
+		// Extend
+		$this->blocks = apply_filters( 'themeblvd_blocks', $this->blocks );
 
 	}
 
@@ -2859,6 +3198,21 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
+	 * Manually register a content block.
+	 *
+	 * Note: This won't be used in most cases, as registration
+	 * of blocks is taken care of automatically when adding
+	 * and removing.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $id ID of block to register
+	 */
+	public function register_block( $id ) {
+		$this->registered_blocks[] = $id;
+	}
+
+	/**
 	 * Manually de-register an element.
 	 *
 	 * Note: This won't be used in most cases, as registration
@@ -2878,6 +3232,31 @@ class Theme_Blvd_Builder_API {
 		foreach ( $this->registered_elements as $key => $element ) {
 			if ( $id == $element ) {
 				unset( $this->registered_elements[$key] );
+			}
+		}
+
+	}
+
+	/**
+	 * Manually de-register a content block.
+	 *
+	 * Note: This won't be used in most cases, as registration
+	 * of blocks is taken care of automatically when adding
+	 * and removing.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $id ID of block to register
+	 */
+	public function de_register_block( $id ) {
+
+		if ( ! $this->registered_blocks ) {
+			return;
+		}
+
+		foreach ( $this->registered_blocks as $key => $block ) {
+			if ( $id == $block ) {
+				unset( $this->registered_blocks[$key] );
 			}
 		}
 
@@ -2939,6 +3318,24 @@ class Theme_Blvd_Builder_API {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Add content block to Builder.
+	 *
+	 * @since 1.3.0
+	 */
+	public function add_block( $element_id, $element_name, $options, $callback ) {
+		// @todo ...
+	}
+
+	/**
+	 * Remove content block to Builder.
+	 *
+	 * @since 1.3.0
+	 */
+	public function remove_block( $element_id ) {
+		// @todo ...
 	}
 
 	/**
@@ -3049,6 +3446,52 @@ class Theme_Blvd_Builder_API {
 	}
 
 	/**
+	 * Get registered blocks.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return array $registered_blocks
+	 */
+	public function get_registered_blocks() {
+		return $this->registered_blocks;
+	}
+
+	/**
+	 * Get core blocks and options.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return array $core_blocks
+	 */
+	public function get_core_blocks() {
+		return $this->core_blocks;
+	}
+
+	/**
+	 * Get client API-added blocks and options.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return array $client_blocks
+	 */
+	public function get_client_blocks() {
+		return $this->client_blocks;
+	}
+
+	/**
+	 * Get final blocks. This is the merged result of
+	 * core blocks and client API-added blocks. This
+	 * is available after WP's "after_setup_theme" hook.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return array $blocks
+	 */
+	public function get_blocks() {
+		return $this->blocks;
+	}
+
+	/**
 	 * Get core sample layouts.
 	 *
 	 * @since 1.1.1
@@ -3088,7 +3531,7 @@ class Theme_Blvd_Builder_API {
 	/*--------------------------------------------*/
 
 	/**
-	 * Check if an elements is currently registered.
+	 * Check if an element is currently registered.
 	 *
 	 * @since 1.1.1
 	 *
@@ -3098,6 +3541,23 @@ class Theme_Blvd_Builder_API {
 	public function is_element( $element_id ) {
 
 		if ( in_array( $element_id, $this->registered_elements ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if a content block is currently registered.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $element_id ID of element to check
+	 * @return bool Whether or not the element is registerd
+	 */
+	public function is_block( $block_id ) {
+
+		if ( in_array( $block_id, $this->registered_blocks ) ) {
 			return true;
 		}
 

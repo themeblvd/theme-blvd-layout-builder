@@ -3,7 +3,6 @@
  * This is an extension of what was already started in the
  * options-custom.js file.
  */
-
 jQuery(document).ready(function($) {
 
 	/*-----------------------------------------------------------------------------------*/
@@ -63,11 +62,11 @@ jQuery(document).ready(function($) {
 
 							// Insert update message, fade it in, and then remove it
 							// after a few seconds.
-							$('#builder_blvd #manage_layout').prepend(response[1]);
-							$('#builder_blvd #manage_layout .ajax-update').fadeIn(500, function(){
+							$('#builder_blvd #manage_layouts').prepend(response[1]);
+							$('#builder_blvd #manage_layouts .ajax-update').fadeIn(500, function(){
 								setTimeout( function(){
-									$('#builder_blvd #manage_layout .ajax-update').fadeOut(500, function(){
-										$('#builder_blvd #manage_layout .ajax-update').remove();
+									$('#builder_blvd #manage_layouts .ajax-update').fadeOut(500, function(){
+										$('#builder_blvd #manage_layouts .ajax-update').remove();
 									});
 						      	}, 1500);
 
@@ -173,7 +172,7 @@ jQuery(document).ready(function($) {
 
 			// Setup sortables
 			$('.sortable').sortable({
-				handle: '.widget-name',
+				handle: '.top-widget-name',
 				connectWith: '.sortable'
 			});
 
@@ -196,10 +195,28 @@ jQuery(document).ready(function($) {
 			// Setup options
 			$('#builder_blvd').themeblvd('options', 'setup');
 			$('#builder_blvd').themeblvd('options', 'media-uploader');
+			$('#builder_blvd').themeblvd('options', 'editor');
+			$('#builder_blvd').themeblvd('options', 'code-editor');
+
+			// Setup each "Columns" and "Content" element
+			$('#builder_blvd .element-columns, #builder_blvd .element-content').each(function(){
+				builder_blvd.columns( $(this).closest('.widget') );
+			});
+
+			// Setup content block options, which open in a modal
+			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+				$('#builder_blvd .tb-content-block-options-link').ThemeBlvdModal({
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'small',
+			        on_load: builder_blvd.content_block_options_load
+			    });
+			}
 
 			// Take us to the tab
 			$('#builder_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
-			$('#builder_blvd .nav-tab-wrapper a.nav-edit-builder').show().addClass('nav-tab-active');
+			$('#builder_blvd .nav-tab-wrapper a.nav-edit-builder').css('display', 'inline-block').addClass('nav-tab-active');
 			$('#builder_blvd .group').hide();
 			$('#builder_blvd .group:last').fadeIn();
 
@@ -241,11 +258,16 @@ jQuery(document).ready(function($) {
 					builder_blvd.edit_now(object);
 					object.find('.meta-box-nav .ajax-overlay').fadeOut('fast');
 					object.find('.meta-box-nav .ajax-loading').fadeOut('fast');
+					object.find('.ajax-mitt').css({
+						'height': 'auto',
+						'overflow': 'visible'
+					});
 					object.find('#edit_layout .ajax-overlay-layout-switch').fadeOut('fast').remove();
 
 					// If a new layout was just created, we need to confirm and get the user there to edit it.
-					if( new_layout_created )
+					if ( new_layout_created ) {
 						builder_blvd.confirm_new_layout();
+					}
 
 				}, 1000);
 
@@ -261,7 +283,7 @@ jQuery(document).ready(function($) {
 			// if not we need to collect it.
 			if( ! new_layout_id )
 			{
-				// User has selected to eidt an existing layout,
+				// User has selected to edit an existing layout,
 				// opposed to creating a new one.
 				new_layout_id = object.val();
 			}
@@ -284,6 +306,10 @@ jQuery(document).ready(function($) {
 					parent.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
 					parent.find('#edit_layout').prepend('<div class="ajax-overlay-layout-switch"></div>');
 					parent.find('#edit_layout .ajax-overlay-layout-switch').fadeIn('fast');
+					parent.find('.ajax-mitt').css({
+						'height': parent.find('.ajax-mitt').outerHeight()+'px',
+						'overflow': 'hidden'
+					});
 
 					// Take action based on user selection
 					if(r)
@@ -318,6 +344,10 @@ jQuery(document).ready(function($) {
 				parent.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
 				parent.find('#edit_layout').prepend('<div class="ajax-overlay-layout-switch"></div>');
 				parent.find('#edit_layout .ajax-overlay-layout-switch').fadeIn('fast');
+				parent.find('.ajax-mitt').css({
+					'height': parent.find('.ajax-mitt').outerHeight()+'px',
+					'overflow': 'hidden'
+				});
 
 				// No previous layout, so we don't need to ask the user if they want to save it.
 				builder_blvd.mini_edit( new_layout_id, nonce, parent, new_layout_created );
@@ -377,7 +407,7 @@ jQuery(document).ready(function($) {
 
 			// Setup sortables
 			object.find('.sortable').sortable({
-				handle: '.widget-name',
+				handle: '.top-widget-name',
 				connectWith: '.sortable'
 			});
 
@@ -393,7 +423,172 @@ jQuery(document).ready(function($) {
 			// Setup options
 			object.themeblvd('options', 'setup');
 			object.themeblvd('options', 'media-uploader');
+			object.themeblvd('options', 'editor');
+			object.themeblvd('options', 'code-editor');
 
+			// Setup each "Columns" element
+			$('#builder_blvd .element-columns, #builder_blvd .element-content').each(function(){
+				builder_blvd.columns( $(this).closest('.widget') );
+			});
+
+			// Setup content block options, which open in a modal
+			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+				$('#builder_blvd .tb-content-block-options-link').ThemeBlvdModal({
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'small',
+			        on_load: builder_blvd.content_block_options_load
+			    });
+			}
+
+    	},
+
+    	// Setup each columns element
+    	columns : function ( $element )
+    	{
+
+    		// Change display for number of columns
+    		$element.find('.column-num').change(function(){
+
+    			var num = $(this).val();
+
+    			// Adjust the CSS fpr class, which will handle
+    			// displaying the correct amount of columns
+    			$element.find('.columns-config').removeClass('columns-1 columns-2 columns-3 columns-4 columns-5').addClass('columns-'+num);
+
+    		});
+
+    		// Sortable content blocks
+			var prev_col_num, new_col_num, content;
+
+			$element.find('.column-blocks').sortable({
+				handle: '.content-block-handle h3',
+				connectWith: '#'+$element.closest('.widget').attr('id')+' .column-blocks',
+				remove: function(event, ui) {
+
+					// Add "mini-empty" class to column,
+					// if empty
+					content = $(this).html();
+					if ( ! content.trim().length ) {
+						$(this).addClass('mini-empty');
+					}
+
+					// Set column number that block
+					// is being removed from
+					prev_col_num = $(this).closest('.column').find('.col-num').val();
+
+				},
+				receive: function(event, ui) {
+
+					var el = $(this), data_field_name;
+
+					// If the current, receiving column
+					// was empty, now it's not.
+					el.removeClass('mini-empty');
+
+					// Update the name field for any options
+					// in this block.
+					new_col_num = el.closest('.column').find('.col-num').val();
+
+					ui.item.find('input, textarea, select, option').each(function(){
+
+						var field = $(this),
+							name = field.attr('name');
+
+						if ( name ) {
+							field.attr('name', name.replace('col_'+prev_col_num, 'col_'+new_col_num) );
+						}
+					});
+
+					// Update data-field-name
+					data_field_name = ui.item.data('field-name');
+					data_field_name = data_field_name.replace('col_'+prev_col_num, 'col_'+new_col_num);
+					ui.item.data('field-name', data_field_name);
+
+					// Setup editor links
+					ui.item.themeblvd('options', 'editor');
+
+				}
+			});
+
+			// Check if sortable columns are empty to start
+			$element.find('.column-blocks').each(function(){
+				var content = $(this).html();
+				if ( ! content.trim().length ) {
+					$(this).addClass('mini-empty');
+				}
+			});
+
+    		// Button to add new content blocks
+    		$element.find('.columns-config .add-block').each(function(){
+    			$(this).click(function(){
+
+    				var column = $(this).closest('.column'),
+    					element_id = column.closest('.widget.element-options').attr('id'),
+						type = column.find('.block-type').val(),
+						col_num = column.find('.col-num').val(),
+						block;
+
+    				var data = {
+						action: 'themeblvd_add_block',
+						data: element_id+'[(=>)]'+type+'[(=>)]'+col_num
+					};
+		    		$.post(ajaxurl, data, function(response) {
+
+		    			// Split response
+						response = response.split('[(=>)]');
+
+						// Insert new content block
+						column.find('.column-blocks').append(response[1]).removeClass('mini-empty');
+
+						// Locate the content block just added
+						block = column.find('#'+response[0]);
+
+						// For those furious clickers, amek sure no "add" classes
+						// got left behind from previously added elements.
+						$('#builder_blvd .add').removeClass('add');
+
+						// Give it a temporary green glow to show it's just been added.
+						block.addClass('add');
+						window.setTimeout(function(){
+							block.removeClass('add');
+						}, 500);
+
+						// Setup non-binded options
+						block.themeblvd('options', 'setup');
+						block.themeblvd('options', 'media-uploader');
+						block.themeblvd('options', 'editor');
+						block.themeblvd('options', 'code-editor');
+
+						// Setup content block options, which open in a modal
+						if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+							block.find('.tb-content-block-options-link').ThemeBlvdModal({
+						        build: true,
+						        form: true,
+						        padding: false,
+						        size: 'small',
+						        on_load: builder_blvd.content_block_options_load
+						    });
+						}
+
+					});
+
+    				return false;
+    			});
+    		});
+
+    	},
+
+    	// Used for the on_load() callback when
+    	// linking to options in modal
+    	content_block_options_load : function( modal ) {
+    		var self = this;
+    		self.$modal_window.themeblvd('options', 'bind');
+    		self.$modal_window.themeblvd('options', 'setup');
+			self.$modal_window.themeblvd('options', 'media-uploader');
+			self.$modal_window.themeblvd('options', 'editor');
+			self.$modal_window.themeblvd('options', 'code-editor');
     	}
 	};
 
@@ -651,7 +846,8 @@ jQuery(document).ready(function($) {
 			values = el.parent().find('select').val(),
 			values = values.split('=>'),
 			type = values[0],
-			query = values[1];
+			query = values[1],
+			element = '';
 
 		// Make sure the user doesn't have more than one "primary"
 		// query element. This just means that they can't add
@@ -691,7 +887,7 @@ jQuery(document).ready(function($) {
 			},
 			beforeSend: function()
 			{
-				overlay.fadeIn('fast');
+				overlay.show();
 				load.fadeIn('fast');
 			},
 			success: function(response)
@@ -699,13 +895,37 @@ jQuery(document).ready(function($) {
 				trim_front = response.split('<div id="');
 				trim_back = trim_front[1].split('" class="widget element-options"');
 				element_id = trim_back[0];
+
 				$('#builder_blvd #edit_layout #primary .sortable').append(response);
 				$('#builder_blvd #edit_layout #primary .sortable').removeClass('empty');
-				$('#'+element_id).themeblvd('widgets');
-				$('#'+element_id).themeblvd('options', 'setup');
-				$('#'+element_id).themeblvd('options', 'bind');
-				$('#'+element_id).themeblvd('options', 'media-uploader');
-				$('#'+element_id).fadeIn();
+
+				element = $('#'+element_id);
+
+				// For those furious clickers, amek sure no "add" classes
+				// got left behind from previously added elements.
+				$('#builder_blvd .add').removeClass('add');
+
+				element.addClass('add');
+				window.setTimeout(function(){
+					element.removeClass('add');
+				}, 500);
+
+				element.themeblvd('widgets');
+				element.themeblvd('options', 'setup');
+				element.themeblvd('options', 'bind');
+				element.themeblvd('options', 'media-uploader');
+				element.themeblvd('options', 'editor');
+				element.themeblvd('options', 'code-editor');
+
+				if ( element.find('.widget-content').hasClass('element-columns') ) {
+					builder_blvd.columns( element );
+				}
+
+				if ( element.find('.widget-content').hasClass('element-content') ) {
+					builder_blvd.columns( element );
+				}
+
+				element.fadeIn();
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
 			}
@@ -713,11 +933,81 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
+	// Duplicate element
+	$(document).on('click', '#builder_blvd .duplicate-element', function(){
+
+		var $link = $(this),
+			$element = $link.closest('.widget'),
+	        nonce = $('#builder_blvd').find('input[name="_tb_save_builder_nonce"]').val(),
+	        data = $element.find('input, select, textarea').serialize(),
+	        $new_element;
+
+	    $.ajax({
+            type: "POST",
+            url: ajaxurl,
+            data:
+            {
+                action: 'themeblvd_dup_element',
+                security: nonce,
+                data: data
+            },
+            success: function(response) {
+
+                // [0] => Element ID
+                // [1] => HTML of new content block
+                response = response.split('[(=>)]');
+
+                // Add HTML for new element directly after element
+                // that was copied.
+                $element.after( response[1] );
+
+                // Cache the new HTML element we just appended
+                $new_element = $('#'+response[0]);
+
+                // Temporarily add green border/shadow to the newly added element.
+                $new_element.addClass('add');
+                window.setTimeout(function(){
+                    $new_element.removeClass('add');
+                }, 500);
+
+                // Setup Theme Blvd namespace options
+                $new_element.themeblvd('widgets');
+				$new_element.themeblvd('options', 'setup');
+				$new_element.themeblvd('options', 'bind');
+				$new_element.themeblvd('options', 'media-uploader');
+				$new_element.themeblvd('options', 'editor');
+				$new_element.themeblvd('options', 'code-editor');
+
+                if ( $new_element.find('.widget-content').hasClass('element-columns') ) {
+					builder_blvd.columns( $new_element );
+				}
+
+				if ( $new_element.find('.widget-content').hasClass('element-content') ) {
+					builder_blvd.columns( $new_element );
+				}
+
+				// Setup content block options, which open in a modal
+				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+					$new_element.find('.tb-content-block-options-link').ThemeBlvdModal({
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'small',
+				        on_load: builder_blvd.content_block_options_load
+				    });
+				}
+
+            }
+        });
+
+		return false;
+	});
+
 	// Save Layout
 	$(document).on('submit', '#optionsframework #edit_builder', function(){
 		var el = $(this),
 			data = el.serialize(),
-			load = el.find('.publishing-action .ajax-loading'),
+			load = el.find('#publishing-action .ajax-loading'),
 			nonce = el.find('input[name="_tb_save_builder_nonce"]').val(),
 			current_name;
 
@@ -769,6 +1059,28 @@ jQuery(document).ready(function($) {
 			}
 		});
 		return false;
+	});
+
+	// Delete item by ID passed through link's href
+	$(document).on('click', '#optionsframework .delete-element', function(){
+		var item = $(this).attr('href'),
+			$item = $(item),
+			$section = $item.closest('.sortable');
+
+		tbc_confirm($(this).attr('title'), {'confirm':true}, function(r)
+		{
+	    	if(r)
+	        {
+	        	$item.addClass('delete fade-out');
+                window.setTimeout(function(){
+                    $item.remove();
+                    if ( ! $section.html().trim().length ) {
+                        $section.addClass('empty');
+                    }
+                }, 750);
+	        }
+	    });
+	    return false;
 	});
 
 	// Delete layout (via Delete Link on edit layout page)
