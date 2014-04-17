@@ -692,6 +692,9 @@
 .themeblvd-modal #optionsframework textarea {
 	max-width: 98%;
 }
+.themeblvd-modal #optionsframework .section-text .tb-input-icon-link {
+	right: 15px;
+}
 
 /* Fix for fancy selects from WP admin styling */
 .themeblvd-modal .tb-fancy-select select {

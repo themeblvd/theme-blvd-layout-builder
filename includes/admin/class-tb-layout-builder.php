@@ -50,9 +50,13 @@ class Theme_Blvd_Layout_Builder {
 		// Theme Blvd framework locals.
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 
-		// Add Editor into footer, which Builder can use for editing
+		// Add Editor into page, which Builder can use for editing
 		// content of elements.
 		add_action( 'current_screen', array( $this, 'add_editor' ) );
+
+		// Add icon browser into page, which Builder can use for
+		// inserting icons.
+		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
 
 		// Add ajax functionality to slider admin page
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
@@ -245,10 +249,11 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
 		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
-		// Code editor
+		// Code editor and FontAwesome
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 			wp_enqueue_script( 'codemirror', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js', null, '4.0' );
 			wp_enqueue_script( 'codemirror-modes', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js', null, '4.0' );
+			wp_enqueue_style( 'fontawesome', TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css', null, TB_FRAMEWORK_VERSION );
 		}
 
 		// Add JS locals when needed.
@@ -1256,6 +1261,28 @@ class Theme_Blvd_Layout_Builder {
 	}
 	public function display_editor() {
 		themeblvd_editor( array( 'delete' => true, 'duplicate' => true ) );
+	}
+
+	/**
+	 * Hook in hidden icon browser modal(s).
+	 *
+	 * @since 1.3.0
+	 */
+	public function add_icon_browser() {
+
+		// Requires Framework 2.5+
+		if ( function_exists( 'themeblvd_icon_browser' ) ) {
+
+			$page = get_current_screen();
+
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+				add_action( 'in_admin_header', array( $this, 'display_icon_browser' ) );
+			}
+		}
+	}
+	public function display_icon_browser() {
+		themeblvd_icon_browser( array( 'type' => 'vector' ) );
+		themeblvd_icon_browser( array( 'type' => 'image' ) );
 	}
 
 }
