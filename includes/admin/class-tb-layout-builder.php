@@ -608,6 +608,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @param array $column_data If we don't want column data to be pulled from meta, we can feed it in here
 	 */
 	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $column_data = null ) {
+		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->get_elements();
 		$blocks = $this->get_blocks();
 		$field_name = 'tb_elements['.$element_id.'][options]';
@@ -672,7 +673,9 @@ class Theme_Blvd_Layout_Builder {
 												<select class="block-type">
 													<?php
 													foreach ( $blocks as $block ) {
-														echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+														if ( $api->is_block( $block['info']['id'] ) ) {
+															echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+														}
 													}
 													?>
 												</select>
@@ -707,12 +710,15 @@ class Theme_Blvd_Layout_Builder {
 											if ( is_array($saved_blocks) && count($saved_blocks) > 0 ) {
 												foreach ( $saved_blocks as $block_id => $block ) {
 
-													$block_options = array();
-													if ( isset( $block['options'] ) ) {
-														$block_options = $block['options'];
-													}
+													if ( $api->is_block( $block['type'] ) ) {
 
-													$this->edit_block( $element_id, $block['type'], $block_id, $i, $block_options );
+														$block_options = array();
+														if ( isset( $block['options'] ) ) {
+															$block_options = $block['options'];
+														}
+
+														$this->edit_block( $element_id, $block['type'], $block_id, $i, $block_options );
+													}
 												}
 											}
 											?>
@@ -881,8 +887,9 @@ class Theme_Blvd_Layout_Builder {
 						$layouts = themeblvd_sidebar_layouts();
 						$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
 
-						foreach ( $layouts as $layout )
+						foreach ( $layouts as $layout ) {
 							$sidebar_layouts[$layout['id']] = $layout['name'];
+						}
 
 						$options = array(
 							array(
@@ -1091,8 +1098,10 @@ class Theme_Blvd_Layout_Builder {
 					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
 					$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
 					$layouts = themeblvd_sidebar_layouts();
-					foreach ( $layouts as $layout )
+
+					foreach ( $layouts as $layout ) {
 						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
+					}
 
 					// Now convert it to options form
 					$options = array(
