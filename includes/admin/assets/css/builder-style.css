@@ -40,10 +40,7 @@
 	width: 100%;
 }
 
-/* Widgets */
-#builder_blvd .widget,
-#builder_blvd .widget .widget-name,
-#builder_blvd .widget .widget-content,
+/* Widgets Animation */
 #builder_blvd .column-blocks .widget .content-block-handle {
 	-webkit-transition: border 500ms ease-in, box-shadow 500ms ease-in;
     -o-transition: border 500ms ease-in, box-shadow 500ms ease-in;
@@ -51,37 +48,13 @@
     -ms-transition: border 500ms ease-in, box-shadow 500ms ease-in;
     transition: border 500ms ease-in, box-shadow 500ms ease-in;
 }
-#builder_blvd .widget.fade-out {
-	-moz-opacity: 0;
-	-khtml-opacity: 0;
-	opacity: 0;
-	-webkit-transition: opacity 500ms ease-in;
-    -o-transition: opacity 500ms ease-in;
-    -moz-transition: opacity 500ms ease-in;
-    -ms-transition: opacity 500ms ease-in;
-    transition: opacity 500ms ease-in;
-}
 
 /* Item being deleted */
-#builder_blvd .widget.delete {
-	-moz-box-shadow: 0 0 10px #e9d1d1;
-	-webkit-box-shadow: 0 0 10px #e9d1d1;
-	box-shadow: 0 0 10px #e9d1d1;
-}
-#builder_blvd .widget.delete .widget-name,
-#builder_blvd .widget.delete .widget-content,
 #builder_blvd .column-blocks .widget.delete .content-block-handle {
 	border-color: #dfa9a9;
 }
 
 /* Item being added */
-#builder_blvd .widget.add {
-	-moz-box-shadow: 0 0 10px #d3e9da;
-	-webkit-box-shadow: 0 0 10px #d3e9da;
-	box-shadow: 0 0 10px #d3e9da;
-}
-#builder_blvd .widget.add .widget-name,
-#builder_blvd .widget.add .widget-content,
 #builder_blvd .column-blocks .widget.add .content-block-handle {
 	border-color: #9adfa9;
 }
@@ -616,7 +589,6 @@
 	border: 1px solid #dfdfdf;
 	color: #464646;
 	cursor: move;
-	font-size: 13px;
 	-moz-box-shadow: inset 0 1px 0 white;
 	-webkit-box-shadow: inset 0 1px 0 white;
 	box-shadow: inset 0 1px 0 white;
@@ -657,7 +629,13 @@
 /* =Modal Options
 ----------------------------------------------- */
 
+.themeblvd-modal #optionsframework .content-block-form .section:last-of-type {
+	border-bottom: none;
+	padding-bottom: 20px;
+}
+
 /* Condensed options */
+/*
 #optionsframework .section .heading {
 	font-size: 15px;
 }
@@ -695,6 +673,7 @@
 .themeblvd-modal #optionsframework .section-text .tb-input-icon-link {
 	right: 15px;
 }
+*/
 
 /* Fix for fancy selects from WP admin styling */
 .themeblvd-modal .tb-fancy-select select {

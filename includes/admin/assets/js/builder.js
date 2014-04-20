@@ -197,6 +197,7 @@ jQuery(document).ready(function($) {
 			$('#builder_blvd').themeblvd('options', 'media-uploader');
 			$('#builder_blvd').themeblvd('options', 'editor');
 			$('#builder_blvd').themeblvd('options', 'code-editor');
+			$('#builder_blvd').themeblvd('options', 'sortable');
 
 			// Setup each "Columns" and "Content" element
 			$('#builder_blvd .element-columns, #builder_blvd .element-content').each(function(){
@@ -209,7 +210,7 @@ jQuery(document).ready(function($) {
 			        build: true,
 			        form: true,
 			        padding: false,
-			        size: 'small',
+			        size: 'medium',
 			        on_load: builder_blvd.content_block_options_load
 			    });
 			}
@@ -425,6 +426,7 @@ jQuery(document).ready(function($) {
 			object.themeblvd('options', 'media-uploader');
 			object.themeblvd('options', 'editor');
 			object.themeblvd('options', 'code-editor');
+			object.themeblvd('options', 'sortable');
 
 			// Setup each "Columns" element
 			$('#builder_blvd .element-columns, #builder_blvd .element-content').each(function(){
@@ -437,7 +439,7 @@ jQuery(document).ready(function($) {
 			        build: true,
 			        form: true,
 			        padding: false,
-			        size: 'small',
+			        size: 'medium',
 			        on_load: builder_blvd.content_block_options_load
 			    });
 			}
@@ -560,6 +562,7 @@ jQuery(document).ready(function($) {
 						block.themeblvd('options', 'media-uploader');
 						block.themeblvd('options', 'editor');
 						block.themeblvd('options', 'code-editor');
+						block.themeblvd('options', 'sortable');
 
 						// Setup content block options, which open in a modal
 						if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
@@ -567,7 +570,7 @@ jQuery(document).ready(function($) {
 						        build: true,
 						        form: true,
 						        padding: false,
-						        size: 'small',
+						        size: 'medium',
 						        on_load: builder_blvd.content_block_options_load
 						    });
 						}
@@ -589,6 +592,7 @@ jQuery(document).ready(function($) {
 			self.$modal_window.themeblvd('options', 'media-uploader');
 			self.$modal_window.themeblvd('options', 'editor');
 			self.$modal_window.themeblvd('options', 'code-editor');
+			self.$modal_window.themeblvd('options', 'sortable');
     	}
 	};
 
@@ -916,6 +920,7 @@ jQuery(document).ready(function($) {
 				element.themeblvd('options', 'media-uploader');
 				element.themeblvd('options', 'editor');
 				element.themeblvd('options', 'code-editor');
+				element.themeblvd('options', 'sortable');
 
 				if ( element.find('.widget-content').hasClass('element-columns') ) {
 					builder_blvd.columns( element );
@@ -977,6 +982,7 @@ jQuery(document).ready(function($) {
 				$new_element.themeblvd('options', 'media-uploader');
 				$new_element.themeblvd('options', 'editor');
 				$new_element.themeblvd('options', 'code-editor');
+				$new_element.themeblvd('options', 'sortable');
 
                 if ( $new_element.find('.widget-content').hasClass('element-columns') ) {
 					builder_blvd.columns( $new_element );
@@ -992,7 +998,7 @@ jQuery(document).ready(function($) {
 				        build: true,
 				        form: true,
 				        padding: false,
-				        size: 'small',
+				        size: 'medium',
 				        on_load: builder_blvd.content_block_options_load
 				    });
 				}
