@@ -2163,9 +2163,10 @@ class Theme_Blvd_Builder_API {
 			'current',
 			'page',
 			'html',
-			'media',
+			'image',
 			'panel',
-			'raw'
+			'raw',
+			'video'
 		);
 		$this->registered_blocks = apply_filters( 'themeblvd_registered_blocks', $this->registered_blocks );
 	}
@@ -2203,7 +2204,7 @@ class Theme_Blvd_Builder_API {
 			'content' => array(
 		    	'id' 		=> 'content',
 				'name'		=> __( 'Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the content you\'d like to sho for this content block.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the content you\'d like to show for this content block.', 'themeblvd_builder' ),
 				'type'		=> 'editor_modal'
 			)
 		);
@@ -2275,24 +2276,65 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* Media
+		/* Image
 		/*--------------------------------------------*/
 
-		$this->core_blocks['media'] = array();
+		$this->core_blocks['image'] = array();
 
 		// Information
-		$this->core_blocks['media']['info'] = array(
-			'name' 		=> __( 'Media', 'themeblvd_builder' ),
-			'id'		=> 'media'
+		$this->core_blocks['image']['info'] = array(
+			'name' 		=> __( 'Image', 'themeblvd_builder' ),
+			'id'		=> 'image'
 		);
 
 		// Options
-		$this->core_blocks['media']['options'] = array(
-			'media' => array(
-		    	'id' 		=> 'media',
-				'name'		=> __( 'Media', 'themeblvd_builder' ),
-				'desc'		=> __( 'Insert your media into the textarea above, similarly to how you would when editing a page or post.', 'themeblvd_builder' ),
-				'type'		=> 'media'
+		$this->core_blocks['image']['options'] = array(
+			'subgroup_start' => array(
+				'type' 		=> 'subgroup_start',
+				'class'		=> 'advanced-image-upload'
+			),
+			'image' => array(
+		    	'id' 		=> 'image',
+				'name'		=> __( 'Image URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the image to be used.', 'themeblvd_builder' ),
+				'type'		=> 'upload',
+				'advanced'	=> true
+			),
+			'link_url' => array(
+				'id' 		=> 'link_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL of where you want the image to link to. Leave blank for the image to not be a link.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'pholder'	=> 'http://',
+				'class'		=> 'receive-link-url'
+			),
+			'subgroup_end' => array(
+				'type' 		=> 'subgroup_end'
+			),
+			'link_target' => array(
+				'id' 		=> 'link_target',
+				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you want the link to open.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'	=> array(
+			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
+			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
+				)
+			),
+			'frame' => array(
+		    	'id' 		=> 'frame',
+				'name'		=> __( 'Image Frame', 'themeblvd_builder' ),
+				'desc'		=> __( 'Add frame around the image.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox'
+			),
+			'class' => array(
+				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd_builder' ),
+				'id' 		=> 'class',
+				'std' 		=> '',
+				'type' 		=> 'text'
 			)
 		);
 
@@ -2317,49 +2359,49 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide'
 			),
 			'style' => array(
-				'name' 		=> __( 'Style', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'Style of the panel.', 'themeblvd' ),
+				'name' 		=> __( 'Style', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Style of the panel.', 'themeblvd_builder' ),
 				'id' 		=> 'style',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default' 	=> __('Default (grey)', 'themeblvd_shortcodes'),
-					'primary' 	=> __('Primary (blue)', 'themeblvd_shortcodes'),
-					'info' 		=> __('Info (lighter blue)', 'themeblvd_shortcodes'),
-					'success' 	=> __('Success (green)', 'themeblvd_shortcodes'),
-					'danger' 	=> __('Danger (red)', 'themeblvd_shortcodes'),
-					'warning' 	=> __('Warning (yellow)', 'themeblvd_shortcodes')
+					'default' 	=> __('Default (grey)', 'themeblvd_builder'),
+					'primary' 	=> __('Primary (blue)', 'themeblvd_builder'),
+					'info' 		=> __('Info (lighter blue)', 'themeblvd_builder'),
+					'success' 	=> __('Success (green)', 'themeblvd_builder'),
+					'danger' 	=> __('Danger (red)', 'themeblvd_builder'),
+					'warning' 	=> __('Warning (yellow)', 'themeblvd_builder')
 				)
 			),
 			'title' => array(
-				'name' 		=> __( 'Title (optional)', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'The title of the panel.', 'themeblvd' ),
+				'name' 		=> __( 'Title (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'The title of the panel.', 'themeblvd_builder' ),
 				'id' 		=> 'title',
 				'std' 		=> '',
 				'type' 		=> 'text'
 			),
 			'footer' => array(
-				'name' 		=> __( 'Footer text (optional)', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'Footer text for the panel.', 'themeblvd' ),
+				'name' 		=> __( 'Footer text (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Footer text for the panel.', 'themeblvd_builder' ),
 				'id' 		=> 'footer',
 				'std' 		=> '',
 				'type' 		=> 'text'
 			),
 			'text_align' => array(
-				'name' 		=> __( 'Text Alignment', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'How to align text in panel.', 'themeblvd' ),
+				'name' 		=> __( 'Text Alignment', 'themeblvd_builder' ),
+				'desc' 		=> __( 'How to align text in panel.', 'themeblvd_builder' ),
 				'id' 		=> 'text_align',
 				'std' 		=> 'left',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'left' 		=> __('Left', 'themeblvd_shortcodes'),
-					'right' 	=> __('Right', 'themeblvd_shortcodes'),
-					'center' 	=> __('Center', 'themeblvd_shortcodes')
+					'left' 		=> __('Left', 'themeblvd_builder'),
+					'right' 	=> __('Right', 'themeblvd_builder'),
+					'center' 	=> __('Center', 'themeblvd_builder')
 				)
 			),
 			'class' => array(
-				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd' ),
+				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd_builder' ),
 				'id' 		=> 'class',
 				'std' 		=> '',
 				'type' 		=> 'text'
@@ -2392,6 +2434,29 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Video
+		/*--------------------------------------------*/
+
+		$this->core_blocks['video'] = array();
+
+		// Information
+		$this->core_blocks['video']['info'] = array(
+			'name' 		=> __( 'Video', 'themeblvd_builder' ),
+			'id'		=> 'video'
+		);
+
+		// Options
+		$this->core_blocks['video']['options'] = array(
+			'video' => array(
+		    	'id' 		=> 'video',
+				'name'		=> __( 'Video URL', 'themeblvd_builder' ),
+				'desc'		=> __( '<p>Upload a video or enter a video URL compatible with <a href="" target="_blank">WordPress\'s oEmbed</a>.</p><p>Examples:<br />http://vimeo.com/11178250</br />http://youtube.com/watch?v=ginTCwWfGNY</p>', 'themeblvd_builder' ),
+				'type'		=> 'upload',
+				'video'		=> true
 			)
 		);
 
@@ -3539,12 +3604,7 @@ class Theme_Blvd_Builder_API {
 	 * @return bool Whether or not the element is registerd
 	 */
 	public function is_element( $element_id ) {
-
-		if ( in_array( $element_id, $this->registered_elements ) ) {
-			return true;
-		}
-
-		return false;
+		return in_array( $element_id, $this->registered_elements );
 	}
 
 	/**
@@ -3556,12 +3616,7 @@ class Theme_Blvd_Builder_API {
 	 * @return bool Whether or not the element is registerd
 	 */
 	public function is_block( $block_id ) {
-
-		if ( in_array( $block_id, $this->registered_blocks ) ) {
-			return true;
-		}
-
-		return false;
+		return in_array( $block_id, $this->registered_blocks );
 	}
 
 } // End class Theme_Blvd_Builder_API
