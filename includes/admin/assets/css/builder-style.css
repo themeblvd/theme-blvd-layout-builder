@@ -618,6 +618,7 @@
 	color: #777777;
 	float: right;
 	font-size: 15px;
+	outline: 0;
 }
 #builder_blvd #builder .column-blocks .content-block .content-block-nav a:hover {
 	color: #333333;
@@ -633,7 +634,11 @@
 	border-bottom: none;
 	padding-bottom: 20px;
 }
-
+.themeblvd-modal #optionsframework .section-slider .delete-sortable-items {
+	top: inherit;
+	right: 4px;
+	bottom: 6px;
+}
 /* Condensed options */
 /*
 #optionsframework .section .heading {

@@ -508,8 +508,8 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['jumbotron']['options'] = array(
-			'jumbotron_slider_desc' => array(
-				'id' 		=> 'jumbotron_slider_desc',
+			'jumbotron_desc' => array(
+				'id' 		=> 'jumbotron_desc',
 				'desc' 		=> __( 'This element utilizes the Jumbotron component of Twitter Bootstrap.', 'themeblvd_builder' ),
 				'type' 		=> 'info'
 			),
@@ -2166,6 +2166,7 @@ class Theme_Blvd_Builder_API {
 			'image',
 			'panel',
 			'raw',
+			'simple_slider',
 			'video'
 		);
 		$this->registered_blocks = apply_filters( 'themeblvd_registered_blocks', $this->registered_blocks );
@@ -2218,7 +2219,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['current']['info'] = array(
 			'name' 		=> __( 'Current Page', 'themeblvd_builder' ),
-			'id'		=> 'current'
+			'id'		=> 'current',
+			'height'	=> 'medium'
 		);
 
 		// Options
@@ -2239,7 +2241,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['page']['info'] = array(
 			'name' 		=> __( 'External Page', 'themeblvd_builder' ),
-			'id'		=> 'page'
+			'id'		=> 'page',
+			'height'	=> 'medium'
 		);
 
 		// Options
@@ -2284,7 +2287,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['image']['info'] = array(
 			'name' 		=> __( 'Image', 'themeblvd_builder' ),
-			'id'		=> 'image'
+			'id'		=> 'image',
+			'height'	=> 'large'
 		);
 
 		// Options
@@ -2347,7 +2351,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['panel']['info'] = array(
 			'name' 		=> __( 'Panel', 'themeblvd_builder' ),
-			'id'		=> 'panel'
+			'id'		=> 'panel',
+			'height'	=> 'large'
 		);
 
 		// Options
@@ -2417,7 +2422,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['raw']['info'] = array(
 			'name' 		=> __( 'Raw Text', 'themeblvd_builder' ),
-			'id'		=> 'raw'
+			'id'		=> 'raw',
+			'height'	=> 'medium'
 		);
 
 		// Options
@@ -2446,7 +2452,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['video']['info'] = array(
 			'name' 		=> __( 'Video', 'themeblvd_builder' ),
-			'id'		=> 'video'
+			'id'		=> 'video',
+			'height'	=> 'medium'
 		);
 
 		// Options

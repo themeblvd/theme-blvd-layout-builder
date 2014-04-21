@@ -764,6 +764,12 @@ class Theme_Blvd_Layout_Builder {
 		$field_name = 'tb_elements['.$element_id.'][columns][col_'.$col_num.']['.$block_id.']';
 		$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
 
+		// Setup height for modal options
+		$options_height = '';
+		if ( ! empty( $blocks[$block_type]['info']['height'] ) ) {
+			$options_height = $blocks[$block_type]['info']['height'];
+		}
+
 		// Whether to show options icon link
 		$options = false;
 
@@ -785,7 +791,7 @@ class Theme_Blvd_Layout_Builder {
 				<nav class="content-block-nav">
 
 					<?php if ( $options ) : ?>
-						<a href="#" class="tb-content-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'themeblvd_builder'); ?>" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>"><i class="tb-icon-cog"></i></a>
+						<a href="#" class="tb-content-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'themeblvd_builder'); ?>" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>" data-height="<?php echo $options_height; ?>"><i class="tb-icon-cog"></i></a>
 					<?php endif; ?>
 
 					<?php if ( isset( $blocks[$block_type]['options']['content'] ) ) : ?>
