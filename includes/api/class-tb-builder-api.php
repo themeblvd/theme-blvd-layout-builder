@@ -1827,7 +1827,7 @@ class Theme_Blvd_Builder_API {
 			$this->core_elements['simple_slider']['info'] = array(
 				'name'		=> __( 'Simple Slider', 'themeblvd_builder' ),
 				'id'		=> 'simple_slider',
-				'query'		=> 'secondary',
+				'query'		=> 'none',
 				'hook'		=> 'themeblvd_simple_slider',
 				'shortcode'	=> null,
 				'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
@@ -2278,7 +2278,8 @@ class Theme_Blvd_Builder_API {
 			'panel',
 			'raw',
 			'simple_slider',
-			'video'
+			'video',
+			'widget'
 		);
 		$this->registered_blocks = apply_filters( 'themeblvd_registered_blocks', $this->registered_blocks );
 	}
