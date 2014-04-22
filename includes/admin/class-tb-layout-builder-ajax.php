@@ -93,6 +93,10 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		update_post_meta( $post_id, 'elements', $elements );
 		update_post_meta( $post_id, 'settings', $settings );
 
+		// Store version numbers that this layout was created with
+		update_post_meta( $post_id, 'plugin_version_created', TB_BUILDER_PLUGIN_VERSION );
+		update_post_meta( $post_id, 'framework_version_created', TB_FRAMEWORK_VERSION );
+
 		// Adjust response depending on where the creation
 		// of the layout happenned.
 		if ( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
@@ -278,6 +282,10 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		}
 
+		// Store version numbers that this layout was created with
+		update_post_meta( $layout_id, 'plugin_version_saved', TB_BUILDER_PLUGIN_VERSION );
+		update_post_meta( $layout_id, 'framework_version_saved', TB_FRAMEWORK_VERSION );
+
 		// Get most recent layout id after doing the above processes
 		$updated_layout = get_post($layout_id);
 		$current_layout_id = $updated_layout->post_name;
@@ -373,7 +381,16 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	 * @since 1.0.0
 	 */
 	public function edit_layout() {
+
+		// Layout ID
 		$layout_id = $_POST['data'];
+
+		// Verify layout data
+		$data = new Theme_Blvd_Layout_Builder_Data( $layout_id );
+		$data->verify('elements');
+		$data->verify('settings');
+
+		// Send back layout to edit
 		echo $layout_id.'[(=>)]';
 		$this->admin_page->edit_layout( $layout_id );
 		die();

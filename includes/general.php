@@ -469,16 +469,31 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 }
 
 /**
+ * Verify data from current custom layout is saved
+ * properly with the current version of the Layout
+ * Builder plugin.
+ *
+ * @since 2.0.0
+ */
+function themeblvd_builder_verify_data() {
+	if ( themeblvd_config( 'builder' ) && themeblvd_config( 'builder_post_id' ) ) {
+		$data = new Theme_Blvd_Layout_Builder_Data( themeblvd_config( 'builder_post_id' ) );
+		$data->verify('elements');
+		$data->verify('settings');
+	}
+}
+
+/**
  * Display builder elements above the primary area.
  *
  * @since 1.0.0
  */
-
 function themeblvd_builder_content() {
 	if ( themeblvd_config( 'builder' ) ) {
 		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );
 	}
 }
+
 /**
  * Display builder elements above the primary area.
  *

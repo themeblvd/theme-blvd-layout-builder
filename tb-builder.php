@@ -7,7 +7,7 @@ Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
 
-    Copyright 2013  Theme Blvd
+    Copyright 2014  Theme Blvd
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2,
@@ -38,7 +38,8 @@ function themeblvd_builder_init() {
 
 	global $_themeblvd_layout_builder;
 
-	// Include general functions
+	// Include general items
+	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-data.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
 
 	// Check to make sure Theme Blvd Framework 2.2+ is running
@@ -63,6 +64,9 @@ function themeblvd_builder_init() {
 
 	// Register custom layout hidden post type
 	add_action( 'init', 'themeblvd_builder_register_post_type' );
+
+	// Verify custom layout's data
+	add_action( 'template_redirect', 'themeblvd_builder_verify_data' );
 
 	// Frontend actions -- These work in conjuction with framework theme files,
 	// header.php, template_builder.php, and footer.php

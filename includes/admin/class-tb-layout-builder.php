@@ -706,17 +706,13 @@ class Theme_Blvd_Layout_Builder {
 												// Get content blocks for column
 												$saved_blocks = get_post_meta( $layout_id, $element_id.'_col_'.$i, true );
 
-												// Check for old method of saving columns
-												if ( ! $saved_blocks ) {
-													$saved_blocks = $this->legacy_content( $element_type, $element_settings, $i );
-												}
 											}
 
 											// Display all content blocks for column
 											if ( is_array($saved_blocks) && count($saved_blocks) > 0 ) {
 												foreach ( $saved_blocks as $block_id => $block ) {
 
-													if ( $api->is_block( $block['type'] ) ) {
+													if ( ! empty( $block['type'] ) && $api->is_block( $block['type'] ) ) {
 
 														$block_options = array();
 														if ( isset( $block['options'] ) ) {
@@ -1175,92 +1171,6 @@ class Theme_Blvd_Layout_Builder {
 		$output .= '</div><!-- .tb-fancy-select (end) -->';
 
 		return $output;
-	}
-
-	/**
-	 * This takes a set of columns saved from prior to
-	 * v1.3, and arranges them into the new content block
-	 * system when displayed in the Builder.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @param string $type Type of element - columns or content
-	 * @param array $settings All current settings for element
-	 * @param int $col_num If $type == colums, this is the number of columns
-	 * @return array $content_blocks An array containing the converted content block
-	 */
-	public function legacy_content( $type, $settings, $col_num = 0 ) {
-
-		$content_blocks = array();
-
-		if ( $type != 'columns' && $type != 'content' ) {
-			return $content_blocks;
-		}
-
-		if ( ! isset( $settings['col_'.$col_num] ) && ! isset( $settings['source'] ) ) {
-			return $content_blocks;
-		}
-
-		// Block type
-		$block_type = '';
-
-		if ( isset( $settings['col_'.$col_num] ) ) {
-			$block_type = $settings['col_'.$col_num]['type'];
-		} else if ( isset( $settings['source'] ) ) {
-			$block_type = $settings['source'];
-		}
-
-		if ( ! $block_type ) {
-			return $content_blocks;
-		}
-
-		// Generate random ID for block
-		$block_id = uniqid( 'block_'.rand() );
-
-		// Start Block
-		$content_blocks[$block_id] = array();
-		$content_blocks[$block_id]['type'] = $block_type;
-
-		// Setup options
-		$content_blocks[$block_id]['options'] = array();
-		$options = array();
-
-		switch ( $block_type  ) {
-
-			// External page
-			case 'page' :
-				if ( $type == 'columns' ) {
-					$options['page_id'] = $settings['col_'.$col_num]['page'];
-				} else {
-					$options['page_id'] = $settings['page_id'];
-				}
-				break;
-
-			// Raw Content
-			case 'raw' :
-				if ( $type == 'columns' ) {
-					$options['text'] = $settings['col_'.$col_num]['raw'];
-					$options['format'] = $settings['col_'.$col_num]['raw_format'];
-				} else {
-					$options['text'] = $settings['raw_content'];
-					$options['format'] = $settings['raw_format'];
-				}
-				break;
-
-			// Widget Area
-			case 'widget' :
-				if ( $type == 'columns' ) {
-					$options['widget_area'] = $settings['col_'.$col_num]['sidebar'];
-				} else {
-					$options['widget_area'] = $settings['widget_area'];
-				}
-				break;
-		}
-
-		$content_blocks[$block_id]['options'] = $options;
-
-		return $content_blocks;
-
 	}
 
 	/**
