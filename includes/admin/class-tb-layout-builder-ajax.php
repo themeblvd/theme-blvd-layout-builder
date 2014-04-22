@@ -307,7 +307,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	/**
 	 * Add new content block
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function add_block() {
 		$data = explode( '[(=>)]', $_POST['data'] );
@@ -407,7 +407,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	/**
 	 * Duplicate element
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function dup_element() {
 
@@ -452,7 +452,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	/**
 	 * Duplicate content block
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function dup_block() {
 
@@ -509,7 +509,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	/**
 	 * Sanitize element or content block of options.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $type The type of element or content block
 	 * @param array $settings Settings that we're sanitizing

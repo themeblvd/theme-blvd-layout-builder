@@ -115,7 +115,7 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Get blocks with filter applied.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function get_blocks() {
 		return apply_filters( 'themeblvd_get_blocks', $this->blocks );
@@ -757,7 +757,7 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Generates the an indivdual panel to edit a content block.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $element_id ID of element that contains this content block
 	 * @param string $block_type type of block
@@ -1182,7 +1182,7 @@ class Theme_Blvd_Layout_Builder {
 	 * v1.3, and arranges them into the new content block
 	 * system when displayed in the Builder.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $type Type of element - columns or content
 	 * @param array $settings All current settings for element
@@ -1266,7 +1266,7 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Hook in hidden editor modal.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function add_editor() {
 
@@ -1287,7 +1287,7 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Hook in hidden icon browser modal(s).
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function add_icon_browser() {
 

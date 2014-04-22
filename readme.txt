@@ -2,7 +2,7 @@
 Author URI: http://www.jasonbobich.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 1.3.0
+Stable Tag: 2.0.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -37,7 +37,7 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 
 == Changelog ==
 
-= 1.3.0 =
+= 2.0.0 =
 
 = 1.2.3 =
 

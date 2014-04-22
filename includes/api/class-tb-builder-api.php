@@ -71,7 +71,7 @@ class Theme_Blvd_Builder_API {
 	 * as the API moves along. Can be accesed from admin
 	 * or frontend.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private $registered_blocks = array();
 
@@ -79,7 +79,7 @@ class Theme_Blvd_Builder_API {
 	 * Core framework content blocks and settings.
 	 * WP-Admin only.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private $core_blocks = array();
 
@@ -87,7 +87,7 @@ class Theme_Blvd_Builder_API {
 	 * Content blocks and settings added through
 	 * client API mutators. WP-Admin only.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private $client_blocks = array();
 
@@ -95,7 +95,7 @@ class Theme_Blvd_Builder_API {
 	 * Content blocks to remove from Layout
 	 * Builder. WP-Admin only.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private $remove_blocks = array();
 
@@ -104,7 +104,7 @@ class Theme_Blvd_Builder_API {
 	 * combines $core_blocks and $client_blocks.
 	 * WP-Admin only.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private $blocks = array();
 
@@ -2266,7 +2266,7 @@ class Theme_Blvd_Builder_API {
 	 * along, this will be modified, allowing blocks to be
 	 * registered or de-registered.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private function set_registered_blocks() {
 		$this->registered_blocks = array(
@@ -2287,7 +2287,7 @@ class Theme_Blvd_Builder_API {
 	 * Set original content blocks. These will be later merged
 	 * with API client-added blocks. WP-Admin only, see constructer.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	private function set_core_blocks() {
 
@@ -2709,7 +2709,7 @@ class Theme_Blvd_Builder_API {
 	 * be removed. This happens at the "after_setup_theme" hook
 	 * with a priority of 1000.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function set_blocks() {
 
@@ -3487,7 +3487,7 @@ class Theme_Blvd_Builder_API {
 	 * of blocks is taken care of automatically when adding
 	 * and removing.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $id ID of block to register
 	 */
@@ -3527,7 +3527,7 @@ class Theme_Blvd_Builder_API {
 	 * of blocks is taken care of automatically when adding
 	 * and removing.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $id ID of block to register
 	 */
@@ -3606,7 +3606,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Add content block to Builder.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function add_block( $element_id, $element_name, $options, $callback ) {
 		// @todo ...
@@ -3615,7 +3615,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Remove content block to Builder.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 */
 	public function remove_block( $element_id ) {
 		// @todo ...
@@ -3731,7 +3731,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get registered blocks.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @return array $registered_blocks
 	 */
@@ -3742,7 +3742,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get core blocks and options.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @return array $core_blocks
 	 */
@@ -3753,7 +3753,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Get client API-added blocks and options.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @return array $client_blocks
 	 */
@@ -3766,7 +3766,7 @@ class Theme_Blvd_Builder_API {
 	 * core blocks and client API-added blocks. This
 	 * is available after WP's "after_setup_theme" hook.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @return array $blocks
 	 */
@@ -3828,7 +3828,7 @@ class Theme_Blvd_Builder_API {
 	/**
 	 * Check if a content block is currently registered.
 	 *
-	 * @since 1.3.0
+	 * @since 2.0.0
 	 *
 	 * @param string $element_id ID of element to check
 	 * @return bool Whether or not the element is registerd
