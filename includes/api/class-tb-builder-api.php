@@ -208,7 +208,6 @@ class Theme_Blvd_Builder_API {
 			'content',
 			'divider',
 			'headline',
-			'html',
 			'jumbotron',
 			'post_grid_paginated',
 			'post_grid',
@@ -219,6 +218,12 @@ class Theme_Blvd_Builder_API {
 			'slogan',
 			'tabs'
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+			$this->registered_elements[] = 'html';
+			$this->registered_elements[] = 'simple_slider';
+		}
+
 		$this->registered_elements = apply_filters( 'themeblvd_registered_elements', $this->registered_elements );
 	}
 
@@ -1811,6 +1816,112 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
+		/* Simple Slider
+		/*--------------------------------------------*/
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+
+			$this->core_elements['simple_slider'] = array();
+
+			// Information
+			$this->core_elements['simple_slider']['info'] = array(
+				'name'		=> __( 'Simple Slider', 'themeblvd_builder' ),
+				'id'		=> 'simple_slider',
+				'query'		=> 'secondary',
+				'hook'		=> 'themeblvd_simple_slider',
+				'shortcode'	=> null,
+				'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
+			);
+
+			// Options
+			$this->core_elements['simple_slider']['options'] = array(
+				'subgroup_start' => array(
+					'type'		=> 'subgroup_start'
+				),
+				'images' => array(
+			    	'id' 		=> 'images',
+					'name'		=> null,
+					'desc'		=> null,
+					'type'		=> 'slider'
+				),
+				'crop' => array(
+					'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
+					'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+					'id' 		=> 'crop',
+					'std' 		=> 'slider-large',
+					'type' 		=> 'select',
+					'select'	=> 'crop',
+					'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+				),
+				'subgroup_end' => array(
+					'type'		=> 'subgroup_end',
+				),
+				'interval' => array(
+					'id'		=> 'interval',
+					'name' 		=> __( 'Speed', 'themeblvd_builder' ),
+					'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
+					'std'		=> '5',
+					'type'		=> 'text'
+			    ),
+				'pause' => array(
+					'id'		=> 'pause',
+					'name'		=> __( 'Pause on Hover', 'themeblvd_builder' ),
+					'desc' 		=> __( 'Whether to pause slider on mouse hover.', 'themeblvd_builder' ),
+					'std'		=> 'true',
+					'type'		=> 'select',
+					'options'	=> array(
+			            'true'		=> __( 'Yes, pause slider on hover.', 'themeblvd_builder' ),
+			            'false'		=> __( 'No, don\'t pause slider on hover.', 'themeblvd_builder' )
+					)
+				),
+				'wrap' => array(
+					'id'		=> 'wrap',
+					'name'		=> __( 'Continuous Cycle', 'themeblvd_sliders' ),
+					'desc'		=> __( 'Whether sliders continues to auto rotate after the first pass.', 'themeblvd_builder' ),
+					'std'		=> 'true',
+					'type'		=> 'select',
+					'options'	=> array(
+			            'true'		=> __( 'Yes, cycle continuously.', 'themeblvd_sliders' ),
+			            'false'		=> __( 'No, stop cycling.', 'themeblvd_sliders' )
+					)
+				),
+				'nav_standard' => array(
+					'id'		=> 'nav_standard',
+					'name'		=> __( 'Standard Navigation', 'themeblvd_builder' ),
+					'desc'		=> __( 'Whether to show standard navigation indicator dots.', 'themeblvd_builder'),
+					'std'		=> '1',
+					'type'		=> 'select',
+					'options'	=> array(
+			            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
+			            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+					)
+				),
+				'nav_arrows' => array(
+					'id'		=> 'nav_arrows',
+					'name'		=> __( 'Arrow Navigation', 'themeblvd_builder' ),
+					'desc'		=> __( 'Whether to show standard navigation arrows.', 'themeblvd_builder'),
+					'std'		=> '1',
+					'type'		=> 'select',
+					'options'	=> array(
+			            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
+			            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
+					)
+				),
+				'nav_thumbs' => array(
+					'id'		=> 'nav_thumbs',
+					'name'		=> __( 'Thumbnail Navigation', 'themeblvd_builder' ),
+					'desc'		=> __( 'Whether to show navigation thumbnails.', 'themeblvd_builder'),
+					'std'		=> '0',
+					'type'		=> 'select',
+					'options'	=> array(
+			            '1'	=> __( 'Yes, show thumbnail navigation.', 'themeblvd_builder' ),
+			            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+					)
+				)
+			);
+		}
+
+		/*--------------------------------------------*/
 		/* Slider
 		/*--------------------------------------------*/
 
@@ -2423,7 +2534,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['raw']['info'] = array(
 			'name' 		=> __( 'Raw Text', 'themeblvd_builder' ),
 			'id'		=> 'raw',
-			'height'	=> 'medium'
+			'height'	=> 'large'
 		);
 
 		// Options
@@ -2440,6 +2551,106 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Simple Slider
+		/*--------------------------------------------*/
+
+		$this->core_blocks['simple_slider'] = array();
+
+		// Information
+		$this->core_blocks['simple_slider']['info'] = array(
+			'name' 		=> __( 'Simple Slider', 'themeblvd_builder' ),
+			'id'		=> 'simple_slider',
+			'height'	=> 'large'
+		);
+
+		// Options
+		$this->core_blocks['simple_slider']['options'] = array(
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start'
+			),
+			'images' => array(
+		    	'id' 		=> 'images',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'slider'
+			),
+			'crop' => array(
+				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'id' 		=> 'crop',
+				'std' 		=> 'slider-large',
+				'type' 		=> 'select',
+				'select'	=> 'crop',
+				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end',
+			),
+			'interval' => array(
+				'id'		=> 'interval',
+				'name' 		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
+				'std'		=> '5',
+				'type'		=> 'text'
+		    ),
+			'pause' => array(
+				'id'		=> 'pause',
+				'name'		=> __( 'Pause on Hover', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Whether to pause slider on mouse hover.', 'themeblvd_builder' ),
+				'std'		=> 'true',
+				'type'		=> 'select',
+				'options'	=> array(
+		            'true'		=> __( 'Yes, pause slider on hover.', 'themeblvd_builder' ),
+		            'false'		=> __( 'No, don\'t pause slider on hover.', 'themeblvd_builder' )
+				)
+			),
+			'wrap' => array(
+				'id'		=> 'wrap',
+				'name'		=> __( 'Continuous Cycle', 'themeblvd_sliders' ),
+				'desc'		=> __( 'Whether sliders continues to auto rotate after the first pass.', 'themeblvd_builder' ),
+				'std'		=> 'true',
+				'type'		=> 'select',
+				'options'	=> array(
+		            'true'		=> __( 'Yes, cycle continuously.', 'themeblvd_sliders' ),
+		            'false'		=> __( 'No, stop cycling.', 'themeblvd_sliders' )
+				)
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'name'		=> __( 'Standard Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Whether to show standard navigation indicator dots.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			),
+			'nav_arrows' => array(
+				'id'		=> 'nav_arrows',
+				'name'		=> __( 'Arrow Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Whether to show standard navigation arrows.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
+				)
+			),
+			'nav_thumbs' => array(
+				'id'		=> 'nav_thumbs',
+				'name'		=> __( 'Thumbnail Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Whether to show navigation thumbnails.', 'themeblvd_builder'),
+				'std'		=> '0',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show thumbnail navigation.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
 			)
 		);
 

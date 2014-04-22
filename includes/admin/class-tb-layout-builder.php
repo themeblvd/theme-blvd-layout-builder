@@ -61,6 +61,12 @@ class Theme_Blvd_Layout_Builder {
 		// Add ajax functionality to slider admin page
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
 
+		// Make advanced option types available in Builder
+		if ( class_exists( 'Theme_Blvd_Advanced_Options' ) ) {
+			$advanced = Theme_Blvd_Advanced_Options::get_instance();
+			$advanced->create('slider');
+		}
+
 	}
 
 	/**

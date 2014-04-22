@@ -236,6 +236,14 @@
 	color: #000000;
 }
 
+/* Sortable Option types */
+#builder_blvd #optionsframework .item .section:last-of-type {
+	padding-bottom: 10px;
+}
+#builder_blvd #optionsframework .tb-sortable-option .item {
+	margin-bottom: 5px;
+}
+
 /* Sidebar */
 #builder_blvd #optionsframework .inner-sidebar .section-radio label {
 	margin-bottom: 15px;
@@ -634,10 +642,8 @@
 	border-bottom: none;
 	padding-bottom: 20px;
 }
-.themeblvd-modal #optionsframework .section-slider .delete-sortable-items {
-	top: inherit;
-	right: 4px;
-	bottom: 6px;
+.themeblvd-modal #optionsframework .content-block-form .item .section:last-of-type {
+	padding-bottom: 10px;
 }
 /* Condensed options */
 /*
