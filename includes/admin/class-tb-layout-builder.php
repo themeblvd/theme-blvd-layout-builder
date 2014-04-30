@@ -240,6 +240,7 @@ class Theme_Blvd_Layout_Builder {
 		// WP-packaged scripts
 		wp_enqueue_script( 'jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'postbox' );
 		wp_enqueue_script( 'wp-color-picker' );
 
@@ -652,8 +653,8 @@ class Theme_Blvd_Layout_Builder {
 							$col_count = 1;
 						}
 
-						if ( $element_settings && !empty( $element_settings['setup']['num'] ) ) {
-							$col_count = $element_settings['setup']['num'];
+						if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
+							$col_count = count( explode('-', $element_settings['setup'] ) );
 						}
 						?>
 						<div class="columns-config columns-<?php echo $col_count; ?>">

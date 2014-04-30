@@ -510,6 +510,11 @@
 	width: 200px;
 }
 
+/* Column Setup */
+#builder_blvd #optionsframework .section-column_widths {
+	padding-bottom: 15px;
+}
+
 /* Column Grid */
 #builder_blvd .columns-config {
 	display: table;
@@ -638,53 +643,13 @@
 /* =Modal Options
 ----------------------------------------------- */
 
-.themeblvd-modal #optionsframework .content-block-form .section:last-of-type {
+.themeblvd-modal #optionsframework .content-block-form > .section:last-of-type {
 	border-bottom: none;
 	padding-bottom: 20px;
 }
 .themeblvd-modal #optionsframework .content-block-form .item .section:last-of-type {
 	padding-bottom: 10px;
 }
-/* Condensed options */
-/*
-#optionsframework .section .heading {
-	font-size: 15px;
-}
-.themeblvd-modal #optionsframework .section .controls {
-	float: none;
-	margin-bottom: 10px;
-	min-width: 0;
-	padding: 0;
-	width: auto;
-}
-.themeblvd-modal #optionsframework .section .explain {
-	float: none;
-	max-width: none;
-	padding: 0 5px;
-	width: auto;
-}
-.themeblvd-modal #optionsframework .section-checkbox .explain {
-	max-width: 440px;
-	float: left;
-}
-.themeblvd-modal #optionsframework .controls input[type="text"],
-.themeblvd-modal #optionsframework .controls textarea,
-.themeblvd-modal #optionsframework .tb-fancy-select {
-	margin-bottom: 0;
-}
-.themeblvd-modal #optionsframework .content-block-form .section:last-of-type {
-	border-bottom: none;
-	padding-bottom: 20px;
-}
-.themeblvd-modal #optionsframework .tb-fancy-select,
-.themeblvd-modal #optionsframework input,
-.themeblvd-modal #optionsframework textarea {
-	max-width: 98%;
-}
-.themeblvd-modal #optionsframework .section-text .tb-input-icon-link {
-	right: 15px;
-}
-*/
 
 /* Fix for fancy selects from WP admin styling */
 .themeblvd-modal .tb-fancy-select select {

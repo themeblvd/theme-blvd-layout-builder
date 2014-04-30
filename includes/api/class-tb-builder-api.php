@@ -203,6 +203,7 @@ class Theme_Blvd_Builder_API {
 	 * @since 1.1.1
 	 */
 	private function set_registered_elements() {
+
 		$this->registered_elements = array(
 			'columns',
 			'content',
@@ -221,7 +222,9 @@ class Theme_Blvd_Builder_API {
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			$this->registered_elements[] = 'html';
+			$this->registered_elements[] = 'image';
 			$this->registered_elements[] = 'simple_slider';
+			$this->registered_elements[] = 'video';
 		}
 
 		$this->registered_elements = apply_filters( 'themeblvd_registered_elements', $this->registered_elements );
@@ -285,17 +288,8 @@ class Theme_Blvd_Builder_API {
 		   	'setup' => array(
 				'id' 		=> 'setup',
 				'name'		=> __( 'Setup Columns', 'themeblvd_builder' ),
-				'desc'		=> __( 'Choose the number of columns along with the corresponding width configurations.', 'themeblvd_builder' ),
-				'std'		=> array(
-					'num'		=> '2',
-					'width'		=> array(
-						'1' => 'grid_12',
-                        '2' => 'grid_6-grid_6',
-                        '3' => 'grid_4-grid_4-grid_4',
-                        '4' => 'grid_3-grid_3-grid_3-grid_3',
-                        '5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
-					)
-				),
+				'desc'		=> null,
+				'std'		=> '1/2-1/2',
 				'type'		=> 'columns',
 				'options'	=> 'element'
 			),
@@ -378,7 +372,7 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['content']['options'] = array(
-			// ... No options, implements sortable content blocks
+			// ...
 		);
 
 		/*--------------------------------------------*/
@@ -496,6 +490,74 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Image
+		/*--------------------------------------------*/
+
+		$this->core_elements['image'] = array();
+
+		// Information
+		$this->core_elements['image']['info'] = array(
+			'name'		=> __( 'Image', 'themeblvd_builder' ),
+			'id'		=> 'image',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_image',
+			'shortcode'	=> null,
+			'desc'		=> __( 'An image, which can be linked or framed to look like a "featured" image.' , 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['image']['options'] = array(
+			'image' => array(
+		    	'id' 		=> 'image',
+				'name'		=> __( 'Image URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the image to be used.', 'themeblvd_builder' ),
+				'type'		=> 'upload',
+				'advanced'	=> true
+			),
+			'subgroup_start' => array(
+				'type' 		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle desc-toggle'
+			),
+			'link' => array(
+				'id' 		=> 'link',
+				'name'		=> __( 'Link', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select if and how this image should be linked.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'	=> array(
+			        'none'		=> __( 'No Link', 'themeblvd' ),
+			        '_self' 	=> __( 'Link to webpage in same window.', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'Link to webpage in new window.', 'themeblvd_builder' ),
+			        'image' 	=> __( 'Link to image in lightbox popup.', 'themeblvd_builder' ),
+			        'video' 	=> __( 'Link to video in lightbox popup.', 'themeblvd_builder' )
+				),
+				'class'		=> 'trigger'
+			),
+			'link_url' => array(
+				'id' 		=> 'link_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> array(
+			        '_self' 	=> __( 'Enter a URL to a webpage.<br />Ex: http://yoursite.com/example', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'Enter a URL to a webpage.<br />Ex: http://google.com', 'themeblvd_builder' ),
+			        'image' 	=> __( 'Enter a URL to an image file.<br />Ex: http://yoursite.com/uploads/image.jpg', 'themeblvd_builder' ),
+			        'video' 	=> __( 'Enter a URL to a YouTube or Vimeo page.<br />Ex: http://vimeo.com/11178250‎</br />Ex: https://youtube.com/watch?v=ginTCwWfGNY', 'themeblvd_builder' )
+				),
+				'type'		=> 'text',
+				'std'		=> '',
+				'pholder'	=> 'http://',
+				'class'		=> 'receiver receiver-_self receiver-_blank receiver-image receiver-video'
+			),
+			'subgroup_end' => array(
+				'type' 		=> 'subgroup_end'
+			),
+			'frame' => array(
+		    	'id' 		=> 'frame',
+				'name'		=> __( 'Image Frame', 'themeblvd_builder' ),
+				'desc'		=> __( 'Add frame around the image.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox'
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* Jumbotron
 		/*--------------------------------------------*/
 
@@ -506,7 +568,7 @@ class Theme_Blvd_Builder_API {
 			'name'		=> __( 'Jumbotron', 'themeblvd_builder' ),
 			'id'		=> 'jumbotron',
 			'query'		=> 'none',
-			'hook'		=> 'themeblvd_post_grid_paginated',
+			'hook'		=> 'themeblvd_jumbotron',
 			'shortcode'	=> '[jumbotron]',
 			'desc'		=> __( 'Bootstrap\'s Jumbotron unit, also knows as a "Hero" unit.' , 'themeblvd_builder' )
 		);
@@ -1819,107 +1881,91 @@ class Theme_Blvd_Builder_API {
 		/* Simple Slider
 		/*--------------------------------------------*/
 
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+		$this->core_elements['simple_slider'] = array();
 
-			$this->core_elements['simple_slider'] = array();
+		// Information
+		$this->core_elements['simple_slider']['info'] = array(
+			'name'		=> __( 'Simple Slider', 'themeblvd_builder' ),
+			'id'		=> 'simple_slider',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_simple_slider',
+			'shortcode'	=> null,
+			'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
+		);
 
-			// Information
-			$this->core_elements['simple_slider']['info'] = array(
-				'name'		=> __( 'Simple Slider', 'themeblvd_builder' ),
-				'id'		=> 'simple_slider',
-				'query'		=> 'none',
-				'hook'		=> 'themeblvd_simple_slider',
-				'shortcode'	=> null,
-				'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
-			);
-
-			// Options
-			$this->core_elements['simple_slider']['options'] = array(
-				'subgroup_start' => array(
-					'type'		=> 'subgroup_start'
-				),
-				'images' => array(
-			    	'id' 		=> 'images',
-					'name'		=> null,
-					'desc'		=> null,
-					'type'		=> 'slider'
-				),
-				'crop' => array(
-					'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
-					'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
-					'id' 		=> 'crop',
-					'std' 		=> 'slider-large',
-					'type' 		=> 'select',
-					'select'	=> 'crop',
-					'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
-				),
-				'subgroup_end' => array(
-					'type'		=> 'subgroup_end',
-				),
-				'interval' => array(
-					'id'		=> 'interval',
-					'name' 		=> __( 'Speed', 'themeblvd_builder' ),
-					'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
-					'std'		=> '5',
-					'type'		=> 'text'
-			    ),
-				'pause' => array(
-					'id'		=> 'pause',
-					'name'		=> __( 'Pause on Hover', 'themeblvd_builder' ),
-					'desc' 		=> __( 'Whether to pause slider on mouse hover.', 'themeblvd_builder' ),
-					'std'		=> 'true',
-					'type'		=> 'select',
-					'options'	=> array(
-			            'true'		=> __( 'Yes, pause slider on hover.', 'themeblvd_builder' ),
-			            'false'		=> __( 'No, don\'t pause slider on hover.', 'themeblvd_builder' )
-					)
-				),
-				'wrap' => array(
-					'id'		=> 'wrap',
-					'name'		=> __( 'Continuous Cycle', 'themeblvd_sliders' ),
-					'desc'		=> __( 'Whether sliders continues to auto rotate after the first pass.', 'themeblvd_builder' ),
-					'std'		=> 'true',
-					'type'		=> 'select',
-					'options'	=> array(
-			            'true'		=> __( 'Yes, cycle continuously.', 'themeblvd_sliders' ),
-			            'false'		=> __( 'No, stop cycling.', 'themeblvd_sliders' )
-					)
-				),
-				'nav_standard' => array(
-					'id'		=> 'nav_standard',
-					'name'		=> __( 'Standard Navigation', 'themeblvd_builder' ),
-					'desc'		=> __( 'Whether to show standard navigation indicator dots.', 'themeblvd_builder'),
-					'std'		=> '1',
-					'type'		=> 'select',
-					'options'	=> array(
-			            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
-			            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
-					)
-				),
-				'nav_arrows' => array(
-					'id'		=> 'nav_arrows',
-					'name'		=> __( 'Arrow Navigation', 'themeblvd_builder' ),
-					'desc'		=> __( 'Whether to show standard navigation arrows.', 'themeblvd_builder'),
-					'std'		=> '1',
-					'type'		=> 'select',
-					'options'	=> array(
-			            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
-			            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
-					)
-				),
-				'nav_thumbs' => array(
-					'id'		=> 'nav_thumbs',
-					'name'		=> __( 'Thumbnail Navigation', 'themeblvd_builder' ),
-					'desc'		=> __( 'Whether to show navigation thumbnails.', 'themeblvd_builder'),
-					'std'		=> '0',
-					'type'		=> 'select',
-					'options'	=> array(
-			            '1'	=> __( 'Yes, show thumbnail navigation.', 'themeblvd_builder' ),
-			            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
-					)
-				)
-			);
-		}
+		// Options
+		$this->core_elements['simple_slider']['options'] = array(
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start'
+			),
+			'images' => array(
+		    	'id' 		=> 'images',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'slider'
+			),
+			'crop' => array(
+				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'id' 		=> 'crop',
+				'std' 		=> 'slider-large',
+				'type' 		=> 'select',
+				'select'	=> 'crop',
+				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end',
+			),
+			'interval' => array(
+				'id'		=> 'interval',
+				'name' 		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
+				'std'		=> '5',
+				'type'		=> 'text'
+		    ),
+			'pause' => array(
+				'id'		=> 'pause',
+				'desc' 		=> __( 'Pause slider on hover.', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'wrap' => array(
+				'id'		=> 'wrap',
+				'desc'		=> __( 'Cycle continuously without hard stops.', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'desc'		=> __( 'Show standard navigation indicator dots.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_arrows' => array(
+				'id'		=> 'nav_arrows',
+				'desc'		=> __( 'Show standard navigation arrows.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_thumbs' => array(
+				'id'		=> 'nav_thumbs',
+				'desc'		=> __( 'Show thumbnail navigation.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
+			'link' => array(
+				'id'		=> 'thumb_link',
+				'desc'		=> __( 'Apply hover effect to linked images.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'dark_text'	=> array(
+				'id'		=> 'dark_text',
+				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			)
+		);
 
 		/*--------------------------------------------*/
 		/* Slider
@@ -2185,6 +2231,33 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Video
+		/*--------------------------------------------*/
+
+		$this->core_elements['video'] = array();
+
+		// Information
+		$this->core_elements['video']['info'] = array(
+			'name'		=> __( 'Video', 'themeblvd_builder' ),
+			'id'		=> 'video',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_video',
+			'shortcode'	=> null,
+			'desc'		=> __( 'A responsive, full-width video.' , 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['video']['options'] = array(
+			'video' => array(
+		    	'id' 		=> 'video',
+				'name'		=> __( 'Video URL', 'themeblvd_builder' ),
+				'desc'		=> __( '<p>Upload a video or enter a video URL compatible with <a href="" target="_blank">WordPress\'s oEmbed</a>.</p><p>Examples:<br />http://vimeo.com/11178250</br />http://youtube.com/watch?v=ginTCwWfGNY</p>', 'themeblvd_builder' ),
+				'type'		=> 'upload',
+				'video'		=> true
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* Global element options
 		/*--------------------------------------------*/
 
@@ -2272,9 +2345,9 @@ class Theme_Blvd_Builder_API {
 		$this->registered_blocks = array(
 			'content',
 			'current',
-			'page',
 			'html',
 			'image',
+			'page',
 			'panel',
 			'raw',
 			'simple_slider',
@@ -2359,8 +2432,8 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_blocks['page']['options'] = array(
-			'page_id' => array(
-		    	'id' 		=> 'page_id',
+			'page' => array(
+		    	'id' 		=> 'page',
 				'name'		=> __( 'Page', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select from your website\'s pages to pull content from.', 'themeblvd_builder' ),
 				'type'		=> 'select',
@@ -2405,10 +2478,6 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_blocks['image']['options'] = array(
-			'subgroup_start' => array(
-				'type' 		=> 'subgroup_start',
-				'class'		=> 'advanced-image-upload'
-			),
 			'image' => array(
 		    	'id' 		=> 'image',
 				'name'		=> __( 'Image URL', 'themeblvd_builder' ),
@@ -2416,28 +2485,40 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'upload',
 				'advanced'	=> true
 			),
+			'subgroup_start' => array(
+				'type' 		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle desc-toggle'
+			),
+			'link' => array(
+				'id' 		=> 'link',
+				'name'		=> __( 'Link', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select if and how this image should be linked.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'	=> array(
+			        'none'		=> __( 'No Link', 'themeblvd' ),
+			        '_self' 	=> __( 'Link to webpage in same window.', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'Link to webpage in new window.', 'themeblvd_builder' ),
+			        'image' 	=> __( 'Link to image in lightbox popup.', 'themeblvd_builder' ),
+			        'video' 	=> __( 'Link to video in lightbox popup.', 'themeblvd_builder' )
+				),
+				'class'		=> 'trigger'
+			),
 			'link_url' => array(
 				'id' 		=> 'link_url',
 				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL of where you want the image to link to. Leave blank for the image to not be a link.', 'themeblvd_builder' ),
+				'desc'		=> array(
+			        '_self' 	=> __( 'Enter a URL to a webpage.<br />Ex: http://yoursite.com/example', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'Enter a URL to a webpage.<br />Ex: http://google.com', 'themeblvd_builder' ),
+			        'image' 	=> __( 'Enter a URL to an image file.<br />Ex: http://yoursite.com/uploads/image.jpg', 'themeblvd_builder' ),
+			        'video' 	=> __( 'Enter a URL to a YouTube or Vimeo page.<br />Ex: http://vimeo.com/11178250‎</br />Ex: https://youtube.com/watch?v=ginTCwWfGNY', 'themeblvd_builder' )
+				),
 				'type'		=> 'text',
 				'std'		=> '',
 				'pholder'	=> 'http://',
-				'class'		=> 'receive-link-url'
+				'class'		=> 'receiver receiver-_self receiver-_blank receiver-image receiver-video'
 			),
 			'subgroup_end' => array(
 				'type' 		=> 'subgroup_end'
-			),
-			'link_target' => array(
-				'id' 		=> 'link_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the link to open.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'options'	=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
-			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
-				)
 			),
 			'frame' => array(
 		    	'id' 		=> 'frame',
@@ -2540,14 +2621,14 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_blocks['raw']['options'] = array(
-			'text' => array(
-		    	'id' 		=> 'text',
+			'raw' => array(
+		    	'id' 		=> 'raw',
 				'name'		=> __( 'Text', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder' ),
 				'type'		=> 'textarea'
 			),
-			'format' => array(
-		    	'id' 		=> 'format',
+			'raw_format' => array(
+		    	'id' 		=> 'raw_format',
 				'name'		=> __( 'Raw Content Formatting', 'themeblvd_builder' ),
 				'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox',
@@ -2600,58 +2681,45 @@ class Theme_Blvd_Builder_API {
 		    ),
 			'pause' => array(
 				'id'		=> 'pause',
-				'name'		=> __( 'Pause on Hover', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Whether to pause slider on mouse hover.', 'themeblvd_builder' ),
-				'std'		=> 'true',
-				'type'		=> 'select',
-				'options'	=> array(
-		            'true'		=> __( 'Yes, pause slider on hover.', 'themeblvd_builder' ),
-		            'false'		=> __( 'No, don\'t pause slider on hover.', 'themeblvd_builder' )
-				)
+				'desc' 		=> __( 'Pause slider on hover.', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
 			),
 			'wrap' => array(
 				'id'		=> 'wrap',
-				'name'		=> __( 'Continuous Cycle', 'themeblvd_sliders' ),
-				'desc'		=> __( 'Whether sliders continues to auto rotate after the first pass.', 'themeblvd_builder' ),
-				'std'		=> 'true',
-				'type'		=> 'select',
-				'options'	=> array(
-		            'true'		=> __( 'Yes, cycle continuously.', 'themeblvd_sliders' ),
-		            'false'		=> __( 'No, stop cycling.', 'themeblvd_sliders' )
-				)
+				'desc'		=> __( 'cycle continuously or have hard stops', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
 			),
 			'nav_standard' => array(
 				'id'		=> 'nav_standard',
-				'name'		=> __( 'Standard Navigation', 'themeblvd_builder' ),
-				'desc'		=> __( 'Whether to show standard navigation indicator dots.', 'themeblvd_builder'),
-				'std'		=> '1',
-				'type'		=> 'select',
-				'options'	=> array(
-		            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
-		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
-				)
+				'desc'		=> __( 'Show standard navigation indicator dots.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
 			),
 			'nav_arrows' => array(
 				'id'		=> 'nav_arrows',
-				'name'		=> __( 'Arrow Navigation', 'themeblvd_builder' ),
 				'desc'		=> __( 'Whether to show standard navigation arrows.', 'themeblvd_builder'),
-				'std'		=> '1',
-				'type'		=> 'select',
-				'options'	=> array(
-		            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
-		            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
-				)
+				'std'		=> true,
+				'type'		=> 'checkbox'
 			),
 			'nav_thumbs' => array(
 				'id'		=> 'nav_thumbs',
-				'name'		=> __( 'Thumbnail Navigation', 'themeblvd_builder' ),
-				'desc'		=> __( 'Whether to show navigation thumbnails.', 'themeblvd_builder'),
-				'std'		=> '0',
-				'type'		=> 'select',
-				'options'	=> array(
-		            '1'	=> __( 'Yes, show thumbnail navigation.', 'themeblvd_builder' ),
-		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
-				)
+				'desc'		=> __( 'Show thumbnail navigation.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
+			'link' => array(
+				'id'		=> 'thumb_link',
+				'desc'		=> __( 'Apply hover effect to linked images.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'dark_text'	=> array(
+				'id'		=> 'dark_text',
+				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
 			)
 		);
 
@@ -2693,8 +2761,8 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_blocks['widget']['options'] = array(
-			'widget_area' => array(
-		    	'id' 		=> 'widget_area',
+			'sidebar' => array(
+		    	'id' 		=> 'sidebar',
 				'name'		=> __( 'Widget Area', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select from your registered widget areas.', 'themeblvd_builder' ),
 				'type'		=> 'select',

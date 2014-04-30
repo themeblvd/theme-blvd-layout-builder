@@ -197,6 +197,7 @@ jQuery(document).ready(function($) {
 			$('#builder_blvd').themeblvd('options', 'media-uploader');
 			$('#builder_blvd').themeblvd('options', 'editor');
 			$('#builder_blvd').themeblvd('options', 'code-editor');
+			$('#builder_blvd').themeblvd('options', 'column-widths');
 			$('#builder_blvd').themeblvd('options', 'sortable');
 
 			// Setup each "Columns" and "Content" element
@@ -426,6 +427,7 @@ jQuery(document).ready(function($) {
 			object.themeblvd('options', 'media-uploader');
 			object.themeblvd('options', 'editor');
 			object.themeblvd('options', 'code-editor');
+			object.themeblvd('options', 'column-widths');
 			object.themeblvd('options', 'sortable');
 
 			// Setup each "Columns" element
@@ -449,17 +451,6 @@ jQuery(document).ready(function($) {
     	// Setup each columns element
     	columns : function ( $element )
     	{
-
-    		// Change display for number of columns
-    		$element.find('.column-num').change(function(){
-
-    			var num = $(this).val();
-
-    			// Adjust the CSS fpr class, which will handle
-    			// displaying the correct amount of columns
-    			$element.find('.columns-config').removeClass('columns-1 columns-2 columns-3 columns-4 columns-5').addClass('columns-'+num);
-
-    		});
 
     		// Sortable content blocks
 			var prev_col_num, new_col_num, content;
@@ -562,6 +553,7 @@ jQuery(document).ready(function($) {
 						block.themeblvd('options', 'media-uploader');
 						block.themeblvd('options', 'editor');
 						block.themeblvd('options', 'code-editor');
+						block.themeblvd('options', 'column-widths');
 						block.themeblvd('options', 'sortable');
 
 						// Setup content block options, which open in a modal
@@ -592,6 +584,7 @@ jQuery(document).ready(function($) {
 			self.$modal_window.themeblvd('options', 'media-uploader');
 			self.$modal_window.themeblvd('options', 'editor');
 			self.$modal_window.themeblvd('options', 'code-editor');
+			self.$modal_window.themeblvd('options', 'column-widths');
 			self.$modal_window.themeblvd('options', 'sortable');
     	}
 	};
@@ -920,6 +913,7 @@ jQuery(document).ready(function($) {
 				element.themeblvd('options', 'media-uploader');
 				element.themeblvd('options', 'editor');
 				element.themeblvd('options', 'code-editor');
+				element.themeblvd('options', 'column-widths');
 				element.themeblvd('options', 'sortable');
 
 				if ( element.find('.widget-content').hasClass('element-columns') ) {
@@ -982,6 +976,7 @@ jQuery(document).ready(function($) {
 				$new_element.themeblvd('options', 'media-uploader');
 				$new_element.themeblvd('options', 'editor');
 				$new_element.themeblvd('options', 'code-editor');
+				$new_element.themeblvd('options', 'column-widths');
 				$new_element.themeblvd('options', 'sortable');
 
                 if ( $new_element.find('.widget-content').hasClass('element-columns') ) {

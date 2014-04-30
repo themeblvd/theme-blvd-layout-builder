@@ -220,19 +220,40 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 			case 'columns' :
 
-				if ( ! function_exists( 'themeblvd_columns' ) ) {
-					_e('Columns element not supported.', 'themeblvd_builder');
-					break;
-				}
+				if ( function_exists('themeblvd_content_blocks') ) { // theme framework 2.5+
 
-				$i = 1;
-				$columns = array();
-				$num = $element['options']['setup']['num'];
-				while ( $i <= $num ) {
-					$columns[] = $element['options']['col_'.$i];
-					$i++;
+					$num = 1;
+					if ( is_string( $element['options']['setup'] ) ) {
+						$num = count( explode( '-', $element['options']['setup'] ) );
+					}
+
+					$args = array(
+						'layout_id'		=> $layout_id,
+						'element_id' 	=> $id,
+						'num'			=> $num,
+						'widths'		=> $element['options']['setup']
+					);
+					themeblvd_columns( $args );
+
+				} else {
+
+					// @deprecated
+
+					if ( ! function_exists( 'themeblvd_columns' ) ) {
+						_e('Columns element not supported.', 'themeblvd_builder');
+						break;
+					}
+
+					$i = 1;
+					$columns = array();
+					$num = $element['options']['setup']['num'];
+					while ( $i <= $num ) {
+						$columns[] = $element['options']['col_'.$i];
+						$i++;
+					}
+					themeblvd_columns( $num, $element['options']['setup']['width'][$num], $columns );
+
 				}
-				themeblvd_columns( $num, $element['options']['setup']['width'][$num], $columns );
 				break;
 
 			/*------------------------------------------------------*/
@@ -241,12 +262,22 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 			case 'content' :
 
-				if ( ! function_exists( 'themeblvd_content' ) ) {
-					_e('Content element not supported.', 'themeblvd_builder');
-					break;
-				}
+				if ( function_exists('themeblvd_content_blocks') ) { // theme framework 2.5+
 
-				echo themeblvd_content( $element['options'] );
+					themeblvd_content_blocks( $layout_id, $id );
+
+				} else {
+
+					// @deprecated
+
+					if ( ! function_exists( 'themeblvd_content' ) ) {
+						_e('Content element not supported.', 'themeblvd_builder');
+						break;
+					}
+
+					echo themeblvd_content( $element['options'] );
+
+				}
 
 				break;
 
@@ -277,6 +308,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				}
 
 				echo themeblvd_headline( $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
+			/* Image
+			/*------------------------------------------------------*/
+
+			case 'image' :
+
+				if ( ! function_exists( 'themeblvd_image' ) ) {
+					_e('Image element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				echo themeblvd_image( $element['options'] );
 
 				break;
 
@@ -407,6 +453,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Simple Slider
+			/*------------------------------------------------------*/
+
+			case 'simple_slider' :
+
+				if ( ! function_exists( 'themeblvd_simple_slider' ) ) {
+					_e('Simple Slider element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				echo themeblvd_simple_slider( $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Slider
 			/*------------------------------------------------------*/
 
@@ -448,6 +509,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				}
 
 				echo themeblvd_tabs( $id, $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
+			/* Video
+			/*------------------------------------------------------*/
+
+			case 'video' :
+
+				if ( ! function_exists( 'themeblvd_video' ) ) {
+					_e('Video element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				echo themeblvd_video( $element['options']['video'] );
 
 				break;
 

@@ -187,6 +187,12 @@ class Theme_Blvd_Layout_Builder_Data {
 	 */
 	public function content_blocks() {
 
+		// If the theme does not contain framework version 2.5+,
+		// altering the data will mess things up.
+		if ( version_compare( $this->theme_version, '2.5.0', '>=' ) ) {
+			return;
+		}
+
 		// If layout is saved after 2.0 of the plugin,
 		// we're good to go.
 		if ( version_compare( $this->saved, '2.0.0', '>=' ) ) {
@@ -223,20 +229,20 @@ class Theme_Blvd_Layout_Builder_Data {
 							case 'page' :
 								$blocks[$block_id]['type'] = 'page';
 								$blocks[$block_id]['options'] = array();
-								$blocks[$block_id]['options']['page_id'] = $element['options']['page_id'];
+								$blocks[$block_id]['options']['page'] = $element['options']['page_id'];
 								break;
 
 							case 'raw' :
 								$blocks[$block_id]['type'] = 'raw';
 								$blocks[$block_id]['options'] = array();
-								$blocks[$block_id]['options']['text'] = $element['options']['raw_content'];
-								$blocks[$block_id]['options']['format'] = $element['options']['raw_format'];
+								$blocks[$block_id]['options']['raw'] = $element['options']['raw_content'];
+								$blocks[$block_id]['options']['raw_format'] = $element['options']['raw_format'];
 								break;
 
 							case 'widget' :
 								$blocks[$block_id]['type'] = 'widget';
 								$blocks[$block_id]['options'] = array();
-								$blocks[$block_id]['options']['widget_area'] = $element['options']['widget_area'];
+								$blocks[$block_id]['options']['sidebar'] = $element['options']['widget_area'];
 								break;
 						}
 
@@ -273,20 +279,20 @@ class Theme_Blvd_Layout_Builder_Data {
 									case 'page' :
 										$blocks[$block_id]['type'] = 'page';
 										$blocks[$block_id]['options'] = array();
-										$blocks[$block_id]['options']['page_id'] = $settings['page'];
+										$blocks[$block_id]['options']['page'] = $settings['page'];
 										break;
 
 									case 'raw' :
 										$blocks[$block_id]['type'] = 'raw';
 										$blocks[$block_id]['options'] = array();
-										$blocks[$block_id]['options']['text'] = $settings['raw'];
-										$blocks[$block_id]['options']['format'] = $settings['raw_format'];
+										$blocks[$block_id]['options']['raw'] = $settings['raw'];
+										$blocks[$block_id]['options']['raw_format'] = $settings['raw_format'];
 										break;
 
 									case 'widget' :
 										$blocks[$block_id]['type'] = 'widget';
 										$blocks[$block_id]['options'] = array();
-										$blocks[$block_id]['options']['widget_area'] = $settings['sidebar'];
+										$blocks[$block_id]['options']['sidebar'] = $settings['sidebar'];
 										break;
 								}
 
