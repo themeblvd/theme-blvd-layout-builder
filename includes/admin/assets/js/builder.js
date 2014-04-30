@@ -573,6 +573,11 @@ jQuery(document).ready(function($) {
     			});
     		});
 
+			// Adjust how many columns displayed, based on selection
+			$element.find('.select-col-num').on('change', function(){
+				$element.find('.columns-config').removeClass('columns-1 columns-2 columns-3 columns-4 columns-5').addClass('columns-'+$(this).val());
+			});
+
     	},
 
     	// Used for the on_load() callback when
