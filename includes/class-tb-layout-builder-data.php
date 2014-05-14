@@ -189,7 +189,7 @@ class Theme_Blvd_Layout_Builder_Data {
 
 		// If the theme does not contain framework version 2.5+,
 		// altering the data will mess things up.
-		if ( version_compare( $this->theme_version, '2.5.0', '>=' ) ) {
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
 			return;
 		}
 
@@ -298,6 +298,23 @@ class Theme_Blvd_Layout_Builder_Data {
 
 								// Add content block to meta data
 								update_post_meta( $this->id, $element_id.'_'.$option_id, $blocks ); // "element_123_col_1"
+
+							} else if ( $option_id == 'setup' ) {
+
+								if ( is_array( $settings ) ) {
+
+									if ( ! empty( $settings['width'] ) && ! empty( $settings['num'] ) ) {
+
+										$widths = $settings['width'][$settings['num']];
+										$widths = explode('-', $widths);
+
+										foreach ( $widths as $key => $value ) {
+											$widths[$key] = themeblvd_grid_fraction($value);
+										}
+
+										$new[$location_id][$element_id]['options'][$option_id] = implode('-', $widths);
+									}
+								}
 
 							} else {
 
