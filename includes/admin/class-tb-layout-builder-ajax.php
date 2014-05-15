@@ -58,27 +58,60 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Create new post
 		$post_id = wp_insert_post( $args );
 
+		$columns = array();
+
 		// Setup meta
 		if ( ! empty( $config['tb_new_layout']['layout_start'] ) ) {
 
-			if ( $config['tb_new_layout']['layout_start'] == 'layout' ) {
+			$start = $config['tb_new_layout']['layout_start'];
+
+			if ( $start == 'layout' ) {
 
 				// Configure meta for pre-existing layout
 				$layout_id = $config['tb_new_layout']['layout_existing'];
 				$elements = get_post_meta( $layout_id, 'elements', true );
 				$settings = get_post_meta( $layout_id, 'settings', true );
 
-			} else if ( $config['tb_new_layout']['layout_start'] == 'sample' ) {
+			} else if ( $start == 'sample' ) {
 
 				// Configure meta for sample layout
 				$samples = themeblvd_get_sample_layouts();
 				$current_sample = $samples[$config['tb_new_layout']['layout_sample']];
-				$elements = array(
-					'featured' => $current_sample['featured'],
-					'primary' => $current_sample['primary'],
-					'featured_below' => $current_sample['featured_below']
-				);
 				$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
+
+				$elements = array();
+
+				if ( ! empty( $current_sample['import'] ) ) {
+
+					$file = $current_sample['import'];
+
+					if ( file_exists( $file ) && function_exists( 'simplexml_load_file' ) ) {
+						$internal_errors = libxml_use_internal_errors(true);
+						$import = simplexml_load_file( $file );
+					}
+
+					if ( $import ) {
+						foreach( $import->data->meta as $meta ) {
+
+							$key = (string)$meta->key;
+
+							if ( $key == 'elements' ) {
+
+								$elements = (string)$meta->value;
+								$elements = maybe_unserialize(base64_decode($elements));
+
+							} else if ( strpos( $key, 'element_' ) !== false ) {
+
+								$value = (string)$meta->value;
+								$value = maybe_unserialize(base64_decode($value));
+								$columns[$key] = $value;
+
+							}
+
+						}
+					}
+
+				}
 
 			} else {
 
@@ -93,22 +126,35 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		update_post_meta( $post_id, 'elements', $elements );
 		update_post_meta( $post_id, 'settings', $settings );
 
+		// Columns with content blocks
+		if ( $columns ) {
+			foreach ( $columns as $key => $value ) {
+				update_post_meta( $post_id, $key, $value );
+			}
+		}
+
 		// Store version numbers that this layout was created with
 		update_post_meta( $post_id, 'plugin_version_created', TB_BUILDER_PLUGIN_VERSION );
+		update_post_meta( $post_id, 'plugin_version_saved', TB_BUILDER_PLUGIN_VERSION );
 		update_post_meta( $post_id, 'framework_version_created', TB_FRAMEWORK_VERSION );
+		update_post_meta( $post_id, 'framework_version_saved', TB_FRAMEWORK_VERSION );
 
 		// Adjust response depending on where the creation
 		// of the layout happenned.
 		if ( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
+
 			// If this coming from the Builder, send back Post
 			// ID and edit layout interface.
 			echo $post_id.'[(=>)]';
 			$this->admin_page->edit_layout( $post_id );
+
 		} else {
+
 			// If this is coming from the Edit Page meta box,
 			// send back post slug (i.e. layout ID).
 			$post = get_post( $post_id );
 			echo $post->post_name;
+
 		}
 		die();
 	}
