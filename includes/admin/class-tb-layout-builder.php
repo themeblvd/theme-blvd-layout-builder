@@ -9,6 +9,7 @@ class Theme_Blvd_Layout_Builder {
 	public $elements;
 	public $blocks;
 	public $ajax;
+	private $import_url;
 
 	/**
 	 * Constructor.
@@ -66,6 +67,13 @@ class Theme_Blvd_Layout_Builder {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
 			$advanced->create('slider');
 		}
+
+		// Allow for importing
+		$args = array(
+			'redirect' => admin_url('admin.php?page='.$this->id) // Builder page URL
+		);
+		$import = new Theme_Blvd_Import_Layout( $this->id, $args );
+		$this->importer_url = $import->get_url(); // URL of page where importer is
 
 	}
 
@@ -320,6 +328,8 @@ class Theme_Blvd_Layout_Builder {
 			        <a href="#edit_layout" id="edit_layout-tab" class="nav-tab nav-edit-builder hide" title="<?php _e( 'Edit Layout', 'themeblvd_builder' ); ?>"><?php _e( 'Edit Layout', 'themeblvd_builder' ); ?></a>
 			    </h2>
 
+			    <?php do_action('themeblvd_builder_update'); ?>
+
 		    	<!-- MANAGE LAYOUT (start) -->
 
 		    	<div id="manage_layouts" class="group hide">
@@ -343,7 +353,7 @@ class Theme_Blvd_Layout_Builder {
 						$add_nonce = wp_create_nonce( 'themeblvd_new_builder' );
 						echo '<input type="hidden" name="option_page" value="themeblvd_new_builder" />';
 						echo '<input type="hidden" name="_tb_new_builder_nonce" value="'.$add_nonce.'" />';
-						$this->add_layout( null );
+						$this->add_layout( true ); // TRUE to allow importing
 						?>
 					</form><!-- #add_new_builder (end) -->
 				</div><!-- #manage (end) -->
@@ -429,7 +439,7 @@ class Theme_Blvd_Layout_Builder {
 					<?php
 					$add_nonce = wp_create_nonce( 'themeblvd_new_builder' );
 					echo '<input type="hidden" name="_tb_new_builder_nonce" value="'.$add_nonce.'" />';
-					$this->add_layout( null );
+					$this->add_layout();
 					?>
 				</div><!-- #manage (end) -->
 
@@ -477,7 +487,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_layout() {
+	public function add_layout( $import = false ) {
 
 		// Setup sidebar layouts
 		$layouts = themeblvd_sidebar_layouts();
@@ -588,6 +598,9 @@ class Theme_Blvd_Layout_Builder {
 					<?php echo $form[0]; ?>
 				</div><!-- .group (end) -->
 				<div id="optionsframework-submit">
+					<?php if ( $import ) : ?>
+						<a href="<?php echo $this->importer_url; ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php _e('Import layout from XML file.', 'themeblvd_builder'); ?>"><?php _e('Import Layout', 'themeblvd_builder'); ?></a>
+					<?php endif; ?>
 					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Layout', 'themeblvd_builder' ); ?>">
 					<span class="tb-loader ajax-loading">
 						<i class="tb-icon-spinner"></i>

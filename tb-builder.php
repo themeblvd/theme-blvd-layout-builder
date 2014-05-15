@@ -36,6 +36,7 @@ define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
  */
 function themeblvd_builder_init() {
 
+	global $_themeblvd_export_layouts;
 	global $_themeblvd_layout_builder;
 
 	// Include general items
@@ -124,9 +125,23 @@ function themeblvd_builder_init() {
 		// Check to make sure admin interface isn't set to be
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'builder' ) && current_user_can( themeblvd_admin_module_cap( 'builder' ) ) ) {
+
+			if ( class_exists( 'Theme_Blvd_Export' ) ) { // Theme Blvd framework 2.5+
+
+				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-export-layout.php' );
+
+				$args = array(
+					'filename'	=> 'layout-{name}.xml', // string {name} will be dynamically replaced with each export
+					'base_url'	=> admin_url('admin.php?page=themeblvd_builder')
+				);
+				$_themeblvd_export_layout = new Theme_Blvd_Export_Layout( 'layout', $args ); // Extends class Theme_Blvd_Export
+			}
+
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/builder-samples.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-import-layout.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder.php' );
+
 			$_themeblvd_layout_builder = new Theme_Blvd_Layout_Builder();
 		}
 	}
