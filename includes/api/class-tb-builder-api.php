@@ -2344,6 +2344,7 @@ class Theme_Blvd_Builder_API {
 	private function set_registered_blocks() {
 		$this->registered_blocks = array(
 			'content',
+			'contact',
 			'current',
 			'html',
 			'image',
@@ -2392,6 +2393,53 @@ class Theme_Blvd_Builder_API {
 				'name'		=> __( 'Content', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the content you\'d like to show for this content block.', 'themeblvd_builder' ),
 				'type'		=> 'editor_modal'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Contact Bar
+		/*--------------------------------------------*/
+
+		$this->core_blocks['contact'] = array();
+
+		// Information
+		$this->core_blocks['contact']['info'] = array(
+			'name' 		=> __( 'Contact Bar', 'themeblvd_builder' ),
+			'id'		=> 'contact'
+		);
+
+		// Options
+		$this->core_blocks['contact']['options'] = array(
+			'buttons' => array(
+		    	'id' 		=> 'buttons',
+				'name'		=> __( 'Buttons', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure the buttons to be used for the contact bar.', 'themeblvd_builder' ),
+				'type'		=> 'social_media'
+			),
+			'style' => array(
+				'name' 		=> __( 'Style', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Style of the how the buttons will appear.', 'themeblvd_builder' ),
+				'id' 		=> 'style',
+				'std' 		=> 'grey',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'grey' 		=> __('Flat Grey', 'themeblvd_builder'),
+					'dark' 		=> __('Flat Dark', 'themeblvd_builder'),
+					'light' 	=> __('Flat Light', 'themeblvd_builder'),
+					'color' 	=> __('Color', 'themeblvd_builder')
+				)
+			),
+			'tooltip' => array(
+				'name' 		=> __( 'Tooltip', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the placement of the tooltips. The tooltip is pulled from the "Label" of each button.', 'themeblvd_builder' ),
+				'id' 		=> 'tooltip',
+				'std' 		=> 'top',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'top' 		=> __('Tooltips on top', 'themeblvd_builder'),
+					'bottom' 	=> __('Tooltips on bottom', 'themeblvd_builder'),
+					'disable' 	=> __('Disable tooltips', 'themeblvd_builder')
+				)
 			)
 		);
 
@@ -2584,18 +2632,6 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'footer',
 				'std' 		=> '',
 				'type' 		=> 'text'
-			),
-			'text_align' => array(
-				'name' 		=> __( 'Text Alignment', 'themeblvd_builder' ),
-				'desc' 		=> __( 'How to align text in panel.', 'themeblvd_builder' ),
-				'id' 		=> 'text_align',
-				'std' 		=> 'left',
-				'type' 		=> 'select',
-				'options' 	=> array(
-					'left' 		=> __('Left', 'themeblvd_builder'),
-					'right' 	=> __('Right', 'themeblvd_builder'),
-					'center' 	=> __('Center', 'themeblvd_builder')
-				)
 			),
 			'class' => array(
 				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
@@ -2888,7 +2924,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_layouts['agency'] = array(
 			'name'				=> __('Design Agency', 'themeblvd_builder'),
 			'id'				=> 'agency',
-			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-design-agency.png',
+			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-agency.png',
 			'sidebar_layout'	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-agency.xml'
 		);

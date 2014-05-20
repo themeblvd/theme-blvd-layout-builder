@@ -66,6 +66,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( class_exists( 'Theme_Blvd_Advanced_Options' ) ) {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
 			$advanced->create('slider');
+			$advanced->create('social_media');
 		}
 
 		// Allow for importing
