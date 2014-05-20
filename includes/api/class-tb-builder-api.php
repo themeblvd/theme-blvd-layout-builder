@@ -2344,6 +2344,7 @@ class Theme_Blvd_Builder_API {
 	private function set_registered_blocks() {
 		$this->registered_blocks = array(
 			'content',
+			'alert',
 			'contact',
 			'current',
 			'html',
@@ -2393,6 +2394,49 @@ class Theme_Blvd_Builder_API {
 				'name'		=> __( 'Content', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the content you\'d like to show for this content block.', 'themeblvd_builder' ),
 				'type'		=> 'editor_modal'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Alert
+		/*--------------------------------------------*/
+
+		$this->core_blocks['alert'] = array();
+
+		// Information
+		$this->core_blocks['alert']['info'] = array(
+			'name' 		=> __( 'Alert', 'themeblvd_builder' ),
+			'id'		=> 'alert'
+		);
+
+		// Options
+		$this->core_blocks['alert']['options'] = array(
+			'content' => array(
+		    	'id' 		=> 'content',
+				'name'		=> __( 'Content', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the content of the alert.', 'themeblvd_builder' ),
+				'type'		=> 'editor_modal',
+				'class'		=> 'hide'
+			),
+			'style' => array(
+				'name' 		=> __( 'Style', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'The style of the alert.', 'themeblvd' ),
+				'id' 		=> 'style',
+				'std' 		=> 'info',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'info' 		=> __('Info (blue)', 'themeblvd_builder'),
+					'success' 	=> __('Success (green)', 'themeblvd_builder'),
+					'danger' 	=> __('Danger (red)', 'themeblvd_builder'),
+					'warning' 	=> __('Warning (yellow)', 'themeblvd_builder')
+				)
+			),
+			'class' => array(
+				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd_builder' ),
+				'id' 		=> 'class',
+				'std' 		=> '',
+				'type' 		=> 'text'
 			)
 		);
 
