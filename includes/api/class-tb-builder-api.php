@@ -2351,6 +2351,7 @@ class Theme_Blvd_Builder_API {
 			'image',
 			'page',
 			'panel',
+			'quote',
 			'raw',
 			'simple_slider',
 			'video',
@@ -2676,6 +2677,61 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'footer',
 				'std' 		=> '',
 				'type' 		=> 'text'
+			),
+			'class' => array(
+				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Any CSS classes you\'d like to add.', 'themeblvd_builder' ),
+				'id' 		=> 'class',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Quote
+		/*--------------------------------------------*/
+
+		$this->core_blocks['quote'] = array();
+
+		// Information
+		$this->core_blocks['quote']['info'] = array(
+			'name' 		=> __( 'Quote', 'themeblvd_builder' ),
+			'id'		=> 'quote'
+		);
+
+		// Options
+		$this->core_blocks['quote']['options'] = array(
+			'quote' => array(
+				'name' 		=> __( 'Quote Text', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'The main text of the quote. You cannot use HTML here.', 'themeblvd' ),
+				'id' 		=> 'quote',
+				'std' 		=> 'Quote text...',
+				'type' 		=> 'textarea'
+			),
+			'source' => array(
+				'name' 		=> __( 'Quote Source (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Optional source for the quote.<br />Ex: John Smith', 'themeblvd' ),
+				'id' 		=> 'source',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			),
+			'source_link' => array(
+				'name' 		=> __( 'Quote Source URL (optional)', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Optional website URL to the source you entered in the previous option.<br />Ex: http://google.com', 'themeblvd' ),
+				'id' 		=> 'source_link',
+				'std' 		=> '',
+				'type' 		=> 'text'
+			),
+			'reverse' => array(
+				'name' 		=> __( 'Reverse Orientation', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'If you choose to reverse the orientation, the text and inner parts of the blockquote will be aligned to the right.', 'themeblvd' ),
+				'id' 		=> 'reverse',
+				'std' 		=> 'false',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'false' 	=> __('False', 'themeblvd_builder'),
+					'true' 		=> __('True', 'themeblvd_builder')
+				)
 			),
 			'class' => array(
 				'name' 		=> __( 'CSS Class (optional)', 'themeblvd_builder' ),
