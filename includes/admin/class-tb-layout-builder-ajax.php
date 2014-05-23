@@ -435,6 +435,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$data = new Theme_Blvd_Layout_Builder_Data( $layout_id );
 		$data->verify('elements');
 		$data->verify('settings');
+		$data->finalize();
 
 		// Send back layout to edit
 		echo $layout_id.'[(=>)]';

@@ -513,6 +513,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Toggles
+			/*------------------------------------------------------*/
+
+			case 'toggles' :
+
+				if ( ! function_exists( 'themeblvd_toggles' ) ) {
+					_e('Tabs element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				echo themeblvd_toggles( $id, $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Video
 			/*------------------------------------------------------*/
 
@@ -556,6 +571,7 @@ function themeblvd_builder_verify_data() {
 		$data = new Theme_Blvd_Layout_Builder_Data( themeblvd_config( 'builder_post_id' ) );
 		$data->verify('elements');
 		$data->verify('settings');
+		$data->finalize();
 	}
 }
 

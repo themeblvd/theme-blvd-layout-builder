@@ -245,6 +245,16 @@
 #builder_blvd #optionsframework .item .section:last-of-type {
 	padding-bottom: 10px;
 }
+#builder_blvd #optionsframework .section-slider,
+#builder_blvd #optionsframework .section-tabs,
+#builder_blvd #optionsframework .section-toggles {
+	padding-bottom: 15px;
+}
+#builder_blvd #optionsframework .section-slider > .option > .controls,
+#builder_blvd #optionsframework .section-tabs > .option > .controls,
+#builder_blvd #optionsframework .section-toggles > .option > .controls {
+	margin-bottom: 0;
+}
 #builder_blvd #optionsframework .tb-sortable-option .item {
 	margin-bottom: 5px;
 }
@@ -294,6 +304,9 @@
 	background: #f5f5f5;
 	border-bottom: 1px solid #dfdfdf;
 	cursor: inherit;
+}
+.postbox #builder_blvd .item-handle > h3 {
+	background-color: transparent;
 }
 .postbox #builder_blvd #optionsframework {
 	background: #ffffff;
@@ -425,6 +438,7 @@
 	-moz-box-shadow: 0 0 0 #000;
 	-webkit-box-shadow: 0 0 0 #000;
 	box-shadow: 0 0 0 #000;
+	margin-top: 10px;
 }
 .postbox #builder_blvd .top-widget-name h3 {
 	background-color: #ffffff;

@@ -224,6 +224,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
 			$this->registered_elements[] = 'simple_slider';
+			$this->registered_elements[] = 'toggles';
 			$this->registered_elements[] = 'video';
 		}
 
@@ -2124,110 +2125,185 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['tabs']['options'] = array(
-			'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'tabs'
-		    ),
-		   	'setup' => array(
-				'id' 		=> 'setup',
-				'name'		=> __( 'Setup Tabs', 'themeblvd_builder' ),
-				'desc'		=> __( 'Choose the number of tabs along with inputting a name for each one. These names are what will appear on the actual tab buttons across the top of the tab set.', 'themeblvd_builder' ),
+			'tabs' => array(
+				'id' 		=> 'tabs',
+				'name'		=> null,
+				'desc'		=> null,
 				'type'		=> 'tabs'
+			),
+			'nav' => array(
+				'id' 		=> 'nav',
+				'name'		=> __( 'Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the style of the navigation.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'tabs',
+				'options'	=> array(
+			        'tabs' 		=> __( 'Tabs', 'themeblvd_builder' ),
+			        'pills' 	=> __( 'Pills', 'themeblvd_builder' )
+				)
+			),
+			'style' => array(
+				'id' 		=> 'style',
+				'name'		=> __( 'Style', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select whether you want the content of the tabs to be framed or not.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'framed',
+				'options'	=> array(
+			        'open' 		=> __( 'Open Style', 'themeblvd_builder' ),
+			        'framed' 	=> __( 'Framed Style', 'themeblvd_builder' )
+				)
 			),
 			'height' => array(
 				'id' 		=> 'height',
 				'name'		=> __( 'Fixed Height', 'themeblvd_builder' ),
 				'desc'		=> __( 'Apply automatic fixed height across all tabs.<br><br>This just takes the height of the tallest tab\'s content and applies that across all tabs. This can help with "page jumping" in the case that not all tabs have equal amount of content. It can also help in the case when you\'re getting unwanted scrollbars on the inner content areas of tabs.', 'themeblvd_builder' ),
-				'std'		=> 1,
+				'std'		=> 0,
 				'type'		=> 'checkbox'
+			)
+		);
+
+		// Setup options in the old way, if the user's current theme
+		// framework is not at least 2.5.
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			$this->core_elements['tabs']['options'] = array(
+				'subgroup_start' => array(
+			    	'type'		=> 'subgroup_start',
+			    	'class'		=> 'tabs'
+			    ),
+			   	'setup' => array(
+					'id' 		=> 'setup',
+					'name'		=> __( 'Setup Tabs', 'themeblvd_builder' ),
+					'desc'		=> __( 'Choose the number of tabs along with inputting a name for each one. These names are what will appear on the actual tab buttons across the top of the tab set.', 'themeblvd_builder' ),
+					'type'		=> 'tabs'
+				),
+				'height' => array(
+					'id' 		=> 'height',
+					'name'		=> __( 'Fixed Height', 'themeblvd_builder' ),
+					'desc'		=> __( 'Apply automatic fixed height across all tabs.<br><br>This just takes the height of the tallest tab\'s content and applies that across all tabs. This can help with "page jumping" in the case that not all tabs have equal amount of content. It can also help in the case when you\'re getting unwanted scrollbars on the inner content areas of tabs.', 'themeblvd_builder' ),
+					'std'		=> 1,
+					'type'		=> 'checkbox'
+				),
+				'tab_1' => array(
+					'id' 		=> 'tab_1',
+					'name'		=> __( 'Tab #1 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the first tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_2' => array(
+					'id' 		=> 'tab_2',
+					'name'		=> __( 'Tab #2 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the second tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_3' => array(
+					'id' 		=> 'tab_3',
+					'name'		=> __( 'Tab #3 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the third tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_4' => array(
+					'id' 		=> 'tab_4',
+					'name'		=> __( 'Tab #4 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the fourth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_5' => array(
+					'id' 		=> 'tab_5',
+					'name'		=> __( 'Tab #5 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the fifth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_6' => array(
+					'id' 		=> 'tab_6',
+					'name'		=> __( 'Tab #6 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the sixth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_7' => array(
+					'id' 		=> 'tab_7',
+					'name'		=> __( 'Tab #7 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the seventh tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_8' => array(
+					'id' 		=> 'tab_8',
+					'name'		=> __( 'Tab #8 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the eighth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_9' => array(
+					'id' 		=> 'tab_9',
+					'name'		=> __( 'Tab #9 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the ninth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_10' => array(
+					'id' 		=> 'tab_10',
+					'name'		=> __( 'Tab #10 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the tenth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_11' => array(
+					'id' 		=> 'tab_11',
+					'name'		=> __( 'Tab #11 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the eleventh tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'tab_12' => array(
+					'id' 		=> 'tab_12',
+					'name'		=> __( 'Tab #12 Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Configure the content for the twelfth tab.', 'themeblvd_builder' ),
+					'type'		=> 'content',
+					'options'	=> array( 'page', 'raw', 'widget' )
+				),
+				'subgroup_end' => array(
+			    	'type'		=> 'subgroup_end'
+			    )
+			);
+		}
+
+		/*--------------------------------------------*/
+		/* Toggles
+		/*--------------------------------------------*/
+
+		$this->core_elements['toggles'] = array();
+
+		// Information
+		$this->core_elements['toggles']['info'] = array(
+			'name' 		=> __( 'Toggles', 'themeblvd_builder' ),
+			'id'		=> 'toggles',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_toggles',
+			'shortcode'	=> '[toggle], [accordion]',
+			'desc' 		=> __( 'Set of tabbed content', 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['toggles']['options'] = array(
+			'toggles' => array(
+				'id' 		=> 'toggles',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'toggles'
 			),
-			'tab_1' => array(
-				'id' 		=> 'tab_1',
-				'name'		=> __( 'Tab #1 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the first tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_2' => array(
-				'id' 		=> 'tab_2',
-				'name'		=> __( 'Tab #2 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the second tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_3' => array(
-				'id' 		=> 'tab_3',
-				'name'		=> __( 'Tab #3 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the third tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_4' => array(
-				'id' 		=> 'tab_4',
-				'name'		=> __( 'Tab #4 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the fourth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_5' => array(
-				'id' 		=> 'tab_5',
-				'name'		=> __( 'Tab #5 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the fifth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_6' => array(
-				'id' 		=> 'tab_6',
-				'name'		=> __( 'Tab #6 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the sixth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_7' => array(
-				'id' 		=> 'tab_7',
-				'name'		=> __( 'Tab #7 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the seventh tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_8' => array(
-				'id' 		=> 'tab_8',
-				'name'		=> __( 'Tab #8 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the eighth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_9' => array(
-				'id' 		=> 'tab_9',
-				'name'		=> __( 'Tab #9 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the ninth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_10' => array(
-				'id' 		=> 'tab_10',
-				'name'		=> __( 'Tab #10 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the tenth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_11' => array(
-				'id' 		=> 'tab_11',
-				'name'		=> __( 'Tab #11 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the eleventh tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'tab_12' => array(
-				'id' 		=> 'tab_12',
-				'name'		=> __( 'Tab #12 Content', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure the content for the twelfth tab.', 'themeblvd_builder' ),
-				'type'		=> 'content',
-				'options'	=> array( 'page', 'raw', 'widget' )
-			),
-			'subgroup_end' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
+			'accordion' => array(
+				'id' 		=> 'accordion',
+				'name'		=> __( 'Accordion', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply accordion functionality.<br><br>When a group of toggles functions as an accordion, it means that not more than one toggle can be open at any one time.', 'themeblvd_builder' ),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			)
 		);
 
 		/*--------------------------------------------*/

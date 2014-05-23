@@ -75,6 +75,14 @@ class Theme_Blvd_Layout_Builder_Data {
 	 */
 	private $theme_saved = '2.0.0';
 
+	/**
+	 * This will get set to true if any data
+	 * manipulation is needed.
+	 *
+	 * @since 2.0.0
+	 */
+	private $ran = false;
+
 	/*--------------------------------------------*/
 	/* Constructor
 	/*--------------------------------------------*/
@@ -155,9 +163,17 @@ class Theme_Blvd_Layout_Builder_Data {
 		$this->content_blocks();
 
 		/**
+		 * In v2.0 of the Builder, we incorporated the
+		 * new sortable option type for tabs setup in theme
+		 * framework v2.5.
+		 */
+		$this->tabs();
+
+		/**
 		 * Extend
 		 */
 		do_action( 'themeblvd_builder_verify_elements', $this );
+
 	}
 
 	/**
@@ -172,6 +188,18 @@ class Theme_Blvd_Layout_Builder_Data {
 		 * Extend
 		 */
 		do_action( 'themeblvd_builder_verify_settings', $this );
+	}
+
+	/**
+	 * Finalize updating layout.
+	 *
+	 * @since 2.0.0
+	 */
+	public function finalize() {
+		if ( $this->ran ) {
+			update_post_meta( $this->id, 'plugin_version_saved', $this->version );
+			update_post_meta( $this->id, 'framework_version_saved', $this->theme_version );
+		}
 	}
 
 	/*--------------------------------------------*/
@@ -193,9 +221,9 @@ class Theme_Blvd_Layout_Builder_Data {
 			return;
 		}
 
-		// If layout is saved after 2.0 of the plugin,
-		// we're good to go.
-		if ( version_compare( $this->saved, '2.0.0', '>=' ) ) {
+		// If layout is saved after 2.0 of the plugin and v2.5
+		// of the theme framework, we're good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
 			return;
 		}
 
@@ -335,7 +363,161 @@ class Theme_Blvd_Layout_Builder_Data {
 
 		// Update elements
 		update_post_meta( $this->id, 'elements', $new );
-		update_post_meta( $this->id, 'plugin_version_saved', $this->version );
 
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
+	}
+
+	/**
+	 * Verify that tabs element data is setup
+	 * correctly. Applies to those updating the
+	 * Builder plugin from v1 to v2.0+
+	 *
+	 * @since 2.0.0
+	 */
+	public function tabs() {
+
+		// If the theme does not contain framework version 2.5+,
+		// altering the data will mess things up.
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
+			return;
+		}
+
+		// If layout is saved after 2.0 of the plugin and v2.5
+		// of the theme framework, we're good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
+			return;
+		}
+
+		$locations = get_post_meta( $this->id, 'elements', true );
+
+		$new = array();
+
+		foreach ( $locations as $location_id => $elements ) {
+			foreach ( $elements as $element_id => $element ) {
+
+				if ( $element['type'] == 'tabs' ) {
+
+					$new[$location_id][$element_id] = array();
+					$new[$location_id][$element_id]['type'] = 'tabs';
+					$new[$location_id][$element_id]['options'] = array();
+
+					// Tabs
+					$num = 3;
+					$tabs = array();
+
+					if ( ! empty( $element['options']['setup']['num'] ) ) {
+						$num = intval($element['options']['setup']['num']);
+					}
+
+
+					for ( $i = 1; $i <= $num; $i++ ) {
+
+						$tab = array();
+
+						// Title
+						$tab['title'] = '';
+
+						if ( ! empty( $element['options']['setup']['names']['tab_'.$i] ) ) {
+							$tab['title'] = $element['options']['setup']['names']['tab_'.$i];
+						}
+
+						// Content
+						$tab['content'] =  array();
+
+						$tab['content']['type'] = '';
+						if ( ! empty( $element['options']['tab_'.$i]['type'] ) ) {
+							$tab['content']['type'] = $element['options']['tab_'.$i]['type'];
+						}
+
+						switch ( $tab['content']['type'] ) {
+							case 'page' :
+
+								$tab['content']['page'] = '';
+
+								if ( ! empty( $element['options']['tab_'.$i]['page'] ) ) {
+									$tab['content']['page'] = $element['options']['tab_'.$i]['page'];
+								}
+								break;
+
+							case 'raw' :
+
+								$tab['content']['raw'] = '';
+
+								if ( ! empty( $element['options']['tab_'.$i]['raw'] ) ) {
+									$tab['content']['raw'] = $element['options']['tab_'.$i]['raw'];
+								}
+
+								$tab['content']['raw_format'] = 1;
+
+								if ( ! empty( $element['options']['tab_'.$i]['raw_format'] ) ) {
+									$tab['content']['raw_format'] = $element['options']['tab_'.$i]['raw_format'];
+								}
+								break;
+
+							case 'widget' :
+
+								$tab['content']['sidebar'] = '';
+
+								if ( ! empty( $element['options']['tab_'.$i]['sidebar'] ) ) {
+									$tab['content']['sidebar'] = $element['options']['tab_'.$i]['sidebar'];
+								}
+								break;
+						}
+
+						// Add the tab to the rest
+						$tabs['tab_'.$i] = $tab;
+
+					}
+
+					$new[$location_id][$element_id]['options']['tabs'] = $tabs;
+
+					// Navigation
+					$nav = 'tabs';
+
+					if ( ! empty( $element['options']['setup']['nav'] ) ) {
+						$nav = $element['options']['setup']['nav'];
+					}
+
+					if ( in_array( $nav, array( 'tabs', 'tabs_above', 'tabs_above', 'tabs_right', 'tabs_left' ) ) ) {
+				        $nav = 'tabs';
+				    } else if ( in_array( $nav, array( 'pills', 'pills_above', 'pills_above' ) ) ) {
+				        $nav = 'pills';
+				    }
+
+					$new[$location_id][$element_id]['options']['nav'] = $nav;
+
+					// Style
+					$style = 'framed';
+
+					if ( ! empty( $element['options']['setup']['style'] ) ) {
+						$style = $element['options']['setup']['style'];
+					}
+
+					$new[$location_id][$element_id]['options']['style'] = $style;
+
+					// Fixed height
+					$height = 0;
+
+					if ( ! empty( $element['options']['height'] ) ) {
+						$height = $element['options']['height'];
+					}
+
+					$new[$location_id][$element_id]['options']['height'] = $height;
+
+				} else {
+
+					// Not a tabs element; so we can just pass it back through.
+					$new[$location_id][$element_id] = $element;
+
+				}
+			}
+		}
+
+		// Update elements
+		update_post_meta( $this->id, 'elements', $new );
+
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
 	}
 }

@@ -59,7 +59,7 @@ class Theme_Blvd_Layout_Builder {
 		// inserting icons.
 		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
 
-		// Add ajax functionality to slider admin page
+		// Add ajax functionality in Builder
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
 
 		// Make advanced option types available in Builder
@@ -67,6 +67,8 @@ class Theme_Blvd_Layout_Builder {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
 			$advanced->create('slider');
 			$advanced->create('social_media');
+			$advanced->create('tabs');
+			$advanced->create('toggles');
 		}
 
 		// Allow for importing
