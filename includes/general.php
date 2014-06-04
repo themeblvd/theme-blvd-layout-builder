@@ -312,6 +312,14 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* HTML
+			/*------------------------------------------------------*/
+
+			case 'html' :
+				echo $element['options']['html'];
+				break;
+
+			/*------------------------------------------------------*/
 			/* Image
 			/*------------------------------------------------------*/
 
@@ -338,6 +346,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				}
 
 				themeblvd_jumbotron( $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
+			/* Milestones
+			/*------------------------------------------------------*/
+
+			case 'milestones' :
+
+				if ( ! function_exists( 'themeblvd_milestones' ) ) {
+					_e('Milestones element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				echo themeblvd_milestones( $element['options'] );
 
 				break;
 

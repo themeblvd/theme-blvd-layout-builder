@@ -245,11 +245,13 @@
 #builder_blvd #optionsframework .item .section:last-of-type {
 	padding-bottom: 10px;
 }
+#builder_blvd #optionsframework .section-milestones,
 #builder_blvd #optionsframework .section-slider,
 #builder_blvd #optionsframework .section-tabs,
 #builder_blvd #optionsframework .section-toggles {
 	padding-bottom: 15px;
 }
+#builder_blvd #optionsframework .section-milestones > .option > .controls,
 #builder_blvd #optionsframework .section-slider > .option > .controls,
 #builder_blvd #optionsframework .section-tabs > .option > .controls,
 #builder_blvd #optionsframework .section-toggles > .option > .controls {

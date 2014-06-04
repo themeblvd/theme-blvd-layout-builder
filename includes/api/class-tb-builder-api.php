@@ -223,6 +223,7 @@ class Theme_Blvd_Builder_API {
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
+			$this->registered_elements[] = 'milestones';
 			$this->registered_elements[] = 'simple_slider';
 			$this->registered_elements[] = 'toggles';
 			$this->registered_elements[] = 'video';
@@ -675,6 +676,48 @@ class Theme_Blvd_Builder_API {
 			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
+		    )
+		);
+
+		/*--------------------------------------------*/
+		/* Milestones
+		/*--------------------------------------------*/
+
+		$this->core_elements['milestones'] = array();
+
+		// Information
+		$this->core_elements['milestones']['info'] = array(
+			'name'		=> __( 'Milestones', 'themeblvd_builder' ),
+			'id'		=> 'milestones',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_milestones',
+			'shortcode'	=> null,
+			'desc'		=> __( 'A set of milestone numbers followed by taglines.', 'themeblvd_builder' )
+		);
+
+		// Options
+		$this->core_elements['milestones']['options'] = array(
+			'milestones' => array(
+		    	'id' 		=> 'milestones',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'milestones'
+			),
+			'milestone_size' => array(
+				'id'		=> 'milestone_size',
+				'name' 		=> __( 'Milestone Text Size', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the size of the milestone numbers.', 'themeblvd_builder' ),
+				'std'		=> array('size' => '40px'),
+				'type'		=> 'typography',
+				'atts'		=> array('size')
+		    ),
+		    'text_size' => array(
+				'id'		=> 'text_size',
+				'name' 		=> __( 'Description Text Size', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the size of the milestone description.', 'themeblvd_builder' ),
+				'std'		=> array('size' => '15px'),
+				'type'		=> 'typography',
+				'atts'		=> array('size')
 		    )
 		);
 
