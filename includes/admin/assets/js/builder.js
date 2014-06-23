@@ -216,6 +216,17 @@ jQuery(document).ready(function($) {
 			    });
 			}
 
+			// Setup element background options, which open in a modal
+			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+				$('#builder_blvd .tb-element-background-options').ThemeBlvdModal({
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
+			    });
+			}
+
 			// Take us to the tab
 			$('#builder_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
 			$('#builder_blvd .nav-tab-wrapper a.nav-edit-builder').css('display', 'inline-block').addClass('nav-tab-active');
@@ -446,6 +457,17 @@ jQuery(document).ready(function($) {
 			    });
 			}
 
+			// Setup element background options, which open in a modal
+			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+				$('#builder_blvd .tb-element-background-options').ThemeBlvdModal({
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
+			    });
+			}
+
     	},
 
     	// Setup each columns element
@@ -519,9 +541,37 @@ jQuery(document).ready(function($) {
 
     				var column = $(this).closest('.column'),
     					element_id = column.closest('.widget.element-options').attr('id'),
-						type = column.find('.block-type').val(),
 						col_num = column.find('.col-num').val(),
-						block;
+						primary_query = false,
+						values = column.find('.block-type').val(),
+						values = values.split('=>'),
+						type = values[0],
+						query = values[1],
+						$block = '';
+
+					// Make sure the user doesn't have more than one "primary"
+					// query element. This just means that they can't add
+					// two elements that both use WordPress's primary loop.
+					// Examples would be anything that's paginated. Most other
+					// elements that require posts to be pulled are done with
+					// get_posts() in order to have multiple on a single page.
+					// This can't be done, really, with anything paginated.
+					if ( query == 'primary' ) {
+
+						// Run a check for other primary query items.
+						$('#builder_blvd #builder .element-query').each(function(){
+							if( $(this).val() == 'primary' ) {
+								primary_query = true;
+							}
+						});
+
+						// Check if primary_query was set to true
+						if ( primary_query ) {
+							// Say, what? We found a second primary? Halt everything!
+							tbc_confirm(themeblvd.primary_query, {'textOk':'Ok'});
+							return false;
+						}
+					}
 
     				var data = {
 						action: 'themeblvd_add_block',
@@ -536,29 +586,29 @@ jQuery(document).ready(function($) {
 						column.find('.column-blocks').append(response[1]).removeClass('mini-empty');
 
 						// Locate the content block just added
-						block = column.find('#'+response[0]);
+						$block = column.find('#'+response[0]);
 
 						// For those furious clickers, amek sure no "add" classes
 						// got left behind from previously added elements.
 						$('#builder_blvd .add').removeClass('add');
 
 						// Give it a temporary green glow to show it's just been added.
-						block.addClass('add');
+						$block.addClass('add');
 						window.setTimeout(function(){
-							block.removeClass('add');
+							$block.removeClass('add');
 						}, 500);
 
 						// Setup non-binded options
-						block.themeblvd('options', 'setup');
-						block.themeblvd('options', 'media-uploader');
-						block.themeblvd('options', 'editor');
-						block.themeblvd('options', 'code-editor');
-						block.themeblvd('options', 'column-widths');
-						block.themeblvd('options', 'sortable');
+						$block.themeblvd('options', 'setup');
+						$block.themeblvd('options', 'media-uploader');
+						$block.themeblvd('options', 'editor');
+						$block.themeblvd('options', 'code-editor');
+						$block.themeblvd('options', 'column-widths');
+						$block.themeblvd('options', 'sortable');
 
 						// Setup content block options, which open in a modal
 						if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-							block.find('.tb-content-block-options-link').ThemeBlvdModal({
+							$block.find('.tb-content-block-options-link').ThemeBlvdModal({
 						        build: true,
 						        form: true,
 						        padding: false,
@@ -849,7 +899,7 @@ jQuery(document).ready(function($) {
 			values = values.split('=>'),
 			type = values[0],
 			query = values[1],
-			element = '';
+			$element = '';
 
 		// Make sure the user doesn't have more than one "primary"
 		// query element. This just means that they can't add
@@ -858,19 +908,17 @@ jQuery(document).ready(function($) {
 		// elements that require posts to be pulled are done with
 		// get_posts() in order to have multiple on a single page.
 		// This can't be done, really, with anything paginated.
-		if(query == 'primary')
-		{
+		if ( query == 'primary' ) {
+
 			// Run a check for other primary query items.
 			$('#builder_blvd #builder .element-query').each(function(){
-				if( $(this).val() == 'primary' )
-				{
+				if( $(this).val() == 'primary' ) {
 					primary_query = true;
 				}
 			});
 
 			// Check if primary_query was set to true
-			if(primary_query)
-			{
+			if ( primary_query ) {
 				// Say, what? We found a second primary? Halt everything!
 				tbc_confirm(themeblvd.primary_query, {'textOk':'Ok'});
 				return false;
@@ -898,40 +946,51 @@ jQuery(document).ready(function($) {
 				trim_back = trim_front[1].split('" class="widget element-options"');
 				element_id = trim_back[0];
 
-				$('#builder_blvd #edit_layout #primary .sortable').append(response);
-				$('#builder_blvd #edit_layout #primary .sortable').removeClass('empty');
+				$('#builder_blvd #edit_layout .primary.sortable').append(response);
+				$('#builder_blvd #edit_layout .primary.sortable').removeClass('empty');
 
-				element = $('#'+element_id);
+				$element = $('#'+element_id);
 
 				// For those furious clickers, amek sure no "add" classes
 				// got left behind from previously added elements.
 				$('#builder_blvd .add').removeClass('add');
 
-				element.addClass('add');
+				$element.addClass('add');
 				window.setTimeout(function(){
-					element.removeClass('add');
+					$element.removeClass('add');
 				}, 500);
 
-				element.themeblvd('widgets');
-				element.themeblvd('options', 'setup');
-				element.themeblvd('options', 'bind');
-				element.themeblvd('options', 'media-uploader');
-				element.themeblvd('options', 'editor');
-				element.themeblvd('options', 'code-editor');
-				element.themeblvd('options', 'column-widths');
-				element.themeblvd('options', 'sortable');
+				$element.themeblvd('widgets');
+				$element.themeblvd('options', 'setup');
+				$element.themeblvd('options', 'bind');
+				$element.themeblvd('options', 'media-uploader');
+				$element.themeblvd('options', 'editor');
+				$element.themeblvd('options', 'code-editor');
+				$element.themeblvd('options', 'column-widths');
+				$element.themeblvd('options', 'sortable');
 
-				if ( element.find('.widget-content').hasClass('element-columns') ) {
-					builder_blvd.columns( element );
+				if ( $element.find('.widget-content').hasClass('element-columns') ) {
+					builder_blvd.columns( $element );
 				}
 
-				if ( element.find('.widget-content').hasClass('element-content') ) {
-					builder_blvd.columns( element );
+				if ( $element.find('.widget-content').hasClass('element-content') ) {
+					builder_blvd.columns( $element );
 				}
 
-				element.fadeIn();
+				$element.fadeIn();
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
+
+				// Setup element background options, which open in a modal
+				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+					$element.find('.tb-element-background-options').ThemeBlvdModal({
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
+				    });
+				}
 			}
 		});
 		return false;
@@ -1000,6 +1059,17 @@ jQuery(document).ready(function($) {
 				        padding: false,
 				        size: 'medium',
 				        on_load: builder_blvd.content_block_options_load
+				    });
+				}
+
+				// Setup element background options, which open in a modal
+				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+					$new_element.find('.tb-element-background-options').ThemeBlvdModal({
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
 				    });
 				}
 

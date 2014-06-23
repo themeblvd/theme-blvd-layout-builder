@@ -131,28 +131,31 @@
 }
 
 /* Main Sections */
-#builder_blvd #builder #featured,
-#builder_blvd #builder #primary,
-#builder_blvd #builder #featured_below{
+#builder_blvd #builder #featured, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #primary, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #featured_below, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder {
 	position: relative;
 }
-#builder_blvd #builder #featured .sortable,
-#builder_blvd #builder #primary .sortable,
-#builder_blvd #builder #featured_below .sortable {
+#builder_blvd #builder #featured .sortable, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #primary .sortable, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #featured_below .sortable, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder .sortable {
 	background: #f8f8f8;
 	border: 1px dashed #cccccc;
 	margin: 0 0 40px 0;
 	padding: 10px;
 	padding-bottom: 0;
 }
-#builder_blvd #builder #featured .sortable.empty,
-#builder_blvd #builder #primary .sortable.empty,
-#builder_blvd #builder #featured_below .sortable.empty {
+#builder_blvd #builder #featured .sortable.empty, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #primary .sortable.empty, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #featured_below .sortable.empty, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder .sortable.empty {
 	padding-bottom: 10px;
 }
-#builder_blvd #builder #featured span.label,
-#builder_blvd #builder #primary span.label,
-#builder_blvd #builder #featured_below span.label {
+#builder_blvd #builder #featured span.label, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #primary span.label, /* @deprecated since framework 2.5.0 */
+#builder_blvd #builder #featured_below span.label { /* @deprecated since framework 2.5.0 */
 	content: 'Featured Area';
 	background: #f8f8f8;
 	border: 1px dashed #cccccc;
@@ -173,17 +176,7 @@
 #builder_blvd #builder .widget {
 	margin-bottom: 10px;
 }
-#builder_blvd #builder #featured .empty:before {
-	content: 'Drag elements here to have them featured above the primary content and sidebar(s).';
-	color: #bbbbbb;
-	display: block;
-	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
-	font-size: 15px;
-	font-style: italic;
-	padding: 10px;
-	text-align: center;
-}
-#builder_blvd #builder #primary .empty:before {
+#builder_blvd #builder .empty:before {
 	content: 'Click "Add New Element" above to add a new element here.';
 	color: #bbbbbb;
 	display: block;
@@ -193,7 +186,27 @@
 	padding: 10px;
 	text-align: center;
 }
-#builder_blvd #builder #featured_below .empty:before {
+#builder_blvd #builder #featured .empty:before { /* @deprecated since framework 2.5.0 */
+	content: 'Drag elements here to have them featured above the primary content and sidebar(s).';
+	color: #bbbbbb;
+	display: block;
+	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+	font-size: 15px;
+	font-style: italic;
+	padding: 10px;
+	text-align: center;
+}
+#builder_blvd #builder #primary .empty:before { /* @deprecated since framework 2.5.0 */
+	content: 'Click "Add New Element" above to add a new element here.';
+	color: #bbbbbb;
+	display: block;
+	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
+	font-size: 15px;
+	font-style: italic;
+	padding: 10px;
+	text-align: center;
+}
+#builder_blvd #builder #featured_below .empty:before { /* @deprecated since framework 2.5.0 */
 	content: 'Drag elements here to have them featured below the primary content and sidebar(s).';
 	color: #bbbbbb;
 	display: block;
@@ -213,6 +226,9 @@
 #builder_blvd #optionsframework .widget-name h3 {
 	padding-left: 22px;
 }
+.themeblvd-builder-legacy-1 #builder_blvd #optionsframework .widget-name h3 {
+	padding-left: 10px;
+}
 #builder_blvd #optionsframework .widget-name .widget-name-arrow {
 	background: none;
 	color: #a5a5a5;
@@ -231,7 +247,7 @@
 	transform: rotate(180deg);
 }
 #optionsframework .widget-footer a.duplicate-element {
-	color: #666;
+	color: #666666;
 	float: left;
 	font-size: 15px;
 	margin-top: 2px;
@@ -239,6 +255,20 @@
 }
 #optionsframework .widget-footer a.duplicate-element:hover {
 	color: #000000;
+}
+#builder_blvd #optionsframework .tb-element-background-options {
+	color: #666666;
+	float: right;
+	margin-top: 7px;
+}
+#builder_blvd #optionsframework .tb-element-background-options:hover {
+	color: #000000;
+}
+#builder_blvd #optionsframework .columns-config .tb-element-background-options {
+	float: none;
+	position: absolute;
+	top: -4px;
+	right: 28px;
 }
 
 /* Sortable Option types */
@@ -464,12 +494,14 @@
 	padding: 0 10px 10px 10px;
 }
 .postbox #builder_blvd .custom-layout-note {
-	border-top: 1px solid #dfdfdf;
 	color: #999999;
 	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
 	font-size: 13px;
 	font-style: italic;
 	padding: 7px 20px;
+}
+.postbox #builder_blvd #builder .sortable {
+	margin-bottom: 10px;
 }
 
 /* Add New Layout */
@@ -529,6 +561,9 @@
 	float: left;
 	margin-right: 10px;
 	width: 200px;
+}
+#builder_blvd #optionsframework .columns-config.columns-1 .tb-element-background-options {
+	right: 8px;
 }
 
 /* Column Setup */
@@ -670,6 +705,12 @@
 }
 .themeblvd-modal #optionsframework .content-block-form .item .section:last-of-type {
 	padding-bottom: 10px;
+}
+.themeblvd-modal #optionsframework .controls input.upload {
+	font-size: 14px;
+	margin: 1px;
+	padding: 3px 5px;
+	width: 77%;
 }
 
 /* Fix for fancy selects from WP admin styling */

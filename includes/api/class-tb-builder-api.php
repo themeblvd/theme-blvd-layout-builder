@@ -205,6 +205,7 @@ class Theme_Blvd_Builder_API {
 	private function set_registered_elements() {
 
 		$this->registered_elements = array(
+			'breadcrumbs',
 			'columns',
 			'content',
 			'divider',
@@ -216,17 +217,24 @@ class Theme_Blvd_Builder_API {
 			'post_list_paginated',
 			'post_list',
 			'post_list_slider',
-			'slogan',
-			'tabs'
+			'slogan'
 		);
 
+		// Elements requiring framework 2.5
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
 			$this->registered_elements[] = 'milestones';
 			$this->registered_elements[] = 'simple_slider';
-			$this->registered_elements[] = 'toggles';
+			$this->registered_elements[] = 'simple_slider_popout';
 			$this->registered_elements[] = 'video';
+		}
+
+		// Elements @deprecated as of framework 2.5, but being
+		// added for old theme compat
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			$this->registered_elements[] = 'content';
+			$this->registered_elements[] = 'tabs';
 		}
 
 		$this->registered_elements = apply_filters( 'themeblvd_registered_elements', $this->registered_elements );
@@ -266,6 +274,33 @@ class Theme_Blvd_Builder_API {
 		unset( $categories_multicheck['null'] );
 
 		/*--------------------------------------------*/
+		/* Breadcrumbs
+		/*--------------------------------------------*/
+
+		$this->core_elements['breadcrumbs'] = array();
+
+		// Information
+		$this->core_elements['breadcrumbs']['info'] = array(
+			'name'		=> __( 'Breadcrumbs', 'themeblvd_builder' ),
+			'id'		=> 'breadcrumbs',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_breadcrumbs',
+			'shortcode'	=> null,
+			'desc'		=> __( 'Breadcrumb trail for the current page.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['breadcrumbs']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		$this->core_elements['breadcrumbs']['options'] = array(
+			// ...
+		);
+
+		/*--------------------------------------------*/
 		/* Columns
 		/*--------------------------------------------*/
 
@@ -279,6 +314,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_columns',
 			'shortcode'	=> false,
 			'desc' 		=> __( 'Row of columns with custom content', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['columns']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
 		);
 
 		// Options
@@ -296,6 +338,34 @@ class Theme_Blvd_Builder_API {
 				'options'	=> 'element'
 			),
 			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide column-height'
+		    ),
+		    'height' => array(
+		    	'id' 		=> 'height',
+				'name'		=> __( 'Column Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Force all columns to be equal in height, based on content. &mdash; <em>Note: This can be helpful when applying backgrounds to individual columns</em>.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0',
+				'class'		=> 'trigger'
+			),
+			'align' => array(
+		    	'id' 		=> 'align',
+				'name'		=> __( 'Content Alignment', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to align the content within the equal height columns.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'top',
+				'options'	=> array(
+					'top'		=> __('Top', 'themeblvd_builder'),
+					'middle'	=> __('Middle', 'themeblvd_builder'),
+					'bottom'	=> __('Bottom', 'themeblvd_builder')
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
@@ -351,6 +421,10 @@ class Theme_Blvd_Builder_API {
 			);
 
 			unset( $this->core_elements['columns']['options']['subgroup_end'] );
+			unset( $this->core_elements['columns']['options']['subgroup_start_2'] );
+			unset( $this->core_elements['columns']['options']['height'] );
+			unset( $this->core_elements['columns']['options']['align'] );
+			unset( $this->core_elements['columns']['options']['subgroup_end_2'] );
 
 			$this->core_elements['columns']['options'] = array_merge( $this->core_elements['columns']['options'], $column_legacy_options );
 
@@ -360,22 +434,89 @@ class Theme_Blvd_Builder_API {
 		/* Content
 		/*--------------------------------------------*/
 
-		$this->core_elements['content'] = array();
+		// Content element @deprecated
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 
-		// Information
-		$this->core_elements['content']['info'] = array(
-			'name' 		=> __('Content', 'themeblvd_builder'),
-			'id'		=> 'content',
-			'query'		=> 'none',
-			'hook'		=> null,
-			'shortcode'	=> false,
-			'desc'		=> __( 'Content from external page or current page', 'themeblvd_builder' )
-		);
+			$this->core_elements['content'] = array();
 
-		// Options
-		$this->core_elements['content']['options'] = array(
-			// ...
-		);
+			// Information
+			$this->core_elements['content']['info'] = array(
+				'name' 		=> __('Content', 'themeblvd_builder'),
+				'id'		=> 'content',
+				'query'		=> 'none',
+				'hook'		=> null,
+				'shortcode'	=> false,
+				'desc'		=> __( 'Content from external page or current page', 'themeblvd_builder' )
+			);
+
+			// Support
+			$this->core_elements['content']['support'] = array(
+				'background' 	=> false,
+				'popout'		=> false,
+				'padding'		=> false
+			);
+
+			// Options
+			$this->core_elements['content']['options'] = array(
+				'subgroup_start' => array(
+			    	'type'		=> 'subgroup_start'
+			    ),
+			    'source' => array(
+			    	'id' 		=> 'source',
+					'name'		=> __( 'Content Source', 'themeblvd_builder' ),
+					'desc'		=> __( 'Choose where you\'d like to have content feed from. The content can either be from the current page you\'re applying this layout to or an external page.', 'themeblvd_builder' ),
+					'type'		=> 'select',
+					'options'	=> array(
+						'current' 		=> __( 'Content from current page', 'themeblvd_builder' ),
+				        'external' 		=> __( 'Content from external page', 'themeblvd_builder' ),
+				        'raw'			=> __( 'Raw content', 'themeblvd_builder' ),
+				        'widget_area'	=> __( 'Floating Widget Area', 'themeblvd_builder' )
+					),
+					'class'		=> 'custom-content-types'
+				),
+				'page_id' => array(
+			    	'id' 		=> 'page_id',
+					'name'		=> __( 'External Page', 'themeblvd_builder' ),
+					'desc'		=> __( 'Choose the external page you\'d like to pull content from.', 'themeblvd_builder' ),
+					'type'		=> 'select',
+					'options'	=> themeblvd_get_select( 'pages' ),
+					'class'		=> 'hide page-content'
+				),
+				'raw_content' => array(
+			    	'id' 		=> 'raw_content',
+					'name'		=> __( 'Raw Content', 'themeblvd_builder' ),
+					'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder' ),
+					'type'		=> 'textarea',
+					'class'		=> 'hide raw-content'
+				),
+				'raw_format' => array(
+			    	'id' 		=> 'raw_format',
+					'name'		=> __( 'Raw Content Formatting', 'themeblvd_builder' ),
+					'desc'		=> __( 'Apply WordPress automatic formatting.', 'themeblvd_builder' ),
+					'type'		=> 'checkbox',
+					'std'		=> '1',
+					'class'		=> 'hide raw-content'
+				),
+				'widget_area' => array(
+			    	'id' 		=> 'widget_area',
+					'name'		=> __( 'Floating Widget Area', 'themeblvd_builder' ),
+					'desc'		=> __( 'Select from your floating custom widget areas. In order for a custom widget area to be "floating" you must have it configured this way in the Widget Area manager.', 'themeblvd_builder' ),
+					'type'		=> 'select',
+					'options'	=> $sidebars,
+					'class'		=> 'hide widget_area-content'
+				),
+				'subgroup_end' => array(
+			    	'type'		=> 'subgroup_end'
+			    )
+			);
+
+			// The selection of a floating widget area is only
+			// possible if the Widget Areas plugin is installed.
+			if ( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
+				unset( $this->core_elements['content']['options']['source']['options']['widget_area'] );
+				unset( $this->core_elements['content']['options']['widget_area'] );
+			}
+		}
 
 		/*--------------------------------------------*/
 		/* Divider
@@ -391,6 +532,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_divider',
 			'shortcode'	=> '[divider]',
 			'desc' 		=> __( 'Simple divider line to break up content', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['divider']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
 		);
 
 		// Options
@@ -422,6 +570,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_headline',
 			'shortcode'	=> false,
 			'desc'		=> __( 'Simple &lt;H&gt; header title', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['headline']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
 		);
 
 		// Options
@@ -481,6 +636,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'A block of HTML/JavaScript code.' , 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['html']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['html']['options'] = array(
 			'html' => array(
@@ -505,6 +667,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_image',
 			'shortcode'	=> null,
 			'desc'		=> __( 'An image, which can be linked or framed to look like a "featured" image.' , 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['image']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
 		);
 
 		// Options
@@ -575,13 +744,15 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'Bootstrap\'s Jumbotron unit, also knows as a "Hero" unit.' , 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['jumbotron']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['jumbotron']['options'] = array(
-			'jumbotron_desc' => array(
-				'id' 		=> 'jumbotron_desc',
-				'desc' 		=> __( 'This element utilizes the Jumbotron component of Twitter Bootstrap.', 'themeblvd_builder' ),
-				'type' 		=> 'info'
-			),
 			'title' => array(
 				'id' 		=> 'title',
 				'name' 		=> __( 'Title', 'themeblvd_builder'),
@@ -592,7 +763,10 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'content',
 				'name' 		=> __( 'Content', 'themeblvd_builder'),
 				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder'),
-				'type'		=> 'textarea'
+				'std'		=> '',
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
 		    ),
 		    'wpautop' => array(
 		    	'id' 		=> 'wpautop',
@@ -601,11 +775,18 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
+			'text_color' => array(
+				'id' 		=> 'text_color',
+				'name' 		=> __( 'Text Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a text color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#444444',
+				'type'		=> 'color'
+		    ),
 		    'text_align' => array(
 				'id' 		=> 'text_align',
 				'name' 		=> __( 'Text Alignment', 'themeblvd_builder'),
 				'desc'		=> __( 'Select how you\'d like the text within the unit aligned.', 'themeblvd_builder'),
-				'std'		=> 'left',
+				'std'		=> 'center',
 				'type'		=> 'select',
 				'options'	=> array(
 					'left' 		=> __( 'Left', 'themeblvd_builder' ),
@@ -695,6 +876,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'A set of milestone numbers followed by taglines.', 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['milestones']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['milestones']['options'] = array(
 			'milestones' => array(
@@ -735,6 +923,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_post_grid_paginated',
 			'shortcode'	=> '[post_grid]',
 			'desc'		=> __( 'Full paginated grid of posts', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['post_grid_paginated']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
 		);
 
 		// Options
@@ -854,6 +1049,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'Grid of posts followed by optional link', 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['post_grid']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['post_grid']['options'] = array(
 			'subgroup_start_1' => array(
@@ -960,48 +1162,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> ''
-			),
-			'subgroup_start_2' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide'
-		    ),
-			'link' => array(
-		    	'id' 		=> 'link',
-				'name'		=> __( 'Link', 'themeblvd_builder' ),
-				'desc'		=> __( 'Show link after posts to direct visitors somewhere?', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'link_text' => array(
-				'id' 		=> 'link_text',
-				'name'		=> __( 'Link Text', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the text for the link.', 'themeblvd_builder' ),
-				'std'		=> 'View All Posts',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'link_url' => array(
-				'id' 		=> 'link_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want this link to go to.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-blog-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'link_target' => array(
-				'id' 		=> 'link_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the link to open.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'		=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
-				)
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
+			)
 		);
 
 		/*--------------------------------------------*/
@@ -1018,6 +1179,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_post_grid_slider',
 			'shortcode'	=> '[post_grid_slider]',
 			'desc'		=> __( 'Slider of posts in a grid', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['post_grid_slider']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
 		);
 
 		// Options
@@ -1204,6 +1372,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'Full paginated list of posts', 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['post_list_paginated']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['post_list_paginated']['options'] = array(
 			'subgroup_start_1' => array(
@@ -1327,6 +1502,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'List of posts followed by optional link', 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['post_list']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['post_list']['options'] = array(
 			'subgroup_start_1' => array(
@@ -1443,44 +1625,6 @@ class Theme_Blvd_Builder_API {
 			'subgroup_start_2' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide'
-		    ),
-			'link' => array(
-		    	'id' 		=> 'link',
-				'name'		=> __( 'Link', 'themeblvd_builder' ),
-				'desc'		=> __( 'Show link after posts to direct visitors somewhere?', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'link_text' => array(
-				'id' 		=> 'link_text',
-				'name'		=> __( 'Link Text', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the text for the link.', 'themeblvd_builder' ),
-				'std'		=> 'View All Posts',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'link_url' => array(
-				'id' 		=> 'link_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want this link to go to.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-blog-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'link_target' => array(
-				'id' 		=> 'link_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the link to open.', 'themeblvd_builder' ),
-				'std'		=> '_self',
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'		=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' )
-				)
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
 		    )
 		);
 
@@ -1498,6 +1642,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_post_list_slider',
 			'shortcode'	=> '[post_list_slider]',
 			'desc'		=> __( 'Slider of posts listed out', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['post_list_slider']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
 		);
 
 		// Options
@@ -1689,6 +1840,13 @@ class Theme_Blvd_Builder_API {
 				'hook'		=> 'themeblvd_post_slider',
 				'shortcode'	=> '[post_slider]',
 				'desc'		=> __( 'Slider generated from group of posts', 'themeblvd_builder' )
+			);
+
+			// Support
+			$this->core_elements['post_slider']['support'] = array(
+				'background' 	=> true,
+				'popout'		=> false,
+				'padding'		=> true
 			);
 
 			// Options
@@ -1937,6 +2095,13 @@ class Theme_Blvd_Builder_API {
 			'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
 		);
 
+		// Support
+		$this->core_elements['simple_slider']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
+		);
+
 		// Options
 		$this->core_elements['simple_slider']['options'] = array(
 			'subgroup_start' => array(
@@ -2012,6 +2177,154 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Simple Slider (Full Width)
+		/*--------------------------------------------*/
+
+		$this->core_elements['simple_slider_popout'] = array();
+
+		// Information
+		$this->core_elements['simple_slider_popout']['info'] = array(
+			'name'		=> __( 'Simple Slider (Full Width)', 'themeblvd_builder' ),
+			'id'		=> 'simple_slider_popout',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_simple_slider_popout',
+			'shortcode'	=> null,
+			'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['simple_slider_popout']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> 'force',
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['simple_slider_popout']['options'] = array(
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start'
+			),
+			'images' => array(
+		    	'id' 		=> 'images',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'slider'
+			),
+			'crop' => array(
+				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'id' 		=> 'crop',
+				'std' 		=> 'full',
+				'type' 		=> 'select',
+				'select'	=> 'crop',
+				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end',
+			),
+			'interval' => array(
+				'id'		=> 'interval',
+				'name' 		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
+				'std'		=> '5',
+				'type'		=> 'text'
+		    ),
+			'pause' => array(
+				'id'		=> 'pause',
+				'desc' 		=> __( 'Pause slider on hover.', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'wrap' => array(
+				'id'		=> 'wrap',
+				'desc'		=> __( 'Cycle continuously without hard stops.', 'themeblvd_builder' ),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'desc'		=> __( 'Show standard navigation indicator dots.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_arrows' => array(
+				'id'		=> 'nav_arrows',
+				'desc'		=> __( 'Show standard navigation arrows.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'nav_thumbs' => array(
+				'id'		=> 'nav_thumbs',
+				'desc'		=> __( 'Show thumbnail navigation.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
+			'link' => array(
+				'id'		=> 'thumb_link',
+				'desc'		=> __( 'Apply hover effect to linked images.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'dark_text'	=> array(
+				'id'		=> 'dark_text',
+				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
+			'subgroup_start_2' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
+			'cover'	=> array(
+				'id'		=> 'cover',
+				'desc'		=> __( 'Stretch images full-width of outer container. &mdash; <em>Note: When this is NOT checked, images display and scale down with their natural image dimension ratio. Also, if you\'re using a theme design that is not displayed in a stretch layout, this option, will not be as pronounced.</em>', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'position' => array(
+				'id'		=> 'position',
+				'name' 		=> __( 'Vertical Alignment', 'themeblvd_builder' ),
+				'desc' 		=> __( 'As the browser window changes, your slider images will be stretched, and thus will not always be fully visable. Here, you can select how you want the images aligned in the current slider area.', 'themeblvd_builder' ),
+				'std'		=> 'center center',
+				'type'		=> 'select',
+				'options'	=> array(
+					'center top' 	=> __('Align to the top', 'themeblvd_builder'),
+					'center center' => __('Align to the middle', 'themeblvd_builder'),
+					'center bottom' => __('Align to the bottom', 'themeblvd_builder'),
+				),
+				'class'		=> 'hide receiver'
+		    ),
+			'height_desktop' => array(
+				'id'		=> 'height_desktop',
+				'name' 		=> __( 'Desktop Height', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'themeblvd_builder' ),
+				'std'		=> '400',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+		    ),
+		    'height_tablet' => array(
+				'id'		=> 'height_tablet',
+				'name' 		=> __( 'Tablet Height', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'themeblvd_builder' ),
+				'std'		=> '300',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+		    ),
+		    'height_mobile' => array(
+				'id'		=> 'height_mobile',
+				'name' 		=> __( 'Mobile Height', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'themeblvd_builder' ),
+				'std'		=> '200',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+		    ),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
+			),
+		);
+
+		/*--------------------------------------------*/
 		/* Slider
 		/*--------------------------------------------*/
 
@@ -2027,6 +2340,13 @@ class Theme_Blvd_Builder_API {
 				'hook'		=> 'themeblvd_slider',
 				'shortcode'	=> '[slider]',
 				'desc'		=> __( 'User-built slideshow', 'themeblvd_builder' )
+			);
+
+			// Support
+			$this->core_elements['slider']['support'] = array(
+				'background' 	=> true,
+				'popout'		=> false,
+				'padding'		=> true
 			);
 
 			// Options
@@ -2061,6 +2381,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_slogan',
 			'shortcode'	=> '[slogan]',
 			'desc'		=> __( 'Slogan with optional button', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['slogan']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
 		);
 
 		// Options
@@ -2151,63 +2478,33 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* Tabs
+		/* Tabs -- @deprecated
 		/*--------------------------------------------*/
 
-		$this->core_elements['tabs'] = array();
-
-		// Information
-		$this->core_elements['tabs']['info'] = array(
-			'name' 		=> __( 'Tabs', 'themeblvd_builder' ),
-			'id'		=> 'tabs',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_tabs',
-			'shortcode'	=> '[tabs]',
-			'desc' 		=> __( 'Set of tabbed content', 'themeblvd_builder' )
-		);
-
-		// Options
-		$this->core_elements['tabs']['options'] = array(
-			'tabs' => array(
-				'id' 		=> 'tabs',
-				'name'		=> null,
-				'desc'		=> null,
-				'type'		=> 'tabs'
-			),
-			'nav' => array(
-				'id' 		=> 'nav',
-				'name'		=> __( 'Navigation', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the style of the navigation.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'tabs',
-				'options'	=> array(
-			        'tabs' 		=> __( 'Tabs', 'themeblvd_builder' ),
-			        'pills' 	=> __( 'Pills', 'themeblvd_builder' )
-				)
-			),
-			'style' => array(
-				'id' 		=> 'style',
-				'name'		=> __( 'Style', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select whether you want the content of the tabs to be framed or not.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'framed',
-				'options'	=> array(
-			        'open' 		=> __( 'Open Style', 'themeblvd_builder' ),
-			        'framed' 	=> __( 'Framed Style', 'themeblvd_builder' )
-				)
-			),
-			'height' => array(
-				'id' 		=> 'height',
-				'name'		=> __( 'Fixed Height', 'themeblvd_builder' ),
-				'desc'		=> __( 'Apply automatic fixed height across all tabs.<br><br>This just takes the height of the tallest tab\'s content and applies that across all tabs. This can help with "page jumping" in the case that not all tabs have equal amount of content. It can also help in the case when you\'re getting unwanted scrollbars on the inner content areas of tabs.', 'themeblvd_builder' ),
-				'std'		=> 0,
-				'type'		=> 'checkbox'
-			)
-		);
-
-		// Setup options in the old way, if the user's current theme
-		// framework is not at least 2.5.
+		// Tabs is no longer an element. It's a content block. For
+		// people using older theme versions, we'll give it to
+		// them as an element.
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+
+			$this->core_elements['tabs'] = array();
+
+			// Information
+			$this->core_elements['tabs']['info'] = array(
+				'name' 		=> __( 'Tabs', 'themeblvd_builder' ),
+				'id'		=> 'tabs',
+				'query'		=> 'none',
+				'hook'		=> 'themeblvd_tabs',
+				'shortcode'	=> '[tabs]',
+				'desc' 		=> __( 'Set of tabbed content', 'themeblvd_builder' )
+			);
+
+			// Support
+			$this->core_elements['tabs']['support'] = array(
+				'background' 	=> false,
+				'popout'		=> false,
+				'padding'		=> false
+			);
+
 			$this->core_elements['tabs']['options'] = array(
 				'subgroup_start' => array(
 			    	'type'		=> 'subgroup_start',
@@ -2317,39 +2614,6 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* Toggles
-		/*--------------------------------------------*/
-
-		$this->core_elements['toggles'] = array();
-
-		// Information
-		$this->core_elements['toggles']['info'] = array(
-			'name' 		=> __( 'Toggles', 'themeblvd_builder' ),
-			'id'		=> 'toggles',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_toggles',
-			'shortcode'	=> '[toggle], [accordion]',
-			'desc' 		=> __( 'Set of tabbed content', 'themeblvd_builder' )
-		);
-
-		// Options
-		$this->core_elements['toggles']['options'] = array(
-			'toggles' => array(
-				'id' 		=> 'toggles',
-				'name'		=> null,
-				'desc'		=> null,
-				'type'		=> 'toggles'
-			),
-			'accordion' => array(
-				'id' 		=> 'accordion',
-				'name'		=> __( 'Accordion', 'themeblvd_builder' ),
-				'desc'		=> __( 'Apply accordion functionality.<br><br>When a group of toggles functions as an accordion, it means that not more than one toggle can be open at any one time.', 'themeblvd_builder' ),
-				'std'		=> 0,
-				'type'		=> 'checkbox'
-			)
-		);
-
-		/*--------------------------------------------*/
 		/* Video
 		/*--------------------------------------------*/
 
@@ -2363,6 +2627,13 @@ class Theme_Blvd_Builder_API {
 			'hook'		=> 'themeblvd_video',
 			'shortcode'	=> null,
 			'desc'		=> __( 'A responsive, full-width video.' , 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['video']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
 		);
 
 		// Options
@@ -2380,42 +2651,45 @@ class Theme_Blvd_Builder_API {
 		/* Global element options
 		/*--------------------------------------------*/
 
-		$screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
-		$screen_settings = $screen_options->get_value();
+		// As of framework 2.5, this is @deprecated -- These options have been moved to display options.
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			$screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
+			$screen_settings = $screen_options->get_value();
 
-		foreach ( $this->core_elements as $id => $element ) {
+			foreach ( $this->core_elements as $id => $element ) {
 
-			// Responsive Visibility
-			$this->core_elements[$id]['options']['visibility'] = array(
-		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'themeblvd_builder' ),
-				'type'		=> 'multicheck',
-				'class'		=> 'section-visibility',
-				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
-				)
-			);
+				// Responsive Visibility
+				$this->core_elements[$id]['options']['visibility'] = array(
+			    	'id' 		=> 'visibility',
+					'name'		=> __( 'Responsive Visibility', 'themeblvd_builder' ),
+					'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'themeblvd_builder' ),
+					'type'		=> 'multicheck',
+					'class'		=> 'section-visibility',
+					'options'	=> array(
+						'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
+						'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
+						'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
+					)
+				);
 
-			if ( empty( $screen_settings['visibility'] ) ) {
-				$this->core_elements[$id]['options']['visibility']['class'] .= ' hide';
+				if ( empty( $screen_settings['visibility'] ) ) {
+					$this->core_elements[$id]['options']['visibility']['class'] .= ' hide';
+				}
+
+				// CSS Classes
+				$this->core_elements[$id]['options']['classes'] = array(
+			    	'id' 		=> 'classes',
+					'name'		=> __( 'CSS Classes', 'themeblvd_builder' ),
+					'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.<br><br><em>Hint: Use class "element-unstyled" to remove your theme\'s styling around this element.</em>', 'themeblvd_builder' ),
+					'type'		=> 'text',
+					'class'		=> 'section-classes'
+				);
+
+				if ( empty( $screen_settings['classes'] ) ) {
+					$this->core_elements[$id]['options']['classes']['class'] .= ' hide';
+				}
+
 			}
-
-			// CSS Classes
-			$this->core_elements[$id]['options']['classes'] = array(
-		    	'id' 		=> 'classes',
-				'name'		=> __( 'CSS Classes', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.<br><br><em>Hint: Use class "element-unstyled" to remove your theme\'s styling around this element.</em>', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'class'		=> 'section-classes'
-			);
-
-			if ( empty( $screen_settings['classes'] ) ) {
-				$this->core_elements[$id]['options']['classes']['class'] .= ' hide';
-			}
-
 		}
 
 		/*--------------------------------------------*/
@@ -2468,11 +2742,20 @@ class Theme_Blvd_Builder_API {
 			'current',
 			'html',
 			'image',
+			'jumbotron',
 			'page',
 			'panel',
+			'post_grid',
+			'post_grid_paginated',
+			'post_grid_slider',
+			'post_list',
+			'post_list_paginated',
+			'post_list_slider',
 			'quote',
 			'raw',
 			'simple_slider',
+			'tabs',
+			'toggles',
 			'video',
 			'widget'
 		);
@@ -2493,7 +2776,12 @@ class Theme_Blvd_Builder_API {
 		/* Option helpers
 		/*--------------------------------------------*/
 
-		// ...
+		// Setup array for categories select
+		$categories_select = themeblvd_get_select( 'categories' );
+
+		// Setup array for categories group of checkboxes
+		$categories_multicheck = $categories_select;
+		unset( $categories_multicheck['null'] );
 
 		/*--------------------------------------------*/
 		/* Content - Editor
@@ -2504,7 +2792,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['content']['info'] = array(
 			'name' 		=> __( 'Content', 'themeblvd_builder' ),
-			'id'		=> 'content'
+			'id'		=> 'content',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -2526,7 +2815,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['alert']['info'] = array(
 			'name' 		=> __( 'Alert', 'themeblvd_builder' ),
-			'id'		=> 'alert'
+			'id'		=> 'alert',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -2569,7 +2859,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['contact']['info'] = array(
 			'name' 		=> __( 'Contact Bar', 'themeblvd_builder' ),
-			'id'		=> 'contact'
+			'id'		=> 'contact',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -2617,6 +2908,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['current']['info'] = array(
 			'name' 		=> __( 'Current Page', 'themeblvd_builder' ),
 			'id'		=> 'current',
+			'query'		=> 'none',
 			'height'	=> 'medium'
 		);
 
@@ -2639,6 +2931,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['page']['info'] = array(
 			'name' 		=> __( 'External Page', 'themeblvd_builder' ),
 			'id'		=> 'page',
+			'query'		=> 'none',
 			'height'	=> 'medium'
 		);
 
@@ -2654,6 +2947,60 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Headline
+		/*--------------------------------------------*/
+
+		$this->core_blocks['headline'] = array();
+
+		// Information
+		$this->core_blocks['headline']['info'] = array(
+			'name' 		=> __( 'Headline', 'themeblvd_builder' ),
+			'id'		=> 'headline',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['headline']['options'] = array(
+			'text' => array(
+				'id' 		=> 'text',
+				'name'		=> __( 'Headline Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the text you\'d like to use for your headline. It is better if you use plain text here and not try and use HTML tags. Additionally, if you\'d like to automatically pull the title from the current page, insert <em>%page_title%</em> here.', 'themeblvd_builder' ),
+				'type'		=> 'textarea',
+			),
+			'tagline' => array(
+		    	'id' 		=> 'tagline',
+				'name'		=> __( 'Tagline', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter any text you\'d like to display below the headline as a tagline. Feel free to leave this blank. It is better if you use plain text here and not try and use HTML tags.', 'themeblvd_builder' ),
+				'type'		=> 'textarea'
+			),
+		    'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Headline Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the type of header tag you\'d like to wrap this headline.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'	=> array(
+					'h1' => __( '&lt;h1&gt;Your Headline&lt;/h1&gt;', 'themeblvd_builder' ),
+					'h2' => __( '&lt;h2&gt;Your Headline&lt;/h2&gt;', 'themeblvd_builder' ),
+					'h3' => __( '&lt;h3&gt;Your Headline&lt;/h3&gt;', 'themeblvd_builder' ),
+					'h4' => __( '&lt;h4&gt;Your Headline&lt;/h4&gt;', 'themeblvd_builder' ),
+					'h5' => __( '&lt;h5&gt;Your Headline&lt;/h5&gt;', 'themeblvd_builder' ),
+					'h6' => __( '&lt;h6&gt;Your Headline&lt;/h6&gt;', 'themeblvd_builder' )
+				)
+			),
+			'align' => array(
+				'id' 		=> 'align',
+				'name'		=> __( 'Headline Alignment', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like the text in this title to align.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'		=> array(
+			        'left' 		=> __( 'Align Left', 'themeblvd_builder' ),
+			        'center' 	=> __( 'Center', 'themeblvd_builder' ),
+					'right' 	=> __( 'Align Right', 'themeblvd_builder' )
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* HTML Block
 		/*--------------------------------------------*/
 
@@ -2662,7 +3009,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['html']['info'] = array(
 			'name' 		=> __( 'HTML', 'themeblvd_builder' ),
-			'id'		=> 'html'
+			'id'		=> 'html',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -2685,6 +3033,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['image']['info'] = array(
 			'name' 		=> __( 'Image', 'themeblvd_builder' ),
 			'id'		=> 'image',
+			'query'		=> 'none',
 			'height'	=> 'large'
 		);
 
@@ -2748,6 +3097,134 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Jumbotron
+		/*--------------------------------------------*/
+
+		$this->core_blocks['jumbotron'] = array();
+
+		// Information
+		$this->core_blocks['jumbotron']['info'] = array(
+			'name' 		=> __( 'Jumbotron', 'themeblvd_builder' ),
+			'id'		=> 'jumbotron',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['jumbotron']['options'] = array(
+			'title' => array(
+				'id' 		=> 'title',
+				'name' 		=> __( 'Title', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the text you\'d like to show for a title.', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Content', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'themeblvd_builder'),
+				'std'		=> '',
+				'type'		=> 'editor_modal',
+				'class'		=> 'hide'
+		    ),
+		    'wpautop' => array(
+		    	'id' 		=> 'wpautop',
+				'name'		=> __( 'Content Formatting', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+		    'bg_color' => array(
+				'id' 		=> 'bg_color',
+				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#eeeeee',
+				'type'		=> 'color'
+		    ),
+		    'text_color' => array(
+				'id' 		=> 'text_color',
+				'name' 		=> __( 'Text Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a text color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#444444',
+				'type'		=> 'color'
+		    ),
+		    'text_align' => array(
+				'id' 		=> 'text_align',
+				'name' 		=> __( 'Text Alignment', 'themeblvd_builder'),
+				'desc'		=> __( 'Select how you\'d like the text within the unit aligned.', 'themeblvd_builder'),
+				'std'		=> 'center',
+				'type'		=> 'select',
+				'options'	=> array(
+					'left' 		=> __( 'Left', 'themeblvd_builder' ),
+					'right' 	=> __( 'Right', 'themeblvd_builder' ),
+					'center' 	=> __( 'Center', 'themeblvd_builder' )
+				)
+		    ),
+		    'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide'
+		    ),
+			'button' => array(
+		    	'id' 		=> 'button',
+				'name'		=> __( 'Button', 'themeblvd_builder' ),
+				'desc'		=> __( 'Show button at the bottom of unit?', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'button_text' => array(
+				'id' 		=> 'button_text',
+				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
+				'std'		=> 'Get Started Today!',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> themeblvd_colors()
+			),
+			'button_size' => array(
+				'id' 		=> 'button_size',
+				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'large',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' )
+				)
+			),
+			'button_url' => array(
+				'id' 		=> 'button_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
+				'std'		=> 'http://www.your-site.com/your-landing-page',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_target' => array(
+				'id' 		=> 'button_target',
+				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
+			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
+				)
+			),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    )
+		);
+
+		/*--------------------------------------------*/
 		/* Panel
 		/*--------------------------------------------*/
 
@@ -2757,6 +3234,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['panel']['info'] = array(
 			'name' 		=> __( 'Panel', 'themeblvd_builder' ),
 			'id'		=> 'panel',
+			'query'		=> 'none',
 			'height'	=> 'large'
 		);
 
@@ -2807,6 +3285,857 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Post Grid (paginated)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_grid_paginated'] = array();
+
+		// Information
+		$this->core_blocks['post_grid_paginated']['info'] = array(
+			'name' 		=> __( 'Post Grid (paginated)', 'themeblvd_builder' ),
+			'id'		=> 'post_grid_paginated',
+			'query'		=> 'primary'
+		);
+
+		// Options
+		$this->core_blocks['post_grid_paginated']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: The number of posts displayed is determined from the rows and columns.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> __( 'Columns', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '3',
+				'options'	=> array(
+			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
+			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
+			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
+			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
+				)
+			),
+			'rows' => array(
+		    	'id' 		=> 'rows',
+				'name'		=> __( 'Rows per page', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of rows <strong>per page</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each page. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'crop' => array(
+		    	'id' 		=> 'crop',
+				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Post Grid
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_grid'] = array();
+
+		// Information
+		$this->core_blocks['post_grid']['info'] = array(
+			'name' 		=> __( 'Post Grid', 'themeblvd_builder' ),
+			'id'		=> 'post_grid',
+			'query'		=> 'secondary'
+		);
+
+		// Options
+		$this->core_blocks['post_grid']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a grid based on the rows and columns.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> __( 'Columns', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '3',
+				'options'	=> array(
+			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
+			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
+			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
+			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
+				)
+			),
+			'rows' => array(
+		    	'id' 		=> 'rows',
+				'name'		=> __( 'Rows', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of rows you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'crop' => array(
+		    	'id' 		=> 'crop',
+				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Post Grid Slider
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_grid_slider'] = array();
+
+		// Information
+		$this->core_blocks['post_grid_slider']['info'] = array(
+			'name' 		=> __( 'Post Grid Slider', 'themeblvd_builder' ),
+			'id'		=> 'post_grid_slider',
+			'query'		=> 'secondary'
+		);
+
+		// Options
+		$this->core_blocks['post_grid_slider']['options'] = array(
+			'fx' => array(
+		    	'id' 		=> 'fx',
+				'name'		=> __( 'Transition Effect', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'slide',
+				'options'	=> array(
+			        'fade' 	=> __( 'Fade', 'themeblvd_builder' ),
+					'slide'	=> __( 'Slide', 'themeblvd_builder' )
+				)
+			),
+			'timeout' => array(
+		    	'id' 		=> 'timeout',
+				'name'		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0'
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'name'		=> __( 'Show standard slideshow navigation?', 'themeblvd_builder' ),
+				'desc'		=> __( 'The standard navigation are the little dots that appear below the slider.' , 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			),
+			'nav_arrows' => array(
+				'id'		=> 'nav_arrows',
+				'name'		=> __( 'Show next/prev slideshow arrows?', 'themeblvd_builder' ),
+				'desc'		=> __( 'These arrows allow the user to navigation from one slide to the next.' , 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
+				)
+			),
+			'pause_play' => array(
+				'id'		=> 'pause_play',
+				'name'		=> __( 'Show pause/play button?', 'themeblvd_builder' ),
+				'desc'		=> __('Note that if you have the speed set to 0, this option will be ignored. ', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show pause/play button.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			),
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'numberposts' => array(
+		    	'id' 		=> 'numberposts',
+				'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '-1',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> __( 'Columns', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '3',
+				'options'	=> array(
+			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
+			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
+			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
+			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
+				)
+			),
+			'rows' => array(
+		    	'id' 		=> 'rows',
+				'name'		=> __( 'Rows per slide', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of rows <strong>per slide</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each slide.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'crop' => array(
+		    	'id' 		=> 'crop',
+				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Post List (paginated)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_list_paginated'] = array();
+
+		// Information
+		$this->core_blocks['post_list_paginated']['info'] = array(
+			'name' 		=> __( 'Post List (paginated)', 'themeblvd_builder' ),
+			'id'		=> 'post_list_paginated',
+			'query'		=> 'primary'
+		);
+
+		// Options
+		$this->core_blocks['post_list_paginated']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'posts_per_page' => array(
+		    	'id' 		=> 'posts_per_page',
+				'name'		=> __( 'Posts per page', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of posts <strong>per page</strong> you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '6',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end',
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Post List
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_list'] = array();
+
+		// Information
+		$this->core_blocks['post_list']['info'] = array(
+			'name' 		=> __( 'Post List', 'themeblvd_builder' ),
+			'id'		=> 'post_list',
+			'query'		=> 'secondary'
+		);
+
+		// Options
+		$this->core_blocks['post_list']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'numberposts' => array(
+		    	'id' 		=> 'numberposts',
+				'name'		=> __( 'Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the <strong>total number</strong> of posts you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '6',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Post List Slider
+		/*--------------------------------------------*/
+
+		$this->core_blocks['post_list_slider'] = array();
+
+		// Information
+		$this->core_blocks['post_list_slider']['info'] = array(
+			'name' 		=> __( 'Post List Slider', 'themeblvd_builder' ),
+			'id'		=> 'post_list_slider',
+			'query'		=> 'secondary'
+		);
+
+		// Options
+		$this->core_blocks['post_list_slider']['options'] = array(
+			'fx' => array(
+		    	'id' 		=> 'fx',
+				'name'		=> __( 'Transition Effect', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'slide',
+				'options'	=> array(
+			        'fade' 	=> 'Fade',
+					'slide'	=> 'Slide'
+				)
+			),
+			'timeout' => array(
+		    	'id' 		=> 'timeout',
+				'name'		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0'
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'name'		=> __( 'Show standard slideshow navigation?', 'themeblvd_builder' ),
+				'desc'		=> __( 'The standard navigation are the little dots that appear below the slider.' , 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			),
+			'nav_arrows' => array(
+				'id'		=> 'nav_arrows',
+				'name'		=> __( 'Show next/prev slideshow arrows?', 'themeblvd_builder' ),
+				'desc'		=> __( 'These arrows allow the user to navigation from one slide to the next.' , 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show arrows.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show them.', 'themeblvd_builder' )
+				)
+			),
+			'pause_play' => array(
+				'id'		=> 'pause_play',
+				'name'		=> __( 'Show pause/play button?', 'themeblvd_builder' ),
+				'desc'		=> __('Note that if you have the speed set to 0, this option will be ignored. ', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show pause/play button.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			),
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'numberposts' => array(
+		    	'id' 		=> 'numberposts',
+				'name'		=> __( 'Total Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '-1',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+			'thumbs' => array(
+				'id' 		=> 'thumbs',
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Select the size of the post list\'s thumbnails or whether you\'d like to hide them all together when posts are listed.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'small'		=> __( 'Show small thumbnails.', 'themeblvd_builder' ),
+					'full' 		=> __( 'Show full-width thumbnails.', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide thumbnails.', 'themeblvd_builder' )
+				)
+			),
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
+				'desc' 		=> __( 'Choose whether you want to show full content or post excerpts only.', 'themeblvd_builder' ),
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default primary posts display setting.', 'themeblvd_builder' ),
+					'content'	=> __( 'Show full content.', 'themeblvd_builder' ),
+					'excerpt' 	=> __( 'Show excerpt only.', 'themeblvd_builder' )
+				)
+			),
+			'posts_per_slide' => array(
+		    	'id' 		=> 'posts_per_slide',
+				'name'		=> __( 'Posts per slide', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of posts <strong>per slide</strong> you\'d like to show.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* Quote
 		/*--------------------------------------------*/
 
@@ -2815,7 +4144,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['quote']['info'] = array(
 			'name' 		=> __( 'Quote', 'themeblvd_builder' ),
-			'id'		=> 'quote'
+			'id'		=> 'quote',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -2871,6 +4201,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['raw']['info'] = array(
 			'name' 		=> __( 'Raw Text', 'themeblvd_builder' ),
 			'id'		=> 'raw',
+			'query'		=> 'none',
 			'height'	=> 'large'
 		);
 
@@ -2901,6 +4232,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['simple_slider']['info'] = array(
 			'name' 		=> __( 'Simple Slider', 'themeblvd_builder' ),
 			'id'		=> 'simple_slider',
+			'query'		=> 'none',
 			'height'	=> 'large'
 		);
 
@@ -2979,6 +4311,88 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Tabs
+		/*--------------------------------------------*/
+
+		$this->core_blocks['tabs'] = array();
+
+		// Information
+		$this->core_blocks['tabs']['info'] = array(
+			'name' 		=> __( 'Tabs', 'themeblvd_builder' ),
+			'id'		=> 'tabs',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['tabs']['options'] = array(
+			'tabs' => array(
+				'id' 		=> 'tabs',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'tabs'
+			),
+			'nav' => array(
+				'id' 		=> 'nav',
+				'name'		=> __( 'Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the style of the navigation.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'tabs',
+				'options'	=> array(
+			        'tabs' 		=> __( 'Tabs', 'themeblvd_builder' ),
+			        'pills' 	=> __( 'Pills', 'themeblvd_builder' )
+				)
+			),
+			'style' => array(
+				'id' 		=> 'style',
+				'name'		=> __( 'Style', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select whether you want the content of the tabs to be framed or not.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'framed',
+				'options'	=> array(
+			        'open' 		=> __( 'Open Style', 'themeblvd_builder' ),
+			        'framed' 	=> __( 'Framed Style', 'themeblvd_builder' )
+				)
+			),
+			'height' => array(
+				'id' 		=> 'height',
+				'name'		=> __( 'Fixed Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply automatic fixed height across all tabs.<br><br>This just takes the height of the tallest tab\'s content and applies that across all tabs. This can help with "page jumping" in the case that not all tabs have equal amount of content. It can also help in the case when you\'re getting unwanted scrollbars on the inner content areas of tabs.', 'themeblvd_builder' ),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Toggles
+		/*--------------------------------------------*/
+
+		$this->core_blocks['toggles'] = array();
+
+		// Information
+		$this->core_blocks['toggles']['info'] = array(
+			'name' 		=> __( 'Toggles', 'themeblvd_builder' ),
+			'id'		=> 'toggles',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['toggles']['options'] = array(
+			'toggles' => array(
+				'id' 		=> 'toggles',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'toggles'
+			),
+			'accordion' => array(
+				'id' 		=> 'accordion',
+				'name'		=> __( 'Accordion', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply accordion functionality.<br><br>When a group of toggles functions as an accordion, it means that not more than one toggle can be open at any one time.', 'themeblvd_builder' ),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* Video
 		/*--------------------------------------------*/
 
@@ -2988,6 +4402,7 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['video']['info'] = array(
 			'name' 		=> __( 'Video', 'themeblvd_builder' ),
 			'id'		=> 'video',
+			'query'		=> 'none',
 			'height'	=> 'medium'
 		);
 
@@ -3011,7 +4426,8 @@ class Theme_Blvd_Builder_API {
 		// Information
 		$this->core_blocks['widget']['info'] = array(
 			'name' 		=> __( 'Widget Area', 'themeblvd_builder' ),
-			'id'		=> 'widget'
+			'id'		=> 'widget',
+			'query'		=> 'none'
 		);
 
 		// Options
@@ -3072,7 +4488,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Business Homepage #1', 'themeblvd_builder'),
 			'id'				=> 'business_1',
 			'preview' 			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_1.png',
-			'sidebar_layout' 	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-1.xml'
 		);
 
@@ -3084,7 +4499,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Business Homepage #2', 'themeblvd_builder'),
 			'id'				=> 'business_2',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_2.png',
-			'sidebar_layout'	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-2.xml'
 		);
 
@@ -3096,7 +4510,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Business Homepage #3', 'themeblvd_builder'),
 			'id'				=> 'business_3',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_3.png',
-			'sidebar_layout'	=> 'sidebar_right',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-3.xml'
 		);
 
@@ -3108,7 +4521,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Business Homepage #4', 'themeblvd_builder'),
 			'id'				=> 'business_4',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_4.png',
-			'sidebar_layout'	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-4.xml'
 		);
 
@@ -3120,7 +4532,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Classic Magazine #1', 'themeblvd_builder'),
 			'id'				=> 'magazine_1',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-magazine_1.png',
-			'sidebar_layout'	=> 'sidebar_right',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-magazine-1.xml'
 		);
 
@@ -3132,7 +4543,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Classic Magazine #2', 'themeblvd_builder'),
 			'id'				=> 'magazine_2',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-magazine_2.png',
-			'sidebar_layout'	=> 'sidebar_right',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-magazine-2.xml'
 		);
 
@@ -3144,7 +4554,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Design Agency', 'themeblvd_builder'),
 			'id'				=> 'agency',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-agency.png',
-			'sidebar_layout'	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-agency.xml'
 		);
 
@@ -3156,7 +4565,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Portfolio Homepage', 'themeblvd_builder'),
 			'id'				=> 'portfolio',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-portfolio.png',
-			'sidebar_layout'	=> 'full_width',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-portfolio-homepage.xml'
 		);
 
@@ -3168,7 +4576,6 @@ class Theme_Blvd_Builder_API {
 			'name'				=> __('Showcase Blogger', 'themeblvd_builder'),
 			'id'				=> 'showcase',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-showcase.png',
-			'sidebar_layout'	=> 'sidebar_right',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-showcase-blogger.xml'
 		);
 

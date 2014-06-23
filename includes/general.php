@@ -142,15 +142,17 @@ function themeblvd_modify_customizer_homepage( $sections ) {
  * @since 1.0.0
  *
  * @param string $layout_id Post ID for custom layout
- * @param string $location Location of elements, featured or primary
+ * @param string $location Location of elements, featured or primary -- @deprecated
  */
-function themeblvd_builder_elements( $layout_id, $location ) {
+function themeblvd_builder_elements( $layout_id, $location = '' ) {
 
 	$api = Theme_Blvd_Builder_API::get_instance();
 
 	// Setup
 	$counter = 0;
 	$primary_query = false;
+	$previous_popout = false;
+
 	if ( ! $layout_id ) {
 		// This should rarely happen. A common scenario might
 		// be the user setup a page with a layout, but then
@@ -158,16 +160,24 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 		echo themeblvd_get_local( 'invalid_layout' );
 		return;
 	}
+
 	// Gather elements and only move forward if we have elements to show.
 	$elements = get_post_meta( $layout_id, 'elements', true );
-	if ( ! empty( $elements ) && ! empty( $elements[$location] ) ) {
+
+	// @deprecated -- Grab elements by location. Starting with
+	// v2.0 of the builder and and theme framework 2.5, we no
+	// longer have locations for elements.
+	if ( $location && isset( $elements[$location] ) ) {
 		$elements = $elements[$location];
-		$num_elements = count($elements);
-	} else {
-		// If there are no elements in this location,
-		// get us out of here!
+	}
+
+	// If there are no elements get us out of here!
+	if ( ! is_array($elements) || count($elements) == 0 ) {
 		return;
 	}
+
+	// Number of elements
+	$total = count($elements);
 
 	// Loop through elements
 	foreach ( $elements as $id => $element ) {
@@ -180,36 +190,38 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 		// Increase counter
 		$counter++;
 
-		// CSS classes for element
-		$classes = 'element '.$location.'-element-'.$counter.' element-'.$element['type'];
+		// Allow things to jive with old theme
+		if ( ! isset( $element['display'] ) ) {
+			$element['display'] = array();
+		}
+
+		// Handle sectioning
 		if ( $counter == 1 ) {
-			$classes .= ' first-element';
+			do_action( 'themeblvd_section_open', $element['display'] );
 		}
-		if ( $num_elements == $counter ) {
-			$classes .= ' last-element';
+
+		if ( $counter >= 2 && themeblvd_builder_element_popout( $element['display'] ) && ! $previous_popout ) {
+			do_action( 'themeblvd_section_close', $element['display'] );
 		}
-		if ( $element['type'] == 'slider' ) {
-			if ( isset( $element['options']['slider_id'] ) ) {
-				$slider_id = themeblvd_post_id_by_name( $element['options']['slider_id'], 'tb_slider' );
-				$type = get_post_meta( $slider_id, 'type', true );
-				$classes .= ' element-slider-'.$type;
-			}
+
+		if ( $counter >= 2 && ( themeblvd_builder_element_popout( $element['display'] ) || $previous_popout ) ) {
+			do_action( 'themeblvd_section_open', $element['display'] );
 		}
-		if ( $element['type'] == 'paginated_post_lst' || $element['type'] == 'paginated_post_grid' ) {
-			$classes .= $element['type'];
+
+		// CSS classes for element
+		$class = implode( ' ', themeblvd_builder_get_element_class( $element, $counter, $total ) );
+
+		// Any added classes by the theme
+		$add_class = themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
+
+		if ( $add_class ) {
+			$class .= ' '.$add_class;
 		}
-		if ( ! empty( $element['options']['classes'] ) ) {
-			$classes .= ' '.$element['options']['classes'];
-		}
-		if ( isset( $element['options']['visibility'] ) ) {
-			$classes .= themeblvd_responsive_visibility_class( $element['options']['visibility'], true );
-		}
-		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
 
 		// Start ouput
-		do_action( 'themeblvd_element_'.$element['type'].'_before', $id, $element['options'], $location ); // Before element: themeblvd_element_{type}_before
-		do_action( 'themeblvd_element_open', $element['type'], $location, $classes );
-		do_action( 'themeblvd_element_'.$element['type'].'_top', $id, $element['options'], $location ); // Top of element: themeblvd_element_{type}_top
+		do_action( 'themeblvd_element_'.$element['type'].'_before', $id, $element['options'], $location, $element['display']  ); // Before element: themeblvd_element_{type}_before
+		do_action( 'themeblvd_element_open', $element['type'], $location, $class, $element['display'] );
+		do_action( 'themeblvd_element_'.$element['type'].'_top', $id, $element['options'], $location, $element['display']  ); // Top of element: themeblvd_element_{type}_top
 		echo '<div class="grid-protection">';
 
 		switch( $element['type'] ) {
@@ -231,7 +243,9 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 						'layout_id'		=> $layout_id,
 						'element_id' 	=> $id,
 						'num'			=> $num,
-						'widths'		=> $element['options']['setup']
+						'widths'		=> $element['options']['setup'],
+						'height'		=> $element['options']['height'],
+						'align'			=> $element['options']['align']
 					);
 					themeblvd_columns( $args );
 
@@ -264,7 +278,14 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 				if ( function_exists('themeblvd_content_blocks') ) { // theme framework 2.5+
 
-					themeblvd_content_blocks( $layout_id, $id );
+					$blocks = array();
+					$column = get_post_meta( $layout_id, $id.'_col_1', true );
+
+					if ( ! empty( $column['blocks'] ) ) {
+						$blocks = $column['blocks'];
+					}
+
+					themeblvd_content_blocks( $blocks );
 
 				} else {
 
@@ -375,7 +396,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 					break;
 				}
 
-				themeblvd_posts( $element['options'], 'grid', $location, 'secondary' );
+				themeblvd_posts( $element['options'], 'grid', $location );
 
 				break;
 
@@ -423,7 +444,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 					break;
 				}
 
-				themeblvd_posts( $element['options'], 'list', $location, 'secondary' );
+				themeblvd_posts( $element['options'], 'list', $location );
 
 				break;
 
@@ -480,6 +501,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			/*------------------------------------------------------*/
 
 			case 'simple_slider' :
+			case 'simple_slider_popout' :
 
 				if ( ! function_exists( 'themeblvd_simple_slider' ) ) {
 					_e('Simple Slider element not supported.', 'themeblvd_builder');
@@ -521,7 +543,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
-			/* Tabs
+			/* Tabs -- @deprecated as of 2.0.0
 			/*------------------------------------------------------*/
 
 			case 'tabs' :
@@ -532,21 +554,6 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				}
 
 				echo themeblvd_tabs( $id, $element['options'] );
-
-				break;
-
-			/*------------------------------------------------------*/
-			/* Toggles
-			/*------------------------------------------------------*/
-
-			case 'toggles' :
-
-				if ( ! function_exists( 'themeblvd_toggles' ) ) {
-					_e('Tabs element not supported.', 'themeblvd_builder');
-					break;
-				}
-
-				echo themeblvd_toggles( $id, $element['options'] );
 
 				break;
 
@@ -574,12 +581,21 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 		// End output
 		echo '<div class="clear"></div>';
 		echo '</div><!-- .grid-protection (end) -->';
-		do_action( 'themeblvd_element_'.$element['type'].'_bottom', $id, $element['options'], $location ); // Bottom of element: themeblvd_element_{type}_bottom
-		do_action( 'themeblvd_element_close', $element['type'], $location, $classes );
-		do_action( 'themeblvd_element_'.$element['type'].'_after', $id, $element['options'], $location ); // Below element: themeblvd_element_{type}_bottom
+		do_action( 'themeblvd_element_'.$element['type'].'_bottom', $id, $element['options'], $location, $element['display']  ); // Bottom of element: themeblvd_element_{type}_bottom
+		do_action( 'themeblvd_element_close', $element['type'], $location, $class, $element['display']  );
+		do_action( 'themeblvd_element_'.$element['type'].'_after', $id, $element['options'], $location, $element['display']  ); // Below element: themeblvd_element_{type}_bottom
+
+		if ( themeblvd_builder_element_popout( $element['display'] ) ) {
+			$previous_popout = true;
+			do_action( 'themeblvd_section_close', $element['display'] );
+		} else {
+			$previous_popout = false;
+		}
 
 	} // End foreach
 
+	// End final section
+	do_action( 'themeblvd_section_close', $element['display'] );
 }
 
 /**
@@ -593,7 +609,7 @@ function themeblvd_builder_verify_data() {
 	if ( themeblvd_config( 'builder' ) && themeblvd_config( 'builder_post_id' ) ) {
 		$data = new Theme_Blvd_Layout_Builder_Data( themeblvd_config( 'builder_post_id' ) );
 		$data->verify('elements');
-		$data->verify('settings');
+		$data->verify('info');
 		$data->finalize();
 	}
 }
@@ -605,7 +621,11 @@ function themeblvd_builder_verify_data() {
  */
 function themeblvd_builder_content() {
 	if ( themeblvd_config( 'builder' ) ) {
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+			themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ) );
+		} else {
+			themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' ); // @deprecated
+		}
 	}
 }
 
@@ -616,7 +636,7 @@ function themeblvd_builder_content() {
  */
 function themeblvd_builder_featured() {
 	if ( themeblvd_config( 'builder' ) ) {
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' );
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' ); // @deprecated
 	}
 }
 
@@ -627,6 +647,95 @@ function themeblvd_builder_featured() {
  */
 function themeblvd_builder_featured_below() {
 	if ( themeblvd_config( 'builder' ) ) {
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' );
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' ); // @deprecated
 	}
+}
+
+/**
+ * Return true if the current builder element should be
+ * popped out into its own section.
+ *
+ * @since 2.0.0
+ *
+ * @param array $display The element's display options
+ * @return bool Whether the builder element has a custom background
+ */
+function themeblvd_builder_element_popout( $display ) {
+
+	if ( ! empty( $display['bg_type'] ) && $display['bg_type'] != 'none' ) {
+		return true;
+	}
+
+	if ( ! empty( $display['apply_popout'] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Get CSS classes needed for individual element
+ *
+ * @since 2.0.0
+ *
+ * @param array $element The element array, with all options and information
+ * @param int $num Current element's number in the stack
+ * @param int $total Total number of elements in the stack
+ * @return string $class CSS class to return
+ */
+function themeblvd_builder_get_element_class( $element, $num, $total ){
+
+	$class = array( 'element', 'element-'.$num, 'element-'.$element['type'] );
+
+	// First and last elements
+	if ( $num == 1 ) {
+		$class[] = 'first-element';
+	}
+	if ( $total == $num ) {
+		$class[] = 'last-element';
+	}
+
+	// Display classes
+	if ( ! empty( $element['display'] ) ) {
+
+		$bg_type = $element['display']['bg_type'];
+
+		// Does the element have custom padding?
+		if ( ! empty( $element['display']['apply_padding'] ) ) {
+			$class[] = 'has-custom-padding';
+		}
+
+	}
+
+	// For custom sliders, we can specify the type of slider
+	if ( $element['type'] == 'slider' ) {
+		if ( isset( $element['options']['slider_id'] ) ) {
+			$slider_id = themeblvd_post_id_by_name( $element['options']['slider_id'], 'tb_slider' );
+			$type = get_post_meta( $slider_id, 'type', true );
+			$class[] = 'element-slider-'.$type;
+		}
+	}
+
+	// For paginated post list/grid we want to output the shared
+	// class that Post List/Grid page templates, and main index.php
+	// are using.
+	if ( $element['type'] == 'paginated_post_list' || $element['type'] == 'paginated_post_grid' ) {
+		$class[] = $element['type'];
+	}
+
+	// Responsive visibility
+	if ( ! empty( $element['display']['visibility'] ) ) {
+		$class[] = themeblvd_responsive_visibility_class( $element['display']['visibility'] );
+	} else if ( ! empty( $element['options']['visibility'] ) ) { // @deprecated
+		$class[] = themeblvd_responsive_visibility_class( $element['options']['visibility'] );
+	}
+
+	// User-added CSS classes
+	if ( ! empty( $element['display']['classes'] ) ) {
+		$class[] = $element['display']['classes'];
+	} else if ( ! empty( $element['options']['classes'] ) ) { // @deprecated
+		$class[] = $element['options']['classes'];
+	}
+
+	return apply_filters( 'themeblvd_builder_element_class', $class, $element );
 }

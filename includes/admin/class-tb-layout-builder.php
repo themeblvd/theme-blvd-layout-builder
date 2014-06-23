@@ -51,6 +51,9 @@ class Theme_Blvd_Layout_Builder {
 		// Theme Blvd framework locals.
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 
+		// Admin <body> classes
+		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
+
 		// Add Editor into page, which Builder can use for editing
 		// content of elements.
 		add_action( 'current_screen', array( $this, 'add_editor' ) );
@@ -58,6 +61,10 @@ class Theme_Blvd_Layout_Builder {
 		// Add icon browser into page, which Builder can use for
 		// inserting icons.
 		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
+
+		// Add texture browser into page, which Builder can use for
+		// selecting textures.
+		add_action( 'current_screen', array( $this, 'add_texture_browser' ) );
 
 		// Add ajax functionality in Builder
 		$this->ajax = new Theme_Blvd_Layout_Builder_Ajax( $this );
@@ -546,7 +553,7 @@ class Theme_Blvd_Layout_Builder {
 				'sample'	=> __( 'Start From Sample Layout', 'themeblvd_builder' )
 			)
 		);
-		if ( ! $sample_layouts ) {
+		if ( ! $sample_layouts || version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 			unset( $options[2]['options']['sample'] );
 		}
 		if ( ! $custom_layouts ) {
@@ -565,7 +572,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Sample Layouts (only show if there are sample layouts)
-		if ( $sample_layouts ) {
+		if ( $sample_layouts && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			$options[] = array(
 				'name' 		=> __( 'Sample Layout', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Select a sample layout to start from.', 'themeblvd_builder' ),
@@ -629,14 +636,22 @@ class Theme_Blvd_Layout_Builder {
 	 * @param string $element_type type of element
 	 * @param string $element_id ID for individual slide
 	 * @param array $element_settings Any current settings for current element
+	 * @param array $element_display Any current settings for element's display
 	 * @param array $column_data If we don't want column data to be pulled from meta, we can feed it in here
 	 */
-	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $column_data = null ) {
+	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $element_display = null, $column_data = null ) {
+
 		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->get_elements();
 		$blocks = $this->get_blocks();
 		$field_name = 'tb_elements['.$element_id.'][options]';
-		$form = themeblvd_option_fields( $field_name, $elements[$element_type]['options'], $element_settings, false );
+
+		// Options
+		$form = array();
+
+		if ( ! empty( $elements[$element_type]['options'] ) ) {
+			$form = themeblvd_option_fields( $field_name, $elements[$element_type]['options'], $element_settings, false );
+		}
 		?>
 		<div id="<?php echo $element_id; ?>" class="widget element-options" data-field-name="<?php echo $field_name; ?>">
 			<div class="widget-name top-widget-name">
@@ -644,9 +659,25 @@ class Theme_Blvd_Layout_Builder {
 				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text-1="<?php _e('Show Element Options', 'themeblvd_builder'); ?>" data-tooltip-text-2="<?php _e('Hide Element Options', 'themeblvd_builder'); ?>">
 					<i class="tb-icon-up-dir"></i>
 				</a>
+				<?php if ( $elements[$element_type]['support']['background'] && version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+					<a href="#" class="tb-element-background-options tb-tooltip-link" data-target="<?php echo $element_id; ?>_background_form" data-title="<?php _e('Element Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Element Display', 'themeblvd_builder'); ?>">
+						<i class="tb-icon-picture"></i>
+					</a>
+				<?php endif; ?>
 				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
 				<div class="clear"></div>
 			</div><!-- .element-name (end) -->
+			<?php if ( $elements[$element_type]['support']['background'] && version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+				<div class="element-background-options-wrap hide">
+					<div id="<?php echo $element_id; ?>_background_form" class="element-background-options">
+						<?php
+						$display_options = $this->get_display_options( $elements, $element_type );
+						$display_form = themeblvd_option_fields( 'tb_elements['.$element_id.'][display]', $display_options, $element_display, false );
+						echo $display_form[0];
+						?>
+					</div>
+				</div>
+			<?php endif; ?>
 			<div class="widget-content <?php echo 'element-'.$element_type; ?>">
 
 				<input type="hidden" class="element-type" name="tb_elements[<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
@@ -654,7 +685,9 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- ELEMENT OPTIONS (start) -->
 
-				<?php echo $form[0]; ?>
+				<?php if ( $form ) : ?>
+					<?php echo $form[0]; ?>
+				<?php endif; ?>
 
 				<!-- ELEMENT OPTIONS (end) -->
 
@@ -673,10 +706,44 @@ class Theme_Blvd_Layout_Builder {
 						if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
 							$col_count = count( explode('-', $element_settings['setup'] ) );
 						}
+
+						$display_options = $this->get_display_options();
 						?>
 						<div class="columns-config columns-<?php echo $col_count; ?>">
 
 							<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
+
+								<?php
+								// Saved column data
+								$display_settings = array();
+								$saved_blocks = array();
+
+								if ( isset( $column_data['col_'.$i] ) ) {
+
+									// Column data was forced in through function's parameters.
+
+									if ( isset( $column_data['col_'.$i]['display'] ) ) {
+										$display_settings = $column_data['col_'.$i]['display'];
+									}
+
+									if ( isset( $column_data['col_'.$i]['blocks'] ) ) {
+										$saved_blocks = $column_data['col_'.$i]['blocks'];
+									}
+
+								} else {
+
+									// Get content blocks for column
+									$column_data = get_post_meta( $layout_id, $element_id.'_col_'.$i, true );
+
+									if ( isset( $column_data['display'] ) ) {
+										$display_settings = $column_data['display'];
+									}
+
+									if ( isset( $column_data['blocks'] ) ) {
+										$saved_blocks = $column_data['blocks'];
+									}
+								}
+								?>
 
 								<div class="column col-<?php echo $i; ?>">
 									<div class="column-inner">
@@ -688,17 +755,23 @@ class Theme_Blvd_Layout_Builder {
 											<?php if ( $col_count > 1 ) : ?>
 												<h4><?php printf(__('Column %s', 'themeblvd_builder'), $i); ?></h4>
 											<?php else : ?>
-												<h4><?php _e('Content Blocks', 'themeblvd_builder'); ?></h4>
+												<h4><?php _e('Blocks', 'themeblvd_builder'); ?></h4>
 											<?php endif; ?>
 
-											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Content Block', 'themeblvd_builder'); ?>" data-tooltip-position="top"><i class="tb-icon-plus-circled"></i></a>
+											<a href="#" class="tb-element-background-options tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php _e('Column Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Column Display', 'themeblvd_builder'); ?>">
+												<i class="tb-icon-picture"></i>
+											</a>
 
-											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Content Block to Add', 'themeblvd_builder'); ?>">
+											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Block', 'themeblvd_builder'); ?>" data-tooltip-position="top">
+												<i class="tb-icon-plus-circled"></i>
+											</a>
+
+											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Block to Add', 'themeblvd_builder'); ?>">
 												<select class="block-type">
 													<?php
 													foreach ( $blocks as $block ) {
 														if ( $api->is_block( $block['info']['id'] ) ) {
-															echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+															echo '<option value="'.$block['info']['id'].'=>'.$block['info']['query'].'">'.$block['info']['name'].'</option>';
 														}
 													}
 													?>
@@ -707,25 +780,22 @@ class Theme_Blvd_Layout_Builder {
 												<span class="textbox"></span>
 											</div><!-- .tb-fancy-select (end) -->
 
-											<a href="#" class="add-block button-secondary" title="<?php _e('Add Content Block', 'themeblvd_builder'); ?>"><?php _e('Add Content Block', 'themeblvd_builder'); ?></a>
+											<a href="#" class="add-block button-secondary" title="<?php _e('Add Block', 'themeblvd_builder'); ?>"><?php _e('Add Block', 'themeblvd_builder'); ?></a>
 
 											<div class="clear"></div>
 										</div><!-- .column-heading (end) -->
 
+										<div class="element-background-options-wrap hide">
+											<div id="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" class="element-background-options">
+												<?php
+												$display_form = themeblvd_option_fields( 'tb_elements['.$element_id.'][columns][col_'.$i.'][display]', $display_options, $display_settings, false );
+												echo $display_form[0];
+												?>
+											</div>
+										</div>
+
 										<div class="column-blocks">
 											<?php
-											if ( isset( $column_data['col_'.$i] ) ) {
-
-												// Column data was forced in through function's parameters.
-												$saved_blocks = $column_data['col_'.$i];
-
-											} else {
-
-												// Get content blocks for column
-												$saved_blocks = get_post_meta( $layout_id, $element_id.'_col_'.$i, true );
-
-											}
-
 											// Display all content blocks for column
 											if ( is_array($saved_blocks) && count($saved_blocks) > 0 ) {
 												foreach ( $saved_blocks as $block_id => $block ) {
@@ -780,9 +850,15 @@ class Theme_Blvd_Layout_Builder {
 	 * @param array $block_settings any current options for current block
 	 */
 	public function edit_block( $element_id, $block_type, $block_id, $col_num, $block_settings = null ) {
+
 		$blocks = $this->get_blocks();
-		$field_name = 'tb_elements['.$element_id.'][columns][col_'.$col_num.']['.$block_id.']';
-		$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
+		$field_name = 'tb_elements['.$element_id.'][columns][col_'.$col_num.'][blocks]['.$block_id.']';
+
+		// Options form
+		$block_form = array();
+		if ( ! empty( $blocks[$block_type]['options'] ) ) {
+			$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
+		}
 
 		// Setup height for modal options
 		$options_height = '';
@@ -801,6 +877,9 @@ class Theme_Blvd_Layout_Builder {
 			}
 		}
 
+		// Blocks that have "content" option,
+		// but aren't meant to have an editor
+		$exclude_editor = array('post_list', 'post_list_paginated', 'post_list_slider' );
 		?>
 		<div id="<?php echo $block_id; ?>" class="widget content-block" data-element-id="<?php echo $element_id; ?>" data-field-name="<?php echo $field_name.'[options]'; ?>">
 
@@ -814,7 +893,7 @@ class Theme_Blvd_Layout_Builder {
 						<a href="#" class="tb-content-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'themeblvd_builder'); ?>" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>" data-height="<?php echo $options_height; ?>"><i class="tb-icon-cog"></i></a>
 					<?php endif; ?>
 
-					<?php if ( isset( $blocks[$block_type]['options']['content'] ) ) : ?>
+					<?php if ( isset( $blocks[$block_type]['options']['content'] ) && ! in_array( $block_type, $exclude_editor ) ) : ?>
 						<a href="#" class="tb-textarea-editor-link tb-content-block-editor-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Content', 'themeblvd'); ?>" data-target="themeblvd-editor-modal" data-button_delete="<?php _e('Delete', 'themeblvd_builder'); ?>" data-button_secondary="<?php _e('Duplicate', 'themeblvd_builder'); ?>"><i class="tb-icon-pencil"></i></a>
 					<?php endif; ?>
 
@@ -830,7 +909,10 @@ class Theme_Blvd_Layout_Builder {
 			<div class="content-block-options <?php echo 'block-'.$block_type; ?>">
 				<div id="<?php echo $block_id; ?>_options_form" class="content-block-form">
 					<input type="hidden" name="<?php echo $field_name; ?>[type]" value="<?php echo $block_type; ?>" />
-					<?php echo $block_form[0]; ?>
+					<input type="hidden" name="<?php echo $field_name; ?>[query_type]" value="<?php echo $blocks[$block_type]['info']['query']; ?>" class="element-query" />
+					<?php if ( $block_form ) : ?>
+						<?php echo $block_form[0]; ?>
+					<?php endif; ?>
 				</div><!-- .widget-form (end) -->
 			</div><!-- .mini-widget-content (end) -->
 		</div>
@@ -904,34 +986,38 @@ class Theme_Blvd_Layout_Builder {
 						?>
 					</div><!-- .tb-widget-content (end) -->
 				</div><!-- .post-box (end) -->
-				<div id="layout-options" class="postbox postbox-sidebar-layout closed">
-					<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
-					<h3 class="hndle"><?php _e('Sidebar Layout', 'themeblvd_builder' ); ?></h3>
-					<div class="tb-widget-content hide">
-						<?php
-						// Setup sidebar layouts
-						$layouts = themeblvd_sidebar_layouts();
-						$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
 
-						foreach ( $layouts as $layout ) {
-							$sidebar_layouts[$layout['id']] = $layout['name'];
-						}
+				<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) : // After framework 2.5, no more sidebar layouts in custom layouts ?>
+					<div id="layout-options" class="postbox postbox-sidebar-layout closed">
+						<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
+						<h3 class="hndle"><?php _e('Sidebar Layout', 'themeblvd_builder' ); ?></h3>
+						<div class="tb-widget-content hide">
+							<?php
+							// Setup sidebar layouts
+							$layouts = themeblvd_sidebar_layouts();
+							$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
 
-						$options = array(
-							array(
-								'id' 		=> 'sidebar_layout',
-								'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
-								'type' 		=> 'select',
-								'options' 	=> $sidebar_layouts
-							)
-						);
+							foreach ( $layouts as $layout ) {
+								$sidebar_layouts[$layout['id']] = $layout['name'];
+							}
 
-						// Display form element
-						$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
-						echo $form[0];
-						?>
-					</div><!-- .tb-widget-content (end) -->
-				</div><!-- .post-box (end) -->
+							$options = array(
+								array(
+									'id' 		=> 'sidebar_layout',
+									'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+									'type' 		=> 'select',
+									'options' 	=> $sidebar_layouts
+								)
+							);
+
+							// Display form element
+							$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
+							echo $form[0];
+							?>
+						</div><!-- .tb-widget-content (end) -->
+					</div><!-- .post-box (end) -->
+				<?php endif; ?>
+
 			</div><!-- .inner-sidebar (end) -->
 			<div id="post-body">
 				<div id="post-body-content">
@@ -958,50 +1044,70 @@ class Theme_Blvd_Layout_Builder {
 						<div class="clear"></div>
 					</div><!-- #titlediv (end) -->
 					<div id="builder">
-						<div id="featured">
-							<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
-							<div class="sortable">
+
+						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+
+							<div class="primary sortable">
 								<?php
-								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-									foreach ( $layout_elements['featured'] as $element_id => $element ) {
+								if ( is_array( $layout_elements ) ) {
+									foreach ( $layout_elements as $element_id => $element ) {
 										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'] );
 										}
 									}
 								}
 								?>
 							</div><!-- .sortable (end) -->
-						</div><!-- #featured (end) -->
-						<div id="primary">
-							<input type="hidden" name="tb_elements[divider]" value="" />
-							<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
-							<div class="sortable">
-								<?php
-								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-									foreach ( $layout_elements['primary'] as $element_id => $element ) {
-										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+
+						<?php else : // @deprecated Builder setup since framework 2.5.0 ?>
+
+							<div id="featured">
+								<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
+								<div class="sortable">
+									<?php
+									if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
+										foreach ( $layout_elements['featured'] as $element_id => $element ) {
+											if ( $api->is_element( $element['type'] ) ) {
+												$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+											}
 										}
 									}
-								}
-								?>
-							</div><!-- .sortable (end) -->
-						</div><!-- #primary (end) -->
-						<div id="featured_below">
-							<input type="hidden" name="tb_elements[divider_2]" value="" />
-							<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
-							<div class="sortable">
-								<?php
-								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-									foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
-										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+									?>
+								</div><!-- .sortable (end) -->
+							</div><!-- #featured (end) -->
+							<div id="primary">
+								<input type="hidden" name="tb_elements[divider]" value="" />
+								<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
+								<div class="primary sortable">
+									<?php
+									if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
+										foreach ( $layout_elements['primary'] as $element_id => $element ) {
+											if ( $api->is_element( $element['type'] ) ) {
+												$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+											}
 										}
 									}
-								}
-								?>
-							</div><!-- .sortable (end) -->
-						</div><!-- #primary (end) -->
+									?>
+								</div><!-- .sortable (end) -->
+							</div><!-- #primary (end) -->
+							<div id="featured_below">
+								<input type="hidden" name="tb_elements[divider_2]" value="" />
+								<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
+								<div class="sortable">
+									<?php
+									if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
+										foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
+											if ( $api->is_element( $element['type'] ) ) {
+												$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+											}
+										}
+									}
+									?>
+								</div><!-- .sortable (end) -->
+							</div><!-- #featured_below (end) -->
+
+						<?php endif;?>
+
 					</div><!-- #builder (end) -->
 				</div><!-- .post-body-content (end) -->
 			</div><!-- #post-body (end) -->
@@ -1066,85 +1172,110 @@ class Theme_Blvd_Layout_Builder {
 					<div class="clear"></div>
 				</div><!-- #titlediv (end) -->
 				<div id="builder">
-					<div id="featured">
-						<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
-						<div class="sortable">
+
+					<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+
+						<div class="primary sortable">
 							<?php
-							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
-								foreach ( $layout_elements['featured'] as $element_id => $element ) {
+							if ( is_array( $layout_elements ) ) {
+								foreach ( $layout_elements as $element_id => $element ) {
 									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+										$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'] );
 									}
 								}
 							}
 							?>
 						</div><!-- .sortable (end) -->
-					</div><!-- #featured (end) -->
-					<div id="primary">
-						<input type="hidden" name="tb_elements[divider]" value="" />
-						<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
-						<div class="sortable">
-							<?php
-							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
-								foreach ( $layout_elements['primary'] as $element_id => $element ) {
-									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+
+					<?php else : // @deprecated Builder setup since framework 2.5.0 ?>
+
+						<div id="featured">
+							<span class="label"><?php _e( 'Featured Above', 'themeblvd_builder' ); ?></span>
+							<div class="sortable">
+								<?php
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured'] ) ) {
+									foreach ( $layout_elements['featured'] as $element_id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+										}
 									}
 								}
-							}
-							?>
-						</div><!-- .sortable (end) -->
-					</div><!-- #primary (end) -->
-					<div id="featured_below">
-						<input type="hidden" name="tb_elements[divider_2]" value="" />
-						<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
-						<div class="sortable">
-							<?php
-							if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
-								foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
-									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+								?>
+							</div><!-- .sortable (end) -->
+						</div><!-- #featured (end) -->
+						<div id="primary">
+							<input type="hidden" name="tb_elements[divider]" value="" />
+							<span class="label"><?php _e( 'Primary Area', 'themeblvd_builder' ); ?></span>
+							<div class="sortable">
+								<?php
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['primary'] ) ) {
+									foreach ( $layout_elements['primary'] as $element_id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+										}
 									}
 								}
-							}
-							?>
-						</div><!-- .sortable (end) -->
-					</div><!-- #primary (end) -->
+								?>
+							</div><!-- .sortable (end) -->
+						</div><!-- #primary (end) -->
+						<div id="featured_below">
+							<input type="hidden" name="tb_elements[divider_2]" value="" />
+							<span class="label"><?php _e( 'Featured Below', 'themeblvd_builder' ); ?></span>
+							<div class="sortable">
+								<?php
+								if ( ! empty( $layout_elements ) && ! empty( $layout_elements['featured_below'] ) ) {
+									foreach ( $layout_elements['featured_below'] as $element_id => $element ) {
+										if ( $api->is_element( $element['type'] ) ) {
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'] );
+										}
+									}
+								}
+								?>
+							</div><!-- .sortable (end) -->
+						</div><!-- #featured_below (end) -->
+
+					<?php endif; ?>
+
 				</div><!-- #builder (end) -->
 			</div><!-- .edit-layout-wrap (end) -->
 
-			<div class="sidebar-layout-wrap">
-				<div class="title">
-					<h2><?php _e( 'Sidebar Layout', 'themeblvd_builder' ); ?></h2>
-					<div class="clear"></div>
-				</div><!-- #titlediv (end) -->
-				<div class="sidebar-layout">
-					<?php
-					// Setup sidebar layouts
-					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
-					$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
-					$layouts = themeblvd_sidebar_layouts();
+			<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) : // After framework 2.5, no more sidebar layouts in custom layouts ?>
 
-					foreach ( $layouts as $layout ) {
-						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
-					}
+				<div class="sidebar-layout-wrap">
+					<div class="title">
+						<h2><?php _e( 'Sidebar Layout', 'themeblvd_builder' ); ?></h2>
+						<div class="clear"></div>
+					</div><!-- #titlediv (end) -->
 
-					// Now convert it to options form
-					$options = array(
-						array(
-							'id' 		=> 'sidebar_layout',
-							'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
-							'type' 		=> 'images',
-							'options' 	=> $sidebar_layouts
-						)
-					);
+					<div class="sidebar-layout">
+						<?php
+						// Setup sidebar layouts
+						$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
+						$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
+						$layouts = themeblvd_sidebar_layouts();
 
-					// Display form element
-					$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
-					echo $form[0];
-					?>
-				</div>
-			</div><!-- .sidebar-layout-wrap (end) -->
+						foreach ( $layouts as $layout ) {
+							$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
+						}
+
+						// Now convert it to options form
+						$options = array(
+							array(
+								'id' 		=> 'sidebar_layout',
+								'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+								'type' 		=> 'images',
+								'options' 	=> $sidebar_layouts
+							)
+						);
+
+						// Display form element
+						$form = themeblvd_option_fields( 'tb_layout_options', $options, $layout_settings, false );
+						echo $form[0];
+						?>
+					</div>
+				</div><!-- .sidebar-layout-wrap (end) -->
+
+			<?php endif; ?>
 
 			<div class="custom-layout-note">
 				<p><?php _e('Note: For this custom layout to be applied to the current page, you must select the "Custom Layout" page template from your Page Attributes.', 'themeblvd_builder'); ?></p>
@@ -1192,6 +1323,375 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/**
+	 * Get options for element display options form
+	 *
+	 * @since 2.0.0
+	 */
+	public function get_display_options( $elements = null, $element_type = null ) {
+
+		$is_element = true;
+		if ( ! $elements || ! $element_type ) {
+			$is_element = false;
+		}
+
+		$bg_types = array(
+			'none'		=> __('No background', 'themeblvd_builder'),
+			'color'		=> __('Custom color', 'themeblvd_builder'),
+			'texture'	=> __('Custom color + texture', 'themeblvd_builder'),
+			'image'		=> __('Custom color + image', 'themeblvd_builder')
+		);
+
+		if ( $is_element && themeblvd_supports( 'featured', 'style' ) ) {
+			$bg_types['featured'] = __('Theme\'s preset "Featured" area background', 'themeblvd_builder');
+		}
+
+		if ( $is_element && themeblvd_supports( 'featured_below', 'style' ) ) {
+			$bg_types['featured_below'] = __('Theme\'s preset "Featured Below" area background', 'themeblvd_builder');
+		}
+
+		$options = array(
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+			),
+			'bg_type' => array(
+				'id'		=> 'bg_type',
+				'name'		=> __('Apply Background', 'themeblvd_builder'),
+				'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters( 'themeblvd_builder_bg_types', $bg_types ),
+				'class'		=> 'trigger'
+			),
+			'text_color' => array(
+				'id'		=> 'text_color',
+				'name'		=> __('Text Color'),
+				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
+				'std'		=> 'dark',
+				'type'		=> 'select',
+				'options'	=> array(
+					'dark'	=> __('Dark Text', 'themeblvd_builder'),
+					'light'	=> __('Light Text', 'themeblvd_builder')
+				),
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			),
+			'bg_color' => array(
+				'id'		=> 'bg_color',
+				'name'		=> __('Background Color', 'themeblvd_builder'),
+				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
+				'std'		=> '#f2f2f2',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			),
+			'bg_color_opacity' => array(
+				'id'		=> 'bg_color_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			),
+			'bg_texture' => array(
+				'id'		=> 'bg_texture',
+				'name'		=> __('Background Texture', 'themeblvd_builder'),
+				'desc'		=> __('Select a background texture.', 'themeblvd_builder'),
+				'type'		=> 'select',
+				'select'	=> 'textures',
+				'class'		=> 'hide receiver receiver-texture'
+			),
+			'subgroup_start_2' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide hide receiver receiver-texture'
+			),
+			'apply_bg_texture_parallax' => array(
+				'id'		=> 'apply_bg_texture_parallax',
+				'name'		=> null,
+				'desc'		=> __('Apply parallax scroll effect to background texture.', 'themeblvd_builder'),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'bg_texture_parallax' => array(
+				'id'		=> 'bg_texture_parallax',
+				'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'type'		=> 'slide',
+				'std'		=> '5',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '10',
+					'step'	=> '1'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
+			),
+			'subgroup_start_3' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'select-parallax hide receiver receiver-image'
+			),
+			'bg_image' => array(
+				'id'		=> 'bg_image',
+				'name'		=> __('Background Image', 'themeblvd_builder'),
+				'desc'		=> __('Select a background image.', 'themeblvd_builder'),
+				'type'		=> 'background',
+				'color'		=> false,
+				'parallax'	=> true
+			),
+			'bg_image_parallax_stretch' => array(
+				'id'		=> 'bg_image_parallax_stretch',
+				'name'		=> __('Parallax: Stretch Background', 'themeblvd_builder'),
+				'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'themeblvd_builder'),
+				'type'		=> 'checkbox',
+				'std'		=> '1',
+				'class'		=> 'hide parallax'
+			),
+			'bg_image_parallax' => array(
+				'id'		=> 'bg_image_parallax',
+				'name'		=> __('Parallax: Intensity', 'themeblvd_builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'type'		=> 'slide',
+				'std'		=> '2',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '10',
+					'step'	=> '1'
+				),
+				'class'		=> 'hide parallax'
+			),
+			'subgroup_end_3' => array(
+				'type'		=> 'subgroup_end'
+			)
+		);
+
+		if ( $is_element ) {
+
+			$options['subgroup_start_4'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide hide receiver receiver-image'
+			);
+
+			$options['apply_bg_shade'] = array(
+				'id'		=> 'apply_bg_shade',
+				'name'		=> null,
+				'desc'		=> __('Shade background image with transparent color.', 'themeblvd_builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+
+			$options['bg_shade_color'] = array(
+				'id'		=> 'bg_shade_color',
+				'name'		=> __('Shade Color', 'themeblvd_builder'),
+				'desc'		=> __('Select the color you want overlaid on your background image.', 'themeblvd_builder'),
+				'std'		=> '#000000',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			);
+
+			$options['bg_shade_opacity'] = array(
+				'id'		=> 'bg_shade_opacity',
+				'name'		=> __('Shade Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the shade color overlaid on your background image.', 'themeblvd_builder'),
+				'std'		=> '0.5',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['subgroup_end_4'] = array(
+				'type'		=> 'subgroup_end',
+			);
+
+		}
+
+		$options['subgroup_end'] = array(
+			'type' 		=> 'subgroup_end'
+		);
+
+		if ( $is_element && $elements[$element_type]['support']['popout'] ) {
+
+			$options['apply_popout'] = array(
+				'id'		=> 'apply_popout',
+				'name'		=> null,
+				'desc'		=> __('Stretch content of element to fill outer container. &mdash; <em>Note: If you\'re using a theme design that is not displayed in a stretch layout, this option will not be as pronounced.</em>', 'themeblvd_builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			);
+
+			if ( $elements[$element_type]['support']['popout'] === 'force' ) {
+				$options['apply_popout']['inactive'] = 'true';
+			}
+		}
+
+		if ( ! $is_element || $elements[$element_type]['support']['padding'] ) {
+
+			if ( $is_element ) {
+				$term = __('element', 'themeblvd_builder');
+			} else {
+				$term = __('column', 'themeblvd_builder');
+			}
+
+			$options['subgroup_start_5'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			);
+			$options['apply_padding'] = array(
+				'id'		=> 'apply_padding',
+				'name'		=> null,
+				'desc'		=> sprintf(__('Apply custom padding around %s.', 'themeblvd_builder'), $term),
+				'std'		=> 0,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+			$options['padding_top'] = array(
+				'id'		=> 'padding_top',
+				'name'		=> __('Top Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> '30px',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+			$options['padding_right'] = array(
+				'id'		=> 'padding_right',
+				'name'		=> __('Right Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> '30px',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+			$options['padding_bottom'] = array(
+				'id'		=> 'padding_bottom',
+				'name'		=> __('Bottom Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> '30px',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+			$options['padding_left'] = array(
+				'id'		=> 'padding_left',
+				'name'		=> __('Left Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> '30px',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+			$options['subgroup_end_5'] = array(
+				'type' => 'subgroup_end'
+			);
+		}
+
+		// Advanced element properties
+		$screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
+		$screen_settings = $screen_options->get_value();
+
+		if ( $is_element ) {
+
+			$options['visibility'] = array(
+		    	'id' 		=> 'visibility',
+				'name'		=> __( 'Responsive Visibility', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'themeblvd_builder' ),
+				'type'		=> 'multicheck',
+				'class'		=> 'section-visibility',
+				'options'	=> array(
+					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
+					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
+					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
+				)
+			);
+
+			if ( empty( $screen_settings['visibility'] ) ) {
+				$options['visibility']['class'] .= ' hide';
+			}
+
+		}
+
+		$options['classes'] = array(
+	    	'id' 		=> 'classes',
+			'name'		=> __( 'CSS Classes', 'themeblvd_builder' ),
+			'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.', 'themeblvd_builder' ),
+			'type'		=> 'text',
+			'class'		=> 'section-classes'
+		);
+
+		if ( empty( $screen_settings['classes'] ) ) {
+			$options['classes']['class'] .= ' hide';
+		}
+
+		return apply_filters( 'themeblvd_builder_display_options', $options );
+	}
+
+	/**
+	 * Add any required classes to admin <body>
+	 *
+	 * @since 2.0.0
+	 */
+	public function body_class( $classes ) {
+
+		$page = get_current_screen();
+
+		if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+
+			$classes = explode( " ", $classes );
+
+			$classes[] = 'themeblvd-builder';
+
+			// If user is using a theme with Theme
+			// Blvd framework prior to 2.5.
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+				$classes[] = 'themeblvd-builder-legacy-1';
+			}
+
+			$classes = implode( " ", $classes );
+
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Hook in hidden editor modal.
 	 *
 	 * @since 2.0.0
@@ -1234,4 +1734,21 @@ class Theme_Blvd_Layout_Builder {
 		themeblvd_icon_browser( array( 'type' => 'image' ) );
 	}
 
+	/**
+	 * Hook in hidden texture browser modal.
+	 *
+	 * @since 2.5.0
+	 */
+	public function add_texture_browser() {
+
+		// Requires Framework 2.5+
+		if ( function_exists( 'themeblvd_icon_browser' ) ) {
+
+			$page = get_current_screen();
+
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+				add_action( 'in_admin_header', 'themeblvd_texture_browser' );
+			}
+		}
+	}
 }

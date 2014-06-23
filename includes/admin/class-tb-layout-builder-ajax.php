@@ -70,14 +70,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 				// Configure meta for pre-existing layout
 				$layout_id = $config['tb_new_layout']['layout_existing'];
 				$elements = get_post_meta( $layout_id, 'elements', true );
-				$settings = get_post_meta( $layout_id, 'settings', true );
 
 			} else if ( $start == 'sample' ) {
 
 				// Configure meta for sample layout
 				$samples = themeblvd_get_sample_layouts();
 				$current_sample = $samples[$config['tb_new_layout']['layout_sample']];
-				$settings = array( 'sidebar_layout' => $current_sample['sidebar_layout'] );
 
 				$elements = array();
 
@@ -117,14 +115,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 				// Configure meta for blank layout
 				$elements = array();
-				$settings = array( 'sidebar_layout' => $config['tb_new_layout']['layout_sidebar'] );
 
 			}
 		}
 
 		// Update even if they're empty
 		update_post_meta( $post_id, 'elements', $elements );
-		update_post_meta( $post_id, 'settings', $settings );
 
 		// Columns with content blocks
 		if ( $columns ) {
@@ -200,25 +196,31 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$layout_id = $data['tb_layout_id'];
 
 		// Setup elements
-		$location = 'featured';
+		$location = 'featured'; // @deprecated - Only relevant if theme framework is prior to 2.5
 		$elements = array();
 		$columns = array();
 		$element_id_list = array(); // For cleanup later on
 
 		if ( isset( $data['tb_elements'] ) ) {
 
+			// Loop through elements.
+			//
+			// If using theme with framework prior to 2.5 (@deprecated) --
 			// Loop through setting items in 'featured' location
 			// until we arrive at the divider line, then
 			// continue putting them into the 'primary' area,
 			// and then when we hit divider_2, set location to
 			// 'featured_below'.
+
 			foreach ( $data['tb_elements'] as $id => $element ) {
 				// Featured area elements get assigned first.
 				if ( $id == 'divider' ) {
 					// ... And now the primary area
+					// @deprecated - Only relevant if theme framework is prior to 2.5
 					$location = 'primary';
 				} else if ( $id == 'divider_2' ) {
 					// ... And now the featured below area
+					// @deprecated - Only relevant if theme framework is prior to 2.5
 					$location = 'featured_below';
 				} else {
 
@@ -226,51 +228,88 @@ class Theme_Blvd_Layout_Builder_Ajax {
 					$element_id_list[] = $id;
 
 					// Separate columns
-					if ( $element['type'] == 'columns' || $element['type'] == 'content' ) {
-						for ( $i = 1; $i <= 5; $i++ ) {
-						    if ( isset( $element['columns']['col_'.$i] ) ) {
-						    	$columns[$id.'_col_'.$i] = $element['columns']['col_'.$i];
-						    } else {
-						    	$columns[$id.'_col_'.$i] = array(); // We need to save empty columns!
-						    }
+					if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+						if ( $element['type'] == 'columns' || $element['type'] == 'content' ) {
+							for ( $i = 1; $i <= 5; $i++ ) {
+							    if ( isset( $element['columns']['col_'.$i] ) ) {
+							    	$columns[$id.'_col_'.$i] = $element['columns']['col_'.$i];
+							    } else {
+							    	$columns[$id.'_col_'.$i] = array(); // We need to save empty columns!
+							    }
+							}
+							unset($element['columns']);
 						}
-						unset($element['columns']);
 					}
 
 					// Sanitize element's options
-					$element['options'] = $this->clean( $element['type'], $element['options'], 'element' );
-					$elements[$location][$id] = $element;
+					if ( ! empty( $element['options'] ) ) {
+						$element['options'] = $this->clean( $element['type'], $element['options'], 'element' );
+					} else {
+						$element['options'] = array();
+					}
+
+					// Element display options
+					if ( isset( $element['display'] ) ) { // If using theme with framework prior to 2.5, this won't be set
+						$element['display'] = $this->clean( $element['type'], $element['display'], 'element', true );
+					} else {
+						$element['display'] = array();
+					}
+
+					// Add element
+					if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+						$elements[$id] = $element;
+					} else {
+						$elements[$location][$id] = $element; // @deprecated -- After theme framework 2.5, $location is no longer relevant
+					}
 				}
 			}
 		}
 
-		// Setup options
-		$options = isset( $data['tb_layout_options'] ) ? $options = $data['tb_layout_options'] : $options = null;
-
-		// Save elements and settings
+		// Save elements
 		update_post_meta( $layout_id, 'elements', $elements );
-		update_post_meta( $layout_id, 'settings', $options );
+
+		// Sidebar layout (@deprecated since 2.5)
+		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+			$options = isset( $data['tb_layout_options'] ) ? $options = $data['tb_layout_options'] : $options = null;
+			update_post_meta( $layout_id, 'settings', $options );
+		}
 
 		// Columns of content blocks
 		if ( count( $columns ) > 0 ) {
-			foreach ( $columns as $column_id => $blocks ) {
+			foreach ( $columns as $column_id => $column ) {
+
+				$blocks = array();
+
+				if ( isset( $column['blocks']) ) {
+					$blocks = $column['blocks'];
+				}
 
 				if ( count( $blocks ) > 0 ) {
 					foreach ( $blocks as $block_id => $block ) {
 
 						// Sanitize type of content block
 						$block_type = wp_kses( $block['type'], array() );
-						$blocks[$block_id ]['type'] = $block_type;
+						$column_data['blocks'][$block_id]['type'] = $block_type;
+
+						// Query type
+						$column_data['blocks'][$block_id]['query_type'] = wp_kses( $block['query_type'], array() );
 
 						// Sanitize options for content block
-						if ( isset( $block['options'] ) && count( $block['options'] ) > 0 ) {
-							$blocks[$block_id]['options'] = $this->clean( $block_type, $block['options'], 'block' );
+						if ( ! empty( $block['options'] ) ) {
+							$column_data['blocks'][$block_id]['options'] = $this->clean( $block_type, $block['options'], 'block' );
+						} else {
+							$column_data['blocks'][$block_id]['options'] = array();
 						}
 					}
 				}
 
+				$column_data = array(
+					'display'	=> $this->clean( null, $column['display'], 'block', true ),
+					'blocks' 	=> $blocks
+				);
+
 				// Save column of content blocks
-				update_post_meta( $layout_id, $column_id, $blocks ); // "element_123_col_1"
+				update_post_meta( $layout_id, $column_id, $column_data ); // "element_123_col_1"
 			}
 		}
 
@@ -434,7 +473,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Verify layout data
 		$data = new Theme_Blvd_Layout_Builder_Data( $layout_id );
 		$data->verify('elements');
-		$data->verify('settings');
+		$data->verify('info');
 		$data->finalize();
 
 		// Send back layout to edit
@@ -499,6 +538,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 			if ( isset( $element['options'] ) ) {
 				$element_settings = $element['options'];
 			}
+
+			$element_display = null;
+			if ( isset( $element['display'] ) ) {
+				$element_display = $element['display'];
+			}
+
 		}
 
 		// Get default element options
@@ -507,8 +552,11 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Sanitize element's settings
 		$element_settings = $this->clean( $element_type, $element_settings, 'element' );
 
+		// Sanitize element display settings
+		$element_display = $this->clean( $element_type, $element_display, 'element', true );
+
 		echo $new_element_id.'[(=>)]';
-		$this->admin_page->edit_element( 0, $element_type, $new_element_id, $element_settings, $column_data );
+		$this->admin_page->edit_element( 0, $element_type, $new_element_id, $element_settings, $element_display, $column_data );
 		die();
 
 	}
@@ -543,7 +591,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 					$col_num = str_replace('col_', '', $col_num);
 
 					// Options, which need to go through santiziation
-					foreach ( $column as $block ) {
+					foreach ( $column['blocks'] as $block ) {
 
 						// Content block type
 						$block_type = $block['type'];
@@ -575,11 +623,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $type The type of element or content block
+	 * @param string $type The type of element, type of content block
 	 * @param array $settings Settings that we're sanitizing
 	 * @param string $item Whether this is an element or content block - element or block
+	 * @param string $type Whether these are standard options or display options - options or display
 	 */
-	function clean( $type, $settings, $item = 'element' ) {
+	function clean( $type, $settings, $item = 'element', $display = false ) {
 
 		$clean = array();
 
@@ -592,11 +641,24 @@ class Theme_Blvd_Layout_Builder_Ajax {
 			return $clean; // Incorrect $item type, must be "element" or "block"
 		}
 
-		// Setup options for the given element or content block
-		if ( isset( $items[$type]['options'] ) && count( $items[$type]['options'] ) > 0 ) {
-			$options = $items[$type]['options'];
+		if ( $display ) {
+
+			// Setup display options
+			if ( $item == 'block' ) {
+				$options = $this->admin_page->get_display_options();
+			} else {
+				$options = $this->admin_page->get_display_options( $items, $type );
+			}
+
 		} else {
-			return $clean; // Element or content block has no options
+
+			// Setup options for the given element or content block
+			if ( isset( $items[$type]['options'] ) && count( $items[$type]['options'] ) > 0 ) {
+				$options = $items[$type]['options'];
+			} else {
+				return $clean; // Element or content block has no options
+			}
+
 		}
 
 		// Start sanitization
@@ -614,10 +676,23 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 			// Set checkbox to false if it wasn't sent in the $_POST
 			if ( 'checkbox' == $option['type'] ) {
-				if ( isset( $settings[$option_id] ) ) {
-					$settings[$option_id] = '1';
+
+				if ( ! empty( $option['inactive'] ) ) {
+
+					if ( $option['inactive'] === 'true' ) {
+						$settings[$option_id] = '1';
+					} else if( $option['inactive'] === 'false' ) {
+						$settings[$option_id] = '0';
+					}
+
 				} else {
-					$settings[$option_id] = '0';
+
+					if ( isset( $settings[$option_id] ) ) {
+						$settings[$option_id] = '1';
+					} else {
+						$settings[$option_id] = '0';
+					}
+
 				}
 			}
 
