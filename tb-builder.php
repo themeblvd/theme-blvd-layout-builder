@@ -41,27 +41,16 @@ function themeblvd_builder_init() {
 
 	// Include general items
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-data.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-notices.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
 
-	// Check to make sure Theme Blvd Framework 2.2+ is running
-	if ( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
-		add_action( 'admin_notices', 'themeblvd_builder_warning' );
-		add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
+	// Error handling
+	$notices = Theme_Blvd_Layout_Builder_Notices::get_instance();
+
+	if ( $notices->do_stop() ) {
+		// Stop plugin from running
 		return;
 	}
-
-	// If using framework v2.2.0, tell them they should now update to 2.2.1
-	if ( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
-		add_action( 'admin_notices', 'themeblvd_builder_warning_2' );
-	}
-
-	// If using framework version prior to v2.3, tell them API functions won't work.
-	if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
-		add_action( 'admin_notices', 'themeblvd_builder_warning_3' );
-	}
-
-	// Hook in check for nag to dismiss.
-	add_action( 'admin_init', 'themeblvd_builder_disable_nag' );
 
 	// Register custom layout hidden post type
 	add_action( 'init', 'themeblvd_builder_register_post_type' );
@@ -72,13 +61,16 @@ function themeblvd_builder_init() {
 	// Frontend actions -- These work in conjuction with framework theme files,
 	// header.php, template_builder.php, and footer.php
 	add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
-	add_action( 'themeblvd_featured', 'themeblvd_builder_featured' );
-	add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' );
+	add_action( 'themeblvd_featured', 'themeblvd_builder_featured' ); // @deprecated -- Only for theme framework prior to 2.5
+	add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' ); // @deprecated -- Only for theme framework prior to 2.5
 
 	// Get custom layouts
 	$custom_layouts = array();
+
 	if ( is_admin() ) {
+
 		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
+
 		if ( ! empty( $custom_layout_posts ) ) {
 			foreach( $custom_layout_posts as $layout ) {
 				$custom_layouts[$layout->post_name] = $layout->post_title;
@@ -122,10 +114,12 @@ function themeblvd_builder_init() {
 
 	// Admin Layout Builder
 	if ( is_admin() ){
+
 		// Check to make sure admin interface isn't set to be
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'builder' ) && current_user_can( themeblvd_admin_module_cap( 'builder' ) ) ) {
 
+			// Setup exporting capabilities
 			if ( class_exists( 'Theme_Blvd_Export' ) ) { // Theme Blvd framework 2.5+
 
 				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-export-layout.php' );
@@ -142,7 +136,9 @@ function themeblvd_builder_init() {
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder.php' );
 
+			// Setup Builder interface
 			$_themeblvd_layout_builder = new Theme_Blvd_Layout_Builder();
+
 		}
 	}
 
@@ -156,11 +152,15 @@ add_action( 'after_setup_theme', 'themeblvd_builder_init' );
  */
 function themeblvd_builder_api_init() {
 
-	// Include screen options class (used in API)
+	// Include screen options class (not currently
+	// used in API, but could potentially be later on)
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-screen.php' );
 
 	// Include Theme_Blvd_Builder_API class.
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/api/class-tb-builder-api.php' );
+
+	// Instantiate single object for Builder "Screen Options" tab.
+	Theme_Blvd_Layout_Builder_Screen::get_instance();
 
 	// Instantiate single object for Builder API.
 	// Helper functions are located within theme
