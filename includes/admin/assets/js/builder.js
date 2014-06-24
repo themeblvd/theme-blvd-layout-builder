@@ -227,6 +227,35 @@ jQuery(document).ready(function($) {
 			    });
 			}
 
+			// Element Labels
+			$('#builder_blvd').on('click', '.element-label .label-text', function(){
+
+				var $el = $(this),
+					$input = $el.closest('.element-label').find('.label-input');
+
+				$el.css('opacity', '0');
+				$input.show().focus();
+
+				$input.on('keydown.edit-label, focusout.edit-label', function(event){
+
+					if ( ( event.type == 'keydown' && event.keyCode == 13 ) || event.type == 'focusout' ) {
+
+						if ( ! $input.val() ) {
+							$input.val('...');
+						}
+
+						$el.css('opacity', '1').text($input.val());
+						$input.hide();
+
+						$input.off('keydown.edit-label, focusout.edit-label');
+						event.preventDefault();
+						return false;
+					}
+
+				});
+
+			});
+
 			// Take us to the tab
 			$('#builder_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
 			$('#builder_blvd .nav-tab-wrapper a.nav-edit-builder').css('display', 'inline-block').addClass('nav-tab-active');
@@ -467,6 +496,35 @@ jQuery(document).ready(function($) {
 			        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
 			    });
 			}
+
+			// Element Labels
+			object.on('click', '.element-label .label-text', function(){
+
+				var $el = $(this),
+					$input = $el.closest('.element-label').find('.label-input');
+
+				$el.css('opacity', '0');
+				$input.show().focus();
+
+				$input.on('keydown.edit-label, focusout.edit-label', function(event){
+
+					if ( ( event.type == 'keydown' && event.keyCode == 13 ) || event.type == 'focusout' ) {
+
+						if ( ! $input.val() ) {
+							$input.val('...');
+						}
+
+						$el.css('opacity', '1').text($input.val());
+						$input.hide();
+
+						$input.off('keydown.edit-label, focusout.edit-label');
+						event.preventDefault();
+						return false;
+					}
+
+				});
+
+			});
 
     	},
 

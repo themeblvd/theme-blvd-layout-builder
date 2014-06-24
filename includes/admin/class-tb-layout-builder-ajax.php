@@ -241,6 +241,9 @@ class Theme_Blvd_Layout_Builder_Ajax {
 						}
 					}
 
+					// Sanitize label
+					$element['label'] = wp_kses( $element['label'], array() );
+
 					// Sanitize element's options
 					if ( ! empty( $element['options'] ) ) {
 						$element['options'] = $this->clean( $element['type'], $element['options'], 'element' );

@@ -639,7 +639,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @param array $element_display Any current settings for element's display
 	 * @param array $column_data If we don't want column data to be pulled from meta, we can feed it in here
 	 */
-	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $element_display = null, $column_data = null ) {
+	public function edit_element( $layout_id, $element_type, $element_id, $element_settings = null, $element_display = null, $column_data = null, $element_label = null ) {
 
 		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->get_elements();
@@ -664,6 +664,11 @@ class Theme_Blvd_Layout_Builder {
 						<i class="tb-icon-picture"></i>
 					</a>
 				<?php endif; ?>
+				<div class="element-label tb-tooltip-link-XXX" data-tooltip-text="<?php _e('Click to Edit Label', 'themeblvd_builder'); ?>">
+					<?php $label = $element_label !== null ? $element_label : __('Element Label', 'themeblvd_builder'); ?>
+					<span class="label-text"><?php echo $label; ?></span>
+					<input type="text" class="label-input" name="tb_elements[<?php echo $element_id; ?>][label]" value="<?php echo esc_attr($label); ?>" />
+				</div>
 				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
 				<div class="clear"></div>
 			</div><!-- .element-name (end) -->
@@ -1052,7 +1057,13 @@ class Theme_Blvd_Layout_Builder {
 								if ( is_array( $layout_elements ) ) {
 									foreach ( $layout_elements as $element_id => $element ) {
 										if ( $api->is_element( $element['type'] ) ) {
-											$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'] );
+
+											$label = null;
+											if ( isset( $element['label'] ) ) {
+												$label = $element['label'];
+											}
+
+											$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'], null, $label );
 										}
 									}
 								}
@@ -1180,7 +1191,13 @@ class Theme_Blvd_Layout_Builder {
 							if ( is_array( $layout_elements ) ) {
 								foreach ( $layout_elements as $element_id => $element ) {
 									if ( $api->is_element( $element['type'] ) ) {
-										$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'] );
+
+										$label = null;
+										if ( isset( $element['label'] ) ) {
+											$label = $element['label'];
+										}
+
+										$this->edit_element( $id, $element['type'], $element_id, $element['options'], $element['display'], null, $label );
 									}
 								}
 							}
