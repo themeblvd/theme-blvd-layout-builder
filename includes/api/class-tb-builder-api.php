@@ -805,6 +805,37 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
 			),
+			'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'hide receiver show-hide-toggle'
+		    ),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'trigger',
+				'options'	=> themeblvd_colors()
+			),
+			'button_custom' => array(
+				'id' 		=> 'button_custom',
+				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'bg' 				=> '#ffffff',
+					'bg_hover'			=> '#ebebeb',
+					'border' 			=> '#cccccc',
+					'text'				=> '#333333',
+					'text_hover'		=> '#333333',
+					'include_bg'		=> 1,
+					'include_border'	=> 1
+				),
+				'type'		=> 'button',
+				'class'		=> 'receiver receiver-custom'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
 			'button_text' => array(
 				'id' 		=> 'button_text',
 				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
@@ -812,14 +843,6 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'Get Started Today!',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
-			),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> themeblvd_colors()
 			),
 			'button_size' => array(
 				'id' 		=> 'button_size',
@@ -832,7 +855,8 @@ class Theme_Blvd_Builder_API {
 					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
 					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
+					'large' 	=> __( 'Large', 'themeblvd_builder' ),
+					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
 				)
 			),
 			'button_url' => array(
@@ -2422,21 +2446,44 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
 			),
-			'button_text' => array(
+			'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'hide receiver show-hide-toggle'
+		    ),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'trigger',
+				'options'	=> themeblvd_colors()
+			),
+			'button_custom' => array(
+				'id' 		=> 'button_custom',
+				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'bg' 				=> '#ffffff',
+					'bg_hover'			=> '#ebebeb',
+					'border' 			=> '#cccccc',
+					'text'				=> '#333333',
+					'text_hover'		=> '#333333',
+					'include_bg'		=> 1,
+					'include_border'	=> 1
+				),
+				'type'		=> 'button',
+				'class'		=> 'receiver receiver-custom'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'button_text' => array(
 				'id' 		=> 'button_text',
 				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
 				'std'		=> 'Get Started Today!',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
-			),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> themeblvd_colors()
 			),
 			'button_size' => array(
 				'id' 		=> 'button_size',
@@ -2449,7 +2496,8 @@ class Theme_Blvd_Builder_API {
 					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
 					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
+					'large' 	=> __( 'Large', 'themeblvd_builder' ),
+					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
 				)
 			),
 			'button_url' => array(
@@ -3169,21 +3217,44 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
 			),
-			'button_text' => array(
+			'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'hide receiver show-hide-toggle'
+		    ),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'trigger',
+				'options'	=> themeblvd_colors()
+			),
+			'button_custom' => array(
+				'id' 		=> 'button_custom',
+				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'bg' 				=> '#ffffff',
+					'bg_hover'			=> '#ebebeb',
+					'border' 			=> '#cccccc',
+					'text'				=> '#333333',
+					'text_hover'		=> '#333333',
+					'include_bg'		=> 1,
+					'include_border'	=> 1
+				),
+				'type'		=> 'button',
+				'class'		=> 'receiver receiver-custom'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'button_text' => array(
 				'id' 		=> 'button_text',
 				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
 				'std'		=> 'Get Started Today!',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
-			),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> themeblvd_colors()
 			),
 			'button_size' => array(
 				'id' 		=> 'button_size',
@@ -3196,7 +3267,8 @@ class Theme_Blvd_Builder_API {
 					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
 					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
+					'large' 	=> __( 'Large', 'themeblvd_builder' ),
+					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
 				)
 			),
 			'button_url' => array(
