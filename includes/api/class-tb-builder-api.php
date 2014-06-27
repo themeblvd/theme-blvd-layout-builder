@@ -879,10 +879,31 @@ class Theme_Blvd_Builder_API {
 			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
 				)
 			),
+			'button_icon_before' => array(
+				'id' 		=> 'button_icon_before',
+				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'button_icon_after' => array(
+				'id' 		=> 'button_icon_after',
+				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_elements['jumbotron']['options']['button_icon_before'] );
+			unset( $this->core_elements['jumbotron']['options']['button_icon_after'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Milestones
@@ -2520,10 +2541,31 @@ class Theme_Blvd_Builder_API {
 			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
 				)
 			),
+			'button_icon_before' => array(
+				'id' 		=> 'button_icon_before',
+				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'button_icon_after' => array(
+				'id' 		=> 'button_icon_after',
+				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_elements['slogan']['options']['button_icon_before'] );
+			unset( $this->core_elements['slogan']['options']['button_icon_after'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Tabs -- @deprecated
@@ -3291,10 +3333,31 @@ class Theme_Blvd_Builder_API {
 			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
 				)
 			),
+			'button_icon_before' => array(
+				'id' 		=> 'button_icon_before',
+				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'button_icon_after' => array(
+				'id' 		=> 'button_icon_after',
+				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
 			'subgroup_end' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_blocks['jumbotron']['options']['button_icon_before'] );
+			unset( $this->core_blocks['jumbotron']['options']['button_icon_after'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Panel
