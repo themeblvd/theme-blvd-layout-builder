@@ -123,7 +123,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 		global $current_user;
 
 	    if ( isset( $_GET['tb_nag_ignore'] ) ) {
-	         add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+			add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
 		}
 	}
 
