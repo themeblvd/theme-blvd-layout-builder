@@ -299,9 +299,9 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 						// Sanitize options for content block
 						if ( ! empty( $block['options'] ) ) {
-							$column_data['blocks'][$block_id]['options'] = $this->clean( $block_type, $block['options'], 'block' );
+							$blocks[$block_id]['options'] = $this->clean( $block_type, $block['options'], 'block' );
 						} else {
-							$column_data['blocks'][$block_id]['options'] = array();
+							$blocks[$block_id]['options'] = array();
 						}
 					}
 				}
