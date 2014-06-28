@@ -2441,7 +2441,9 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'slogan',
 				'name' 		=> __( 'Setup Slogan', 'themeblvd_builder'),
 				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
-				'type'		=> 'textarea'
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
 		    ),
 		    'text_size' => array(
 				'id' 		=> 'text_size',
@@ -2831,6 +2833,7 @@ class Theme_Blvd_Builder_API {
 			'contact',
 			'current',
 			'html',
+			'icon_box',
 			'image',
 			'jumbotron',
 			'page',
@@ -3115,6 +3118,101 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Icon Box
+		/*--------------------------------------------*/
+
+		$this->core_blocks['icon_box'] = array();
+
+		// Information
+		$this->core_blocks['icon_box']['info'] = array(
+			'name' 		=> __( 'Icon Box', 'themeblvd_builder' ),
+			'id'		=> 'icon_box',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['icon_box']['options'] = array(
+			'icon' => array(
+		    	'id' 		=> 'icon',
+				'name'		=> __( 'Icon', 'themeblvd_builder' ),
+				'desc'		=> __( 'This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector'
+			),
+			'size' => array(
+		    	'id' 		=> 'size',
+				'name'		=> __( 'Icon Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how large the icon should be displayed.', 'themeblvd_builder' ),
+				'std'		=> '65px',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'min'	=> '10',
+					'max'	=> '150',
+					'step'	=> '1',
+					'units'	=> 'px'
+				)
+			),
+			'location' => array(
+		    	'id' 		=> 'location',
+				'name'		=> __( 'Icon Placement', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how the icon should be displayed within the block.', 'themeblvd_builder' ),
+				'std'		=> 'above',
+				'type'		=> 'radio',
+				'options'	=> array(
+					'above'	=> __('Icon is above title and content.', 'themeblvd_builder'),
+					'side'	=> __('Icon is to the side of title and content.', 'themeblvd_builder'),
+				)
+			),
+			'color' => array(
+		    	'id' 		=> 'color',
+				'name'		=> __( 'Icon Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the color of the icon.', 'themeblvd_builder' ),
+				'std'		=> '#666666',
+				'type'		=> 'color'
+			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
+			'circle' => array(
+		    	'id' 		=> 'circle',
+				'name'		=> null,
+				'desc'		=> __( 'Wrap icon in circle.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'circle_color' => array(
+		    	'id' 		=> 'circle_color',
+				'name'		=> __( 'Circle Background Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the background color of the circle that surrounds the icon.', 'themeblvd_builder' ),
+				'std'		=> '#cccccc',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+			),
+			'title' => array(
+		    	'id' 		=> 'title',
+				'name'		=> __( 'Title (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Add the title above your content.', 'themeblvd_builder' ),
+				'type'		=> 'text'
+			),
+			'text' => array(
+		    	'id' 		=> 'text',
+				'name'		=> __( 'Content (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Add the content for this icon box.', 'themeblvd_builder' ),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+			),
+			'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide'
+		    )
+		);
+
+		/*--------------------------------------------*/
 		/* Image
 		/*--------------------------------------------*/
 
@@ -3354,11 +3452,6 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			unset( $this->core_blocks['jumbotron']['options']['button_icon_before'] );
-			unset( $this->core_blocks['jumbotron']['options']['button_icon_after'] );
-		}
 
 		/*--------------------------------------------*/
 		/* Panel
@@ -4466,7 +4559,9 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'slogan',
 				'name' 		=> __( 'Setup Slogan', 'themeblvd_builder'),
 				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
-				'type'		=> 'textarea'
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
 		    ),
 		    'text_size' => array(
 				'id' 		=> 'text_size',
