@@ -151,7 +151,7 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 
 			case 'columns' :
 
-				if ( function_exists('themeblvd_content_blocks') ) { // theme framework 2.5+
+				if ( function_exists('themeblvd_blocks') ) { // theme framework 2.5+
 
 					$num = 1;
 					if ( is_string( $element['options']['setup'] ) ) {
@@ -195,7 +195,7 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 
 			case 'content' :
 
-				if ( function_exists('themeblvd_content_blocks') ) { // theme framework 2.5+
+				if ( function_exists('themeblvd_blocks') ) { // theme framework 2.5+
 
 					$blocks = array();
 					$column = get_post_meta( $layout_id, $id.'_col_1', true );
@@ -204,7 +204,7 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 						$blocks = $column['blocks'];
 					}
 
-					themeblvd_content_blocks( $blocks );
+					themeblvd_blocks( $blocks );
 
 				} else {
 
