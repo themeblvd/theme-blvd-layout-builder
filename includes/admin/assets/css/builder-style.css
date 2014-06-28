@@ -731,6 +731,9 @@
 /* =Modal Options
 ----------------------------------------------- */
 
+.themeblvd-modal #optionsframework {
+	max-width: none;
+}
 .themeblvd-modal #optionsframework .content-block-form > .section:last-of-type {
 	border-bottom: none;
 	padding-bottom: 20px;
@@ -742,6 +745,9 @@
 	font-size: 14px;
 	margin: 1px;
 	padding: 3px 5px;
+}
+.themeblvd-modal #optionsframework .jquery-ui-slider {
+	margin: 10px 12px;
 }
 
 /* Fix for fancy selects from WP admin styling */
