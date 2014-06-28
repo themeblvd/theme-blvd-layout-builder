@@ -2896,8 +2896,63 @@ class Theme_Blvd_Builder_API {
 		    	'id' 		=> 'content',
 				'name'		=> __( 'Content', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the content you\'d like to show for this content block.', 'themeblvd_builder' ),
-				'type'		=> 'editor_modal'
-			)
+				'type'		=> 'editor_modal',
+				'class'		=> 'hide'
+			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+		    ),
+			'wrap' => array(
+				'id' 		=> 'wrap',
+				'name'		=> __( 'Background', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply background color to content block.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'text_color' => array(
+				'id'		=> 'text_color',
+				'name'		=> __('Text Color'),
+				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
+				'std'		=> 'dark',
+				'type'		=> 'select',
+				'options'	=> array(
+					'dark'	=> __('Dark Text', 'themeblvd_builder'),
+					'light'	=> __('Light Text', 'themeblvd_builder')
+				),
+				'class'		=> 'hide receiver'
+			),
+			'bg_color' => array(
+				'id'		=> 'bg_color',
+				'name'		=> __('Background Color', 'themeblvd_builder'),
+				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
+				'std'		=> '#f2f2f2',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			),
+			'bg_color_opacity' => array(
+				'id'		=> 'bg_color_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+		    )
 		);
 
 		/*--------------------------------------------*/
