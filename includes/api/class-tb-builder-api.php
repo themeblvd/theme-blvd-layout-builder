@@ -2849,6 +2849,7 @@ class Theme_Blvd_Builder_API {
 			'simple_slider',
 			'slogan',
 			'tabs',
+			'team_member',
 			'toggles',
 			'video',
 			'widget'
@@ -4792,6 +4793,68 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			)
+		);
+
+		/*--------------------------------------------*/
+		/* Team Member
+		/*--------------------------------------------*/
+
+		$this->core_blocks['team_member'] = array();
+
+		// Information
+		$this->core_blocks['team_member']['info'] = array(
+			'name' 		=> __( 'Team Member', 'themeblvd_builder' ),
+			'id'		=> 'team_member',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['team_member']['options'] = array(
+			'image' => array(
+				'id' 		=> 'image',
+				'name' 		=> __( 'Image', 'themeblvd_builder'),
+				'desc'		=> __( 'Select an image for this person.', 'themeblvd_builder'),
+				'type'		=> 'upload'
+			),
+			'name' => array(
+				'id' 		=> 'name',
+				'name' 		=> __( 'Name', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the name of this person.', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+		    'tagline' => array(
+				'id' 		=> 'tagline',
+				'name' 		=> __( 'Tagline', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter a brief tagline for this person.<br>Ex: Founder and CEO', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+			'icons' => array(
+				'id' 		=> 'icons',
+				'name'		=> __( 'Social Media Icons', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure the social media and contact icons for this person.', 'themeblvd_builder' ),
+				'type'		=> 'social_media'
+			),
+			'icons_style' => array(
+				'id' 		=> 'icons_style',
+				'name'		=> __( 'Social Media Icon Style', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the style of social media icons.', 'themeblvd_builder' ),
+				'std'		=> 'grey',
+				'type'		=> 'select',
+				'options'	=> array(
+					'grey'	=> __('Grey', 'themeblvd_builder'),
+					'dark'	=> __('Dark', 'themeblvd_builder'),
+					'light'	=> __('Light', 'themeblvd_builder'),
+					'color'	=> __('Color', 'themeblvd_builder')
+				)
+			),
+			'text' => array(
+				'id' 		=> 'text',
+				'name' 		=> __( 'Content', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter any content you\'d like displayed about this person.', 'themeblvd_builder'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+		    )
 		);
 
 		/*--------------------------------------------*/
