@@ -232,7 +232,11 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 					break;
 				}
 
-				echo themeblvd_divider( $element['options']['type'] );
+				if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+					echo themeblvd_divider( $element['options'] );
+				} else {
+					echo themeblvd_divider( $element['options']['type'] );
+				}
 
 				break;
 

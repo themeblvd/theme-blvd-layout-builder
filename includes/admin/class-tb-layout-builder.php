@@ -76,6 +76,7 @@ class Theme_Blvd_Layout_Builder {
 			$advanced->create('slider');
 			$advanced->create('social_media');
 			$advanced->create('tabs');
+			$advanced->create('testimonials');
 			$advanced->create('toggles');
 		}
 

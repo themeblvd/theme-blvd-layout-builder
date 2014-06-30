@@ -549,12 +549,26 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Select which style of divider you\'d like to use here.', 'themeblvd_builder' ),
 				'type'		=> 'select',
 				'options'		=> array(
-			        'dashed' 	=> __( 'Dashed Line', 'themeblvd_builder' ),
-			        'shadow' 	=> __( 'Shadow Line', 'themeblvd_builder' ),
-					'solid' 	=> __( 'Solid Line', 'themeblvd_builder' )
+					'shadow' 		=> __( 'Shadow Line', 'themeblvd_builder' ),
+					'solid' 		=> __( 'Solid Line', 'themeblvd_builder' ),
+			        'dashed' 		=> __( 'Dashed Line', 'themeblvd_builder' ),
+					'double-solid' 	=> __( 'Double Solid Lines', 'themeblvd_builder' ),
+					'double-dashed' => __( 'Double Dashed Lines', 'themeblvd_builder' )
 				)
+			),
+			'width' => array(
+				'id' 		=> 'width',
+				'name'		=> __( 'Divider Width', 'themeblvd_builder' ),
+				'desc'		=> __( 'If you\'d like to restrict the width of the divider enter an integer in pixels.<br>Ex: 100', 'themeblvd_builder' ),
+				'type'		=> 'text'
 			)
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_elements['divider']['options']['type']['options']['double-solid'] );
+			unset( $this->core_elements['divider']['options']['type']['options']['double-dashed'] );
+			unset( $this->core_elements['divider']['options']['width'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Headline
@@ -2832,6 +2846,7 @@ class Theme_Blvd_Builder_API {
 			'alert',
 			'contact',
 			'current',
+			'divider',
 			'html',
 			'icon_box',
 			'image',
@@ -2850,6 +2865,8 @@ class Theme_Blvd_Builder_API {
 			'slogan',
 			'tabs',
 			'team_member',
+			'testimonial',
+			'testimonial_slider',
 			'toggles',
 			'video',
 			'widget'
@@ -3068,6 +3085,55 @@ class Theme_Blvd_Builder_API {
 		    	'id' 		=> 'current_info',
 				'desc'		=> __( 'The content will be pulled from the current page the layout is applied to.', 'themeblvd_builder' ),
 				'type'		=> 'info'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Divider
+		/*--------------------------------------------*/
+
+		$this->core_blocks['divider'] = array();
+
+		// Information
+		$this->core_blocks['divider']['info'] = array(
+			'name' 		=> __( 'Divider', 'themeblvd_builder' ),
+			'id'		=> 'divider',
+			'query'		=> 'none',
+			'height'	=> 'medium'
+		);
+
+		// Options
+		$this->core_blocks['divider']['options'] = array(
+			'type' => array(
+		    	'id' 		=> 'type',
+				'name'		=> __( 'Divider Type', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select which style of divider you\'d like to use here.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'		=> array(
+					'shadow' 		=> __( 'Shadow Line', 'themeblvd_builder' ),
+					'solid' 		=> __( 'Solid Line', 'themeblvd_builder' ),
+			        'dashed' 		=> __( 'Dashed Line', 'themeblvd_builder' ),
+					'double-solid' 	=> __( 'Double Solid Lines', 'themeblvd_builder' ),
+					'double-dashed' => __( 'Double Dashed Lines', 'themeblvd_builder' )
+				)
+			),
+			'width' => array(
+				'id' 		=> 'width',
+				'name'		=> __( 'Divider Width', 'themeblvd_builder' ),
+				'desc'		=> __( 'If you\'d like to restrict the width of the divider enter an integer in pixels.<br>Ex: 100', 'themeblvd_builder' ),
+				'type'		=> 'text'
+			),
+			'placement' => array(
+				'id' 		=> 'placement',
+				'name'		=> __( 'Divider Placement', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like the divider to separate the content.', 'themeblvd_builder' ),
+				'std'		=> 'equal',
+				'type'		=> 'radio',
+				'options'	=> array(
+					'equal' 	=> __( 'Divider is in between content.', 'themeblvd_builder' ),
+					'up' 		=> __( 'Divider is closer to content above.', 'themeblvd_builder' ),
+					'down' 		=> __( 'Divider is closer to content below.', 'themeblvd_builder' )
+				)
 			)
 		);
 
@@ -4814,7 +4880,8 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'image',
 				'name' 		=> __( 'Image', 'themeblvd_builder'),
 				'desc'		=> __( 'Select an image for this person.', 'themeblvd_builder'),
-				'type'		=> 'upload'
+				'type'		=> 'upload',
+				'advanced'	=> true
 			),
 			'name' => array(
 				'id' 		=> 'name',
@@ -4853,8 +4920,106 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter any content you\'d like displayed about this person.', 'themeblvd_builder'),
 				'type'		=> 'textarea',
 				'editor'	=> true,
-				'code'		=> 'html'
+				'code'		=> 'html',
 		    )
+		);
+
+		/*--------------------------------------------*/
+		/* Testimonial
+		/*--------------------------------------------*/
+
+		$this->core_blocks['testimonial'] = array();
+
+		// Information
+		$this->core_blocks['testimonial']['info'] = array(
+			'name' 		=> __( 'Testimonial', 'themeblvd_builder' ),
+			'id'		=> 'testimonial',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['testimonial']['options'] = array(
+			'text' => array(
+				'id' 		=> 'text',
+				'name' 		=> __( 'Testimonial Text', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter any text of the testimonial.', 'themeblvd_builder'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+		    ),
+			'name' => array(
+				'id' 		=> 'name',
+				'name' 		=> __( 'Name', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the name of the person giving the testimonial.', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+		    'tagline' => array(
+				'id' 		=> 'tagline',
+				'name' 		=> __( 'Tagline (optional)', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter a tagline for the person giving the testimonial.<br>Ex: Founder and CEO', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+		    'company' => array(
+				'id' 		=> 'company',
+				'name' 		=> __( 'Company (optional)', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the company the person giving the testimonial belongs to.', 'themeblvd_builder'),
+				'type'		=> 'text'
+		    ),
+		    'company_url' => array(
+				'id' 		=> 'company_url',
+				'name' 		=> __( 'Company URL (optional)', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the website URL for the company or the person giving the testimonial.', 'themeblvd_builder'),
+				'type'		=> 'text',
+				'pholder'	=> 'http://'
+		    ),
+		    'image' => array(
+				'id' 		=> 'image',
+				'name' 		=> __( 'Image (optional)', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a small image for the person giving the testimonial.', 'themeblvd_builder'),
+				'type'		=> 'upload',
+				'advanced'	=> true
+		    )
+		);
+
+		/*--------------------------------------------*/
+		/* Testimonial Slider
+		/*--------------------------------------------*/
+
+		$this->core_blocks['testimonial_slider'] = array();
+
+		// Information
+		$this->core_blocks['testimonial_slider']['info'] = array(
+			'name' 		=> __( 'Testimonial Slider', 'themeblvd_builder' ),
+			'id'		=> 'testimonial_slider',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['testimonial_slider']['options'] = array(
+			'testimonials' => array(
+				'id' 		=> 'testimonials',
+				'name'		=> __( 'Testimonials', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'testimonials'
+			),
+			'timeout' => array(
+		    	'id' 		=> 'timeout',
+				'name'		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'nav_standard' => array(
+				'id'		=> 'nav_standard',
+				'name'		=> __( 'Slider Navigation', 'themeblvd_builder' ),
+				'desc'		=> __( 'The navigation are the little dots that appear with testimonials to navigate through them.' , 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+		            '1'	=> __( 'Yes, show navigation.', 'themeblvd_builder' ),
+		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
+				)
+			)
 		);
 
 		/*--------------------------------------------*/
