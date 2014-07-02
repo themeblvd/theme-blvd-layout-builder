@@ -241,6 +241,21 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Google Map
+			/*------------------------------------------------------*/
+
+			case 'map' :
+
+				if ( ! function_exists( 'themeblvd_map' ) ) {
+					_e('Google Map element not supported.', 'themeblvd_builder');
+					break;
+				}
+
+				themeblvd_map( $element['options'] );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Headline
 			/*------------------------------------------------------*/
 

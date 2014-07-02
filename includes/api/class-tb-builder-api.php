@@ -222,6 +222,7 @@ class Theme_Blvd_Builder_API {
 
 		// Elements requiring framework 2.5
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+			$this->registered_elements[] = 'map';
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
 			$this->registered_elements[] = 'milestones';
@@ -569,6 +570,151 @@ class Theme_Blvd_Builder_API {
 			unset( $this->core_elements['divider']['options']['type']['options']['double-dashed'] );
 			unset( $this->core_elements['divider']['options']['width'] );
 		}
+
+		/*--------------------------------------------*/
+		/* Google Map
+		/*--------------------------------------------*/
+
+		$this->core_elements['map'] = array();
+
+		// Information
+		$this->core_elements['map']['info'] = array(
+			'name' 		=> __('Google Map', 'themeblvd_builder'),
+			'id'		=> 'map',
+			'query'		=> 'none',
+			'hook'		=> null,
+			'shortcode'	=> false,
+			'desc'		=> __( 'Map from Google Maps', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['map']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['map']['options'] = array(
+			'markers' => array(
+				'id' 		=> 'markers',
+				'name'		=> __( 'Map Location Markers', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'locations',
+			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+			),
+			'center_type' => array(
+		    	'id' 		=> 'center_type',
+				'name'		=> __( 'Map Center', 'themeblvd_builder' ),
+				'desc'		=> __( 'When the map is initially displayed, where do you want the center point to be?', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'options'		=> array(
+					'default' 	=> __( 'Use first location marker', 'themeblvd_builder' ),
+					'custom' 	=> __( 'Enter custom location', 'themeblvd_builder' )
+				),
+				'class'		=> 'trigger'
+			),
+			'center' => array(
+		    	'id' 		=> 'center',
+				'name'		=> __( 'Map Center Point', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter custom coordinates for the center point of the map. ', 'themeblvd_builder' ),
+				'type'		=> 'geo',
+				'class'		=> 'hide receiver receiver-custom'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+			),
+			'height' => array(
+		    	'id' 		=> 'height',
+				'name'		=> __( 'Map Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the height of the map in pixels.', 'themeblvd_builder' ),
+				'std'		=> '400',
+				'type'		=> 'text'
+			),
+			'zoom' => array(
+		    	'id' 		=> 'zoom',
+				'name'		=> __( 'Map Zoom', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the zoom of the initially loaded map from 1 (very far) to 20 (very close).<br><br><em>Note: Depending on the distance of your location markers from the center point, you may need to adjust the zoom in order for all markers to be visable.</em>', 'themeblvd_builder' ),
+				'std'		=> '15',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '20',
+					'step'	=> '1'
+				)
+			),
+			'lightness' => array(
+		    	'id' 		=> 'lightness',
+				'name'		=> __( 'Map Color Brightness', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the map\'s color brightness.', 'themeblvd_builder' ),
+				'std'		=> '0',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'min'	=> '-100',
+					'max'	=> '100',
+					'step'	=> '1'
+				)
+			),
+			'saturation' => array(
+		    	'id' 		=> 'saturation',
+				'name'		=> __( 'Map Color Saturation', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the map\'s color saturation.', 'themeblvd_builder' ),
+				'std'		=> '0',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'min'	=> '-100',
+					'max'	=> '100',
+					'step'	=> '1'
+				)
+			),
+			'subgroup_start_1' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
+			'has_hue' => array(
+		    	'id' 		=> 'has_hue',
+				'name'		=> null,
+				'desc'		=> __( 'Apply overlay color to map.', 'themeblvd_builder' ),
+				'std'		=> '',
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'hue' => array(
+		    	'id' 		=> 'hue',
+				'name'		=> __( 'Map Overlay Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select a custom color for your map. The map will be tinted with this color.', 'themeblvd_builder' ),
+				'std'		=> '#ff0000',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
+			),
+			'zoom_control' => array(
+				'id' 		=> 'zoom_control',
+				'name'		=> null,
+				'desc'		=> __( 'Give user zoom control of map.', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
+			),
+			'pan_control' => array(
+				'id' 		=> 'pan_control',
+				'name'		=> null,
+				'desc'		=> __( 'Give user pan control of map.', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
+			),
+			'draggable' => array(
+				'id' 		=> 'draggable',
+				'name'		=> null,
+				'desc'		=> __( 'Map is draggable by the user.', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
+			)
+		);
 
 		/*--------------------------------------------*/
 		/* Headline
