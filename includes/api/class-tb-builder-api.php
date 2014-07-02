@@ -217,7 +217,7 @@ class Theme_Blvd_Builder_API {
 			'post_list_paginated',
 			'post_list',
 			'post_list_slider',
-			'slogan'
+			'slogan' // Promo Box
 		);
 
 		// Elements requiring framework 2.5
@@ -2285,6 +2285,163 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
+		/* Promo Box (slogan)
+		/*--------------------------------------------*/
+
+		$this->core_elements['slogan'] = array();
+
+		// Information
+		$this->core_elements['slogan']['info'] = array(
+			'name'		=> __( 'Promo Box', 'themeblvd_builder' ),
+			'id'		=> 'slogan',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_slogan',
+			'shortcode'	=> '[slogan]',
+			'desc'		=> __( 'Slogan with optional button', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['slogan']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> false,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['slogan']['options'] = array(
+			'slogan' => array(
+				'id' 		=> 'slogan',
+				'name' 		=> __( 'Promo Content', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+		    ),
+		    'text_size' => array(
+				'id' 		=> 'text_size',
+				'name' 		=> __( 'Promo Text Size', 'themeblvd_builder'),
+				'desc'		=> __( 'Select how large you\'d like the text in the promo text to be, by default.', 'themeblvd_builder'),
+				'std'		=> 'large',
+				'type'		=> 'select',
+				'options'	=> array(
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'medium' 	=> __( 'Medium', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' )
+				)
+		    ),
+		    'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide'
+		    ),
+			'button' => array(
+		    	'id' 		=> 'button',
+				'name'		=> __( 'Button', 'themeblvd_builder' ),
+				'desc'		=> __( 'Show call-to-action button next to promo content?', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'hide receiver show-hide-toggle'
+		    ),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'trigger',
+				'options'	=> themeblvd_colors()
+			),
+			'button_custom' => array(
+				'id' 		=> 'button_custom',
+				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'bg' 				=> '#ffffff',
+					'bg_hover'			=> '#ebebeb',
+					'border' 			=> '#cccccc',
+					'text'				=> '#333333',
+					'text_hover'		=> '#333333',
+					'include_bg'		=> 1,
+					'include_border'	=> 1
+				),
+				'type'		=> 'button',
+				'class'		=> 'receiver receiver-custom'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'button_text' => array(
+				'id' 		=> 'button_text',
+				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
+				'std'		=> 'Get Started Today!',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_size' => array(
+				'id' 		=> 'button_size',
+				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'large',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' ),
+					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
+				)
+			),
+			'button_url' => array(
+				'id' 		=> 'button_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
+				'std'		=> 'http://www.your-site.com/your-landing-page',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_target' => array(
+				'id' 		=> 'button_target',
+				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
+			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
+				)
+			),
+			'button_icon_before' => array(
+				'id' 		=> 'button_icon_before',
+				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'button_icon_after' => array(
+				'id' 		=> 'button_icon_after',
+				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    )
+		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_elements['slogan']['options']['button_icon_before'] );
+			unset( $this->core_elements['slogan']['options']['button_icon_after'] );
+		}
+
+		/*--------------------------------------------*/
 		/* Simple Slider
 		/*--------------------------------------------*/
 
@@ -2573,163 +2730,6 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* Slogan
-		/*--------------------------------------------*/
-
-		$this->core_elements['slogan'] = array();
-
-		// Information
-		$this->core_elements['slogan']['info'] = array(
-			'name'		=> __( 'Slogan', 'themeblvd_builder' ),
-			'id'		=> 'slogan',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_slogan',
-			'shortcode'	=> '[slogan]',
-			'desc'		=> __( 'Slogan with optional button', 'themeblvd_builder' )
-		);
-
-		// Support
-		$this->core_elements['slogan']['support'] = array(
-			'background' 	=> true,
-			'popout'		=> false,
-			'padding'		=> true
-		);
-
-		// Options
-		$this->core_elements['slogan']['options'] = array(
-			'slogan' => array(
-				'id' 		=> 'slogan',
-				'name' 		=> __( 'Setup Slogan', 'themeblvd_builder'),
-				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
-				'type'		=> 'textarea',
-				'editor'	=> true,
-				'code'		=> 'html'
-		    ),
-		    'text_size' => array(
-				'id' 		=> 'text_size',
-				'name' 		=> __( 'Slogan Text Size', 'themeblvd_builder'),
-				'desc'		=> __( 'Select how large you\'d like the text in the slogan to be.', 'themeblvd_builder'),
-				'std'		=> 'large',
-				'type'		=> 'select',
-				'options'	=> array(
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'medium' 	=> __( 'Medium', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
-				)
-		    ),
-		    'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide'
-		    ),
-			'button' => array(
-		    	'id' 		=> 'button',
-				'name'		=> __( 'Button', 'themeblvd_builder' ),
-				'desc'		=> __( 'Show call-to-action button next to slogan?', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'subgroup_start_2' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'hide receiver show-hide-toggle'
-		    ),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'trigger',
-				'options'	=> themeblvd_colors()
-			),
-			'button_custom' => array(
-				'id' 		=> 'button_custom',
-				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
-				'std'		=> array(
-					'bg' 				=> '#ffffff',
-					'bg_hover'			=> '#ebebeb',
-					'border' 			=> '#cccccc',
-					'text'				=> '#333333',
-					'text_hover'		=> '#333333',
-					'include_bg'		=> 1,
-					'include_border'	=> 1
-				),
-				'type'		=> 'button',
-				'class'		=> 'receiver receiver-custom'
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-		    'button_text' => array(
-				'id' 		=> 'button_text',
-				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
-				'std'		=> 'Get Started Today!',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_size' => array(
-				'id' 		=> 'button_size',
-				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'large',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' ),
-					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
-				)
-			),
-			'button_url' => array(
-				'id' 		=> 'button_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-landing-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_target' => array(
-				'id' 		=> 'button_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
-			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
-				)
-			),
-			'button_icon_before' => array(
-				'id' 		=> 'button_icon_before',
-				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'button_icon_after' => array(
-				'id' 		=> 'button_icon_after',
-				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'subgroup_end' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
-		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			unset( $this->core_elements['slogan']['options']['button_icon_before'] );
-			unset( $this->core_elements['slogan']['options']['button_icon_after'] );
-		}
-
-		/*--------------------------------------------*/
 		/* Tabs -- @deprecated
 		/*--------------------------------------------*/
 
@@ -3008,7 +3008,7 @@ class Theme_Blvd_Builder_API {
 			'quote',
 			'raw',
 			'simple_slider',
-			'slogan',
+			'slogan', // Promo Box
 			'tabs',
 			'team_member',
 			'testimonial',
@@ -3064,14 +3064,19 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide'
 			),
 			'subgroup_start' => array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
 		    ),
-			'wrap' => array(
-				'id' 		=> 'wrap',
-				'name'		=> __( 'Background', 'themeblvd_builder' ),
-				'desc'		=> __( 'Apply background color to content block.', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
+			'style'	=> array(
+				'id' 		=> 'style',
+				'name' 		=> __( 'Styling', 'themeblvd_builder'),
+				'desc'		=> __( 'Select if you\'d like to apply any special styling for this block.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters('themeblvd_promo_classes', array(
+					'none'		=> __('None', 'themeblvd_builder'),
+					'custom'	=> __('Custom BG color', 'themeblvd_builder')
+				)),
 				'class'		=> 'trigger'
 			),
 			'text_color' => array(
@@ -3084,18 +3089,18 @@ class Theme_Blvd_Builder_API {
 					'dark'	=> __('Dark Text', 'themeblvd_builder'),
 					'light'	=> __('Light Text', 'themeblvd_builder')
 				),
-				'class'		=> 'hide receiver'
+				'class'		=> 'hide receiver receiver-custom'
 			),
-			'bg_color' => array(
-				'id'		=> 'bg_color',
-				'name'		=> __('Background Color', 'themeblvd_builder'),
-				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
-				'std'		=> '#f2f2f2',
+		    'bg_color' => array(
+				'id' 		=> 'bg_color',
+				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#eeeeee',
 				'type'		=> 'color',
-				'class'		=> 'hide receiver'
-			),
-			'bg_color_opacity' => array(
-				'id'		=> 'bg_color_opacity',
+				'class'		=> 'hide receiver receiver-custom'
+		    ),
+		    'bg_opacity' => array(
+				'id'		=> 'bg_opacity',
 				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
 				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
 				'std'		=> '1',
@@ -3112,7 +3117,7 @@ class Theme_Blvd_Builder_API {
 					'0.9'	=> '0.9',
 					'1'		=> '1.0'
 				),
-				'class'		=> 'hide receiver'
+				'class'		=> 'hide receiver receiver-custom'
 			),
 			'subgroup_end' => array(
 				'type'		=> 'subgroup_end'
@@ -3585,23 +3590,64 @@ class Theme_Blvd_Builder_API {
 		    'wpautop' => array(
 		    	'id' 		=> 'wpautop',
 				'name'		=> __( 'Content Formatting', 'themeblvd_builder' ),
-				'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply WordPress automatic formatting to content.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
+			),
+			'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'style'	=> array(
+				'id' 		=> 'style',
+				'name' 		=> __( 'Styling', 'themeblvd_builder'),
+				'desc'		=> __( 'Select if you\'d like to apply any special styling for this block.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters('themeblvd_promo_classes', array(
+					'none'		=> __('None', 'themeblvd_builder'),
+					'custom'	=> __('Custom BG color + Text color', 'themeblvd_builder')
+				)),
+				'class'		=> 'trigger'
 			),
 		    'bg_color' => array(
 				'id' 		=> 'bg_color',
 				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
 				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
 				'std'		=> '#eeeeee',
-				'type'		=> 'color'
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-custom'
 		    ),
+		    'bg_opacity' => array(
+				'id'		=> 'bg_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver receiver-custom'
+			),
 		    'text_color' => array(
 				'id' 		=> 'text_color',
 				'name' 		=> __( 'Text Color', 'themeblvd_builder'),
 				'desc'		=> __( 'Select a text color for the Jumbotron unit.', 'themeblvd_builder'),
 				'std'		=> '#444444',
-				'type'		=> 'color'
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-custom'
+		    ),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
 		    ),
 		    'text_align' => array(
 				'id' 		=> 'text_align',
@@ -3615,7 +3661,7 @@ class Theme_Blvd_Builder_API {
 					'center' 	=> __( 'Center', 'themeblvd_builder' )
 				)
 		    ),
-		    'subgroup_start' => array(
+		    'subgroup_start_2' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide'
 		    ),
@@ -3626,7 +3672,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
 			),
-			'subgroup_start_2' => array(
+			'subgroup_start_3' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'hide receiver show-hide-toggle'
 		    ),
@@ -3654,7 +3700,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'button',
 				'class'		=> 'receiver receiver-custom'
 			),
-			'subgroup_end_2' => array(
+			'subgroup_end_3' => array(
 		    	'type'		=> 'subgroup_end'
 		    ),
 		    'button_text' => array(
@@ -3716,7 +3762,7 @@ class Theme_Blvd_Builder_API {
 				'icon'		=> 'vector',
 				'class'		=> 'hide receiver'
 			),
-			'subgroup_end' => array(
+			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
@@ -4633,6 +4679,210 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Promo Box (slogan)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['slogan'] = array();
+
+		// Information
+		$this->core_blocks['slogan']['info'] = array(
+			'name' 		=> __( 'Promo Box', 'themeblvd_builder' ),
+			'id'		=> 'slogan',
+			'query'		=> 'none',
+			'height'	=> 'large'
+		);
+
+		// Options
+		$this->core_blocks['slogan']['options'] = array(
+			'content' => array(
+				'id' 		=> 'content',
+				'name' 		=> __( 'Promo Content', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
+				'type'		=> 'editor_modal',
+				'class'		=> 'hide'
+		    ),
+		    'wpautop' => array(
+		    	'id' 		=> 'wpautop',
+				'name'		=> __( 'Content Formatting', 'themeblvd_builder' ),
+				'desc'		=> __( 'Apply WordPress automatic formatting to content.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+		    'text_size' => array(
+				'id' 		=> 'text_size',
+				'name' 		=> __( 'Promo Text Size', 'themeblvd_builder'),
+				'desc'		=> __( 'Select how large you\'d like the text in the promo text to be, by default.', 'themeblvd_builder'),
+				'std'		=> 'large',
+				'type'		=> 'select',
+				'options'	=> array(
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'medium' 	=> __( 'Medium', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' )
+				)
+		    ),
+		    'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'style'	=> array(
+				'id' 		=> 'style',
+				'name' 		=> __( 'Styling', 'themeblvd_builder'),
+				'desc'		=> __( 'Select if you\'d like to apply any special styling for this block.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters('themeblvd_promo_classes', array(
+					'none'		=> __('None', 'themeblvd_builder'),
+					'custom'	=> __('Custom BG color + Text color', 'themeblvd_builder')
+				)),
+				'class'		=> 'trigger'
+			),
+		    'bg_color' => array(
+				'id' 		=> 'bg_color',
+				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#eeeeee',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-custom'
+		    ),
+		    'bg_opacity' => array(
+				'id'		=> 'bg_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver receiver-custom'
+			),
+		    'text_color' => array(
+				'id' 		=> 'text_color',
+				'name' 		=> __( 'Text Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a text color for the Jumbotron unit.', 'themeblvd_builder'),
+				'std'		=> '#444444',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-custom'
+		    ),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide'
+		    ),
+			'button' => array(
+		    	'id' 		=> 'button',
+				'name'		=> __( 'Button', 'themeblvd_builder' ),
+				'desc'		=> __( 'Show call-to-action button next to promo content?', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'subgroup_start_3' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'hide receiver show-hide-toggle'
+		    ),
+			'button_color' => array(
+				'id' 		=> 'button_color',
+				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'trigger',
+				'options'	=> themeblvd_colors()
+			),
+			'button_custom' => array(
+				'id' 		=> 'button_custom',
+				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
+				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
+				'std'		=> array(
+					'bg' 				=> '#ffffff',
+					'bg_hover'			=> '#ebebeb',
+					'border' 			=> '#cccccc',
+					'text'				=> '#333333',
+					'text_hover'		=> '#333333',
+					'include_bg'		=> 1,
+					'include_border'	=> 1
+				),
+				'type'		=> 'button',
+				'class'		=> 'receiver receiver-custom'
+			),
+			'subgroup_end_3' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'button_text' => array(
+				'id' 		=> 'button_text',
+				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
+				'std'		=> 'Get Started Today!',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_size' => array(
+				'id' 		=> 'button_size',
+				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'large',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
+					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
+					'large' 	=> __( 'Large', 'themeblvd_builder' ),
+					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
+				)
+			),
+			'button_url' => array(
+				'id' 		=> 'button_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
+				'std'		=> 'http://www.your-site.com/your-landing-page',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_target' => array(
+				'id' 		=> 'button_target',
+				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
+			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
+			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
+				)
+			),
+			'button_icon_before' => array(
+				'id' 		=> 'button_icon_before',
+				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'button_icon_after' => array(
+				'id' 		=> 'button_icon_after',
+				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    )
+		);
+
+		/*--------------------------------------------*/
 		/* Quote
 		/*--------------------------------------------*/
 
@@ -4808,154 +5058,6 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* Slogan
-		/*--------------------------------------------*/
-
-		$this->core_blocks['slogan'] = array();
-
-		// Information
-		$this->core_blocks['slogan']['info'] = array(
-			'name' 		=> __( 'Slogan', 'themeblvd_builder' ),
-			'id'		=> 'slogan',
-			'query'		=> 'none',
-			'height'	=> 'large'
-		);
-
-		// Options
-		$this->core_blocks['slogan']['options'] = array(
-			'slogan' => array(
-				'id' 		=> 'slogan',
-				'name' 		=> __( 'Setup Slogan', 'themeblvd_builder'),
-				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
-				'type'		=> 'textarea',
-				'editor'	=> true,
-				'code'		=> 'html'
-		    ),
-		    'text_size' => array(
-				'id' 		=> 'text_size',
-				'name' 		=> __( 'Slogan Text Size', 'themeblvd_builder'),
-				'desc'		=> __( 'Select how large you\'d like the text in the slogan to be.', 'themeblvd_builder'),
-				'std'		=> 'large',
-				'type'		=> 'select',
-				'options'	=> array(
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'medium' 	=> __( 'Medium', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
-				)
-		    ),
-		    'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide'
-		    ),
-			'button' => array(
-		    	'id' 		=> 'button',
-				'name'		=> __( 'Button', 'themeblvd_builder' ),
-				'desc'		=> __( 'Show call-to-action button next to slogan?', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'subgroup_start_2' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'hide receiver show-hide-toggle'
-		    ),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'trigger',
-				'options'	=> themeblvd_colors()
-			),
-			'button_custom' => array(
-				'id' 		=> 'button_custom',
-				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
-				'std'		=> array(
-					'bg' 				=> '#ffffff',
-					'bg_hover'			=> '#ebebeb',
-					'border' 			=> '#cccccc',
-					'text'				=> '#333333',
-					'text_hover'		=> '#333333',
-					'include_bg'		=> 1,
-					'include_border'	=> 1
-				),
-				'type'		=> 'button',
-				'class'		=> 'receiver receiver-custom'
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-		    'button_text' => array(
-				'id' 		=> 'button_text',
-				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
-				'std'		=> 'Get Started Today!',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_size' => array(
-				'id' 		=> 'button_size',
-				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'large',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' ),
-					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
-				)
-			),
-			'button_url' => array(
-				'id' 		=> 'button_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-landing-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_target' => array(
-				'id' 		=> 'button_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
-			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
-				)
-			),
-			'button_icon_before' => array(
-				'id' 		=> 'button_icon_before',
-				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'button_icon_after' => array(
-				'id' 		=> 'button_icon_after',
-				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'subgroup_end' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
-		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			unset( $this->core_slogan['slogan']['options']['button_icon_before'] );
-			unset( $this->core_slogan['slogan']['options']['button_icon_after'] );
-		}
-
-		/*--------------------------------------------*/
 		/* Tabs
 		/*--------------------------------------------*/
 
@@ -5121,7 +5223,7 @@ class Theme_Blvd_Builder_API {
 		    'image' => array(
 				'id' 		=> 'image',
 				'name' 		=> __( 'Image (optional)', 'themeblvd_builder'),
-				'desc'		=> __( 'Select a small image for the person giving the testimonial.', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a small image for the person giving the testimonial. This will look best if you select an image size that is square.', 'themeblvd_builder'),
 				'type'		=> 'upload',
 				'advanced'	=> true
 		    )
