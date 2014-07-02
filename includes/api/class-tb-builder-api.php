@@ -5256,7 +5256,8 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '3'
-			),
+			)
+			/*
 			'nav_standard' => array(
 				'id'		=> 'nav_standard',
 				'name'		=> __( 'Slider Navigation', 'themeblvd_builder' ),
@@ -5268,6 +5269,7 @@ class Theme_Blvd_Builder_API {
 		            '0'	=> __( 'No, don\'t show it.', 'themeblvd_builder' )
 				)
 			)
+			*/
 		);
 
 		/*--------------------------------------------*/
