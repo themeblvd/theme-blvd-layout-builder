@@ -72,6 +72,7 @@ class Theme_Blvd_Layout_Builder {
 		// Make advanced option types available in Builder
 		if ( class_exists( 'Theme_Blvd_Advanced_Options' ) ) {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
+			$advanced->create('locations');
 			$advanced->create('milestones');
 			$advanced->create('slider');
 			$advanced->create('social_media');
@@ -267,6 +268,9 @@ class Theme_Blvd_Layout_Builder {
 		if ( function_exists( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
+
+		// Google Maps
+		wp_enqueue_script( 'themeblvd_gmap', 'https://maps.googleapis.com/maps/api/js', array(), null );
 
 		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_modal', TB_FRAMEWORK_URI . '/admin/assets/js/modal.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
