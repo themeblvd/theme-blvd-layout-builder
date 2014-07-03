@@ -514,7 +514,7 @@ function themeblvd_builder_elements( $layout_id, $location = '' ) {
 
 		// Allow to add on custom element that's
 		// not in the framework
-		do_action( 'themeblvd_'.$element['type'], $id, $element['options'], $location );
+		do_action( 'themeblvd_'.$element['type'], $id, $element['options'], $location ); // $location only relevant if using theme framework prior to 2.5
 
 		// End output
 		echo '<div class="clear"></div>';

@@ -5611,14 +5611,23 @@ class Theme_Blvd_Builder_API {
 	 * @param string $query_type Type of query if any - none, secondary, or primary
 	 * @param array $options Options formatted for Options Framework
 	 * @param string $callback Function to display element on frontend
+	 * @param array $support Optional array of support items
 	 */
-	public function add_element( $element_id, $element_name, $query_type, $options, $callback ) {
+	public function add_element( $element_id, $element_name, $query_type, $options, $callback, $support = array() ) {
 
 		// Register element
 		$this->registered_elements[] = $element_id;
 
 		// Add in element
 		if ( is_admin() ) {
+
+			$support_defaults = array(
+				'background'	=> true,
+				'popout'		=> true,
+				'padding'		=> true
+			);
+			$support = wp_parse_args( $support, $support_defaults );
+
 			$this->client_elements[$element_id] = array(
 				'info' => array(
 					'name' 		=> $element_name,
@@ -5628,12 +5637,13 @@ class Theme_Blvd_Builder_API {
 					'shortcode'	=> null,
 					'desc' 		=> null
 				),
+				'support' => $support,
 				'options' => $options
 			);
 		}
 
 		// Hook in display function on frontend
-		add_action( 'themeblvd_'.$element_id, $callback, 10, 3 );
+		add_action( 'themeblvd_'.$element_id, $callback, 10, 3 ); // Should pass only 2 params passed into callback, leaving as 3 here for backwards compat ($location no longer relevant)
 
 	}
 
@@ -5654,6 +5664,7 @@ class Theme_Blvd_Builder_API {
 			foreach ( $this->registered_elements as $key => $value ) {
 				if ( $value == $element_id ) {
 					unset( $this->registered_elements[$key] );
+					break;
 				}
 			}
 		}
@@ -5664,17 +5675,48 @@ class Theme_Blvd_Builder_API {
 	 *
 	 * @since 2.0.0
 	 */
-	public function add_block( $element_id, $element_name, $options, $callback ) {
-		// @todo ...
+	public function add_block( $block_id, $block_name, $query_type, $options, $callback ) {
+
+		// Register block
+		$this->registered_blocks[] = $block_id;
+
+		// Add in block
+		if ( is_admin() ) {
+
+			$this->client_blocks[$block_id] = array(
+				'info' => array(
+					'name' 	=> $block_name,
+					'id'	=> $block_id,
+					'query'	=> $query_type
+				),
+				'options' => $options
+			);
+		}
+
+		// Hook in display function on frontend
+		add_action( 'themeblvd_block_'.$block_id, $callback, 10, 2 );
+
 	}
 
 	/**
-	 * Remove content block to Builder.
+	 * Remove block from Builder.
 	 *
 	 * @since 2.0.0
 	 */
-	public function remove_block( $element_id ) {
-		// @todo ...
+	public function remove_block( $block_id ) {
+
+		// Add to removal array, and process in set_blocks()
+		$this->remove_blocks[] = $block_id;
+
+		// De-register Element
+		if ( $this->registered_blocks ) {
+			foreach ( $this->registered_blocks as $key => $value ) {
+				if ( $value == $block_id ) {
+					unset( $this->registered_blocks[$key] );
+					break;
+				}
+			}
+		}
 	}
 
 	/**
