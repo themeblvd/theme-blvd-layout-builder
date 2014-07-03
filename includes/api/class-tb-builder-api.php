@@ -3094,7 +3094,7 @@ class Theme_Blvd_Builder_API {
 		    'bg_color' => array(
 				'id' 		=> 'bg_color',
 				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
-				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the content block.', 'themeblvd_builder'),
 				'std'		=> '#eeeeee',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver receiver-custom'
@@ -3478,11 +3478,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'textarea',
 				'editor'	=> true,
 				'code'		=> 'html'
-			),
-			'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide'
-		    )
+			)
 		);
 
 		/*--------------------------------------------*/
@@ -4740,7 +4736,7 @@ class Theme_Blvd_Builder_API {
 		    'bg_color' => array(
 				'id' 		=> 'bg_color',
 				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
-				'desc'		=> __( 'Select a background color for the Jumbotron unit.', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the promo box.', 'themeblvd_builder'),
 				'std'		=> '#eeeeee',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver receiver-custom'
@@ -4768,7 +4764,7 @@ class Theme_Blvd_Builder_API {
 		    'text_color' => array(
 				'id' 		=> 'text_color',
 				'name' 		=> __( 'Text Color', 'themeblvd_builder'),
-				'desc'		=> __( 'Select a text color for the Jumbotron unit.', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a text color for the promo box.', 'themeblvd_builder'),
 				'std'		=> '#444444',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver receiver-custom'
