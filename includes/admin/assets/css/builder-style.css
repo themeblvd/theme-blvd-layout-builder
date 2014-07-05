@@ -308,7 +308,6 @@
 	padding-bottom: 10px;
 }
 #builder_blvd #optionsframework .section-locations,
-#builder_blvd #optionsframework .section-milestones,
 #builder_blvd #optionsframework .section-slider,
 #builder_blvd #optionsframework .section-tabs,
 #builder_blvd #optionsframework .section-testimonials,
@@ -316,7 +315,6 @@
 	padding-bottom: 15px;
 }
 #builder_blvd #optionsframework .section-locations > .option > .controls,
-#builder_blvd #optionsframework .section-milestones > .option > .controls,
 #builder_blvd #optionsframework .section-slider > .option > .controls,
 #builder_blvd #optionsframework .section-tabs > .option > .controls,
 #builder_blvd #optionsframework .section-testimonials > .option > .controls,
@@ -767,7 +765,7 @@
 	#builder_blvd #optionsframework .section .controls {
 		float: none;
 		min-width: inherit;
-		overflow: hidden;
+		/* overflow: hidden; */
 		width: auto;
 	}
 	#builder_blvd #optionsframework .section .explain {

@@ -225,7 +225,6 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'map';
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
-			$this->registered_elements[] = 'milestones';
 			$this->registered_elements[] = 'simple_slider';
 			$this->registered_elements[] = 'simple_slider_popout';
 			$this->registered_elements[] = 'video';
@@ -1064,55 +1063,6 @@ class Theme_Blvd_Builder_API {
 			unset( $this->core_elements['jumbotron']['options']['button_icon_before'] );
 			unset( $this->core_elements['jumbotron']['options']['button_icon_after'] );
 		}
-
-		/*--------------------------------------------*/
-		/* Milestones
-		/*--------------------------------------------*/
-
-		$this->core_elements['milestones'] = array();
-
-		// Information
-		$this->core_elements['milestones']['info'] = array(
-			'name'		=> __( 'Milestones', 'themeblvd_builder' ),
-			'id'		=> 'milestones',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_milestones',
-			'shortcode'	=> null,
-			'desc'		=> __( 'A set of milestone numbers followed by taglines.', 'themeblvd_builder' )
-		);
-
-		// Support
-		$this->core_elements['milestones']['support'] = array(
-			'background' 	=> true,
-			'popout'		=> false,
-			'padding'		=> true
-		);
-
-		// Options
-		$this->core_elements['milestones']['options'] = array(
-			'milestones' => array(
-		    	'id' 		=> 'milestones',
-				'name'		=> null,
-				'desc'		=> null,
-				'type'		=> 'milestones'
-			),
-			'milestone_size' => array(
-				'id'		=> 'milestone_size',
-				'name' 		=> __( 'Milestone Text Size', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the size of the milestone numbers.', 'themeblvd_builder' ),
-				'std'		=> array('size' => '40px'),
-				'type'		=> 'typography',
-				'atts'		=> array('size')
-		    ),
-		    'text_size' => array(
-				'id'		=> 'text_size',
-				'name' 		=> __( 'Description Text Size', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the size of the milestone description.', 'themeblvd_builder' ),
-				'std'		=> array('size' => '15px'),
-				'type'		=> 'typography',
-				'atts'		=> array('size')
-		    )
-		);
 
 		/*--------------------------------------------*/
 		/* Post Grid (paginated)
@@ -2997,6 +2947,7 @@ class Theme_Blvd_Builder_API {
 			'icon_box',
 			'image',
 			'jumbotron',
+			'milestone',
 			'page',
 			'panel',
 			'post_grid',
@@ -3761,6 +3712,60 @@ class Theme_Blvd_Builder_API {
 			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    )
+		);
+
+		/*--------------------------------------------*/
+		/* Milestone
+		/*--------------------------------------------*/
+
+		$this->core_blocks['milestone'] = array();
+
+		// Information
+		$this->core_blocks['milestone']['info'] = array(
+			'name' 		=> __( 'Milestone', 'themeblvd_builder' ),
+			'id'		=> 'milestone',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['milestone']['options'] = array(
+			'milestone' => array(
+				'id' 		=> 'milestone',
+				'name'		=> __('Milestone Number', 'themeblvd'),
+				'desc'		=> __('Enter a number for the milestone. Ex: 500', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'before' => array(
+				'id' 		=> 'before',
+				'name'		=> __('Milestone Symbol/Unit (before)', 'themeblvd'),
+				'desc'		=> __('Optional symbol or unit before the milestone number. Ex: $, +, etc.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'after' => array(
+				'id' 		=> 'after',
+				'name'		=> __('Milestone Symbol/Unit (after)', 'themeblvd'),
+				'desc'		=> __('Optional symbol or unit after the milestone number. Ex: +, k, etc.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'color' => array(
+				'id' 		=> 'color',
+				'name'		=> __('Milestone Color', 'themeblvd'),
+				'desc'		=> __('Text color for the milestone number.', 'themeblvd'),
+				'std'		=> '#0c9df0',
+				'type'		=> 'color'
+			),
+			'text' => array(
+				'id' 		=> 'text',
+				'name'		=> __('Description', 'themeblvd'),
+				'desc'		=> __('Enter a very simple description for the milestone number.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'boxed' => array(
+				'id' 		=> 'boxed',
+				'name'		=> null,
+				'desc'		=> __('Wrap milestone block in box.', 'themeblvd'),
+				'type'		=> 'checkbox'
+			)
 		);
 
 		/*--------------------------------------------*/
