@@ -2948,6 +2948,7 @@ class Theme_Blvd_Builder_API {
 			'image',
 			'jumbotron',
 			'milestone',
+			'milestone_percent',
 			'page',
 			'panel',
 			'post_grid',
@@ -3738,13 +3739,13 @@ class Theme_Blvd_Builder_API {
 			'before' => array(
 				'id' 		=> 'before',
 				'name'		=> __('Milestone Symbol/Unit (before)', 'themeblvd'),
-				'desc'		=> __('Optional symbol or unit before the milestone number. Ex: $, +, etc.', 'themeblvd'),
+				'desc'		=> __('Optional symbol or unit before the milestone number.<br>Ex: $, +, etc.', 'themeblvd'),
 				'type'		=> 'text'
 			),
 			'after' => array(
 				'id' 		=> 'after',
 				'name'		=> __('Milestone Symbol/Unit (after)', 'themeblvd'),
-				'desc'		=> __('Optional symbol or unit after the milestone number. Ex: +, k, etc.', 'themeblvd'),
+				'desc'		=> __('Optional symbol or unit after the milestone number.<br>Ex: +, k, etc.', 'themeblvd'),
 				'type'		=> 'text'
 			),
 			'color' => array(
@@ -3763,7 +3764,82 @@ class Theme_Blvd_Builder_API {
 			'boxed' => array(
 				'id' 		=> 'boxed',
 				'name'		=> null,
-				'desc'		=> __('Wrap milestone block in box.', 'themeblvd'),
+				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd'),
+				'type'		=> 'checkbox'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Milestone Percent
+		/*--------------------------------------------*/
+
+		$this->core_blocks['milestone_percent'] = array();
+
+		// Information
+		$this->core_blocks['milestone_percent']['info'] = array(
+			'name' 		=> __( 'Milestone Percent', 'themeblvd_builder' ),
+			'id'		=> 'milestone_percent',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['milestone_percent']['options'] = array(
+			'percent' => array(
+				'id' 		=> 'percent',
+				'name'		=> __('Milestone Percent', 'themeblvd'),
+				'desc'		=> __('Enter an integer that is a fraction of 100. This will be represented as a visual percentage.<br>Ex: 25, 50, 75, etc.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'color' => array(
+				'id' 		=> 'color',
+				'name'		=> __('Milestone Color', 'themeblvd'),
+				'desc'		=> __('This is the color of the milestone ring, which is a visual representation of the percentage.', 'themeblvd'),
+				'std'		=> '#0c9df0',
+				'type'		=> 'color'
+			),
+			'track_color' => array(
+				'id' 		=> 'track_color',
+				'name'		=> __('Milestone Track Color', 'themeblvd'),
+				'desc'		=> __('Select the color of the track containing the milestone ring.', 'themeblvd'),
+				'std'		=> '#eeeeee',
+				'type'		=> 'color'
+			),
+			'display' => array(
+				'id' 		=> 'display',
+				'name'		=> __('Display', 'themeblvd'),
+				'desc'		=> __('Enter the text to display in the middle of the block.<br>Ex: 25%, 50%, 75%, etc.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'title' => array(
+				'id' 		=> 'title',
+				'name'		=> __('Title (optional)', 'themeblvd'),
+				'desc'		=> __('Enter a short title to display below the milestone.', 'themeblvd'),
+				'type'		=> 'text'
+			),
+			'text' => array(
+				'id' 		=> 'text',
+				'name'		=> __('Description (optional)', 'themeblvd'),
+				'desc'		=> __('Enter a short description to display below the milestone.', 'themeblvd'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+			),
+			'text_align' => array(
+				'id' 		=> 'text_align',
+				'name'		=> __('Text Alignment', 'themeblvd'),
+				'desc'		=> __('If you\'ve entered a title and/or description, select how would you like the text aligned.', 'themeblvd'),
+				'std'		=> 'center',
+				'type'		=> 'select',
+				'options'	=> array(
+					'left' 		=> __( 'Left', 'themeblvd_builder' ),
+					'right' 	=> __( 'Right', 'themeblvd_builder' ),
+					'center' 	=> __( 'Center', 'themeblvd_builder' )
+				)
+			),
+			'boxed' => array(
+				'id' 		=> 'boxed',
+				'name'		=> null,
+				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd'),
 				'type'		=> 'checkbox'
 			)
 		);
@@ -5169,7 +5245,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter any content you\'d like displayed about this person.', 'themeblvd_builder'),
 				'type'		=> 'textarea',
 				'editor'	=> true,
-				'code'		=> 'html',
+				'code'		=> 'html'
 		    )
 		);
 
