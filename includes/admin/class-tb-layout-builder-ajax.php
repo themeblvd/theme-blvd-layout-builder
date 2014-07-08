@@ -135,6 +135,26 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		update_post_meta( $post_id, 'framework_version_created', TB_FRAMEWORK_VERSION );
 		update_post_meta( $post_id, 'framework_version_saved', TB_FRAMEWORK_VERSION );
 
+		// If using an old theme, save the sidebar layout
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) { // @deprecated
+
+			if ( $start == 'layout' ) {
+
+				$layout_id = $config['tb_new_layout']['layout_existing'];
+				$settings = get_post_meta( $layout_id, 'settings', true );
+
+			} else {
+
+				$settings = array();
+
+				if ( isset( $config['tb_new_layout']['layout_sidebar'] ) ) {
+					$settings['sidebar_layout'] = $config['tb_new_layout']['layout_sidebar'];
+				}
+			}
+
+			update_post_meta( $post_id, 'settings', $settings );
+		}
+
 		// Adjust response depending on where the creation
 		// of the layout happenned.
 		if ( ! isset( $config['action'] ) || $config['action'] != 'editpost' ) {
