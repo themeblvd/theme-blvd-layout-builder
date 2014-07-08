@@ -205,9 +205,7 @@ class Theme_Blvd_Builder_API {
 	private function set_registered_elements() {
 
 		$this->registered_elements = array(
-			'breadcrumbs',
 			'columns',
-			'content',
 			'divider',
 			'headline',
 			'jumbotron',
@@ -222,6 +220,8 @@ class Theme_Blvd_Builder_API {
 
 		// Elements requiring framework 2.5
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+			$this->registered_elements[] = 'breadcrumbs';
+			$this->registered_elements[] = 'current';
 			$this->registered_elements[] = 'map';
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'image';
@@ -274,33 +274,6 @@ class Theme_Blvd_Builder_API {
 		unset( $categories_multicheck['null'] );
 
 		/*--------------------------------------------*/
-		/* Breadcrumbs
-		/*--------------------------------------------*/
-
-		$this->core_elements['breadcrumbs'] = array();
-
-		// Information
-		$this->core_elements['breadcrumbs']['info'] = array(
-			'name'		=> __( 'Breadcrumbs', 'themeblvd_builder' ),
-			'id'		=> 'breadcrumbs',
-			'query'		=> 'none',
-			'hook'		=> 'themeblvd_breadcrumbs',
-			'shortcode'	=> null,
-			'desc'		=> __( 'Breadcrumb trail for the current page.', 'themeblvd_builder' )
-		);
-
-		// Support
-		$this->core_elements['breadcrumbs']['support'] = array(
-			'background' 	=> true,
-			'popout'		=> true,
-			'padding'		=> true
-		);
-
-		$this->core_elements['breadcrumbs']['options'] = array(
-			// ...
-		);
-
-		/*--------------------------------------------*/
 		/* Columns
 		/*--------------------------------------------*/
 
@@ -308,7 +281,7 @@ class Theme_Blvd_Builder_API {
 
 		// Information
 		$this->core_elements['columns']['info'] = array(
-			'name' 		=> __('Columns', 'themeblvd_builder'),
+			'name' 		=> __('Columns & Content', 'themeblvd_builder'),
 			'id'		=> 'columns',
 			'query'		=> 'none',
 			'hook'		=> 'themeblvd_columns',
@@ -431,6 +404,33 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
+		/* Breadcrumbs
+		/*--------------------------------------------*/
+
+		$this->core_elements['breadcrumbs'] = array();
+
+		// Information
+		$this->core_elements['breadcrumbs']['info'] = array(
+			'name'		=> __( 'Breadcrumbs', 'themeblvd_builder' ),
+			'id'		=> 'breadcrumbs',
+			'query'		=> 'none',
+			'hook'		=> 'themeblvd_breadcrumbs',
+			'shortcode'	=> null,
+			'desc'		=> __( 'Breadcrumb trail for the current page.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['breadcrumbs']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		$this->core_elements['breadcrumbs']['options'] = array(
+			// ...
+		);
+
+		/*--------------------------------------------*/
 		/* Content
 		/*--------------------------------------------*/
 
@@ -517,6 +517,33 @@ class Theme_Blvd_Builder_API {
 				unset( $this->core_elements['content']['options']['widget_area'] );
 			}
 		}
+
+		/*--------------------------------------------*/
+		/* Current Page
+		/*--------------------------------------------*/
+
+		$this->core_elements['current'] = array();
+
+		// Information
+		$this->core_elements['current']['info'] = array(
+			'name'		=> __( 'Current Page', 'themeblvd_builder' ),
+			'id'		=> 'current',
+			'query'		=> 'secondary',
+			'hook'		=> 'themeblvd_current',
+			'shortcode'	=> null,
+			'desc'		=> __( 'Content from the current page.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['current']['support'] = array(
+			'background' 	=> true,
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		$this->core_elements['current']['options'] = array(
+			// ...
+		);
 
 		/*--------------------------------------------*/
 		/* Divider
@@ -2940,6 +2967,9 @@ class Theme_Blvd_Builder_API {
 		$this->registered_blocks = array(
 			'content',
 			'alert',
+			'chart_bar',
+			'chart_line',
+			'chart_pie',
 			'contact',
 			'current',
 			'divider',
@@ -3117,6 +3147,212 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'class',
 				'std' 		=> '',
 				'type' 		=> 'text'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Chart (Bar)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['chart_bar'] = array();
+
+		// Information
+		$this->core_blocks['chart_bar']['info'] = array(
+			'name' 		=> __( 'Chart (bar)', 'themeblvd_builder' ),
+			'id'		=> 'chart_bar',
+			'query'		=> 'none'
+		);
+
+		$this->core_blocks['chart_bar']['options'] = array(
+			'data' => array(
+		    	'id' 		=> 'data',
+				'name'		=> __( 'Line Chart Data Sets', 'themeblvd_builder' ),
+				'desc'		=> __( 'Will need explanation...', 'themeblvd_builder' ),
+				'type'		=> 'datasets'
+			),
+			'labels' => array(
+		    	'id' 		=> 'labels',
+				'name'		=> __( 'Chart Labels (x-axis)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a comma separated list of labels for the x-axis of the chart. The number of labels should match number of values you ented in each data set.<br>Ex: Jan, Feb, March, April, May, June', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			),
+			'width' => array(
+		    	'id' 		=> 'width',
+				'name'		=> __( 'Chart Width', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a width in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '400'
+			),
+			'height' => array(
+		    	'id' 		=> 'height',
+				'name'		=> __( 'Chart Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a height in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '200'
+			),
+			'zero' => array(
+		    	'id' 		=> 'zero',
+				'name'		=> null,
+				'desc'		=> __( 'Always start scale (y-axis) at 0.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'tooltips' => array(
+		    	'id' 		=> 'tooltips',
+				'name'		=> null,
+				'desc'		=> __( 'Display labels when data points are hovered over.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			),
+			'legend' => array(
+		    	'id' 		=> 'legend',
+				'name'		=> null,
+				'desc'		=> __( 'Display chart legend.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Chart (Line)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['chart_line'] = array();
+
+		// Information
+		$this->core_blocks['chart_line']['info'] = array(
+			'name' 		=> __( 'Chart (line)', 'themeblvd_builder' ),
+			'id'		=> 'chart_line',
+			'query'		=> 'none'
+		);
+
+		$this->core_blocks['chart_line']['options'] = array(
+			'data' => array(
+		    	'id' 		=> 'data',
+				'name'		=> __( 'Line Chart Data Sets', 'themeblvd_builder' ),
+				'desc'		=> __( 'Each data set will represent a line on your chart. Within each data set, you\'ll be inputting a list of values; make sure that you use the same amount of values for each data set.', 'themeblvd_builder' ),
+				'type'		=> 'datasets'
+			),
+			'labels' => array(
+		    	'id' 		=> 'labels',
+				'name'		=> __( 'Chart Labels (x-axis)', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a comma separated list of labels for the x-axis of the chart. The number of labels should match number of values you ented in each data set.<br>Ex: Jan, Feb, March, April, May, June', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> ''
+			),
+			'width' => array(
+		    	'id' 		=> 'width',
+				'name'		=> __( 'Chart Width', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a width in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '400'
+			),
+			'height' => array(
+		    	'id' 		=> 'height',
+				'name'		=> __( 'Chart Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a height in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '200'
+			),
+			'curve' => array(
+		    	'id' 		=> 'curve',
+				'name'		=> null,
+				'desc'		=> __( 'Curve line in between points.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'fill' => array(
+		    	'id' 		=> 'fill',
+				'name'		=> null,
+				'desc'		=> __( 'Fill each dataset with color.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'dot' => array(
+		    	'id' 		=> 'dot',
+				'name'		=> null,
+				'desc'		=> __( 'Show dot for each data point.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'zero' => array(
+		    	'id' 		=> 'zero',
+				'name'		=> null,
+				'desc'		=> __( 'Always start scale (y-axis) at 0.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'tooltips' => array(
+		    	'id' 		=> 'tooltips',
+				'name'		=> null,
+				'desc'		=> __( 'Display labels when data points are hovered over.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			),
+			'legend' => array(
+		    	'id' 		=> 'legend',
+				'name'		=> null,
+				'desc'		=> __( 'Display chart legend.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Chart (Pie)
+		/*--------------------------------------------*/
+
+		$this->core_blocks['chart_pie'] = array();
+
+		// Information
+		$this->core_blocks['chart_pie']['info'] = array(
+			'name' 		=> __( 'Chart (pie)', 'themeblvd_builder' ),
+			'id'		=> 'chart_pie',
+			'query'		=> 'none'
+		);
+
+		$this->core_blocks['chart_pie']['options'] = array(
+			'data' => array(
+		    	'id' 		=> 'data',
+				'name'		=> __( 'Pie Chart Sectors', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'sectors'
+			),
+			'width' => array(
+		    	'id' 		=> 'width',
+				'name'		=> __( 'Chart Width', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a width in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '200'
+			),
+			'height' => array(
+		    	'id' 		=> 'height',
+				'name'		=> __( 'Chart Height', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a height in pixels for the chart.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '200'
+			),
+			'doughnut' => array(
+		    	'id' 		=> 'doughnut',
+				'name'		=> null,
+				'desc'		=> __( 'Display chart as doughnut.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			),
+			'tooltips' => array(
+		    	'id' 		=> 'tooltips',
+				'name'		=> null,
+				'desc'		=> __( 'Display labels when sectors are hovered over.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '1'
+			),
+			'legend' => array(
+		    	'id' 		=> 'legend',
+				'name'		=> null,
+				'desc'		=> __( 'Display chart legend.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
 			)
 		);
 
