@@ -2978,7 +2978,7 @@ class Theme_Blvd_Builder_API {
 			'image',
 			'jumbotron',
 			'milestone',
-			'milestone_percent',
+			'milestone_ring',
 			'page',
 			'panel',
 			'post_grid',
@@ -3969,20 +3969,8 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['milestone']['options'] = array(
 			'milestone' => array(
 				'id' 		=> 'milestone',
-				'name'		=> __('Milestone Number', 'themeblvd'),
-				'desc'		=> __('Enter a number for the milestone. Ex: 500', 'themeblvd'),
-				'type'		=> 'text'
-			),
-			'before' => array(
-				'id' 		=> 'before',
-				'name'		=> __('Milestone Symbol/Unit (before)', 'themeblvd'),
-				'desc'		=> __('Optional symbol or unit before the milestone number.<br>Ex: $, +, etc.', 'themeblvd'),
-				'type'		=> 'text'
-			),
-			'after' => array(
-				'id' 		=> 'after',
-				'name'		=> __('Milestone Symbol/Unit (after)', 'themeblvd'),
-				'desc'		=> __('Optional symbol or unit after the milestone number.<br>Ex: +, k, etc.', 'themeblvd'),
+				'name'		=> __('Milestone', 'themeblvd'),
+				'desc'		=> __('Enter the accomplished milestone Optionally, you may include symbols before and/or after the number.<br>Ex: 500, $500, 500+, etc', 'themeblvd'),
 				'type'		=> 'text'
 			),
 			'color' => array(
@@ -4007,20 +3995,20 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
-		/* Milestone Percent
+		/* Milestone Ring
 		/*--------------------------------------------*/
 
-		$this->core_blocks['milestone_percent'] = array();
+		$this->core_blocks['milestone_ring'] = array();
 
 		// Information
-		$this->core_blocks['milestone_percent']['info'] = array(
-			'name' 		=> __( 'Milestone Percent', 'themeblvd_builder' ),
-			'id'		=> 'milestone_percent',
+		$this->core_blocks['milestone_ring']['info'] = array(
+			'name' 		=> __( 'Milestone Ring', 'themeblvd_builder' ),
+			'id'		=> 'milestone_ring',
 			'query'		=> 'none'
 		);
 
 		// Options
-		$this->core_blocks['milestone_percent']['options'] = array(
+		$this->core_blocks['milestone_ring']['options'] = array(
 			'percent' => array(
 				'id' 		=> 'percent',
 				'name'		=> __('Milestone Percent', 'themeblvd'),
