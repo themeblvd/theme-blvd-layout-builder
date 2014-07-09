@@ -614,7 +614,6 @@ class Theme_Blvd_Layout_Builder {
 
 		// Sample Layouts (only show if there are sample layouts)
 		if ( $sample_layouts && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-
 			$options[] = array(
 				'name' 		=> __( 'Sample Layout', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Select a sample layout to start from.', 'themeblvd_builder' ),
@@ -627,7 +626,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// End subgroup for starting point
 		$options[] = array(
-			'type'		=> 'subgroup_end'
+			'type' => 'subgroup_end'
 		);
 
 		// Sidebar Layout
@@ -750,7 +749,7 @@ class Theme_Blvd_Layout_Builder {
 
 				<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 
-					<?php if ( 'content' == $element_type || 'columns' == $element_type ) : ?>
+					<?php if ( 'columns' == $element_type ) : ?>
 
 						<!-- COLUMNS/CONTENT (start) -->
 
