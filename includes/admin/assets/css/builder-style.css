@@ -307,6 +307,7 @@
 #builder_blvd #optionsframework .item .section:last-of-type {
 	padding-bottom: 10px;
 }
+#builder_blvd #optionsframework .section-bars,
 #builder_blvd #optionsframework .section-datasets,
 #builder_blvd #optionsframework .section-locations,
 #builder_blvd #optionsframework .section-sectors,
@@ -316,6 +317,7 @@
 #builder_blvd #optionsframework .section-toggles {
 	padding-bottom: 15px;
 }
+#builder_blvd #optionsframework .section-bars > .option > .controls,
 #builder_blvd #optionsframework .section-datasets > .option > .controls,
 #builder_blvd #optionsframework .section-locations > .option > .controls,
 #builder_blvd #optionsframework .section-sectors > .option > .controls,

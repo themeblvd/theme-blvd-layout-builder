@@ -71,6 +71,7 @@ class Theme_Blvd_Layout_Builder {
 		// Make advanced option types available in Builder
 		if ( class_exists( 'Theme_Blvd_Advanced_Options' ) ) {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
+			$advanced->create('bars');
 			$advanced->create('datasets');
 			$advanced->create('locations');
 			$advanced->create('sectors');

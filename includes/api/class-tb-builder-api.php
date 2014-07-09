@@ -2987,6 +2987,7 @@ class Theme_Blvd_Builder_API {
 			'post_list',
 			'post_list_paginated',
 			'post_list_slider',
+			'progress_bars',
 			'quote',
 			'raw',
 			'simple_slider',
@@ -4033,13 +4034,6 @@ class Theme_Blvd_Builder_API {
 				'std'		=> '#0c9df0',
 				'type'		=> 'color'
 			),
-			'track_color' => array(
-				'id' 		=> 'track_color',
-				'name'		=> __('Milestone Track Color', 'themeblvd'),
-				'desc'		=> __('Select the color of the track containing the milestone ring.', 'themeblvd'),
-				'std'		=> '#eeeeee',
-				'type'		=> 'color'
-			),
 			'display' => array(
 				'id' 		=> 'display',
 				'name'		=> __('Display', 'themeblvd'),
@@ -4988,6 +4982,35 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter in the number of posts <strong>per slide</strong> you\'d like to show.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '3'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Progress Bars
+		/*--------------------------------------------*/
+
+		$this->core_blocks['progress_bars'] = array();
+
+		// Information
+		$this->core_blocks['progress_bars']['info'] = array(
+			'name' 		=> __( 'Progress Bars', 'themeblvd_builder' ),
+			'id'		=> 'progress_bars',
+			'query'		=> 'none'
+		);
+
+		// Options
+		$this->core_blocks['progress_bars']['options'] = array(
+			'bars' => array(
+		    	'id' 		=> 'bars',
+				'name'		=> __( 'Progress Bars', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'bars'
+			),
+			'striped' => array(
+		    	'id' 		=> 'striped',
+				'name'		=> null,
+				'desc'		=> __( 'Display striped effect over progress bars.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox'
 			)
 		);
 
