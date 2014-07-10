@@ -685,7 +685,10 @@ jQuery(document).ready(function($) {
     	// Used for the on_load() callback when
     	// linking to options in modal
     	content_block_options_load : function( modal ) {
+
     		var self = this;
+
+    		// General framework options setup
     		self.$modal_window.themeblvd('options', 'bind');
     		self.$modal_window.themeblvd('options', 'setup');
 			self.$modal_window.themeblvd('options', 'media-uploader');
@@ -693,6 +696,33 @@ jQuery(document).ready(function($) {
 			self.$modal_window.themeblvd('options', 'code-editor');
 			self.$modal_window.themeblvd('options', 'column-widths');
 			self.$modal_window.themeblvd('options', 'sortable');
+
+			// Custom actions for "Display" options of elements
+			var $display = self.$modal_window.find('.element-background-options'),
+				bg = $display.find('#section-bg_type select').val(),
+				padding = $display.find('#section-apply_padding input').is(':checked');
+
+			if ( bg == 'none' && ! padding  ) {
+				$display.find('#section-suck_up, #section-suck_down').show();
+			} else {
+				$display.find('#section-suck_up, #section-suck_down').hide();
+			}
+
+			$display.find('#section-bg_type select').on('change', function(){
+				if ( $(this).val() == 'none' ) {
+					$display.find('#section-suck_up, #section-suck_down').show();
+				} else {
+					$display.find('#section-suck_up, #section-suck_down').hide();
+				}
+			});
+
+			$display.find('#section-apply_padding input').on('change', function(){
+				if ( $(this).is(':checked') ) {
+					$display.find('#section-suck_up, #section-suck_down').hide();
+				} else {
+					$display.find('#section-suck_up, #section-suck_down').show();
+				}
+			});
     	}
 	};
 

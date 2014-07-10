@@ -1688,6 +1688,24 @@ class Theme_Blvd_Layout_Builder {
 			);
 		}
 
+		// Suck up/down
+		if ( $is_element ) {
+			$options['suck_up'] = array(
+				'id'		=> 'suck_up',
+				'name'		=> null,
+				'desc'		=> __('Suck element up closer to the element that comes before it.', 'themeblvd_builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			);
+			$options['suck_down'] = array(
+				'id'		=> 'suck_down',
+				'name'		=> null,
+				'desc'		=> __('Suck element down closer to the element that comes after it.', 'themeblvd_builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			);
+		}
+
 		// Advanced element properties
 		$screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
 		$screen_settings = $screen_options->get_value();

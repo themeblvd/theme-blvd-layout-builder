@@ -593,6 +593,10 @@ function themeblvd_builder_element_popout( $display ) {
 		return true;
 	}
 
+	if ( ! empty( $display['apply_padding'] ) ) {
+		return true;
+	}
+
 	return false;
 }
 
@@ -621,11 +625,29 @@ function themeblvd_builder_get_element_class( $element, $num, $total ){
 	// Display classes
 	if ( ! empty( $element['display'] ) ) {
 
-		$bg_type = $element['display']['bg_type'];
+		$bg_type = 'none';
+
+		if ( ! empty( $element['display']['bg_type'] ) ) {
+			$bg_type = $element['display']['bg_type'];
+		}
 
 		// Does the element have custom padding?
 		if ( ! empty( $element['display']['apply_padding'] ) ) {
 			$class[] = 'has-custom-padding';
+		}
+
+		if ( empty( $element['display']['apply_padding'] ) && $bg_type == 'none' ) {
+
+			// Is the element sucked up?
+			if ( ! empty( $element['display']['suck_up'] ) ) {
+				$class[] = 'suck-up';
+			}
+
+			// Or maybe sucked down?
+			if ( ! empty( $element['display']['suck_down'] ) ) {
+				$class[] = 'suck-down';
+			}
+
 		}
 
 	}
