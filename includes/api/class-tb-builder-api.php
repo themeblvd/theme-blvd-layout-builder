@@ -881,7 +881,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Select if and how this image should be linked.', 'themeblvd_builder' ),
 				'type'		=> 'select',
 				'options'	=> array(
-			        'none'		=> __( 'No Link', 'themeblvd' ),
+			        'none'		=> __( 'No Link', 'themeblvd_builder' ),
 			        '_self' 	=> __( 'Link to webpage in same window.', 'themeblvd_builder' ),
 			        '_blank' 	=> __( 'Link to webpage in new window.', 'themeblvd_builder' ),
 			        'image' 	=> __( 'Link to image in lightbox popup.', 'themeblvd_builder' ),
@@ -2454,7 +2454,7 @@ class Theme_Blvd_Builder_API {
 			),
 			'crop' => array(
 				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd_builder' ),
 				'id' 		=> 'crop',
 				'std' 		=> 'slider-large',
 				'type' 		=> 'select',
@@ -2551,7 +2551,7 @@ class Theme_Blvd_Builder_API {
 			),
 			'crop' => array(
 				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd_builder' ),
 				'id' 		=> 'crop',
 				'std' 		=> 'full',
 				'type' 		=> 'select',
@@ -2981,6 +2981,7 @@ class Theme_Blvd_Builder_API {
 			'milestone_ring',
 			'page',
 			'panel',
+			'partners',
 			'post_grid',
 			'post_grid_paginated',
 			'post_grid_slider',
@@ -3131,7 +3132,7 @@ class Theme_Blvd_Builder_API {
 			),
 			'style' => array(
 				'name' 		=> __( 'Style', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'The style of the alert.', 'themeblvd' ),
+				'desc' 		=> __( 'The style of the alert.', 'themeblvd_builder' ),
 				'id' 		=> 'style',
 				'std' 		=> 'info',
 				'type' 		=> 'select',
@@ -3703,7 +3704,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Select if and how this image should be linked.', 'themeblvd_builder' ),
 				'type'		=> 'select',
 				'options'	=> array(
-			        'none'		=> __( 'No Link', 'themeblvd' ),
+			        'none'		=> __( 'No Link', 'themeblvd_builder' ),
 			        '_self' 	=> __( 'Link to webpage in same window.', 'themeblvd_builder' ),
 			        '_blank' 	=> __( 'Link to webpage in new window.', 'themeblvd_builder' ),
 			        'image' 	=> __( 'Link to image in lightbox popup.', 'themeblvd_builder' ),
@@ -3969,27 +3970,27 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['milestone']['options'] = array(
 			'milestone' => array(
 				'id' 		=> 'milestone',
-				'name'		=> __('Milestone', 'themeblvd'),
-				'desc'		=> __('Enter the accomplished milestone Optionally, you may include symbols before and/or after the number.<br>Ex: 500, $500, 500+, etc', 'themeblvd'),
+				'name'		=> __('Milestone', 'themeblvd_builder'),
+				'desc'		=> __('Enter the accomplished milestone Optionally, you may include symbols before and/or after the number.<br>Ex: 500, $500, 500+, etc', 'themeblvd_builder'),
 				'type'		=> 'text'
 			),
 			'color' => array(
 				'id' 		=> 'color',
-				'name'		=> __('Milestone Color', 'themeblvd'),
-				'desc'		=> __('Text color for the milestone number.', 'themeblvd'),
+				'name'		=> __('Milestone Color', 'themeblvd_builder'),
+				'desc'		=> __('Text color for the milestone number.', 'themeblvd_builder'),
 				'std'		=> '#0c9df0',
 				'type'		=> 'color'
 			),
 			'text' => array(
 				'id' 		=> 'text',
-				'name'		=> __('Description', 'themeblvd'),
-				'desc'		=> __('Enter a very simple description for the milestone number.', 'themeblvd'),
+				'name'		=> __('Description', 'themeblvd_builder'),
+				'desc'		=> __('Enter a very simple description for the milestone number.', 'themeblvd_builder'),
 				'type'		=> 'text'
 			),
 			'boxed' => array(
 				'id' 		=> 'boxed',
 				'name'		=> null,
-				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd'),
+				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd_builder'),
 				'type'		=> 'checkbox'
 			)
 		);
@@ -4011,41 +4012,41 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['milestone_ring']['options'] = array(
 			'percent' => array(
 				'id' 		=> 'percent',
-				'name'		=> __('Milestone Percent', 'themeblvd'),
-				'desc'		=> __('Enter an integer that is a fraction of 100. This will be represented as a visual percentage.<br>Ex: 25, 50, 75, etc.', 'themeblvd'),
+				'name'		=> __('Milestone Percent', 'themeblvd_builder'),
+				'desc'		=> __('Enter an integer that is a fraction of 100. This will be represented as a visual percentage.<br>Ex: 25, 50, 75, etc.', 'themeblvd_builder'),
 				'type'		=> 'text'
 			),
 			'color' => array(
 				'id' 		=> 'color',
-				'name'		=> __('Milestone Color', 'themeblvd'),
-				'desc'		=> __('This is the color of the milestone ring, which is a visual representation of the percentage.', 'themeblvd'),
+				'name'		=> __('Milestone Color', 'themeblvd_builder'),
+				'desc'		=> __('This is the color of the milestone ring, which is a visual representation of the percentage.', 'themeblvd_builder'),
 				'std'		=> '#0c9df0',
 				'type'		=> 'color'
 			),
 			'display' => array(
 				'id' 		=> 'display',
-				'name'		=> __('Display', 'themeblvd'),
-				'desc'		=> __('Enter the text to display in the middle of the block.<br>Ex: 25%, 50%, 75%, etc.', 'themeblvd'),
+				'name'		=> __('Display', 'themeblvd_builder'),
+				'desc'		=> __('Enter the text to display in the middle of the block.<br>Ex: 25%, 50%, 75%, etc.', 'themeblvd_builder'),
 				'type'		=> 'text'
 			),
 			'title' => array(
 				'id' 		=> 'title',
-				'name'		=> __('Title (optional)', 'themeblvd'),
-				'desc'		=> __('Enter a short title to display below the milestone.', 'themeblvd'),
+				'name'		=> __('Title (optional)', 'themeblvd_builder'),
+				'desc'		=> __('Enter a short title to display below the milestone.', 'themeblvd_builder'),
 				'type'		=> 'text'
 			),
 			'text' => array(
 				'id' 		=> 'text',
-				'name'		=> __('Description (optional)', 'themeblvd'),
-				'desc'		=> __('Enter a short description to display below the milestone.', 'themeblvd'),
+				'name'		=> __('Description (optional)', 'themeblvd_builder'),
+				'desc'		=> __('Enter a short description to display below the milestone.', 'themeblvd_builder'),
 				'type'		=> 'textarea',
 				'editor'	=> true,
 				'code'		=> 'html'
 			),
 			'text_align' => array(
 				'id' 		=> 'text_align',
-				'name'		=> __('Text Alignment', 'themeblvd'),
-				'desc'		=> __('If you\'ve entered a title and/or description, select how would you like the text aligned.', 'themeblvd'),
+				'name'		=> __('Text Alignment', 'themeblvd_builder'),
+				'desc'		=> __('If you\'ve entered a title and/or description, select how would you like the text aligned.', 'themeblvd_builder'),
 				'std'		=> 'center',
 				'type'		=> 'select',
 				'options'	=> array(
@@ -4057,7 +4058,7 @@ class Theme_Blvd_Builder_API {
 			'boxed' => array(
 				'id' 		=> 'boxed',
 				'name'		=> null,
-				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd'),
+				'desc'		=> __('Wrap milestone block in a box.', 'themeblvd_builder'),
 				'type'		=> 'checkbox'
 			)
 		);
@@ -4119,6 +4120,120 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'class',
 				'std' 		=> '',
 				'type' 		=> 'text'
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Partners
+		/*--------------------------------------------*/
+
+		$this->core_blocks['partners'] = array();
+
+		// Information
+		$this->core_blocks['partners']['info'] = array(
+			'name' 		=> __( 'Partner Logos', 'themeblvd_builder' ),
+			'id'		=> 'partners',
+			'query'		=> 'none',
+			'height'	=> 'large'
+		);
+
+		// Options
+		$this->core_blocks['partners']['options'] = array(
+			'logos' => array(
+				'id' 		=> 'logos',
+				'name'		=> __( 'Logos', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'logos'
+			),
+			'title' => array(
+				'id' 		=> 'title',
+				'name'		=> __('Title (optional)', 'themeblvd_builder'),
+				'desc'		=> __('If you want, you can give this set of partner logos a title.', 'themeblvd_builder'),
+				'std'		=> 'Partners',
+				'type'		=> 'text'
+			),
+			'height' => array(
+				'id' 		=> 'height',
+				'name'		=> __('Height', 'themeblvd_builder'),
+				'desc'		=> __('Give your logo blocks a common height. This will help for all of your logos to appear better aligned with each other.', 'themeblvd_builder'),
+				'std'		=> '100',
+				'type'		=> 'text'
+			),
+			'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'display' => array(
+		    	'id' 		=> 'display',
+				'name'		=> __( 'Logo Display', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to display the logos.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'slider',
+				'options'	=> array(
+					'slider' 	=> __( 'Slider', 'themeblvd_builder' ),
+			        'grid' 		=> __( 'Grid', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'slide' => array(
+				'id' 		=> 'slide',
+				'name'		=> __( 'Logos per slide', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the amount of logos to display for each slide of the slider.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '4',
+				'options'	=> array(
+					'2' 		=> __( '2 logos per slide', 'themeblvd_builder' ),
+			        '3' 		=> __( '3 logos per slide', 'themeblvd_builder' ),
+			        '4' 		=> __( '4 logos per slide', 'themeblvd_builder' ),
+			        '5' 		=> __( '5 logos per slide', 'themeblvd_builder' )
+				),
+				'class'		=> 'receiver receiver-slider'
+			),
+			'timeout' => array(
+		    	'id' 		=> 'timeout',
+				'name'		=> __( 'Speed', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'nav' => array(
+				'id' 		=> 'nav',
+				'name'		=> null,
+				'desc'		=> __( 'Display slider navigation.', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox',
+				'class'		=> 'receiver receiver-slider'
+			),
+			'grid' => array(
+				'id' 		=> 'grid',
+				'name'		=> __( 'Logos per row', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the amount of logos to display for each row of the grid.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '4',
+				'options'	=> array(
+					'2' 		=> __( '2 logos per row', 'themeblvd_builder' ),
+			        '3' 		=> __( '3 logos per row', 'themeblvd_builder' ),
+			        '4' 		=> __( '4 logos per row', 'themeblvd_builder' ),
+			        '5' 		=> __( '5 logos per row', 'themeblvd_builder' )
+				),
+				'class'		=> 'receiver receiver-grid'
+			),
+		    'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'boxed' => array(
+				'id' 		=> 'boxed',
+				'name'		=> null,
+				'desc'		=> __('Wrap each logo in a box.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
+			),
+			'greyscale' => array(
+				'id' 		=> 'greyscale',
+				'name'		=> null,
+				'desc'		=> __( 'Display logos as black and white until hovered on.', 'themeblvd_builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
 			)
 		);
 
@@ -5223,28 +5338,28 @@ class Theme_Blvd_Builder_API {
 		$this->core_blocks['quote']['options'] = array(
 			'quote' => array(
 				'name' 		=> __( 'Quote Text', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'The main text of the quote. You cannot use HTML here.', 'themeblvd' ),
+				'desc' 		=> __( 'The main text of the quote. You cannot use HTML here.', 'themeblvd_builder' ),
 				'id' 		=> 'quote',
 				'std' 		=> 'Quote text...',
 				'type' 		=> 'textarea'
 			),
 			'source' => array(
 				'name' 		=> __( 'Quote Source (optional)', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Optional source for the quote.<br />Ex: John Smith', 'themeblvd' ),
+				'desc' 		=> __( 'Optional source for the quote.<br />Ex: John Smith', 'themeblvd_builder' ),
 				'id' 		=> 'source',
 				'std' 		=> '',
 				'type' 		=> 'text'
 			),
 			'source_link' => array(
 				'name' 		=> __( 'Quote Source URL (optional)', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Optional website URL to the source you entered in the previous option.<br />Ex: http://google.com', 'themeblvd' ),
+				'desc' 		=> __( 'Optional website URL to the source you entered in the previous option.<br />Ex: http://google.com', 'themeblvd_builder' ),
 				'id' 		=> 'source_link',
 				'std' 		=> '',
 				'type' 		=> 'text'
 			),
 			'reverse' => array(
 				'name' 		=> __( 'Reverse Orientation', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'If you choose to reverse the orientation, the text and inner parts of the blockquote will be aligned to the right.', 'themeblvd' ),
+				'desc' 		=> __( 'If you choose to reverse the orientation, the text and inner parts of the blockquote will be aligned to the right.', 'themeblvd_builder' ),
 				'id' 		=> 'reverse',
 				'std' 		=> 'false',
 				'type' 		=> 'select',
@@ -5320,7 +5435,7 @@ class Theme_Blvd_Builder_API {
 			),
 			'crop' => array(
 				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd' ),
+				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd_builder' ),
 				'id' 		=> 'crop',
 				'std' 		=> 'slider-large',
 				'type' 		=> 'select',

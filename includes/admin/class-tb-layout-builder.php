@@ -74,6 +74,7 @@ class Theme_Blvd_Layout_Builder {
 			$advanced->create('bars');
 			$advanced->create('datasets');
 			$advanced->create('locations');
+			$advanced->create('logos');
 			$advanced->create('sectors');
 			$advanced->create('slider');
 			$advanced->create('social_media');
