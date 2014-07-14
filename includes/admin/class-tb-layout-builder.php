@@ -177,7 +177,6 @@ class Theme_Blvd_Layout_Builder {
 				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ) {
 
 					add_action( 'save_post', array( $this, 'save_editor_builder' ) );
-					add_filter( 'the_editor', array( $this, 'add_editor_tab' ) );
 					add_filter( 'edit_form_after_title', array( $this, 'start_editor_builder' ) );
 					add_filter( 'edit_form_after_editor', array( $this, 'add_editor_builder' ) );
 					add_filter( 'edit_form_after_editor', array( $this, 'end_editor_builder' ) );
@@ -222,20 +221,6 @@ class Theme_Blvd_Layout_Builder {
 		// to save the custom layout manually.
 		$this->ajax->save_layout();
 
-	}
-
-	/**
-	 * Add "Layout" tab next to Visual and Text
-	 * tabs when editing pages.
-	 *
-	 * @since 2.0.0
-	 */
-	public function add_editor_tab( $editor ) {
-		if ( strpos( $editor, 'id="wp-content-editor-container"' ) !== false ) {
-			$tab = '<a href="#" id="content-layout" class="tb-switch-editor switch-layout">'.__('Builder', 'themeblvd_builder').'</a>';
-			$editor = apply_filters( 'themeblvd_edit_layout_tab', $tab ).$editor;
-		}
-		return $editor;
 	}
 
 	/**
@@ -314,7 +299,7 @@ class Theme_Blvd_Layout_Builder {
 
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
-		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/builder.min.js', array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
 		// Code editor and FontAwesome
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
@@ -350,6 +335,7 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function add_js_locals( $current ) {
 		$new = array(
+			'builder'				=> __( 'Builder', 'themeblvd_builder' ),
 			'edit_layout'			=> __( 'Edit Layout', 'themeblvd_builder' ),
 			'delete_text'			=> __( 'Delete', 'themeblvd_builder' ),
 			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'themeblvd_builder' ),
@@ -738,7 +724,6 @@ class Theme_Blvd_Layout_Builder {
 			<div class="widget-content <?php echo 'element-'.$element_type; ?>">
 
 				<input type="hidden" class="element-type" name="tb_elements[<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
-				<input type="hidden" class="element-query" name="tb_elements[<?php echo $element_id; ?>][query_type]" value="<?php echo $elements[$element_type]['info']['query']; ?>" />
 
 				<!-- ELEMENT OPTIONS (start) -->
 
@@ -828,7 +813,7 @@ class Theme_Blvd_Layout_Builder {
 													<?php
 													foreach ( $blocks as $block ) {
 														if ( $api->is_block( $block['info']['id'] ) ) {
-															echo '<option value="'.$block['info']['id'].'=>'.$block['info']['query'].'">'.$block['info']['name'].'</option>';
+															echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
 														}
 													}
 													?>
@@ -966,7 +951,6 @@ class Theme_Blvd_Layout_Builder {
 			<div class="content-block-options <?php echo 'block-'.$block_type; ?>">
 				<div id="<?php echo $block_id; ?>_options_form" class="content-block-form">
 					<input type="hidden" name="<?php echo $field_name; ?>[type]" value="<?php echo $block_type; ?>" />
-					<input type="hidden" name="<?php echo $field_name; ?>[query_type]" value="<?php echo $blocks[$block_type]['info']['query']; ?>" class="element-query" />
 					<?php if ( $block_form ) : ?>
 						<?php echo $block_form[0]; ?>
 					<?php endif; ?>
@@ -1086,7 +1070,7 @@ class Theme_Blvd_Layout_Builder {
 							<?php
 							foreach ( $elements as $element ) {
 								if ( $api->is_element( $element['info']['id'] ) ) {
-									echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+									echo '<option value="'.$element['info']['id'].'">'.$element['info']['name'].'</option>';
 								}
 							}
 							?>
@@ -1221,7 +1205,7 @@ class Theme_Blvd_Layout_Builder {
 							<?php
 							foreach ( $elements as $element ) {
 								if ( $api->is_element( $element['info']['id'] ) ) {
-									echo '<option value="'.$element['info']['id'].'=>'.$element['info']['query'].'">'.$element['info']['name'].'</option>';
+									echo '<option value="'.$element['info']['id'].'">'.$element['info']['name'].'</option>';
 								}
 							}
 							?>

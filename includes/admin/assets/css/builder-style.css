@@ -356,6 +356,23 @@
 /* =Editor Builder (for Edit Page screen)
 ----------------------------------------------- */
 
+/* Disable WP's fixed Editor bar (WP 4.0+) */
+#tb-editor-builder #wp-content-wrap {
+	padding-top: 0 !important;
+}
+#tb-editor-builder #wp-content-editor-tools {
+	width: auto !important;
+}
+#tb-editor-builder #wp-content-editor-tools,
+#tb-editor-builder #ed_toolbar,
+#tb-editor-builder div.mce-toolbar-grp {
+	position: relative !important;
+	top: inherit !important;
+	right: inherit !important;
+	bottom: inherit !important;
+	left: inherit !important;
+}
+
 /* General */
 #tb-editor-builder.builder-active #postdivrich {
 	margin-bottom: 0;
