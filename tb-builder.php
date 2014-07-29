@@ -43,6 +43,12 @@ function themeblvd_builder_init() {
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-data.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-notices.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/legacy.php' ); // @deprecated functions used by older themes
+
+	// DEBUG/DEV Mode
+	if ( ! defined( 'TB_BUILDER_DEBUG' ) ) {
+		define( 'TB_BUILDER_DEBUG', false );
+	}
 
 	// Error handling
 	$notices = Theme_Blvd_Layout_Builder_Notices::get_instance();
@@ -58,12 +64,26 @@ function themeblvd_builder_init() {
 	// Verify custom layout's data
 	add_action( 'template_redirect', 'themeblvd_builder_verify_data' );
 
-	// Frontend actions -- These work in conjuction with framework theme files,
-	// header.php, template_builder.php, and footer.php
-	add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
-	add_action( 'themeblvd_featured', 'themeblvd_builder_featured' ); // @deprecated -- Only for theme framework prior to 2.5
-	add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' ); // @deprecated -- Only for theme framework prior to 2.5
+	// Frontend actions
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 
+		/**
+		 * Hooks to action in the theme's template_builder.php page
+		 * template in order to display the custom layout.
+		 * Requires that the theme has the function themeblvd_elements(),
+		 * Theme Blvd Framework 2.5+.
+		 */
+		add_action( 'themeblvd_builder_content', 'themeblvd_builder_layout' );
+
+	} else {
+		// @deprecated
+		add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
+		add_action( 'themeblvd_featured', 'themeblvd_builder_featured' );
+		add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' );
+	}
+
+	// @TODO Remove this if newer theme, but put warning in place to tell the user what to do, if it's an logged in admin
+	/*
 	// Get custom layouts
 	$custom_layouts = array();
 
@@ -111,6 +131,7 @@ function themeblvd_builder_init() {
 
 	// Trigger customizer support for custom homepage options.
 	add_filter( 'themeblvd_customizer_modify_sections', 'themeblvd_modify_customizer_homepage' );
+	*/
 
 	// Admin Layout Builder
 	if ( is_admin() ){
@@ -154,13 +175,13 @@ function themeblvd_builder_api_init() {
 
 	// Include screen options class (not currently
 	// used in API, but could potentially be later on)
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-screen.php' );
+	// include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-screen.php' );
+
+	// Instantiate single object for Builder "Screen Options" tab.
+	// Theme_Blvd_Layout_Builder_Screen::get_instance();
 
 	// Include Theme_Blvd_Builder_API class.
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/api/class-tb-builder-api.php' );
-
-	// Instantiate single object for Builder "Screen Options" tab.
-	Theme_Blvd_Layout_Builder_Screen::get_instance();
 
 	// Instantiate single object for Builder API.
 	// Helper functions are located within theme

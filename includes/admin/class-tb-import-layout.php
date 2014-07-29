@@ -56,7 +56,7 @@ class Theme_Blvd_Import_Layout {
 	 */
 	public function admin_page() {
 		?>
-		<h2><?php _e('Import Custom Layout', 'themeblvd_builder'); ?></h2>
+		<h2><?php _e('Import Template', 'themeblvd_builder'); ?></h2>
 		<p><?php _e('Upload an XML file previously exported from the Builder.', 'themeblvd_builder'); ?></p>
 		<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="admin.php?page=<?php echo $this->id; ?>-import-layout&amp;themeblvd_import=true">
 			<p>
