@@ -74,6 +74,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( class_exists( 'Theme_Blvd_Advanced_Options' ) ) {
 			$advanced = Theme_Blvd_Advanced_Options::get_instance();
 			$advanced->create('bars');
+			$advanced->create('buttons');
 			$advanced->create('datasets');
 			$advanced->create('locations');
 			$advanced->create('logos');
@@ -2007,7 +2008,7 @@ class Theme_Blvd_Layout_Builder {
 					$bg_types['featured'] = __('Theme\'s preset "Featured" area background', 'themeblvd_builder');
 				}
 
-				if (themeblvd_supports( 'featured_below', 'style' ) ) {
+				if ( themeblvd_supports( 'featured_below', 'style' ) ) {
 					$bg_types['featured_below'] = __('Theme\'s preset "Featured Below" area background', 'themeblvd_builder');
 				}
 
@@ -2196,88 +2197,97 @@ class Theme_Blvd_Layout_Builder {
 				'type' 		=> 'subgroup_end'
 			);
 
-			// Custom padding options
-			if ( $type == 'section' ) {
-				$term = __('section', 'themeblvd_builder');
-			} else {
-				$term = __('column', 'themeblvd_builder');
-			}
-
-			$options['subgroup_start_5'] = array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
-			);
-
-			$options['apply_padding'] = array(
-				'id'		=> 'apply_padding',
-				'name'		=> null,
-				'desc'		=> sprintf(__('Apply custom padding around %s.', 'themeblvd_builder'), $term),
-				'std'		=> 0,
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			);
-
-			$options['padding_top'] = array(
-				'id'		=> 'padding_top',
-				'name'		=> __('Top Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
-				'std'		=> '30px',
-				'type'		=> 'slide',
-				'options'	=> array(
-					'units'		=> 'px',
-					'min'		=> '0',
-					'max'		=> '600'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['padding_right'] = array(
-				'id'		=> 'padding_right',
-				'name'		=> __('Right Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
-				'std'		=> '30px',
-				'type'		=> 'slide',
-				'options'	=> array(
-					'units'		=> 'px',
-					'min'		=> '0',
-					'max'		=> '600'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['padding_bottom'] = array(
-				'id'		=> 'padding_bottom',
-				'name'		=> __('Bottom Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
-				'std'		=> '30px',
-				'type'		=> 'slide',
-				'options'	=> array(
-					'units'		=> 'px',
-					'min'		=> '0',
-					'max'		=> '600'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['padding_left'] = array(
-				'id'		=> 'padding_left',
-				'name'		=> __('Left Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
-				'std'		=> '30px',
-				'type'		=> 'slide',
-				'options'	=> array(
-					'units'		=> 'px',
-					'min'		=> '0',
-					'max'		=> '600'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['subgroup_end_5'] = array(
-				'type' => 'subgroup_end'
-			);
-
 		}
+
+		// Custom padding options
+		switch ( $type ) {
+			case 'section' :
+				$term = __('section', 'themeblvd_builder');
+				$default = '30px';
+				break;
+			case 'column' :
+				$term = __('column', 'themeblvd_builder');
+				$default = '30px';
+				break;
+			case 'element' :
+			case 'block' :
+				$default = '0px';
+				$term = __('element', 'themeblvd_builder');
+		}
+
+		$options['subgroup_start_5'] = array(
+			'type'		=> 'subgroup_start',
+			'class'		=> 'show-hide'
+		);
+
+		$options['apply_padding'] = array(
+			'id'		=> 'apply_padding',
+			'name'		=> null,
+			'desc'		=> sprintf(__('Apply custom padding around %s.', 'themeblvd_builder'), $term),
+			'std'		=> 0,
+			'type'		=> 'checkbox',
+			'class'		=> 'trigger'
+		);
+
+		$options['padding_top'] = array(
+			'id'		=> 'padding_top',
+			'name'		=> __('Top Padding', 'themeblvd_builder'),
+			'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+			'std'		=> $default,
+			'type'		=> 'slide',
+			'options'	=> array(
+				'units'		=> 'px',
+				'min'		=> '0',
+				'max'		=> '600'
+			),
+			'class'		=> 'hide receiver'
+		);
+
+		$options['padding_right'] = array(
+			'id'		=> 'padding_right',
+			'name'		=> __('Right Padding', 'themeblvd_builder'),
+			'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+			'std'		=> $default,
+			'type'		=> 'slide',
+			'options'	=> array(
+				'units'		=> 'px',
+				'min'		=> '0',
+				'max'		=> '600'
+			),
+			'class'		=> 'hide receiver'
+		);
+
+		$options['padding_bottom'] = array(
+			'id'		=> 'padding_bottom',
+			'name'		=> __('Bottom Padding', 'themeblvd_builder'),
+			'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+			'std'		=> $default,
+			'type'		=> 'slide',
+			'options'	=> array(
+				'units'		=> 'px',
+				'min'		=> '0',
+				'max'		=> '600'
+			),
+			'class'		=> 'hide receiver'
+		);
+
+		$options['padding_left'] = array(
+			'id'		=> 'padding_left',
+			'name'		=> __('Left Padding', 'themeblvd_builder'),
+			'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+			'std'		=> $default,
+			'type'		=> 'slide',
+			'options'	=> array(
+				'units'		=> 'px',
+				'min'		=> '0',
+				'max'		=> '600'
+			),
+			'class'		=> 'hide receiver'
+		);
+
+		$options['subgroup_end_5'] = array(
+			'type' => 'subgroup_end'
+		);
 
 		if ( $type == 'element' || $type == 'block' ) {
 

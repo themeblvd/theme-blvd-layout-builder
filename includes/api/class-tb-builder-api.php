@@ -1506,110 +1506,24 @@ class Theme_Blvd_Builder_API {
 					'center' 	=> __( 'Center', 'themeblvd_builder' )
 				)
 		    ),
-		    'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide'
-		    ),
-			'button' => array(
-		    	'id' 		=> 'button',
-				'name'		=> __( 'Button', 'themeblvd_builder' ),
-				'desc'		=> __( 'Show button at the bottom of unit?', 'themeblvd_builder' ),
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
+		    'buttons' => array(
+		    	'id' 		=> 'buttons',
+				'name'		=> __( 'Buttons (optional)', 'themeblvd_builder' ),
+				'desc'		=> null,
+				'type'		=> 'buttons'
 			),
-			'subgroup_start_2' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'hide receiver show-hide-toggle'
-		    ),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'trigger',
-				'options'	=> themeblvd_colors()
+			'buttons_stack' => array(
+				'id' 		=> 'buttons_stack',
+				'name'		=> null,
+				'desc'		=> __('Stack buttons on top of each other (if multiple buttons).', 'themeblvd_builder'),
+				'type'		=> 'checkbox'
 			),
-			'button_custom' => array(
-				'id' 		=> 'button_custom',
-				'name'		=> __( 'Custom Button Color', 'themeblvd_builder' ),
-				'desc'		=> __( 'Configure a custom style for the button.', 'themeblvd_builder' ),
-				'std'		=> array(
-					'bg' 				=> '#ffffff',
-					'bg_hover'			=> '#ebebeb',
-					'border' 			=> '#cccccc',
-					'text'				=> '#333333',
-					'text_hover'		=> '#333333',
-					'include_bg'		=> 1,
-					'include_border'	=> 1
-				),
-				'type'		=> 'button',
-				'class'		=> 'hide receiver receiver-custom'
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-			'button_text' => array(
-				'id' 		=> 'button_text',
-				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
-				'std'		=> 'Get Started Today!',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_size' => array(
-				'id' 		=> 'button_size',
-				'name'		=> __( 'Button Size', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select the size you\'d like used for this button.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'std'		=> 'large',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-					'mini' 		=> __( 'Mini', 'themeblvd_builder' ),
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' ),
-					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
-				)
-			),
-			'button_url' => array(
-				'id' 		=> 'button_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-landing-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-			),
-			'button_target' => array(
-				'id' 		=> 'button_target',
-				'name'		=> __( 'Link Target', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select how you want the button to open the webpage.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'class'		=> 'hide receiver',
-				'options'	=> array(
-			        '_self' 	=> __( 'Same Window', 'themeblvd_builder' ),
-			        '_blank' 	=> __( 'New Window', 'themeblvd_builder' ),
-			        'lightbox' 	=> __( 'Lightbox Popup', 'themeblvd_builder' )
-				)
-			),
-			'button_icon_before' => array(
-				'id' 		=> 'button_icon_before',
-				'name'		=> __( 'Icon Before Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'button_icon_after' => array(
-				'id' 		=> 'button_icon_after',
-				'name'		=> __( 'Icon After Button Text (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'icon'		=> 'vector',
-				'class'		=> 'hide receiver'
-			),
-			'subgroup_end' => array(
-		    	'type'		=> 'subgroup_end'
-		    )
+			'buttons_block' => array(
+				'id' 		=> 'buttons_block',
+				'name'		=> null,
+				'desc'		=> __('Display buttons as block-level elements (will also result in stacking).', 'themeblvd_builder'),
+				'type'		=> 'checkbox'
+			)
 		);
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
@@ -4653,7 +4567,19 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Select a small image for the person giving the testimonial. This will look best if you select an image size that is square.', 'themeblvd_builder'),
 				'type'		=> 'upload',
 				'advanced'	=> true
-		    )
+		    ),
+		    'display' => array(
+		    	'id' 		=> 'display',
+				'name'		=> __( 'Display Style', 'themeblvd_builder' ),
+				'desc'		=> __( 'The "Standard" style will fit well with other content, while the "Showcase" style will work better as a stand-alone element, displaying the testimonial much larger.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'fade',
+				'options'	=> array(
+			        'standard' 	=> __( 'Standard', 'themeblvd_builder' ),
+					'showcase'	=> __( 'Showcase', 'themeblvd_builder' )
+				),
+				'class'		=> 'trigger'
+			)
 		);
 
 		/*--------------------------------------------*/
@@ -4685,23 +4611,41 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> null,
 				'type'		=> 'testimonials'
 			),
+			'subgroup_start' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+			'display' => array(
+		    	'id' 		=> 'display',
+				'name'		=> __( 'Display Style', 'themeblvd_builder' ),
+				'desc'		=> __( 'The "Standard" style will fit well with other content, while the "Showcase" style will work better as a stand-alone element, displaying the testimonials much larger.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'fade',
+				'options'	=> array(
+			        'standard' 	=> __( 'Standard', 'themeblvd_builder' ),
+					'showcase'	=> __( 'Showcase', 'themeblvd_builder' )
+				),
+				'class'		=> 'trigger'
+			),
 			'title' => array(
 				'id' 		=> 'title',
 				'name'		=> __('Title (optional)', 'themeblvd_builder'),
 				'desc'		=> __('If you want, you can give this set of testimonials a title.', 'themeblvd_builder'),
 				'std'		=> 'Testimonials',
-				'type'		=> 'text'
+				'type'		=> 'text',
+				'class'		=> 'hide receiver receiver-standard'
 			),
 			'fx' => array(
 		    	'id' 		=> 'fx',
 				'name'		=> __( 'Transition Effect', 'themeblvd_builder' ),
 				'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'themeblvd_builder' ),
 				'type'		=> 'select',
-				'std'		=> 'slide',
+				'std'		=> 'fade',
 				'options'	=> array(
 			        'fade' 	=> __( 'Fade', 'themeblvd_builder' ),
 					'slide'	=> __( 'Slide', 'themeblvd_builder' )
-				)
+				),
+				'class'		=> 'hide receiver receiver-standard'
 			),
 			'timeout' => array(
 		    	'id' 		=> 'timeout',
@@ -4716,7 +4660,10 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Display slider navigation.', 'themeblvd_builder' ),
 				'std'		=> '1',
 				'type'		=> 'checkbox'
-			)
+			),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
 		);
 
 		/*--------------------------------------------*/
