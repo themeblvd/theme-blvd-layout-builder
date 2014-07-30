@@ -54,7 +54,7 @@ function themeblvd_builder_layout() {
 	if ( $sections ) {
 
 		// Check for pagination handling
-		$sections = themeblvd_builder_paginated_layout( $sections );
+		$sections = themeblvd_builder_paginated_layout( $post_id, $sections );
 
 		// Display sections of elements
 		foreach ( $sections as $section_id => $elements ) {
@@ -147,7 +147,7 @@ function themeblvd_builder_content() {
  * @param string $var Description
  * @return string $var Description
  */
-function themeblvd_builder_paginated_layout( $sections ){
+function themeblvd_builder_paginated_layout( $post_id, $sections ){
 
 	if ( is_paged() ) {
 
@@ -158,13 +158,39 @@ function themeblvd_builder_paginated_layout( $sections ){
 		foreach ( $sections as $section_id => $elements ) {
 			if ( $elements ) {
 				foreach ( $elements as $element_id => $element ) {
-					if ( ! empty( $element['options']['paginated_hide'] ) ) {
-						$show_section_id = $section_id;
-						$show_element_id = $element_id;
+
+					if ( ! isset( $element['type'] ) ) {
+						continue;
 					}
-				}
+
+					if ( $element['type'] == 'post_list' || $element['type'] == 'post_grid' ) {
+
+						if ( ! empty( $element['options']['paginated_hide'] ) ) {
+							$show_section_id = $section_id;
+							$show_element_id = $element_id;
+						}
+
+					} else if ( $element['type'] == 'columns' ) {
+
+						$num = count( explode( '-', $element['options']['setup'] ) );
+
+						for ( $i = 1; $i <= $num; $i++ ) {
+
+							$blocks = get_post_meta( $post_id, '_tb_builder_'.$element_id.'_col_'.$i, true );
+
+							if ( ! empty( $blocks['elements'] ) ) {
+								foreach ( $blocks['elements'] as $block_id => $block ) {
+									if ( ! empty( $block['options']['paginated_hide'] ) ) {
+										$show_section_id = $section_id;
+										$show_element_id = $element_id;
+									}
+								}
+							}
+						} // end for $i
+					}
+				} // end foreach $elements
 			}
-		}
+		} // end foreach $sections
 
 		// Now remove everything that isn't part of what we want to keep.
 		if ( $show_section_id && $show_element_id ) {
