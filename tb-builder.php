@@ -82,56 +82,10 @@ function themeblvd_builder_init() {
 		add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' );
 	}
 
-	// @TODO Remove this if newer theme, but put warning in place to tell the user what to do, if it's an logged in admin
-	/*
-	// Get custom layouts
-	$custom_layouts = array();
-
-	if ( is_admin() ) {
-
-		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
-
-		if ( ! empty( $custom_layout_posts ) ) {
-			foreach( $custom_layout_posts as $layout ) {
-				$custom_layouts[$layout->post_name] = $layout->post_title;
-			}
-		} else {
-			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
-		}
+	// Homepage layout (@deprecated -- With current themes, user must set a static frontpage with the template applied)
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+		themeblvd_builder_legacy_homepage();
 	}
-
-	// Add option to theme options page allowing user to
-	// select custom layout for their homepage.
-	$options = array(
-		'homepage_content' => array(
-			'name' 		=> __( 'Homepage Content', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'themeblvd_builder' ),
-			'id' 		=> 'homepage_content',
-			'std' 		=> 'posts',
-			'type' 		=> 'radio',
-			'options' 	=> array(
-				'posts'			=> __( 'Posts', 'themeblvd_builder' ),
-				'custom_layout' => __( 'Custom Layout', 'themeblvd_builder' )
-			)
-		),
-		'homepage_custom_layout' => array(
-			'name' 		=> __( 'Select Custom Layout', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select from the custom layouts you\'ve built under the <a href="admin.php?page=themeblvd_builder">Builder</a> section.', 'themeblvd_builder' ),
-			'id' 		=> 'homepage_custom_layout',
-			'std' 		=> '',
-			'type' 		=> 'select',
-			'options' 	=> $custom_layouts
-		)
-	);
-	themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'themeblvd_builder' ), null, $options, true );
-
-	// Filter homepage content according to options section
-	// we added above.
-	add_filter( 'template_include', 'themeblvd_builder_homepage' );
-
-	// Trigger customizer support for custom homepage options.
-	add_filter( 'themeblvd_customizer_modify_sections', 'themeblvd_modify_customizer_homepage' );
-	*/
 
 	// Admin Layout Builder
 	if ( is_admin() ){

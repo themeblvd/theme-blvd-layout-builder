@@ -19,16 +19,6 @@ function themeblvd_builder_homepage( $template ) {
 }
 
 /**
- * Add custom homepage options to customizer framework.
- *
- * @since 1.0.0
- */
-function themeblvd_modify_customizer_homepage( $sections ) {
-	$sections[] = 'static_front_page';
-	return $sections;
-}
-
-/**
  * Display custom layout within template_builder.php
  * page template.
  *
@@ -60,6 +50,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 	}
 	// Gather elements and only move forward if we have elements to show.
 	$elements = get_post_meta( $layout_id, 'elements', true );
+
 	if ( ! empty( $elements ) && ! empty( $elements[$location] ) ) {
 		$elements = $elements[$location];
 		$num_elements = count($elements);
@@ -375,7 +366,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
  */
 function themeblvd_builder_featured() {
 	if ( themeblvd_config( 'builder' ) ) {
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' ); // @deprecated
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured' );
 	}
 }
 
@@ -386,6 +377,64 @@ function themeblvd_builder_featured() {
  */
 function themeblvd_builder_featured_below() {
 	if ( themeblvd_config( 'builder' ) ) {
-		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' ); // @deprecated
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'featured_below' );
 	}
+}
+
+/**
+ * Add the homepage options and implement, if user is
+ * using a theme prior to framework 2.5
+ *
+ * @since 2.0.0
+ *
+ * @param string $var Description
+ * @return string $var Description
+ */
+function themeblvd_builder_legacy_homepage() {
+
+	// Get custom layouts
+	$custom_layouts = array();
+
+	if ( is_admin() ) {
+
+		$custom_layout_posts = get_posts('post_type=tb_layout&orderby=title&order=ASC&numberposts=-1');
+
+		if ( ! empty( $custom_layout_posts ) ) {
+			foreach( $custom_layout_posts as $layout ) {
+				$custom_layouts[$layout->post_name] = $layout->post_title;
+			}
+		} else {
+			$custom_layouts['null'] = __( 'You haven\'t created any custom layouts yet.', 'themeblvd' );
+		}
+	}
+
+	// Add option to theme options page allowing user to
+	// select custom layout for their homepage.
+	$options = array(
+		'homepage_content' => array(
+			'name' 		=> __( 'Homepage Content', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'themeblvd_builder' ),
+			'id' 		=> 'homepage_content',
+			'std' 		=> 'posts',
+			'type' 		=> 'radio',
+			'options' 	=> array(
+				'posts'			=> __( 'Posts', 'themeblvd_builder' ),
+				'custom_layout' => __( 'Custom Layout', 'themeblvd_builder' )
+			)
+		),
+		'homepage_custom_layout' => array(
+			'name' 		=> __( 'Select Custom Layout', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select from the custom layouts you\'ve built under the <a href="admin.php?page=themeblvd_builder">Builder</a> section.', 'themeblvd_builder' ),
+			'id' 		=> 'homepage_custom_layout',
+			'std' 		=> '',
+			'type' 		=> 'select',
+			'options' 	=> $custom_layouts
+		)
+	);
+	themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'themeblvd_builder' ), null, $options, true );
+
+	// Filter homepage content according to options section
+	// we added above.
+	add_filter( 'template_include', 'themeblvd_builder_homepage' );
+
 }

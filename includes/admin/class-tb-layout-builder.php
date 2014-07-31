@@ -350,6 +350,10 @@ class Theme_Blvd_Layout_Builder {
 			       	<?php endif; ?>
 			    </h2>
 
+			    <?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) : ?>
+			    	<span class="legacy-mode"><?php _e('Legacy Mode', 'themeblvd_builder'); ?></span>
+				<?php endif; ?>
+
 			    <?php
 			    // Display notices
 			    do_action('themeblvd_builder_update');
@@ -450,9 +454,6 @@ class Theme_Blvd_Layout_Builder {
 						<?php endif; ?>
 					</tbody>
 				</table>
-
-
-				<!--<div class="ajax-mitt"><?php //$this->manage_layouts(); ?></div>-->
 			</form><!-- #manage_builder (end) -->
 		</div><!-- #manage (end) -->
 		<?php
@@ -841,7 +842,11 @@ class Theme_Blvd_Layout_Builder {
 
 		} else {
 
-			update_post_meta( $post_id, '_tb_builder_elements', array( 'primary' => array() ) );
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+				update_post_meta( $post_id, '_tb_builder_elements', array( 'primary' => array() ) );
+			} else {
+				update_post_meta( $post_id, '_tb_builder_elements', array( 'featured' => array(), 'primary' => array(), 'featured_below' => array(), ) );
+			}
 		}
 
 		// Store version numbers that this layout was created with
@@ -960,8 +965,14 @@ class Theme_Blvd_Layout_Builder {
 
 				}
 
+				$key = '_tb_builder_elements';
+
+				if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+					$key = 'elements';
+				}
+
 				// Store meta to post
-				update_post_meta( $post_id, '_tb_builder_elements', $elements );
+				update_post_meta( $post_id, $key, $elements );
 
 			}
 		}
@@ -1037,7 +1048,7 @@ class Theme_Blvd_Layout_Builder {
 		// Sidebar Layout (@deprecated)
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 			if ( isset( $data['tb_layout_options'] ) ) {
-				// ... @TODO
+				update_post_meta( $post_id, 'settings', $data['tb_layout_options'] );
 			}
 		}
 
@@ -1239,8 +1250,10 @@ class Theme_Blvd_Layout_Builder {
 			update_post_meta( $post_id, '_tb_custom_layout', $template );
 		}
 
-		// Save layout to post
-		$this->save_layout( $post_id, $_POST );
+		// Save layout to post, if using theme that supports it
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+			$this->save_layout( $post_id, $_POST );
+		}
 
 	}
 
@@ -1275,7 +1288,7 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- HEADER (start) -->
 
-				<div class="meta-box-nav">
+				<div class="meta-box-nav clearfix">
 
 					<div class="ajax-overlay add-element"></div>
 					<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
@@ -1287,17 +1300,19 @@ class Theme_Blvd_Layout_Builder {
 						<i class="tb-icon-commercial-building"></i>
 					</div>
 
-					<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to start this page\'s custom layout with.', 'themeblvd_builder'); ?>">
-						<?php echo $this->layout_select( '', 'apply' ); ?>
-					</div>
+					<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+						<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to start this page\'s custom layout with.', 'themeblvd_builder'); ?>">
+							<?php echo $this->layout_select( '', 'apply' ); ?>
+						</div>
+					<?php endif; ?>
 
 					<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to sync this page\'s custom layout with.', 'themeblvd_builder'); ?>">
 						<?php echo $this->layout_select( $sync_id, 'sync' ); ?>
 					</div>
 
-					<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'themeblvd_builder'); ?></a>
-
-					<div class="clear"></div>
+					<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+						<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'themeblvd_builder'); ?></a>
+					<?php endif; ?>
 
 				</div><!-- .meta-box-nav (end) -->
 
@@ -1313,15 +1328,18 @@ class Theme_Blvd_Layout_Builder {
 						</span>
 					</div>
 
-					<div class="ajax-mitt">
+					<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
 
-						<?php $this->edit_layout( $post->ID ); ?>
+						<div class="ajax-mitt">
+							<?php $this->edit_layout( $post->ID ); ?>
+						</div><!-- .ajax-mitt (end) -->
 
-						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) : // After framework 2.5, no more sidebar layouts in custom layouts ?>
-							<!-- @todo sidebar layout ... -->
-						<?php endif; ?>
+					<?php else : ?>
 
-					</div><!-- .ajax-mitt (end) -->
+						<p class="warning"><?php _e('Select a template above to sync this page with.', 'themeblvd_builder'); ?></p>
+
+					<?php endif; ?>
+
 				</div><!-- #tb-edit-layout (end) -->
 
 				<!-- EDIT LAYOUT (end) -->
@@ -1375,13 +1393,47 @@ class Theme_Blvd_Layout_Builder {
 		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->get_elements(); // Elements that can be used in Builder, NOT elements saved to current layout
 
-		$saved_elements = get_post_meta( $post_id, '_tb_builder_elements', true );
+		$key = '_tb_builder_elements';
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			$key = 'elements';
+		}
+
+		$saved_elements = get_post_meta( $post_id, $key, true );
+
 		$saved_sections = get_post_meta( $post_id, '_tb_builder_sections', true );
 
 		if ( ! $saved_elements || ! $saved_sections ) {
-			$saved_elements = $saved_sections = array(
-				'primary' => array()
-			);
+
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+
+				// Working with a template just created
+				$saved_elements = $saved_sections = array(
+					'primary' => array()
+				);
+
+			} else {
+
+				// If we're using an old theme prior to 2.5, there will
+				// never be saved section data
+				$saved_sections = array(
+					'featured' => array(),
+					'primary' => array(),
+					'featured_below' => array()
+
+				);
+
+				// Working with a temlate just created
+				if ( ! $saved_elements ) {
+					$saved_elements = array(
+						'featured' => array(),
+						'primary' => array(),
+						'featured_below' => array()
+
+					);
+				}
+			}
+
 		}
 		?>
 		<div class="manage-elements">
@@ -1469,7 +1521,7 @@ class Theme_Blvd_Layout_Builder {
 			$legacy = true;
 
 			switch ( $section_id ) {
-				case 'main' :
+				case 'primary' :
 					$label = __('Main', 'themeblvd_builder');
 					break;
 				case 'featured' :
@@ -1488,9 +1540,8 @@ class Theme_Blvd_Layout_Builder {
 
 				<?php if ( $legacy ) : ?>
 
-					<div class="section-label legacy dynamic-label">
+					<div class="section-label legacy">
 						<span class="label-text"><?php echo $label; ?></span>
-						<input type="text" class="label-input" name="tb_builder_sections[<?php echo $section_id; ?>][label]" value="<?php echo esc_attr($label); ?>" />
 					</div>
 
 				<?php else : ?>
@@ -1526,15 +1577,17 @@ class Theme_Blvd_Layout_Builder {
 
 			<!-- SECTION BACKGROUND HIDDEN FORM (start) -->
 
-			<div class="section-background-options-wrap hide">
-				<div id="<?php echo $section_id; ?>_background_form" class="section-background-options">
-					<?php
-					$display_options = $this->get_display_options( 'section' );
-					$display_form = themeblvd_option_fields( 'tb_builder_sections['.$section_id.'][display]', $display_options, $display, false );
-					echo $display_form[0];
-					?>
+			<?php if ( ! $legacy ) : ?>
+				<div class="section-background-options-wrap hide">
+					<div id="<?php echo $section_id; ?>_background_form" class="section-background-options">
+						<?php
+						$display_options = $this->get_display_options( 'section' );
+						$display_form = themeblvd_option_fields( 'tb_builder_sections['.$section_id.'][display]', $display_options, $display, false );
+						echo $display_form[0];
+						?>
+					</div>
 				</div>
-			</div>
+			<?php endif; ?>
 
 			<!-- SECTION BACKGROUND HIDDEN FORM (end) -->
 

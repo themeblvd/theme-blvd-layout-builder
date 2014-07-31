@@ -63,6 +63,23 @@
 	border-color: #9adfa9;
 }
 
+/* Legacy Mode Sticker */
+#builder_blvd .legacy-mode {
+	background: #f8f8f8;
+	border: 1px solid #cccccc;
+	-moz-box-shadow: inset 0 1px 1px #ffffff;
+	-webkit-box-shadow: inset 0 1px 1px #ffffff;
+	box-shadow: inset 0 1px 1px #ffffff;
+	color: #888888;
+	display: block;
+	font-size: 10px;
+	line-height: 1em;
+	padding: 5px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
 /* =Manage Layouts
 ----------------------------------------------- */
 
@@ -216,6 +233,9 @@
 	position: absolute;
 	left: 38px;
 	bottom: 0;
+}
+#builder_blvd .section-label.legacy {
+	left: 0;
 }
 #builder_blvd .section-label .label-input,
 #builder_blvd .element-label .label-input {
@@ -481,7 +501,7 @@
 #tb-sync-layout h3 i {
 	color: #57da23;
 	position: absolute;
-	top: 2px;
+	top: 0;
 	left: -3px;
 }
 #tb-editor-builder #tb-sync-layout p {
