@@ -447,7 +447,7 @@ class Theme_Blvd_Layout_Builder {
 										</div>
 									</td>
 									<td class="post-slug">
-										<?php echo $template->post_title; ?>
+										<?php echo $template->post_name; ?>
 									</td>
 								</tr>
 							<?php endforeach; ?>
