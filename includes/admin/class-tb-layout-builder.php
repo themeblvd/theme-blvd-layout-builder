@@ -65,6 +65,10 @@ class Theme_Blvd_Layout_Builder {
 		// inserting icons.
 		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
 
+		// Add post browser into page, which user can use to find
+		// ID's of posts in Builder elements.
+		add_action( 'current_screen', array( $this, 'add_post_browser' ) );
+
 		// Add texture browser into page, which Builder can use for
 		// selecting textures.
 		add_action( 'current_screen', array( $this, 'add_texture_browser' ) );
@@ -2689,7 +2693,7 @@ class Theme_Blvd_Layout_Builder {
 
 			$page = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
 				add_action( 'in_admin_header', array( $this, 'display_icon_browser' ) );
 			}
 		}
@@ -2697,6 +2701,24 @@ class Theme_Blvd_Layout_Builder {
 	public function display_icon_browser() {
 		themeblvd_icon_browser( array( 'type' => 'vector' ) );
 		themeblvd_icon_browser( array( 'type' => 'image' ) );
+	}
+
+	/**
+	 * Hook in hidden post browser modal.
+	 *
+	 * @since 2.0.0
+	 */
+	public function add_post_browser() {
+
+		// Requires Framework 2.5+
+		if ( function_exists( 'themeblvd_post_browser' ) ) {
+
+			$page = get_current_screen();
+
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
+				add_action( 'in_admin_header', 'themeblvd_post_browser' );
+			}
+		}
 	}
 
 	/**
