@@ -14,6 +14,7 @@
 			}
 
 			$value = get_post_meta( $layout_id, $key, true );
+			$value = apply_filters( 'themeblvd_export_layout_meta', $value, $key );
 			$value = base64_encode(maybe_serialize($value));
 
 			echo "<meta>\n";

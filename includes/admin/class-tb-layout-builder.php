@@ -12,6 +12,8 @@ class Theme_Blvd_Layout_Builder {
 	private $import_url;
 	private $updated = '';
 	private $error = '';
+	private $sample_dir = '';
+	private $sample_uri = '';
 
 	/**
 	 * Constructor.
@@ -441,6 +443,11 @@ class Theme_Blvd_Layout_Builder {
 													<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_layout')); ?>" class="export-layout" title="<?php _e( 'Export', 'themeblvd' ); ?>"><?php _e( 'Export', 'themeblvd' ); ?></a> |
 												</span>
 											<?php endif; ?>
+											<?php if ( defined('TB_SAMPLE_LAYOUT_PLUGIN_VERSION') ) : ?>
+												<span class="export-sample">
+													<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_sample_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_sample_layout')); ?>" class="export-layout" title="<?php _e( 'Export as Sample Layout', 'themeblvd' ); ?>"><?php _e( 'Export as Sample Layout', 'themeblvd' ); ?></a> |
+												</span>
+											<?php endif; ?>
 											<span class="trash">
 												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template->ID.'&security='.wp_create_nonce('delete_template')); ?>" title="<?php _e('Delete', 'themeblvd_builder'); ?>" class="delete-layout"><?php _e('Delete', 'themeblvd_builder'); ?></a>
 											</span>
@@ -541,8 +548,7 @@ class Theme_Blvd_Layout_Builder {
 				'id' 		=> 'sample',
 				'type' 		=> 'select',
 				'options' 	=> $sample_layouts,
-				'class'		=> 'builder_samples',
-				'class'		=> 'hide receiver receiver-sample'
+				'class'		=> 'hide builder-samples receiver receiver-sample'
 			);
 		}
 
@@ -806,6 +812,8 @@ class Theme_Blvd_Layout_Builder {
 
 		if ( $data['start'] == 'layout' ) {
 
+			// Use Pre-Existing Template
+
 			// Section data
 			$section_data = get_post_meta( $data['existing'], '_tb_builder_sections', true );
 			update_post_meta( $post_id, '_tb_builder_sections', $section_data );
@@ -831,16 +839,39 @@ class Theme_Blvd_Layout_Builder {
 
 		} else if ( $data['start'] == 'sample' ) {
 
-			// @TODO
+			// Use Plugin Sample Layout
 
-			// Elements
-			// ...
-			// ... update_post_meta( $post_id, '_tb_builder_elements', $elements );
+			$samples = themeblvd_get_sample_layouts();
+			$this->sample_uri = trailingslashit($samples[$data['sample']]['uri']);
+			$this->sample_dir = $dir = trailingslashit($samples[$data['sample']]['dir']);
+			$xml = $dir.'layout.xml';
+			$import = '';
 
-			// Columns
-			// ...
+			// Parse the file
+			if ( file_exists( $xml ) && function_exists( 'simplexml_load_file' ) ) {
+				$internal_errors = libxml_use_internal_errors(true);
+				$import = simplexml_load_file($xml);
+			}
+
+			if ( $import ) {
+				foreach( $import->data->meta as $meta ) {
+
+					$key = (string)$meta->key;
+					$value = (string)$meta->value;
+					$value = maybe_unserialize(base64_decode($value));
+
+					// Process images from meta data
+					$value = $this->sample_images( $value, $key );
+
+					// Store to post meta of new template
+					update_post_meta( $post_id, $key, $value );
+
+				}
+			}
 
 		} else {
+
+			// Start template from scratch
 
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 				update_post_meta( $post_id, '_tb_builder_elements', array( 'primary' => array() ) );
@@ -1146,7 +1177,7 @@ class Theme_Blvd_Layout_Builder {
 
 				} else {
 
-					if ( isset( $settings[$option_id] ) ) {
+					if ( isset( $settings[$option_id] ) && $settings[$option_id] !== '0'  ) {
 						$settings[$option_id] = '1';
 					} else {
 						$settings[$option_id] = '0';
@@ -1181,6 +1212,165 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		return $clean;
+	}
+
+	/*--------------------------------------------*/
+	/* Sample Layout Helpers
+	/*--------------------------------------------*/
+
+	/**
+	 * Process images from meta values imported with sample layout.
+	 *
+	 * @since 2.0.0
+	 */
+	public function sample_images( $value, $key ) {
+
+		// Section Data
+		if ( $key == '_tb_builder_sections' ) {
+
+			$this->sample_filters('add');
+
+			if ( $value ) {
+				foreach ( $value as $section_id => $section ) {
+					$new[$section_id] = $section;
+					$new[$section_id]['display'] = $this->clean( 'section', $section['display'] );
+				}
+			}
+
+			$this->sample_filters('remove');
+
+			return $new;
+		}
+
+		// Top-Level Elements
+		if ( $key == '_tb_builder_elements' ) {
+
+			$this->sample_filters('add');
+
+			if ( $value ) {
+				foreach ( $value as $section_id => $elements ) {
+
+					$new[$section_id] = array();
+
+					if ( $elements ) {
+						foreach ( $elements as $element_id => $element ) {
+							$new[$section_id][$element_id] = $element;
+							$new[$section_id][$element_id]['display'] = $this->clean( $element['type'], $element['display'], true );
+							$new[$section_id][$element_id]['options'] = $this->clean( $element['type'], $element['options'] );
+						}
+					}
+				}
+			}
+
+			$this->sample_filters('remove');
+
+			return $new;
+		}
+
+		// Columns
+		if ( strpos( $key, '_col_' ) !== false ) {
+
+			$this->sample_filters('add');
+
+			$new = array();
+
+			// Column display options
+			if ( ! empty( $value['display'] ) ) {
+				$new['display'] = $this->clean( 'column', $value['display'] );
+			}
+
+			// Column elements
+			if ( ! empty( $value['elements'] ) ) {
+				foreach ( $value['elements'] as $block_id => $block ) {
+					$new['elements'][$block_id] = $block;
+					$new['elements'][$block_id]['display'] = $this->clean( $block['type'], $block['display'], true );
+					$new['elements'][$block_id]['options'] = $this->clean( $block['type'], $block['options'] );
+				}
+			}
+
+			$this->sample_filters('remove');
+
+			return $new;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Add or Remove option filters for processing
+	 * images of sample layouts.
+	 *
+	 * @since 2.0.0
+	 */
+	public function sample_filters( $todo ) {
+
+		if ( $todo == 'add' ) {
+
+			// Add filter for all option types we want to check
+			add_filter( 'themeblvd_sanitize_text', array( $this, 'sample_option_filter' ) );
+			add_filter( 'themeblvd_sanitize_textarea', array( $this, 'sample_option_filter' ) );
+			add_filter( 'themeblvd_sanitize_upload', array( $this, 'sample_option_filter' ) );
+
+		} else if ( $todo == 'remove' ) {
+
+			// Remove filter for all option types we want to check
+			remove_filter( 'themeblvd_sanitize_text', array( $this, 'sample_option_filter' ) );
+			remove_filter( 'themeblvd_sanitize_textarea', array( $this, 'sample_option_filter' ) );
+			remove_filter( 'themeblvd_sanitize_upload', array( $this, 'sample_option_filter' ) );
+
+		}
+
+	}
+
+	/**
+	 * The filter function added onto any option
+	 * types we're filtering for processing images
+	 * of sample layouts.
+	 *
+	 * @since 2.0.0
+	 */
+	public function sample_option_filter( $val ) {
+
+		// text, textarea, simple upload
+		if ( is_string($val) ) {
+			$val = $this->sample_img_replace($val);
+		}
+
+		// complex upload (src)
+		if ( isset( $val['src'] ) ) {
+			$val['src'] = $this->sample_img_replace($val['src']);
+		}
+
+		// complex upload (full image)
+		if ( isset( $val['full'] ) ) {
+			$val['full'] = $this->sample_img_replace($val['full']);
+		}
+
+		return $val;
+	}
+
+	/**
+	 * For processing images of sample layouts, take
+	 * a string like [img]example.jpg[/img] and change
+	 * it to the full URL of the image located within
+	 * the Builder plugin on the user's server.
+	 *
+	 * @since 2.0.0
+	 */
+	public function sample_img_replace( $str ) {
+
+		$pattern = sprintf( '/%s(.*?)%s/', preg_quote( '[img]', '/'), preg_quote( '[/img]', '/') );
+		preg_match_all( $pattern, $str, $img );
+
+		$find = $img[0];
+		$replace = $img[1];
+
+		foreach ( $find as $key => $val ) {
+			$url = sprintf('%s/img/%s', untrailingslashit($this->sample_uri), $replace[$key] );
+			$str = str_replace( $val, $url, $str );
+		}
+
+		return $str;
 	}
 
 	/*--------------------------------------------*/

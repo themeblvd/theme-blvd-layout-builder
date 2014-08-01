@@ -28,7 +28,7 @@ function themeblvd_builder_sample_previews() {
 	$output = '<div class="sample-layouts">';
 	foreach( $samples as $sample ) {
 		$output .= '<div id="sample-'.$sample['id'].'">';
-		$output .= '<img src="'.$sample['preview'].'" />';
+		$output .= '<img src="'.trailingslashit($sample['uri']).'preview.png" />';
 		if ( isset( $sample['credit'] ) ) {
 			$output .= '<p class="note">'.$sample['credit'].'</p>';
 		}

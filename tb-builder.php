@@ -100,7 +100,7 @@ function themeblvd_builder_init() {
 				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-export-layout.php' );
 
 				$args = array(
-					'filename'	=> 'layout-{name}.xml', // string {name} will be dynamically replaced with each export
+					'filename'	=> 'template-{name}.xml', // string {name} will be dynamically replaced with each export
 					'base_url'	=> admin_url('admin.php?page=themeblvd_builder')
 				);
 				$_themeblvd_export_layout = new Theme_Blvd_Export_Layout( 'layout', $args ); // Extends class Theme_Blvd_Export

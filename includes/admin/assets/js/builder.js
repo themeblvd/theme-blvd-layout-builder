@@ -127,7 +127,7 @@ jQuery(document).ready(function($) {
     	sample_preview : function( $select ) {
     		var $parent = $select.closest('.controls');
     		$parent.find('.sample-layouts div').hide();
-    		$parent.find('#sample-'+select.val()).show();
+    		$parent.find('#sample-'+$select.val()).show();
     	},
 
     	// These methods are passed into WP's postboxes.add_postbox_toggles
@@ -647,11 +647,11 @@ jQuery(document).ready(function($) {
 	$add_template.themeblvd('options', 'setup');
 	$add_template.themeblvd('options', 'bind');
 
-	$add_template.find('#layout_sample').each( function(){
+	$add_template.find('.builder-samples #sample').each( function(){
 		builder_blvd.sample_preview( $(this) );
 	});
 
-	$add_template.find('#layout_sample').change(function(){
+	$add_template.find('.builder-samples #sample').on('change', function(){
 		builder_blvd.sample_preview( $(this) );
 	});
 
