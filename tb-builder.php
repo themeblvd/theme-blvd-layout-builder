@@ -69,11 +69,11 @@ function themeblvd_builder_init() {
 
 		/**
 		 * Hooks to action in the theme's template_builder.php page
-		 * template in order to display the custom layout.
-		 * Requires that the theme has the function themeblvd_elements(),
-		 * Theme Blvd Framework 2.5+.
+		 * template and footer.php template in order to display the
+		 * custom layout. Requires that the theme has the function
+		 * themeblvd_elements(), Theme Blvd Framework 2.5+.
 		 */
-		add_action( 'themeblvd_builder_content', 'themeblvd_builder_layout' );
+		add_action( 'themeblvd_builder_content', 'themeblvd_builder_layout', 10, 1 );
 
 	} else {
 		// @deprecated
@@ -85,6 +85,31 @@ function themeblvd_builder_init() {
 	// Homepage layout (@deprecated -- With current themes, user must set a static frontpage with the template applied)
 	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 		themeblvd_builder_legacy_homepage();
+	}
+
+	// Template Footer Sync
+	if ( themeblvd_supports( 'display', 'footer_sync' ) ) {
+
+		$option = array( // This option won't actually get displayed, but registered for sanitization process
+			'name' 		=> null,
+			'desc' 		=> null,
+			'id' 		=> 'footer_sync',
+			'std' 		=> '0',
+			'type' 		=> 'checkbox'
+		);
+		themeblvd_add_option( 'layout', 'footer', 'footer_sync', $option );
+
+		$option = array(
+			'name' 		=> __( 'Custom Template', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select from the custom templates you\'ve built at the <a href="admin.php?page=themeblvd_builder">Templates</a> area. This template will be used to populate the bottom of your site.', 'themeblvd_builder' ),
+			'id' 		=> 'footer_template',
+			'std' 		=> '',
+			'type' 		=> 'select',
+			'select' 	=> 'templates',
+			'class'		=> 'hide footer-template-setup'
+		);
+		themeblvd_add_option( 'layout', 'footer', 'footer_template', $option );
+
 	}
 
 	// Admin Layout Builder

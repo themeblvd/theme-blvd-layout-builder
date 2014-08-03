@@ -23,8 +23,10 @@ function themeblvd_builder_register_post_type() {
  * Display custom layout for themes with framework v2.5+
  *
  * @since 2.0.0
+ *
+ * @param string $context Where the custom layout is being outputted, main or footer
  */
-function themeblvd_builder_layout() {
+function themeblvd_builder_layout( $context ) {
 
 	global $post;
 
@@ -35,7 +37,11 @@ function themeblvd_builder_layout() {
 
 	// Where to pull custom layout data from. Will either be
 	// current page or synced template.
-	$post_id = themeblvd_config( 'builder_post_id' );
+	if ( $context == 'footer' ) {
+		$post_id = themeblvd_config( 'bottom_builder_post_id' );
+	} else {
+		$post_id = themeblvd_config( 'builder_post_id' );
+	}
 
 	// Get section data
 	$section_data = get_post_meta( $post_id, '_tb_builder_sections', true );
