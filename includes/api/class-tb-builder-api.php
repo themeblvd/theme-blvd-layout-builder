@@ -4950,31 +4950,44 @@ class Theme_Blvd_Builder_API {
 		$this->core_layouts = array();
 
 		/*--------------------------------------------*/
+		/* Example // ... @TODO Create sample layouts
+		/*--------------------------------------------*/
+
+		$this->core_layouts['temp'] = array(
+			'name'				=> __('Temporary Example', 'themeblvd_builder'),
+			'id'				=> 'temp',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/temp/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/temp/'
+		);
+
+		/*--------------------------------------------*/
 		/* Business Homepage #1
 		/*--------------------------------------------*/
 
+		/*
 		$this->core_layouts['business_1'] = array(
 			'name'				=> __('Business Homepage #1', 'themeblvd_builder'),
 			'id'				=> 'business_1',
 			'preview' 			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_1.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-1.xml'
 		);
+		*/
 
 		/*--------------------------------------------*/
 		/* Business Homepage #2
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['business_2'] = array(
 			'name'				=> __('Business Homepage #2', 'themeblvd_builder'),
 			'id'				=> 'business_2',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_2.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-2.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Business Homepage #3
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['business_3'] = array(
 			'name'				=> __('Business Homepage #3', 'themeblvd_builder'),
 			'id'				=> 'business_3',
@@ -4985,69 +4998,69 @@ class Theme_Blvd_Builder_API {
 		/*--------------------------------------------*/
 		/* Business Homepage #4
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['business_4'] = array(
 			'name'				=> __('Business Homepage #4', 'themeblvd_builder'),
 			'id'				=> 'business_4',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-business_4.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-business-homepage-4.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Classic Magazine #1
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['magazine_1'] = array(
 			'name'				=> __('Classic Magazine #1', 'themeblvd_builder'),
 			'id'				=> 'magazine_1',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-magazine_1.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-magazine-1.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Classic Magazine #2
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['magazine_2'] = array(
 			'name'				=> __('Classic Magazine #2', 'themeblvd_builder'),
 			'id'				=> 'magazine_2',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-magazine_2.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-magazine-2.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Design Agency
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['agency'] = array(
 			'name'				=> __('Design Agency', 'themeblvd_builder'),
 			'id'				=> 'agency',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-agency.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-agency.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Portfolio Homepage
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['portfolio'] = array(
 			'name'				=> __('Portfolio Homepage', 'themeblvd_builder'),
 			'id'				=> 'portfolio',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-portfolio.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-portfolio-homepage.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Showcase Blogger
 		/*--------------------------------------------*/
-
+		/*
 		$this->core_layouts['showcase'] = array(
 			'name'				=> __('Showcase Blogger', 'themeblvd_builder'),
 			'id'				=> 'showcase',
 			'preview'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/images/sample-showcase.png',
 			'import'			=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/layout-showcase-blogger.xml'
 		);
-
+		*/
 		/*--------------------------------------------*/
 		/* Extend
 		/*--------------------------------------------*/
