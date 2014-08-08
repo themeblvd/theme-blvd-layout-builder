@@ -462,6 +462,15 @@ class Theme_Blvd_Layout_Builder {
 									</td>
 								</tr>
 							<?php endforeach; ?>
+						<?php else : ?>
+							<tr>
+								<td colspan="3">
+									<div class="warning">
+										<p><strong><?php _e('You haven\'t created any templates yet.', 'themeblvd_builder'); ?></strong></p>
+										<p><?php _e('Templates are useful to create custom layouts for pages more quickly. Templates can be applied to the custom layout of individual pages for a quick starting point, or synced for continuity. Manage your templates here, and utilize them when editing a page. Click "Add Template" above to get started.', 'themeblvd_builder'); ?></p>
+									</div>
+								</td>
+							</tr>
 						<?php endif; ?>
 					</tbody>
 				</table>
