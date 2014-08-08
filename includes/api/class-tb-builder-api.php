@@ -607,6 +607,18 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'columns',
 				'options'	=> 'element'
 			),
+			'stack' => array(
+		    	'id' 		=> 'stack',
+				'name'		=> __( 'Column Stack', 'themeblvd_builder' ),
+				'desc'		=> __( 'When viewing your site responsively, at what point should your columns stack on top of each other? Be careful when selecting "Never stack"; this can break your mobile layout, depending on the content in your columns.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'md',
+				'options'	=> array(
+					'md'		=> __('Tablet (992px and below)', 'themeblvd_builder'),
+					'sm'		=> __('Mobile (767px and below)', 'themeblvd_builder'),
+					'xs'		=> __('Never stack', 'themeblvd_builder')
+				),
+			),
 			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
 		    ),
