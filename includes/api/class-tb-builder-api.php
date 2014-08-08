@@ -1022,13 +1022,12 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['external']['options'] = array(
-			// ... @TODO selection of registered post types
-			'page' => array(
-		    	'id' 		=> 'page',
-				'name'		=> __( 'Page', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select from your website\'s pages to pull content from.', 'themeblvd_builder' ),
-				'type'		=> 'select',
-				'select'	=> 'pages'
+			'post_id' => array(
+		    	'id' 		=> 'post_id',
+				'name'		=> __( 'Post or Page ID', 'themeblvd_builder' ),
+				'desc'		=> __( 'Insert a post or page ID to pull the content from. Remember that you are only pulling in the post\'s content and no other attributes.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'icon'		=> 'post_id'
 			)
 		);
 
