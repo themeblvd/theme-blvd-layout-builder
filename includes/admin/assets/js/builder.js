@@ -489,6 +489,11 @@ jQuery(document).ready(function($) {
 		//return false;
 	});
 
+	// Make sure any controls outside of the custom layout
+	// are binded with option JS
+	$wrap.find('.meta-box-nav').themeblvd('options', 'bind');
+	$wrap.find('.meta-box-nav').themeblvd('options', 'setup');
+
 	// When user syncs with template
 	$wrap.find('#tb-template-sync').on('change', function(){
 
