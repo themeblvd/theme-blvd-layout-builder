@@ -2107,7 +2107,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// Blocks that have "content" option,
 		// but aren't meant to have an editor
-		$exclude_editor = array('post_list');
+		$exclude_editor = array('post_list', 'panel', 'alert');
 		?>
 		<div id="<?php echo $block_id; ?>" class="widget block block-widget" data-element-id="<?php echo $element_id; ?>" data-field-name="<?php echo $field_name.'[options]'; ?>">
 
