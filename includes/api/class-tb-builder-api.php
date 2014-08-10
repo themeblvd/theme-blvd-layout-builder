@@ -293,8 +293,8 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Enter in the content of the alert.', 'themeblvd_builder' ),
 				'type'		=> 'textarea',
 				'editor'	=> true,
-				'code'		=> 'html',
-				'class'		=> 'block-hide'
+				'code'		=> 'html'
+				//'class'		=> 'block-hide'
 			),
 			'style' => array(
 				'name' 		=> __( 'Style', 'themeblvd_shortcodes' ),
@@ -750,11 +750,12 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'style',
 				'std' 		=> 'grey',
 				'type' 		=> 'select',
-				'options' 	=> array(
-					'grey' 		=> __('Flat Grey', 'themeblvd_builder'),
-					'dark' 		=> __('Flat Dark', 'themeblvd_builder'),
-					'light' 	=> __('Flat Light', 'themeblvd_builder'),
-					'color' 	=> __('Color', 'themeblvd_builder')
+				'options'	=> array(
+					'flat'	=> __('Flat Color', 'themeblvd_builder'),
+					'grey'	=> __('Flat Grey', 'themeblvd_builder'),
+					'dark'	=> __('Flat Dark', 'themeblvd_builder'),
+					'light'	=> __('Flat Light', 'themeblvd_builder'),
+					'color'	=> __('Color', 'themeblvd_builder')
 				)
 			),
 			'tooltip' => array(
@@ -1796,8 +1797,8 @@ class Theme_Blvd_Builder_API {
 		    	'id' 		=> 'content',
 				'name'		=> __( 'Content', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Enter the content to show in the panel\'s main section.', 'themeblvd_builder' ),
-				'type'		=> 'textarea',
-				'class'		=> 'block-hide'
+				'type'		=> 'textarea'
+				//'class'		=> 'block-hide'
 			),
 			'style' => array(
 				'name' 		=> __( 'Style', 'themeblvd_builder' ),
@@ -4601,9 +4602,10 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'grey',
 				'type'		=> 'select',
 				'options'	=> array(
-					'grey'	=> __('Grey', 'themeblvd_builder'),
-					'dark'	=> __('Dark', 'themeblvd_builder'),
-					'light'	=> __('Light', 'themeblvd_builder'),
+					'flat'	=> __('Flat Color', 'themeblvd_builder'),
+					'grey'	=> __('Flat Grey', 'themeblvd_builder'),
+					'dark'	=> __('Flat Dark', 'themeblvd_builder'),
+					'light'	=> __('Flat Light', 'themeblvd_builder'),
 					'color'	=> __('Color', 'themeblvd_builder')
 				)
 			),
