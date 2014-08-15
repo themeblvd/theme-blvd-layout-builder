@@ -2479,7 +2479,7 @@ class Theme_Blvd_Layout_Builder {
 		$options['apply_padding'] = array(
 			'id'		=> 'apply_padding',
 			'name'		=> null,
-			'desc'		=> sprintf(__('Apply custom padding around %s.', 'themeblvd_builder'), $term),
+			'desc'		=> sprintf(__('<strong>Padding:</strong> Apply custom padding around %s.', 'themeblvd_builder'), $term),
 			'std'		=> 0,
 			'type'		=> 'checkbox',
 			'class'		=> 'trigger'
@@ -2555,7 +2555,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_popout'] = array(
 					'id'		=> 'apply_popout',
 					'name'		=> null,
-					'desc'		=> __('Stretch content of element to fill outer container. &mdash; <em>Note: If you\'re using a theme design that is not displayed in a stretch layout, this option will not be as pronounced.</em>', 'themeblvd_builder'),
+					'desc'		=> __('<strong>Popout:</strong> Stretch content of element to fill outer container. &mdash; <em>Note: If you\'re using a theme design that is not displayed in a stretch layout, this option will not be as pronounced.</em>', 'themeblvd_builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox'
 				);
@@ -2570,7 +2570,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_content'] = array(
 				'id'		=> 'bg_content',
 				'name'		=> null,
-				'desc'		=> __('Add theme\'s default content background color around element. &mdash; <em>Note: This can be helpful if the element sits in a section or column that has a background color set.</em>', 'themeblvd_builder'),
+				'desc'		=> __('<strong>Content Background:</strong> Add theme\'s default content background color around element. &mdash; <em>Note: This can be helpful if the element sits in a section or column that has a background color set.</em>', 'themeblvd_builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
@@ -2579,14 +2579,14 @@ class Theme_Blvd_Layout_Builder {
 			$options['suck_up'] = array(
 				'id'		=> 'suck_up',
 				'name'		=> null,
-				'desc'		=> __('Suck element up closer to the element that comes before it.', 'themeblvd_builder'),
+				'desc'		=> __('<strong>Suck Up:</strong> Suck element up closer to the element that comes before it.', 'themeblvd_builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
 			$options['suck_down'] = array(
 				'id'		=> 'suck_down',
 				'name'		=> null,
-				'desc'		=> __('Suck element down closer to the element that comes after it.', 'themeblvd_builder'),
+				'desc'		=> __('<strong>Suck Down:</strong> Suck element down closer to the element that comes after it.', 'themeblvd_builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
