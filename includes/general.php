@@ -169,7 +169,7 @@ function themeblvd_builder_paginated_layout( $post_id, $sections ){
 						continue;
 					}
 
-					if ( $element['type'] == 'post_list' || $element['type'] == 'post_grid' ) {
+					if ( $element['type'] == 'blog' || $element['type'] == 'post_list' || $element['type'] == 'post_grid' ) {
 
 						if ( ! empty( $element['options']['paginated_hide'] ) ) {
 							$show_section_id = $section_id;
