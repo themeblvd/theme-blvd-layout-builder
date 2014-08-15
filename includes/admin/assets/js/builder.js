@@ -114,9 +114,6 @@ jQuery(document).ready(function($) {
 						name = $div.data('name');
 
 					$div.data( 'name', name.replace(prev_section, new_section) );
-
-					console.log(name.replace(prev_section, new_section));
-
 				});
 
 			});
