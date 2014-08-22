@@ -192,6 +192,7 @@ class Theme_Blvd_Builder_API {
 		// Elements requiring framework 2.5
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			$this->registered_elements[] = 'alert';
+			$this->registered_elements[] = 'author_box';
 			$this->registered_elements[] = 'blog';
 			$this->registered_elements[] = 'breadcrumbs';
 			$this->registered_elements[] = 'chart_bar';
@@ -311,6 +312,38 @@ class Theme_Blvd_Builder_API {
 					'danger' 	=> __('Danger (red)', 'themeblvd_builder'),
 					'warning' 	=> __('Warning (yellow)', 'themeblvd_builder')
 				)
+			)
+		);
+
+		/*--------------------------------------------*/
+		/* Author Box
+		/*--------------------------------------------*/
+
+		$this->core_elements['author_box'] = array();
+
+		// Information
+		$this->core_elements['author_box']['info'] = array(
+			'name' 		=> __('Author Box', 'themeblvd_builder'),
+			'id'		=> 'author_box',
+			'hook'		=> 'themeblvd_author_box',
+			'shortcode'	=> null,
+			'desc' 		=> __( 'The author box setup from the user\'s profile settings.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['author_box']['support'] = array(
+			'popout'		=> false,
+			'padding'		=> false
+		);
+
+		// Options
+		$this->core_elements['author_box']['options'] = array(
+			'user' => array(
+		    	'id' 		=> 'user',
+				'name'		=> __( 'Author', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select a WordPress user to pull the author box for. The individual author box settings can be set from the user\'s profile settings.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'select'	=> 'authors'
 			)
 		);
 
@@ -2066,27 +2099,27 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    ),
 			'thumbs' => array(
-				'name' 		=> __( 'Thumbnails', 'themeblvd' ),
-				'desc' 		=> __( 'Choosed the size of thumbnails in the mini post grid.', 'themeblvd' ),
+				'name' 		=> __( 'Thumbnails', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Choosed the size of thumbnails in the mini post grid.', 'themeblvd_builder' ),
 				'id' 		=> 'thumbs',
 				'std' 		=> 'smaller',
 				'type' 		=> 'select',
 				'options' => array(
-					'small' 	=> __( 'Small', 'themeblvd' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'smaller'	=> __( 'Smaller', 'themeblvd_builder' ),
 					'smallest' 	=> __( 'Smallest', 'themeblvd_builder' )
 				)
 			),
 			'align' => array(
-				'name' 		=> __( 'Thumbnail Alignment', 'themeblvd' ),
-				'desc' 		=> __( 'Select how you\'d like the thumbnails aligned.', 'themeblvd' ),
+				'name' 		=> __( 'Thumbnail Alignment', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select how you\'d like the thumbnails aligned.', 'themeblvd_builder' ),
 				'id' 		=> 'align',
 				'std' 		=> 'left',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'left'		=> __( 'Left', 'themeblvd' ),
-					'center' 	=> __( 'Center', 'themeblvd' ),
-					'right' 	=> __( 'Right', 'themeblvd' )
+					'left'		=> __( 'Left', 'themeblvd_builder' ),
+					'center' 	=> __( 'Center', 'themeblvd_builder' ),
+					'right' 	=> __( 'Right', 'themeblvd_builder' )
 				)
 			)
 		);
@@ -2208,27 +2241,42 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    ),
 			'thumbs' => array(
-				'name' 		=> __( 'Thumbnails', 'themeblvd' ),
-				'desc' 		=> __( 'Choosed the size of featured images in the mini post list, or if you want them hidden.', 'themeblvd' ),
+				'name' 		=> __( 'Thumbnails', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Choosed the size of featured images in the mini post list, or if you want them hidden.', 'themeblvd_builder' ),
 				'id' 		=> 'thumbs',
 				'std' 		=> 'smaller',
 				'type' 		=> 'select',
 				'options' => array(
-					'0' 		=> __( 'Hide', 'themeblvd' ),
-					'small' 	=> __( 'Small', 'themeblvd' ),
+					'0' 		=> __( 'Hide', 'themeblvd_builder' ),
+					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'smaller'	=> __( 'Smaller', 'themeblvd_builder' ),
 					'smallest' 	=> __( 'Smallest', 'themeblvd_builder' )
 				)
 			),
 			'meta' => array(
-				'name' 		=> __( 'Meta Information', 'themeblvd' ),
-				'desc' 		=> __( 'Select if you\'d like the meta information to show for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Meta Information', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select if you\'d like the meta information to show for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'meta',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'1'			=> __( 'Show meta info', 'themeblvd' ),
-					'0' 		=> __( 'Hide meta info', 'themeblvd' )
+					'1'			=> __( 'Show meta info', 'themeblvd_builder' ),
+					'0' 		=> __( 'Hide meta info', 'themeblvd_builder' )
+				)
+			),
+			'columns' => array(
+				'name' 		=> __( 'Column Spread', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Here, you can choose to list out your posts separated into columns.<br><br><em>Note: For best results, set your "Number of Posts" option above to a number divisable by the number of columns.</em>', 'themeblvd_builder' ),
+				'id' 		=> 'columns',
+				'std' 		=> '1',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'1'			=> __( 'Don\'t spread across multiple columns', 'themeblvd_builder' ),
+					'2'			=> __( '2 Columns', 'themeblvd_builder' ),
+					'3' 		=> __( '3 Columns', 'themeblvd_builder' ),
+					'4' 		=> __( '4 Columns', 'themeblvd_builder' ),
+					'5' 		=> __( '5 Columns', 'themeblvd_builder' ),
+					'6' 		=> __( '6 Columns', 'themeblvd_builder' )
 				)
 			)
 		);
@@ -2732,39 +2780,39 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    ),
 		    'thumbs' => array(
-				'name' 		=> __( 'Featured Images', 'themeblvd' ),
-				'desc' 		=> __( 'Choose whether or not you want featured images to show for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Choose whether or not you want featured images to show for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'thumbs',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' => array(
-					'default'	=> __( 'Use default post grid setting', 'themeblvd' ),
+					'default'	=> __( 'Use default post grid setting', 'themeblvd_builder' ),
 					'full'		=> __( 'Show featured images', 'themeblvd_builder' ),
 					'hide' 		=> __( 'Hide featured images', 'themeblvd_builder' )
 				)
 			),
 			'meta' => array(
-				'name' 		=> __( 'Meta Information', 'themeblvd' ),
-				'desc' 		=> __( 'Select if you\'d like the meta information (like date posted, author, etc) to show for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Meta Information', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select if you\'d like the meta information (like date posted, author, etc) to show for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'meta',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default'	=> __( 'Use default post grid setting', 'themeblvd' ),
-					'show'		=> __( 'Show meta info', 'themeblvd' ),
-					'hide' 		=> __( 'Hide meta info', 'themeblvd' )
+					'default'	=> __( 'Use default post grid setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show meta info', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide meta info', 'themeblvd_builder' )
 				)
 			),
 			'excerpt' => array(
-				'name' 		=> __( 'Excerpt', 'themeblvd' ),
-				'desc' 		=> __( 'Select if you\'d like to show the excerpt or not for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Excerpt', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select if you\'d like to show the excerpt or not for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'excerpt',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default'	=> __( 'Use default post grid setting', 'themeblvd' ),
-					'show'		=> __( 'Show excerpts', 'themeblvd' ),
-					'hide' 		=> __( 'Hide excerpts', 'themeblvd' )
+					'default'	=> __( 'Use default post grid setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show excerpts', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide excerpts', 'themeblvd_builder' )
 				)
 			),
 			'sub_group_start_3' => array(
@@ -2772,22 +2820,22 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'show-hide-toggle'
 			),
 			'more' => array(
-				'name' 		=> __( 'Read More', 'themeblvd' ),
-				'desc' 		=> __( 'What would you like to show for each post to lead the reader to the full post?', 'themeblvd' ),
+				'name' 		=> __( 'Read More', 'themeblvd_builder' ),
+				'desc' 		=> __( 'What would you like to show for each post to lead the reader to the full post?', 'themeblvd_builder' ),
 				'id' 		=> 'more',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default'	=> __( 'Use default post grid setting', 'themeblvd' ),
-					'text' 		=> __( 'Show text link', 'themeblvd' ),
-					'button'	=> __( 'Show button', 'themeblvd' ),
-					'none'		=> __( 'Show no button or text link', 'themeblvd' )
+					'default'	=> __( 'Use default post grid setting', 'themeblvd_builder' ),
+					'text' 		=> __( 'Show text link', 'themeblvd_builder' ),
+					'button'	=> __( 'Show button', 'themeblvd_builder' ),
+					'none'		=> __( 'Show no button or text link', 'themeblvd_builder' )
 				),
 				'class'		=> 'trigger'
 			),
 			'more_text' => array(
-				'name' 		=> __( 'Read More Text', 'themeblvd' ),
-				'desc' 		=> __( 'Enter the text you\'d like to use to lead the reader to the full post.', 'themeblvd' ),
+				'name' 		=> __( 'Read More Text', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Enter the text you\'d like to use to lead the reader to the full post.', 'themeblvd_builder' ),
 				'id' 		=> 'more_text',
 				'std' 		=> 'Read More',
 				'type' 		=> 'text',
@@ -3286,27 +3334,27 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    ),
 			'thumbs' => array(
-				'name' 		=> __( 'Featured Images', 'themeblvd' ),
-				'desc' 		=> __( 'Choose whether or not you want featured images to show for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Featured Images', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Choose whether or not you want featured images to show for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'thumbs',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' => array(
-					'default' 	=> __( 'Use default post list setting', 'themeblvd' ),
+					'default' 	=> __( 'Use default post list setting', 'themeblvd_builder' ),
 					'full'		=> __( 'Show featured images', 'themeblvd_builder' ),
 					'hide' 		=> __( 'Hide featured images', 'themeblvd_builder' )
 				)
 			),
 			'meta' => array(
-				'name' 		=> __( 'Meta Information', 'themeblvd' ),
-				'desc' 		=> __( 'Select if you\'d like the meta information (like date posted, author, etc) to show for each post.', 'themeblvd' ),
+				'name' 		=> __( 'Meta Information', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select if you\'d like the meta information (like date posted, author, etc) to show for each post.', 'themeblvd_builder' ),
 				'id' 		=> 'meta',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default' 	=> __( 'Use default post list setting', 'themeblvd' ),
-					'show'		=> __( 'Show meta info', 'themeblvd' ),
-					'hide' 		=> __( 'Hide meta info', 'themeblvd' )
+					'default' 	=> __( 'Use default post list setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show meta info', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide meta info', 'themeblvd_builder' )
 				)
 			),
 			'subgroup_start_3' => array(
@@ -3314,22 +3362,22 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'show-hide-toggle'
 			),
 			'more' => array(
-				'name' 		=> __( 'Read More', 'themeblvd' ),
-				'desc' 		=> __( 'What would you like to show for each post to lead the reader to the full post?', 'themeblvd' ),
+				'name' 		=> __( 'Read More', 'themeblvd_builder' ),
+				'desc' 		=> __( 'What would you like to show for each post to lead the reader to the full post?', 'themeblvd_builder' ),
 				'id' 		=> 'more',
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default' 	=> __( 'Use default post list setting', 'themeblvd' ),
-					'text' 		=> __( 'Show text link', 'themeblvd' ),
-					'button'	=> __( 'Show button', 'themeblvd' ),
-					'none'		=> __( 'Show no button or text link', 'themeblvd' )
+					'default' 	=> __( 'Use default post list setting', 'themeblvd_builder' ),
+					'text' 		=> __( 'Show text link', 'themeblvd_builder' ),
+					'button'	=> __( 'Show button', 'themeblvd_builder' ),
+					'none'		=> __( 'Show no button or text link', 'themeblvd_builder' )
 				),
 				'class'		=> 'trigger'
 			),
 			'more_text' => array(
-				'name' 		=> __( 'Read More Text', 'themeblvd' ),
-				'desc' 		=> __( 'Enter the text you\'d like to use to lead the reader to the full post.', 'themeblvd' ),
+				'name' 		=> __( 'Read More Text', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Enter the text you\'d like to use to lead the reader to the full post.', 'themeblvd_builder' ),
 				'id' 		=> 'more_text',
 				'std' 		=> 'Read More <i class="fa fa-long-arrow-right"></i>',
 				'type' 		=> 'text',
@@ -4429,10 +4477,18 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['slogan']['options'] = array(
-			'slogan' => array(
-				'id' 		=> 'slogan',
-				'name' 		=> __( 'Promo Content', 'themeblvd_builder'),
-				'desc'		=> __( 'Enter the text you\'d like to show.', 'themeblvd_builder'),
+			'headline' => array(
+				'id' 		=> 'headline',
+				'name' 		=> __( 'Promo Headline', 'themeblvd_builder'),
+				'desc'		=> __( 'Enter any text you\'d like to be displayed with large text.', 'themeblvd_builder'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+		    ),
+			'desc' => array(
+				'id' 		=> 'desc',
+				'name' 		=> __( 'Promo Description', 'themeblvd_builder'),
+				'desc'		=> __( 'If you\'d like smaller text below the headline, enter it here.', 'themeblvd_builder'),
 				'type'		=> 'textarea',
 				'editor'	=> true,
 				'code'		=> 'html'
@@ -4444,19 +4500,6 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
-		    'text_size' => array(
-				'id' 		=> 'text_size',
-				'name' 		=> __( 'Promo Text Size', 'themeblvd_builder'),
-				'desc'		=> __( 'Select how large you\'d like the text in the promo text to be, by default.', 'themeblvd_builder'),
-				'std'		=> 'large',
-				'type'		=> 'select',
-				'options'	=> array(
-					'small' 	=> __( 'Small', 'themeblvd_builder' ),
-					'default' 	=> __( 'Normal', 'themeblvd_builder' ),
-					'medium' 	=> __( 'Medium', 'themeblvd_builder' ),
-					'large' 	=> __( 'Large', 'themeblvd_builder' )
-				)
-		    ),
 		    'subgroup_start' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide-toggle'
@@ -4558,7 +4601,15 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'button_text',
 				'name'		=> __( 'Button Text', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the text for the button.', 'themeblvd_builder' ),
-				'std'		=> 'Get Started Today!',
+				'std'		=> 'Purchase Now',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver'
+			),
+			'button_url' => array(
+				'id' 		=> 'button_url',
+				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
+				'std'		=> 'http://www.your-site.com/your-landing-page',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
 			),
@@ -4577,13 +4628,18 @@ class Theme_Blvd_Builder_API {
 					'x-large' 	=> __( 'Extra Large', 'themeblvd_builder' )
 				)
 			),
-			'button_url' => array(
-				'id' 		=> 'button_url',
-				'name'		=> __( 'Link URL', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter the full URL where you want the button\'s link to go.', 'themeblvd_builder' ),
-				'std'		=> 'http://www.your-site.com/your-landing-page',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
+			'button_placement' => array(
+				'id' 		=> 'button_placement',
+				'name'		=> __( 'Button Placement', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select where you\'d like the button placed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'right',
+				'class'		=> 'hide receiver',
+				'options'	=> array(
+					'right' 	=> __( 'Floated Right', 'themeblvd_builder' ),
+					'left' 		=> __( 'Floated Left', 'themeblvd_builder' ),
+					'below' 	=> __( 'Below Headline and Description', 'themeblvd_builder' )
+				)
 			),
 			'button_target' => array(
 				'id' 		=> 'button_target',
@@ -4791,7 +4847,7 @@ class Theme_Blvd_Builder_API {
 
 		// Support
 		$this->core_elements['simple_slider_popout']['support'] = array(
-			'popout'		=> 'force',
+			'popout'		=> 'force', // Will be checked, and not allow user to uncheck
 			'padding'		=> true
 		);
 
@@ -4810,7 +4866,7 @@ class Theme_Blvd_Builder_API {
 				'name' 		=> __( 'Image Crop Size', 'themeblvd_builder' ),
 				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'themeblvd_builder' ),
 				'id' 		=> 'crop',
-				'std' 		=> 'full',
+				'std' 		=> 'slider-x-large',
 				'type' 		=> 'select',
 				'select'	=> 'crop',
 				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
