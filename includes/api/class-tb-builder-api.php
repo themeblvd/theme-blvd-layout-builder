@@ -200,6 +200,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'chart_pie';
 			$this->registered_elements[] = 'contact';
 			$this->registered_elements[] = 'current';
+			$this->registered_elements[] = 'custom_field';
 			$this->registered_elements[] = 'external';
 			$this->registered_elements[] = 'map'; // "Google" map
 			$this->registered_elements[] = 'html';
@@ -326,7 +327,7 @@ class Theme_Blvd_Builder_API {
 			'name' 		=> __('Author Box', 'themeblvd_builder'),
 			'id'		=> 'author_box',
 			'hook'		=> 'themeblvd_author_box',
-			'shortcode'	=> null,
+			'shortcode'	=> false,
 			'desc' 		=> __( 'The author box setup from the user\'s profile settings.', 'themeblvd_builder' )
 		);
 
@@ -358,7 +359,7 @@ class Theme_Blvd_Builder_API {
 			'name'		=> __( 'Blog', 'themeblvd_builder' ),
 			'id'		=> 'blog',
 			'hook'		=> 'themeblvd_blog',
-			'shortcode'	=> null,
+			'shortcode'	=> false,
 			'desc'		=> __( 'Primary posts display', 'themeblvd_builder' )
 		);
 
@@ -1162,8 +1163,46 @@ class Theme_Blvd_Builder_API {
 			'padding'		=> true
 		);
 
+		// Options
 		$this->core_elements['current']['options'] = array(
 			// ...
+		);
+
+		/*--------------------------------------------*/
+		/* Custom Field
+		/*--------------------------------------------*/
+
+		$this->core_elements['custom_field'] = array();
+
+		// Information
+		$this->core_elements['custom_field']['info'] = array(
+			'name'		=> __( 'Custom Field', 'themeblvd_builder' ),
+			'id'		=> 'custom_field',
+			'hook'		=> 'themeblvd_custom_field',
+			'shortcode'	=> false,
+			'desc'		=> __( 'Grab a custom field from the current page.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['custom_field']['support'] = array(
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['custom_field']['options'] = array(
+			'key' => array(
+				'id' 		=> 'key',
+				'name'		=> __( 'Name', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the name of the custom field you want to pull from for the current page.', 'themeblvd_builder' ),
+				'type'		=> 'text'
+			),
+			'wpautop' => array(
+		    	'id' 		=> 'wpautop',
+				'desc'		=> __( 'Apply WordPress automatic formatting to custom field output.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'std'		=> '0'
+			)
 		);
 
 		/*--------------------------------------------*/
