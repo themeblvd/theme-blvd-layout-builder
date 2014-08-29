@@ -3661,6 +3661,18 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['post_slider']['options'] = array(
+			 'style' => array(
+				'name' 		=> __( 'Display Style', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select one of the preset style for how the post slider displays. When referring to "included elements" it\'s referring to post titles, meta, excerpts, and buttons configured in the following options.', 'themeblvd_builder' ),
+				'id' 		=> 'style',
+				'std' 		=> 'style-1',
+				'type' 		=> 'radio',
+				'options'	=> apply_filters('themeblvd_post_slider_styles', array(
+					'style-1'	=> __('<strong>Style #1:</strong> Display included elements open and center on each slide.', 'themeblvd_builder'),
+					'style-2'	=> __('<strong>Style #2:</strong> Display included elements in a shaded content area positioned to the side of each slide.', 'themeblvd_builder'),
+					'style-3'	=> __('<strong>Style #3:</strong> An open, more magazine-style post slider.', 'themeblvd_builder')
+				))
+			),
 			'subgroup_start_1' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide-toggle'
@@ -3761,7 +3773,7 @@ class Theme_Blvd_Builder_API {
 		    ),
 			'slide_link' => array(
 				'name' 		=> __( 'Link Handling', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select how the user ineracts with each slide and where they\'re directed to.', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select how the user interacts with each slide and where they\'re directed to.', 'themeblvd_builder' ),
 				'id' 		=> 'slide_link',
 				'std' 		=> 'button',
 				'type' 		=> 'select',
@@ -3835,13 +3847,6 @@ class Theme_Blvd_Builder_API {
 				'std'		=> '5',
 				'type'		=> 'text'
 		    ),
-			'interval' => array(
-				'id'		=> 'interval',
-				'name' 		=> __( 'Speed', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'themeblvd_builder' ),
-				'std'		=> '5',
-				'type'		=> 'text'
-		    ),
 			'pause' => array(
 				'id'		=> 'pause',
 				'desc' 		=> __( 'Pause slider on hover.', 'themeblvd_builder' ),
@@ -3878,17 +3883,29 @@ class Theme_Blvd_Builder_API {
 				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
-			'link' => array(
+			'thumb_link' => array(
 				'id'		=> 'thumb_link',
 				'desc'		=> __( 'Apply hover effect to linked images.', 'themeblvd_builder'),
 				'std'		=> true,
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-image_post receiver-image_link'
 			),
+			'title'	=> array(
+				'id'		=> 'title',
+				'desc'		=> __( 'Display title for each post.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
 			'meta'	=> array(
 				'id'		=> 'meta',
 				'desc'		=> __( 'Display meta info for each post.', 'themeblvd_builder'),
 				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'excerpts'	=> array(
+				'id'		=> 'excerpts',
+				'desc'		=> __( 'Display excerpt for each post.', 'themeblvd_builder'),
+				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
 			'subgroup_end_2' => array(
@@ -4157,6 +4174,18 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['post_slider_popout']['options'] = array(
+			'style' => array(
+				'name' 		=> __( 'Display Style', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select one of the preset style for how the post slider displays. When referring to "included elements" it\'s referring to post titles, meta, excerpts, and buttons configured in the following options.', 'themeblvd_builder' ),
+				'id' 		=> 'style',
+				'std' 		=> 'style-1',
+				'type' 		=> 'radio',
+				'options'	=> apply_filters('themeblvd_post_slider_styles', array(
+					'style-1'	=> __('<strong>Style #1:</strong> Display included elements open and center on each slide.', 'themeblvd_builder'),
+					'style-2'	=> __('<strong>Style #2:</strong> Display included elements in a shaded content area positioned to the side of each slide.', 'themeblvd_builder'),
+					'style-3'	=> __('<strong>Style #3:</strong> An open, more magazine-style post slider.', 'themeblvd_builder')
+				))
+			),
 			'subgroup_start_1' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide-toggle'
@@ -4381,10 +4410,22 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-image_post receiver-image_link'
 			),
+			'title'	=> array(
+				'id'		=> 'title',
+				'desc'		=> __( 'Display title for each post.', 'themeblvd_builder'),
+				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
 			'meta'	=> array(
 				'id'		=> 'meta',
 				'desc'		=> __( 'Display meta info for each post.', 'themeblvd_builder'),
 				'std'		=> true,
+				'type'		=> 'checkbox'
+			),
+			'excerpts'	=> array(
+				'id'		=> 'excerpts',
+				'desc'		=> __( 'Display excerpt for each post.', 'themeblvd_builder'),
+				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
 			'subgroup_end_2' => array(
