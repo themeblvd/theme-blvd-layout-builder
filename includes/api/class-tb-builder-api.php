@@ -250,19 +250,8 @@ class Theme_Blvd_Builder_API {
 		/* Option helpers
 		/*--------------------------------------------*/
 
-		// Setup array for floating sidebars
-		$sidebars = array();
-		if ( defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
-			$sidebars = themeblvd_get_select( 'sidebars' );
-			if ( ! $sidebars ) {
-				$sidebars['null'] = __( 'You haven\'t created any floating widget areas yet.', 'themeblvd_builder' );
-			}
-			if ( ! defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
-				$sidebars['null'] = __( 'You need to have the Theme Blvd Widget Areas plugin installed for this feature.', 'themeblvd_builder' );
-			}
-		}
-
 		// Setup array for categories select
+		//$categories_select = array();
 		$categories_select = themeblvd_get_select( 'categories' );
 
 		// Setup array for categories group of checkboxes
@@ -1101,9 +1090,8 @@ class Theme_Blvd_Builder_API {
 				'page_id' => array(
 			    	'id' 		=> 'page_id',
 					'name'		=> __( 'External Page', 'themeblvd_builder' ),
-					'desc'		=> __( 'Choose the external page you\'d like to pull content from.', 'themeblvd_builder' ),
-					'type'		=> 'select',
-					'options'	=> themeblvd_get_select( 'pages' ),
+					'desc'		=> __( 'Enter the slug of a page you\'d like to pull from.', 'themeblvd_builder' ),
+					'type'		=> 'text',
 					'class'		=> 'hide page-content'
 				),
 				'raw_content' => array(
@@ -1123,10 +1111,9 @@ class Theme_Blvd_Builder_API {
 				),
 				'widget_area' => array(
 			    	'id' 		=> 'widget_area',
-					'name'		=> __( 'Floating Widget Area', 'themeblvd_builder' ),
-					'desc'		=> __( 'Select from your floating custom widget areas. In order for a custom widget area to be "floating" you must have it configured this way in the Widget Area manager.', 'themeblvd_builder' ),
-					'type'		=> 'select',
-					'options'	=> $sidebars,
+					'name'		=> __( 'Widget Area', 'themeblvd_builder' ),
+					'desc'		=> __( 'Enter the ID of a widget area.', 'themeblvd_builder' ),
+					'type'		=> 'text',
 					'class'		=> 'hide widget_area-content'
 				),
 				'subgroup_end' => array(
@@ -5050,7 +5037,7 @@ class Theme_Blvd_Builder_API {
 					'name'		=> __( 'Choose Slider', 'themeblvd_builder' ),
 					'desc'		=> __( 'Choose from the sliders you\'ve created. You can edit these sliders at any time under the \'Sliders\' tab above.', 'themeblvd_builder' ),
 					'type'		=> 'select',
-					'options'	=> themeblvd_get_select( 'sliders' )
+					'select'	=> 'sliders'
 				)
 			);
 
