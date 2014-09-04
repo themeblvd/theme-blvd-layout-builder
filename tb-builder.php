@@ -68,6 +68,15 @@ function themeblvd_builder_init() {
 	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 
 		/**
+		 * Prints out any specific CSS in the <head> that the user
+		 * has configured from the Builder. Note in this funciton
+		 * we're using wp_add_inline_style() for the theme's style.css.
+		 * Since the theme's style.css is hooked at priorty 20, we're
+		 * using 25 here.
+		 */
+		add_action( 'wp_enqueue_scripts', 'themeblvd_builder_styles', 25 );
+
+		/**
 		 * Hooks to action in the theme's template_builder.php page
 		 * template and footer.php template in order to display the
 		 * custom layout. Requires that the theme has the function

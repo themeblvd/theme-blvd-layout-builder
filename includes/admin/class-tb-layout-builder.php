@@ -1434,8 +1434,8 @@ class Theme_Blvd_Layout_Builder {
 
 		global $_POST;
 
-		//echo '<pre>'; print_r($_POST); echo '</pre>';
-		//die();
+		// echo '<pre>'; print_r($_POST); echo '</pre>';
+		// die();
 
 		// Verify that this coming from the edit post page.
 		if ( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' ) {
@@ -1640,28 +1640,35 @@ class Theme_Blvd_Layout_Builder {
 		}
 		?>
 		<div class="manage-elements">
+
 			<div class="ajax-overlay add-element"></div>
+
 			<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
+
 			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'themeblvd_builder'); ?>">
 				<select>
-				<?php
-				foreach ( $elements as $element ) {
-					if ( $api->is_element( $element['info']['id'] ) ) {
-						echo '<option value="'.$element['info']['id'].'">'.$element['info']['name'].'</option>';
+					<?php
+					foreach ( $elements as $element ) {
+						if ( $api->is_element( $element['info']['id'] ) ) {
+							echo '<option value="'.$element['info']['id'].'">'.$element['info']['name'].'</option>';
+						}
 					}
-				}
-				?>
+					?>
 				</select>
 				<span class="trigger"></span>
 				<span class="textbox"></span>
 			</div><!-- .tb-fancy-select (end) -->
+
 			<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add Element', 'themeblvd_builder' ); ?></a>
+
 			<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 				<a href="#" id="add_new_section" class="button-secondary"><?php _e( 'Add Section', 'themeblvd_builder' ); ?></a>
 			<?php endif; ?>
+
 			<span class="tb-loader ajax-loading">
 				<i class="tb-icon-spinner"></i>
 			</span>
+
 			<div class="clear"></div>
 		</div><!-- .manage-elements (end) -->
 		<div id="builder">
@@ -2246,7 +2253,13 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function get_display_options( $type, $element_type = null ) {
 
-		$options = array();
+		$options = array(
+			'type' => array(
+				'id' 	=> 'type',
+				'std'	=> $type,
+				'type' 	=> 'hidden'
+			)
+		);
 
 		if ( $type == 'section' || $type == 'column' ) {
 
@@ -2270,131 +2283,143 @@ class Theme_Blvd_Layout_Builder {
 
 			}
 
-			$options = array(
-				'subgroup_start' => array(
-					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide-toggle'
+			$options['subgroup_start'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+			);
+
+			$options['bg_type'] = array(
+				'id'		=> 'bg_type',
+				'name'		=> __('Apply Background', 'themeblvd_builder'),
+				'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters( 'themeblvd_builder_bg_types', $bg_types, $type ),
+				'class'		=> 'trigger'
+			);
+
+			$options['text_color'] = array(
+				'id'		=> 'text_color',
+				'name'		=> __('Text Color'),
+				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
+				'std'		=> 'dark',
+				'type'		=> 'select',
+				'options'	=> array(
+					'dark'	=> __('Dark Text', 'themeblvd_builder'),
+					'light'	=> __('Light Text', 'themeblvd_builder')
 				),
-				'bg_type' => array(
-					'id'		=> 'bg_type',
-					'name'		=> __('Apply Background', 'themeblvd_builder'),
-					'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'themeblvd_builder'),
-					'std'		=> 'none',
-					'type'		=> 'select',
-					'options'	=> apply_filters( 'themeblvd_builder_bg_types', $bg_types, $type ),
-					'class'		=> 'trigger'
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			);
+
+			$options['bg_color'] = array(
+				'id'		=> 'bg_color',
+				'name'		=> __('Background Color', 'themeblvd_builder'),
+				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
+				'std'		=> '#f2f2f2',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			);
+
+			$options['bg_color_opacity'] = array(
+				'id'		=> 'bg_color_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
 				),
-				'text_color' => array(
-					'id'		=> 'text_color',
-					'name'		=> __('Text Color'),
-					'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
-					'std'		=> 'dark',
-					'type'		=> 'select',
-					'options'	=> array(
-						'dark'	=> __('Dark Text', 'themeblvd_builder'),
-						'light'	=> __('Light Text', 'themeblvd_builder')
-					),
-					'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			);
+
+			$options['bg_texture'] = array(
+				'id'		=> 'bg_texture',
+				'name'		=> __('Background Texture', 'themeblvd_builder'),
+				'desc'		=> __('Select a background texture.', 'themeblvd_builder'),
+				'type'		=> 'select',
+				'select'	=> 'textures',
+				'class'		=> 'hide receiver receiver-texture'
+			);
+
+			$options['subgroup_start_2'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide hide receiver receiver-texture'
+			);
+
+			$options['apply_bg_texture_parallax'] = array(
+				'id'		=> 'apply_bg_texture_parallax',
+				'name'		=> null,
+				'desc'		=> __('Apply parallax scroll effect to background texture.', 'themeblvd_builder'),
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+
+			$options['bg_texture_parallax'] = array(
+				'id'		=> 'bg_texture_parallax',
+				'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'type'		=> 'slide',
+				'std'		=> '5',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '10',
+					'step'	=> '1'
 				),
-				'bg_color' => array(
-					'id'		=> 'bg_color',
-					'name'		=> __('Background Color', 'themeblvd_builder'),
-					'desc'		=> __('Select a background color.', 'themeblvd_builder'),
-					'std'		=> '#f2f2f2',
-					'type'		=> 'color',
-					'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+				'class'		=> 'hide receiver'
+			);
+
+			$options['subgroup_end_2'] = array(
+				'type'		=> 'subgroup_end'
+			);
+
+			$options['subgroup_start_3'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'select-parallax hide receiver receiver-image'
+			);
+
+			$options['bg_image'] = array(
+				'id'		=> 'bg_image',
+				'name'		=> __('Background Image', 'themeblvd_builder'),
+				'desc'		=> __('Select a background image.', 'themeblvd_builder'),
+				'type'		=> 'background',
+				'color'		=> false,
+				'parallax'	=> true
+			);
+
+			$options['bg_image_parallax_stretch'] = array(
+				'id'		=> 'bg_image_parallax_stretch',
+				'name'		=> __('Parallax: Stretch Background', 'themeblvd_builder'),
+				'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'themeblvd_builder'),
+				'type'		=> 'checkbox',
+				'std'		=> '1',
+				'class'		=> 'hide parallax'
+			);
+
+			$options['bg_image_parallax'] = array(
+				'id'		=> 'bg_image_parallax',
+				'name'		=> __('Parallax: Intensity', 'themeblvd_builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'type'		=> 'slide',
+				'std'		=> '2',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '10',
+					'step'	=> '1'
 				),
-				'bg_color_opacity' => array(
-					'id'		=> 'bg_color_opacity',
-					'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-					'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
-					'std'		=> '1',
-					'type'		=> 'select',
-					'options'	=> array(
-						'0.1'	=> '0.1',
-						'0.2'	=> '0.2',
-						'0.3'	=> '0.3',
-						'0.4'	=> '0.4',
-						'0.5'	=> '0.5',
-						'0.6'	=> '0.6',
-						'0.7'	=> '0.7',
-						'0.8'	=> '0.8',
-						'0.9'	=> '0.9',
-						'1'		=> '1.0'
-					),
-					'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
-				),
-				'bg_texture' => array(
-					'id'		=> 'bg_texture',
-					'name'		=> __('Background Texture', 'themeblvd_builder'),
-					'desc'		=> __('Select a background texture.', 'themeblvd_builder'),
-					'type'		=> 'select',
-					'select'	=> 'textures',
-					'class'		=> 'hide receiver receiver-texture'
-				),
-				'subgroup_start_2' => array(
-					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide hide receiver receiver-texture'
-				),
-				'apply_bg_texture_parallax' => array(
-					'id'		=> 'apply_bg_texture_parallax',
-					'name'		=> null,
-					'desc'		=> __('Apply parallax scroll effect to background texture.', 'themeblvd_builder'),
-					'type'		=> 'checkbox',
-					'class'		=> 'trigger'
-				),
-				'bg_texture_parallax' => array(
-					'id'		=> 'bg_texture_parallax',
-					'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
-					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
-					'type'		=> 'slide',
-					'std'		=> '5',
-					'options'	=> array(
-						'min'	=> '1',
-						'max'	=> '10',
-						'step'	=> '1'
-					),
-					'class'		=> 'hide receiver'
-				),
-				'subgroup_end_2' => array(
-					'type'		=> 'subgroup_end'
-				),
-				'subgroup_start_3' => array(
-					'type'		=> 'subgroup_start',
-					'class'		=> 'select-parallax hide receiver receiver-image'
-				),
-				'bg_image' => array(
-					'id'		=> 'bg_image',
-					'name'		=> __('Background Image', 'themeblvd_builder'),
-					'desc'		=> __('Select a background image.', 'themeblvd_builder'),
-					'type'		=> 'background',
-					'color'		=> false,
-					'parallax'	=> true
-				),
-				'bg_image_parallax_stretch' => array(
-					'id'		=> 'bg_image_parallax_stretch',
-					'name'		=> __('Parallax: Stretch Background', 'themeblvd_builder'),
-					'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'themeblvd_builder'),
-					'type'		=> 'checkbox',
-					'std'		=> '1',
-					'class'		=> 'hide parallax'
-				),
-				'bg_image_parallax' => array(
-					'id'		=> 'bg_image_parallax',
-					'name'		=> __('Parallax: Intensity', 'themeblvd_builder'),
-					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
-					'type'		=> 'slide',
-					'std'		=> '2',
-					'options'	=> array(
-						'min'	=> '1',
-						'max'	=> '10',
-						'step'	=> '1'
-					),
-					'class'		=> 'hide parallax'
-				),
-				'subgroup_end_3' => array(
-					'type'		=> 'subgroup_end'
-				)
+				'class'		=> 'hide parallax'
+			);
+
+			$options['subgroup_end_3'] = array(
+				'type'		=> 'subgroup_end'
 			);
 
 			// Extended Background options (for section only)
@@ -2458,35 +2483,42 @@ class Theme_Blvd_Layout_Builder {
 		// Custom padding options
 		switch ( $type ) {
 			case 'section' :
+				$first_title = __('Desktop Padding', 'themeblvd');
+				$id_suffix = '_desktop';
 				$term = __('section', 'themeblvd_builder');
 				$default = '30px';
 				break;
 			case 'column' :
+				$first_title = __('Padding', 'themeblvd');
+				$id_suffix = '';
 				$term = __('column', 'themeblvd_builder');
 				$default = '30px';
 				break;
 			case 'element' :
 			case 'block' :
+				$first_title = __('Padding', 'themeblvd');
+				$id_suffix = '';
 				$default = '0px';
 				$term = __('element', 'themeblvd_builder');
 		}
 
+		// Desktop padding
 		$options['subgroup_start_5'] = array(
 			'type'		=> 'subgroup_start',
 			'class'		=> 'show-hide'
 		);
 
-		$options['apply_padding'] = array(
-			'id'		=> 'apply_padding',
+		$options['apply_padding'.$id_suffix] = array(
+			'id'		=> 'apply_padding'.$id_suffix,
 			'name'		=> null,
-			'desc'		=> sprintf(__('<strong>Padding:</strong> Apply custom padding around %s.', 'themeblvd_builder'), $term),
+			'desc'		=> sprintf(__('<strong>%s:</strong> Apply custom padding around %s.', 'themeblvd_builder'), $first_title, $term),
 			'std'		=> 0,
 			'type'		=> 'checkbox',
 			'class'		=> 'trigger'
 		);
 
-		$options['padding_top'] = array(
-			'id'		=> 'padding_top',
+		$options['padding_top'.$id_suffix] = array(
+			'id'		=> 'padding_top'.$id_suffix,
 			'name'		=> __('Top Padding', 'themeblvd_builder'),
 			'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
 			'std'		=> $default,
@@ -2499,8 +2531,8 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['padding_right'] = array(
-			'id'		=> 'padding_right',
+		$options['padding_right'.$id_suffix] = array(
+			'id'		=> 'padding_right'.$id_suffix,
 			'name'		=> __('Right Padding', 'themeblvd_builder'),
 			'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
 			'std'		=> $default,
@@ -2513,8 +2545,8 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['padding_bottom'] = array(
-			'id'		=> 'padding_bottom',
+		$options['padding_bottom'.$id_suffix] = array(
+			'id'		=> 'padding_bottom'.$id_suffix,
 			'name'		=> __('Bottom Padding', 'themeblvd_builder'),
 			'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
 			'std'		=> $default,
@@ -2527,8 +2559,8 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['padding_left'] = array(
-			'id'		=> 'padding_left',
+		$options['padding_left'.$id_suffix] = array(
+			'id'		=> 'padding_left'.$id_suffix,
 			'name'		=> __('Left Padding', 'themeblvd_builder'),
 			'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
 			'std'		=> $default,
@@ -2544,6 +2576,160 @@ class Theme_Blvd_Layout_Builder {
 		$options['subgroup_end_5'] = array(
 			'type' => 'subgroup_end'
 		);
+
+		if ( $type == 'section' ) {
+
+			// Tablet Padding
+			$options['subgroup_start_6'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			);
+
+			$options['apply_padding_tablet'] = array(
+				'id'		=> 'apply_padding_tablet',
+				'name'		=> null,
+				'desc'		=> sprintf(__('<strong>Tablet Padding:</strong> Apply custom padding around %s when at the tablet viewport size.', 'themeblvd_builder'), $term),
+				'std'		=> 0,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+
+			$options['padding_top_tablet'] = array(
+				'id'		=> 'padding_top_tablet',
+				'name'		=> __('Tablet Top Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_right_tablet'] = array(
+				'id'		=> 'padding_right_tablet',
+				'name'		=> __('Tablet Right Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_bottom_tablet'] = array(
+				'id'		=> 'padding_bottom_tablet',
+				'name'		=> __('Tablet Bottom Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_left_tablet'] = array(
+				'id'		=> 'padding_left_tablet',
+				'name'		=> __('Tablet Left Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['subgroup_end_6'] = array(
+				'type' => 'subgroup_end'
+			);
+
+			// Mobile Padding
+			$options['subgroup_start_7'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			);
+
+			$options['apply_padding_mobile'] = array(
+				'id'		=> 'apply_padding_mobile',
+				'name'		=> null,
+				'desc'		=> sprintf(__('<strong>Mobile Padding:</strong> Apply custom padding around %s when at the mobile viewport size.', 'themeblvd_builder'), $term),
+				'std'		=> 0,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+
+			$options['padding_top_mobile'] = array(
+				'id'		=> 'padding_top_mobile',
+				'name'		=> __('Mobile Top Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_right_mobile'] = array(
+				'id'		=> 'padding_right_mobile',
+				'name'		=> __('Mobile Right Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_bottom_mobile'] = array(
+				'id'		=> 'padding_bottom_mobile',
+				'name'		=> __('Mobile Bottom Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['padding_left_mobile'] = array(
+				'id'		=> 'padding_left_mobile',
+				'name'		=> __('Mobile Left Padding', 'themeblvd_builder'),
+				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+				'std'		=> $default,
+				'type'		=> 'slide',
+				'options'	=> array(
+					'units'		=> 'px',
+					'min'		=> '0',
+					'max'		=> '600'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['subgroup_end_7'] = array(
+				'type' => 'subgroup_end'
+			);
+
+		}
 
 		if ( $type == 'element' || $type == 'block' ) {
 

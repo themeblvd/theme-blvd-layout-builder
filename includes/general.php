@@ -66,7 +66,7 @@ function themeblvd_builder_layout( $context ) {
 		foreach ( $sections as $section_id => $elements ) {
 
 			// Section classes
-			$class = implode( ' ', themeblvd_get_section_class( $section_data[$section_id], count($elements) ) );
+			$class = implode( ' ', themeblvd_get_section_class( $section_id, $section_data[$section_id], count($elements) ) );
 
 			// Display settings for section
 			$display = array();
@@ -78,7 +78,7 @@ function themeblvd_builder_layout( $context ) {
 			// Open section
 			do_action( 'themeblvd_section_before', $section_id, $section_data[$section_id] );
 
-			printf( '<section class="%s" style="%s" data-parallax="%s">', $class, themeblvd_get_display_inline_style($display), themeblvd_get_parallax_intensity($display) );
+			printf( '<section class="%s" data-parallax="%s">', $class, themeblvd_get_parallax_intensity($display) );
 
 			if ( $display ) {
 				if ( $display['bg_type'] == 'image' && $display['apply_bg_shade'] ) {
@@ -146,14 +146,14 @@ function themeblvd_builder_content() {
  * If we're on the second page of a paginated query,
  * we'll find the paginated element and see if all other
  * elements should be hidden. If so, we'll modify the sections
- * of elements to display;
+ * of elements to display.
  *
  * @since 2.0.0
  *
  * @param string $var Description
  * @return string $var Description
  */
-function themeblvd_builder_paginated_layout( $post_id, $sections ){
+function themeblvd_builder_paginated_layout( $post_id, $sections ) {
 
 	if ( is_paged() ) {
 
@@ -220,4 +220,99 @@ function themeblvd_builder_paginated_layout( $post_id, $sections ){
 	} // end if ( is_paged() )
 
 	return $sections;
+}
+
+/**
+ * Add external styles for Builder sections
+ *
+ * @since 2.0.0
+ *
+ * @param string $var Description
+ * @return string $var Description
+ */
+function themeblvd_builder_styles() {
+
+	$layouts = array();
+
+	if ( themeblvd_config('builder_post_id') ) {
+		$layouts['main'] = themeblvd_config('builder_post_id');
+	}
+
+	if ( themeblvd_config('bottom_builder_post_id') ) {
+		$layouts['bottom'] = themeblvd_config('bottom_builder_post_id');
+	}
+
+	if ( ! $layouts ) {
+		return;
+	}
+
+	$print = '';
+
+	foreach ( $layouts as $location => $post_id ) {
+
+		$sections = get_post_meta( $post_id, '_tb_builder_sections', true );
+
+		if ( $sections ) {
+			foreach ( $sections as $section_id => $section ) {
+
+				$section_print = '';
+				$styles = themeblvd_get_display_inline_style( $section['display'], 'external' );
+
+				if ( $styles ) {
+
+					foreach ( $styles as $type => $params ) {
+
+						if ( ! $params ) {
+							continue;
+						}
+
+						$indent = '';
+
+						if ( $type != 'general' ) {
+							$indent = "\t";
+						}
+
+						switch ( $type ) {
+							case 'desktop' :
+								$section_print .= "@media (min-width: 993px) {\n";
+								break;
+							case 'tablet' :
+								$section_print .= "@media (max-width: 992px) and (min-width: 768px) {\n";
+								break;
+							case 'mobile' :
+								$section_print .= "@media (max-width: 767px) {\n";
+						}
+
+						$section_print .= $indent.sprintf("#custom-%s > .%s {\n", $location, $section_id);
+
+						foreach ( $params as $prop => $value ) {
+							$section_print .= $indent.sprintf("\t%s: %s;\n", $prop, $value);
+						}
+
+						$section_print .= $indent."}\n";
+
+						if ( $type != 'general' ) {
+							$section_print .= "}\n";
+						}
+
+					}
+
+				}
+
+				if ( $section_print ) {
+					$print .= sprintf("\n/* %s */\n", $section['label']);
+					$print .= $section_print;
+				}
+
+			}
+		}
+
+	}
+
+
+	// Print after style.css
+	if ( $print ) {
+		wp_add_inline_style( 'themeblvd_theme', trim($print) );
+	}
+
 }
