@@ -405,8 +405,12 @@
 ----------------------------------------------- */
 
 /* Disable WP's fixed Editor bar (WP 4.0+) */
-#tb-editor-builder.template-active #wp-content-wrap {
+#tb-editor-builder.template-active #wp-content-wrap,
+#tb-editor-builder.template-active div.mce-panel {
 	padding-top: 0 !important;
+}
+#tb-editor-builder.template-active #postdivrich #content {
+	margin-top: 0 !important;
 }
 #tb-editor-builder.template-active #wp-content-editor-tools {
 	width: auto !important;
@@ -420,6 +424,9 @@
 	bottom: inherit !important;
 	left: inherit !important;
 }
+#tb-editor-builder.builder-active #post-status-info {
+	display: none;
+}
 
 /* General */
 #tb-editor-builder.builder-active #postdivrich {
@@ -428,10 +435,11 @@
 #tb-editor-builder #builder_blvd {
 	background: #ffffff;
 	border: 1px solid #e5e5e5;
+	border-top: none;
 	box-sizing: border-box;
 	display: none;
 	clear: both;
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 	/* min-height: 485px; */
 	position: relative;
 }
