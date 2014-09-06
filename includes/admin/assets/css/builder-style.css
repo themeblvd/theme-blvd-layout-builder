@@ -274,6 +274,9 @@
 	margin: 0 0 5px 0;
 	padding: 0;
 }
+#builder_blvd .element-section:last-child {
+	margin-bottom: 0;
+}
 #builder_blvd .section-header {
 	height: 32px;
 	position: relative;
@@ -543,6 +546,14 @@
 	text-decoration: none;
 	z-index: 1;
 }
+.tb-switch-editor:before {
+	/* content: "\e810"; -- simple */
+	/* content: "\e80b"; -- circled */
+	content: "\e80f"; /* stroke */
+	color: #888888;
+	font-family: "theme-blvd-admin";
+	padding-right: 2px;
+}
 .tb-switch-editor:hover {
 	background: #ffffff;
 	text-decoration: none !important;
@@ -699,8 +710,14 @@
 #tb-editor-builder #builder_blvd #builder .sortable {
 	background: #fafafa;
 	/* min-height: 280px; */
-	margin-bottom: 10px;
+	/* margin-bottom: 10px; */
 	padding: 5px;
+}
+#tb-editor-builder #builder_blvd .element-section {
+	margin: 0 0 10px 0;
+}
+#tb-editor-builder #builder_blvd .element-section:last-child {
+	margin-bottom: 0;
 }
 #tb-editor-builder #builder_blvd #metabox-builder .ajax-overlay {
 	background: #ffffff;
@@ -722,6 +739,28 @@
 	margin: -11px 0 0 -11px;
 	top: 50%;
 	left: 50%;
+}
+
+/* Footer Credit */
+#tb-editor-builder .tb-builder-footer {
+	background: #f7f7f7;
+	border-top: 1px solid #e5e5e5;
+	color: #888888;
+	line-height: 1;
+	padding: 5px 5px 5px 24px;
+	position: relative;
+}
+#tb-editor-builder .tb-builder-footer i {
+	position: absolute;
+	top: 6px;
+	left: 5px;
+}
+#tb-editor-builder .tb-builder-footer a {
+	text-decoration: none;
+}
+#tb-editor-builder .tb-builder-footer p {
+	margin: 0;
+	padding: 0;
 }
 
 /* Legacy fixes (for those using old themes) */

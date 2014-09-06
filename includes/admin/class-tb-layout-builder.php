@@ -1557,6 +1557,14 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- TEMPLATE SYNC (end) -->
 
+				<!-- FOOTER (start) -->
+
+				<div class="tb-builder-footer">
+					<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php _e('Version', 'themeblvd_builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
+				</div>
+
+				<!-- FOOTER (end) -->
+
 			</div><!-- #optionsframework (end) -->
 		</div><!-- #builder_blvd (end) -->
 		<?php
