@@ -411,6 +411,13 @@
 #tb-editor-builder.template-active #wp-content-wrap,
 #tb-editor-builder.template-active div.mce-panel {
 	padding-top: 0 !important;
+	position: static !important;
+}
+#tb-editor-builder.template-active div.mce-panel iframe {
+	height: 300px !important;
+}
+#tb-editor-builder.template-active .wp-editor-area {
+	height: 320px !important;
 }
 #tb-editor-builder.template-active #postdivrich #content {
 	margin-top: 0 !important;
@@ -429,6 +436,9 @@
 }
 #tb-editor-builder.builder-active #post-status-info {
 	display: none;
+}
+#tb-editor-builder.template-active #post-status-info {
+	position: static !important;
 }
 
 /* General */
