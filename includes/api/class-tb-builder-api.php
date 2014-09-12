@@ -202,7 +202,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'current';
 			$this->registered_elements[] = 'custom_field';
 			$this->registered_elements[] = 'external';
-			$this->registered_elements[] = 'map'; // "Google" map
+			$this->registered_elements[] = 'map'; // Google map
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'icon_box';
 			$this->registered_elements[] = 'image';
@@ -212,6 +212,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'mini_post_list';
 			$this->registered_elements[] = 'panel';
 			$this->registered_elements[] = 'partners';
+			$this->registered_elements[] = 'post_showcase';
 			$this->registered_elements[] = 'post_slider';
 			$this->registered_elements[] = 'post_slider_popout';
 			$this->registered_elements[] = 'progress_bars';
@@ -491,6 +492,18 @@ class Theme_Blvd_Builder_API {
 					*/
 				)
 			),
+			'meta' => array(
+				'name' 		=> __( 'Meta Information', 'themeblvd' ),
+				'desc' 		=> __( 'Select if you\'d like the meta information (like date posted, author, etc) to show for each post.', 'themeblvd' ),
+				'id' 		=> 'meta',
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default blog display setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show meta info', 'themeblvd' ),
+					'hide' 		=> __( 'Hide meta info', 'themeblvd' )
+				)
+			),
 			'content' => array(
 				'id' 		=> 'content',
 				'name' 		=> __( 'Show excerpts of full content?', 'themeblvd_builder' ), /* Required by Framework */
@@ -498,7 +511,7 @@ class Theme_Blvd_Builder_API {
 				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
-					'default'	=> __( 'Use default blog display setting.', 'themeblvd_builder' ),
+					'default'	=> __( 'Use default blog display setting', 'themeblvd_builder' ),
 					'content'	=> __( 'Show full content', 'themeblvd_builder' ),
 					'excerpt' 	=> __( 'Show excerpt only', 'themeblvd_builder' )
 				)
@@ -2724,7 +2737,7 @@ class Theme_Blvd_Builder_API {
 			'query' => array(
 		    	'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a grid based on the rows and columns.</em>', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a grid based on the rows and columns, except when using masonry.</em>', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '',
 				'class' 	=> 'hide receiver receiver-query'
@@ -2743,10 +2756,14 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'select',
 				'std'		=> 'grid',
 				'options'	=> array(
-					'grid' 		=> __( 'Grid', 'themeblvd_builder' ),
-					'paginated' => __( 'Grid, with pagination', 'themeblvd_builder' ),
-					//'ajax' 		=> __( 'Grid, with Ajax "Load More"', 'themeblvd_builder' ), // ... @TODO future feature
-					'slider' 	=> __( 'Grid Slider', 'themeblvd_builder' )
+					'grid' 				=> __( 'Grid', 'themeblvd_builder' ),
+					'paginated' 		=> __( 'Grid, with pagination', 'themeblvd_builder' ),
+					'filter' 			=> __( 'Grid, with filtering', 'themeblvd_builder' ),
+					'masonry' 			=> __( 'Grid Masonry', 'themeblvd_builder' ),
+					'masonry_paginated' => __( 'Grid Masonry, with pagination', 'themeblvd_builder' ),
+					'masonry_filter' 	=> __( 'Grid Masonry, with filtering', 'themeblvd_builder' ),
+					//'ajax' 			=> __( 'Grid, with Ajax "Load More"', 'themeblvd_builder' ), // ... @TODO future feature
+					'slider' 			=> __( 'Grid Slider', 'themeblvd_builder' )
 				),
 				'class' 	=> 'trigger tb-query-check'
 			),
@@ -2778,9 +2795,37 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-paginated'
 			),
+			'filter' => array(
+		    	'id' 		=> 'filter',
+				'name'		=> __( 'Filtering: Filter by', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options' => array(
+					'category'	=> __( 'Filtered by category', 'themeblvd_builder' ),
+					'post_tag'	=> __( 'Filtered by tag', 'themeblvd_builder' )
+				),
+				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
+			),
+			'filter_max' => array(
+		    	'id' 		=> 'filter_max',
+				'name'		=> __( 'Filtering: Max Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'By using <code>-1</code>, it means all posts for the queried criteria will be pulled, and this works great for filtering. However, performance issues can arrise if you have a large volume of posts you\'re pulling from. If this is an issue, you can set a maximum here. Ex: <code>50</code>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '-1',
+				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
+			),
+			'posts_per_page' => array(
+		    	'id' 		=> 'posts_per_page',
+				'name'		=> __( 'Masonry: Number of posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the maximum number of posts, or posts per page, if using pagination.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '12',
+				'class'		=> 'hide receiver receiver-masonry receiver-masonry_paginated'
+			),
 			'slides' => array(
 		    	'id' 		=> 'slides',
-				'name'		=> __( 'Maximum Number of Slides', 'themeblvd_builder' ),
+				'name'		=> __( 'Grid Slider: Maximum Number of Slides', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter in the maximum number of slides you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed in the slider. You can leave this option blank if you\'d like to show all posts from your configured query.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '3',
@@ -2788,7 +2833,7 @@ class Theme_Blvd_Builder_API {
 			),
 			'timeout' => array(
 		    	'id' 		=> 'timeout',
-				'name'		=> __( 'Speed', 'themeblvd_builder' ),
+				'name'		=> __( 'Grid Slider: Speed', 'themeblvd_builder' ),
 				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '3',
@@ -2797,7 +2842,7 @@ class Theme_Blvd_Builder_API {
 			'nav' => array(
 				'id' 		=> 'nav',
 				'name'		=> null,
-				'desc'		=> __( 'Display slider navigation.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Grid Slider: Display slider navigation.', 'themeblvd_builder' ),
 				'std'		=> '1',
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-slider'
@@ -2872,10 +2917,11 @@ class Theme_Blvd_Builder_API {
 			),
 			'crop' => array(
 		    	'id' 		=> 'crop',
-				'name'		=> __( 'Custom Image Crop Size (optional)', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in a custom image crop size. When left blank, the theme will generate the crop size used for grids.', 'themeblvd_builder' ),
-				'type'		=> 'text',
-				'std'		=> ''
+				'name'		=> __( 'Featured Image Crop Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select a custom crop size to be used for the images in the grid. If you select a crop size that doesn\'t have a consistent height, then you may want to use one of the "Masonry" display options above.<br><br><em>Note: Images are scaled proportionally to fit within their current containers.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'select'	=> 'crop',
+				'std'		=> 'tb_grid'
 			)
 		);
 
@@ -2884,6 +2930,9 @@ class Theme_Blvd_Builder_API {
 			unset( $this->core_elements['post_grid']['options']['subgroup_start_2'] );
 			unset( $this->core_elements['post_grid']['options']['display'] );
 			unset( $this->core_elements['post_grid']['options']['rows']['class'] );
+			unset( $this->core_elements['post_grid']['options']['filter'] );
+			unset( $this->core_elements['post_grid']['options']['filter_max'] );
+			unset( $this->core_elements['post_grid']['options']['slides'] );
 			unset( $this->core_elements['post_grid']['options']['timeout'] );
 			unset( $this->core_elements['post_grid']['options']['nav'] );
 			unset( $this->core_elements['post_grid']['options']['subgroup_end_2'] );
@@ -2894,6 +2943,7 @@ class Theme_Blvd_Builder_API {
 			unset( $this->core_elements['post_grid']['options']['more'] );
 			unset( $this->core_elements['post_grid']['options']['more_text'] );
 			unset( $this->core_elements['post_grid']['options']['subgroup_end_3'] );
+			unset( $this->core_elements['post_grid']['options']['crop'] );
 		}
 
 		/*--------------------------------------------*/
@@ -3282,7 +3332,7 @@ class Theme_Blvd_Builder_API {
 			'posts_per_page' => array(
 		    	'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'themeblvd_builder' ),
-				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <code>-1</code> if you don\'t want there to be a limit, which can be helpful if you\'re using the "List, with filtering" display option below.', 'themeblvd_builder' ),
 				'type'		=> 'text',
 				'std'		=> '6',
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
@@ -3344,7 +3394,8 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'list',
 				'options'	=> array(
 					'list' 		=> __( 'List', 'themeblvd_builder' ),
-					'paginated' => __( 'List, with pagination', 'themeblvd_builder' )
+					'paginated' => __( 'List, with pagination', 'themeblvd_builder' ),
+					'filter' 	=> __( 'List, with filtering', 'themeblvd_builder' )
 					//'ajax' 		=> __( 'List, with Ajax "Load More"', 'themeblvd_builder' ) // ... @TODO future feature
 				),
 				'class' 	=> 'tb-query-check trigger'
@@ -3355,6 +3406,18 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Hide other elements of the layout after page 1 of the posts.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-paginated'
+			),
+			'filter' => array(
+		    	'id' 		=> 'filter',
+				'name'		=> __( 'Filtering', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options' => array(
+					'category'	=> __( 'Filtered by category', 'themeblvd_builder' ),
+					'post_tag'	=> __( 'Filtered by tag', 'themeblvd_builder' )
+				),
+				'class'		=> 'hide receiver receiver-filter'
 			),
 			'subgroup_end_2' => array(
 		    	'type'		=> 'subgroup_end'
@@ -3637,6 +3700,236 @@ class Theme_Blvd_Builder_API {
 				)
 			);
 		}
+
+		/*--------------------------------------------*/
+		/* Post Showcase
+		/*--------------------------------------------*/
+
+		$this->core_elements['post_showcase'] = array();
+
+		// Information
+		$this->core_elements['post_showcase']['info'] = array(
+			'name'		=> __( 'Post Showcase', 'themeblvd_builder' ),
+			'id'		=> 'post_showcase',
+			'hook'		=> 'themeblvd_post_showcase',
+			'shortcode'	=> '[post_showcase]',
+			'desc'		=> __( 'Showcase of posts', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['post_showcase']['support'] = array(
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['post_showcase']['options'] = array(
+			'subgroup_start_1' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'title' => array(
+				'id' 		=> 'title',
+				'name'		=> __('Title (optional)', 'themeblvd_builder'),
+				'desc'		=> __('If you want, you can give this set of posts a title.', 'themeblvd_builder'),
+				'std'		=> '',
+				'type'		=> 'text'
+			),
+		    'source' => array(
+		    	'id' 		=> 'source',
+				'name'		=> __( 'Where to pull posts from?', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to pull posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options'	=> array(
+					'category' 	=> __( 'Category', 'themeblvd_builder' ),
+			        'tag' 		=> __( 'Tag', 'themeblvd_builder' ),
+			        'pages' 	=> __( 'Pages', 'themeblvd_builder' ),
+			        'query' 	=> __( 'Custom Query', 'themeblvd_builder' )
+				),
+				'class' 	=> 'trigger'
+			),
+			'categories' => array(
+		    	'id' 		=> 'categories',
+				'name'		=> __( 'Categories', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'themeblvd_builder' ),
+				'std'		=> array( 'all' => 1 ),
+				'type'		=> 'multicheck',
+				'options'	=> $categories_multicheck,
+				'class' 	=> 'hide receiver receiver-category select-categories'
+			),
+			'tag' => array(
+		    	'id' 		=> 'tag',
+				'name'		=> __( 'Tag', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-tag'
+			),
+			'orderby' => array(
+		    	'id' 		=> 'orderby',
+				'name'		=> __( 'Order By', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'date',
+				'options'	=> array(
+			        'date' 			=> __( 'Publish Date', 'themeblvd_builder' ),
+			        'title' 		=> __( 'Post Title', 'themeblvd_builder' ),
+			        'comment_count' => __( 'Number of Comments', 'themeblvd_builder' ),
+			        'rand' 			=> __( 'Random', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'order' => array(
+		    	'id' 		=> 'order',
+				'name'		=> __( 'Order', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'DESC',
+				'options'	=> array(
+			        'DESC' 	=> __( 'Descending (highest to lowest)', 'themeblvd_builder' ),
+			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'themeblvd_builder' )
+				),
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'offset' => array(
+		    	'id' 		=> 'offset',
+				'name'		=> __( 'Offset', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post showcase.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '0',
+				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'pages' => array(
+		    	'id' 		=> 'pages',
+				'name'		=> __( 'Pages', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'class' 	=> 'hide receiver receiver-pages'
+			),
+			'query' => array(
+		    	'id' 		=> 'query',
+				'name'		=> __( 'Custom Query String', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a showcase based on the rows and columns, except when using masonry.</em>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '',
+				'class' 	=> 'hide receiver receiver-query'
+			),
+			'subgroup_end_1' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'subgroup_start_2' => array(
+		    	'type'		=> 'subgroup_start',
+		    	'class'		=> 'show-hide-toggle'
+		    ),
+		    'display' => array(
+		    	'id' 		=> 'display',
+				'name'		=> __( 'Display', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how you\'d like to display the posts.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'masonry_filter',
+				'options'	=> array(
+					'showcase' 			=> __( 'Showcase', 'themeblvd_builder' ),
+					'paginated' 		=> __( 'Showcase, with pagination', 'themeblvd_builder' ),
+					'filter' 			=> __( 'Showcase, with filtering', 'themeblvd_builder' ),
+					'masonry' 			=> __( 'Showcase Masonry', 'themeblvd_builder' ),
+					'masonry_paginated' => __( 'Showcase Masonry, with pagination', 'themeblvd_builder' ),
+					'masonry_filter' 	=> __( 'Showcase Masonry, with filtering', 'themeblvd_builder' )
+					//'ajax' 			=> __( 'Grid, with Ajax "Load More"', 'themeblvd_builder' ), // ... @TODO future feature
+				),
+				'class' 	=> 'trigger tb-query-check'
+			),
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> __( 'Columns', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how many posts per row (or slide) you\'d like displayed.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> '3',
+				'options'	=> array(
+			        '2' 	=> __( '2 Columns', 'themeblvd_builder' ),
+			        '3' 	=> __( '3 Columns', 'themeblvd_builder' ),
+			        '4' 	=> __( '4 Columns', 'themeblvd_builder' ),
+			        '5' 	=> __( '5 Columns', 'themeblvd_builder' )
+				)
+			),
+			'rows' => array(
+		    	'id' 		=> 'rows',
+				'name'		=> __( 'Maximum Number of Rows', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter in the maximum number of rows you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed. You can leave this option blank if you\'d like to show all posts from your configured query.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '3',
+				'class'		=> 'hide receiver receiver-showcase receiver-paginated'
+			),
+			'paginated_hide' => array(
+		    	'id' 		=> 'paginated_hide',
+				'name'		=> null,
+				'desc'		=> __( 'Hide other elements of the layout after first page of posts.', 'themeblvd_builder' ),
+				'type'		=> 'checkbox',
+				'class'		=> 'hide receiver receiver-paginated'
+			),
+			'filter' => array(
+		    	'id' 		=> 'filter',
+				'name'		=> __( 'Filtering: Filter by', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'std'		=> 'category',
+				'options' => array(
+					'category'	=> __( 'Filtered by category', 'themeblvd_builder' ),
+					'post_tag'	=> __( 'Filtered by tag', 'themeblvd_builder' )
+				),
+				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
+			),
+			'filter_max' => array(
+		    	'id' 		=> 'filter_max',
+				'name'		=> __( 'Filtering: Max Number of Posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'By using <code>-1</code>, it means all posts for the queried criteria will be pulled, and this works great for filtering. However, performance issues can arrise if you have a large volume of posts you\'re pulling from. If this is an issue, you can set a maximum here. Ex: <code>50</code>', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '-1',
+				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
+			),
+			'posts_per_page' => array(
+		    	'id' 		=> 'posts_per_page',
+				'name'		=> __( 'Masonry: Number of posts', 'themeblvd_builder' ),
+				'desc'		=> __( 'Enter the maximum number of posts, or posts per page, if using pagination.', 'themeblvd_builder' ),
+				'type'		=> 'text',
+				'std'		=> '12',
+				'class'		=> 'hide receiver receiver-masonry receiver-masonry_paginated'
+			),
+			'subgroup_end_2' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
+		    'titles' => array(
+				'name' 		=> __( 'Titles', 'themeblvd' ),
+				'desc' 		=> __( 'Select if you\'d like to show the title or not for each post.', 'themeblvd' ),
+				'id' 		=> 'titles',
+				'std' 		=> 'show',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default post showcase setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show titles', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide titles', 'themeblvd_builder' )
+				)
+			),
+			'excerpt' => array(
+				'name' 		=> __( 'Excerpt', 'themeblvd_builder' ),
+				'desc' 		=> __( 'Select if you\'d like to show the excerpt or not for each post.', 'themeblvd_builder' ),
+				'id' 		=> 'excerpt',
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default post showcase setting', 'themeblvd_builder' ),
+					'show'		=> __( 'Show excerpts', 'themeblvd_builder' ),
+					'hide' 		=> __( 'Hide excerpts', 'themeblvd_builder' )
+				)
+			),
+			'crop' => array(
+		    	'id' 		=> 'crop',
+				'name'		=> __( 'Featured Image Crop Size', 'themeblvd_builder' ),
+				'desc'		=> __( 'Select a custom crop size to be used for the images in the showcase. If you select a crop size that doesn\'t have a consistent height, then you may want to use one of the "Masonry" display options above.<br><br><em>Note: Images are scaled proportionally to fit within their current containers.</em>', 'themeblvd_builder' ),
+				'type'		=> 'select',
+				'select'	=> 'crop',
+				'std'		=> 'tb_large'
+			)
+		);
 
 		/*--------------------------------------------*/
 		/* Post Slider
