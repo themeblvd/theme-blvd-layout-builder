@@ -2289,7 +2289,8 @@ class Theme_Blvd_Builder_API {
 					'0' 		=> __( 'Hide', 'themeblvd_builder' ),
 					'small' 	=> __( 'Small', 'themeblvd_builder' ),
 					'smaller'	=> __( 'Smaller', 'themeblvd_builder' ),
-					'smallest' 	=> __( 'Smallest', 'themeblvd_builder' )
+					'smallest' 	=> __( 'Smallest', 'themeblvd_builder' ),
+					'date'		=> __( 'Date Block', 'themeblvd_builder' ),
 				)
 			),
 			'meta' => array(
@@ -3431,6 +3432,7 @@ class Theme_Blvd_Builder_API {
 				'options' => array(
 					'default' 	=> __( 'Use default post list setting', 'themeblvd_builder' ),
 					'full'		=> __( 'Show featured images', 'themeblvd_builder' ),
+					'date'		=> __( 'Show date block', 'themeblvd_builder' ),
 					'hide' 		=> __( 'Hide featured images', 'themeblvd_builder' )
 				)
 			),
