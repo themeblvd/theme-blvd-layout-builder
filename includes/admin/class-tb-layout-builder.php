@@ -2271,26 +2271,6 @@ class Theme_Blvd_Layout_Builder {
 
 		if ( $type == 'section' || $type == 'column' ) {
 
-			// Background options
-			$bg_types = array(
-				'none'		=> __('No background', 'themeblvd_builder'),
-				'color'		=> __('Custom color', 'themeblvd_builder'),
-				'texture'	=> __('Custom color + texture', 'themeblvd_builder'),
-				'image'		=> __('Custom color + image', 'themeblvd_builder')
-			);
-
-			if ( $type == 'section' ) {
-
-				if ( themeblvd_supports( 'featured', 'style' ) ) {
-					$bg_types['featured'] = __('Theme\'s preset "Featured" area background', 'themeblvd_builder');
-				}
-
-				if ( themeblvd_supports( 'featured_below', 'style' ) ) {
-					$bg_types['featured_below'] = __('Theme\'s preset "Featured Below" area background', 'themeblvd_builder');
-				}
-
-			}
-
 			$options['subgroup_start'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide-toggle'
@@ -2302,7 +2282,7 @@ class Theme_Blvd_Layout_Builder {
 				'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'themeblvd_builder'),
 				'std'		=> 'none',
 				'type'		=> 'select',
-				'options'	=> apply_filters( 'themeblvd_builder_bg_types', $bg_types, $type ),
+				'options'	=> themeblvd_get_bg_types($type),
 				'class'		=> 'trigger'
 			);
 
@@ -2316,7 +2296,7 @@ class Theme_Blvd_Layout_Builder {
 					'dark'	=> __('Dark Text', 'themeblvd_builder'),
 					'light'	=> __('Light Text', 'themeblvd_builder')
 				),
-				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image receiver-slideshow'
 			);
 
 			$options['bg_color'] = array(
@@ -2477,7 +2457,33 @@ class Theme_Blvd_Layout_Builder {
 				);
 
 				$options['subgroup_end_4'] = array(
-					'type'		=> 'subgroup_end',
+					'type'		=> 'subgroup_end'
+				);
+
+				$options['subgroup_start_5'] = array(
+					'type'		=> 'subgroup_start',
+					'class'		=> 'section-bg-slideshow hide receiver receiver-slideshow'
+				);
+
+				$options['bg_slideshow'] = array(
+					'id' 		=> 'bg_slideshow',
+					'name'		=> __('Slideshow Images', 'themeblvd_builder'),
+					'desc'		=> null,
+					'type'		=> 'slider'
+				);
+
+				$options['bg_slideshow_crop'] = array(
+					'name' 		=> __( 'Slideshow Crop Size', 'themeblvd_builder' ),
+					'desc' 		=> __( 'Select the crop size to be used for the background slideshow images. Remember that the background images will be stretched to cover the area.', 'themeblvd_builder' ),
+					'id' 		=> 'crop',
+					'std' 		=> 'full',
+					'type' 		=> 'select',
+					'select'	=> 'crop',
+					'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+				);
+
+				$options['subgroup_end_5'] = array(
+					'type'		=> 'subgroup_end'
 				);
 
 			}
@@ -2511,7 +2517,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Desktop padding
-		$options['subgroup_start_5'] = array(
+		$options['subgroup_start_6'] = array(
 			'type'		=> 'subgroup_start',
 			'class'		=> 'show-hide'
 		);
@@ -2581,14 +2587,14 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['subgroup_end_5'] = array(
+		$options['subgroup_end_6'] = array(
 			'type' => 'subgroup_end'
 		);
 
 		if ( $type == 'section' ) {
 
 			// Tablet Padding
-			$options['subgroup_start_6'] = array(
+			$options['subgroup_start_7'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -2658,12 +2664,12 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_6'] = array(
+			$options['subgroup_end_7'] = array(
 				'type' => 'subgroup_end'
 			);
 
 			// Mobile Padding
-			$options['subgroup_start_7'] = array(
+			$options['subgroup_start_8'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -2733,7 +2739,7 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_7'] = array(
+			$options['subgroup_end_8'] = array(
 				'type' => 'subgroup_end'
 			);
 

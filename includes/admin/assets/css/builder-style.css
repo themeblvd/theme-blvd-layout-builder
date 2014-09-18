@@ -1082,6 +1082,14 @@
 	display: none;
 }
 
+/* Section BG slideshow */
+.section-bg-slideshow .section-slider .item-content > .slide-title,
+.section-bg-slideshow .section-slider .item-content > .slide-desc,
+.section-bg-slideshow .section-slider .item-content > .slide-link {
+	display: none;
+}
+
+
 /* =Responsiveness
 ----------------------------------------------- */
 
