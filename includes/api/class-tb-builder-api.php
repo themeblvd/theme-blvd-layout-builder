@@ -215,6 +215,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'post_showcase';
 			$this->registered_elements[] = 'post_slider';
 			$this->registered_elements[] = 'post_slider_popout';
+			$this->registered_elements[] = 'pricing_table';
 			$this->registered_elements[] = 'progress_bars';
 			$this->registered_elements[] = 'quote';
 			$this->registered_elements[] = 'simple_slider';
@@ -4780,6 +4781,55 @@ class Theme_Blvd_Builder_API {
 		);
 
 		/*--------------------------------------------*/
+		/* Pricing Table
+		/*--------------------------------------------*/
+
+		$this->core_elements['pricing_table'] = array();
+
+		// Information
+		$this->core_elements['pricing_table']['info'] = array(
+			'name' 		=> __('Pricing Table', 'themeblvd_builder'),
+			'id'		=> 'pricing_table',
+			'hook'		=> 'themeblvd_pricing_table',
+			'shortcode'	=> '[pricing_table]',
+			'desc' 		=> __( 'A boostrap styled pricing_table.', 'themeblvd_builder' )
+		);
+
+		// Support
+		$this->core_elements['pricing_table']['support'] = array(
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['pricing_table']['options'] = array(
+			'columns' => array(
+		    	'id' 		=> 'columns',
+				'name'		=> null,
+				'desc'		=> null,
+				'type'		=> 'price_cols'
+			),
+			'currency' => array(
+				'name' 		=> __( 'Currency Symbol', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'Enter a currency symbol to be used with the prices in each column.', 'themeblvd_builder' ),
+				'id' 		=> 'currency',
+				'std' 		=> '$',
+				'type' 		=> 'text'
+			),
+			'currency_placement' => array(
+				'name' 		=> __( 'Currency Symbol Placement', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'Select if you want the currency symbol to come before or after the prices in each column.', 'themeblvd_builder' ),
+				'id' 		=> 'currency_placement',
+				'std' 		=> '$',
+				'type' 		=> 'select',
+				'options'	=> array(
+					'before' 	=> __('Before price', 'themeblvd_builder'),
+					'after' 	=> __('After price', 'themeblvd_builder')
+				)
+			)
+		);
+
+		/*--------------------------------------------*/
 		/* Progress Bars
 		/*--------------------------------------------*/
 
@@ -4803,13 +4853,13 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['progress_bars']['options'] = array(
 			'bars' => array(
-		    	'id' 		=> 'bars',
+				'id' 		=> 'bars',
 				'name'		=> __( 'Progress Bars', 'themeblvd_builder' ),
 				'desc'		=> null,
 				'type'		=> 'bars'
 			),
 			'striped' => array(
-		    	'id' 		=> 'striped',
+				'id' 		=> 'striped',
 				'name'		=> null,
 				'desc'		=> __( 'Display striped effect over progress bars.', 'themeblvd_builder' ),
 				'type'		=> 'checkbox'
