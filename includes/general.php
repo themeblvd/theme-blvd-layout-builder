@@ -130,21 +130,6 @@ function themeblvd_builder_verify_data() {
 }
 
 /**
- * Display builder elements above the primary area.
- *
- * @since 1.0.0
- */
-function themeblvd_builder_content() {
-	if ( themeblvd_config( 'builder' ) ) {
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
-			themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ) );
-		} else {
-			themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' ); // @deprecated
-		}
-	}
-}
-
-/**
  * If we're on the second page of a paginated query,
  * we'll find the paginated element and see if all other
  * elements should be hidden. If so, we'll modify the sections
@@ -283,6 +268,10 @@ function themeblvd_builder_styles() {
 								break;
 							case 'mobile' :
 								$section_print .= "@media (max-width: 767px) {\n";
+						}
+
+						if ( strpos($section_id, 'section_') === false ) {
+							$section_id = 'section_'.$section_id;
 						}
 
 						$section_print .= $indent.sprintf("#custom-%s > .%s {\n", $location, $section_id);

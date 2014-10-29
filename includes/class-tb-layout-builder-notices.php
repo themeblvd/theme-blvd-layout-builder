@@ -62,8 +62,15 @@ class Theme_Blvd_Layout_Builder_Notices {
 		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
 			$this->error[] = 'framework-2-2';
 			$this->stop = true;
-		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			$this->error[] = 'framework-2-5';
+		}
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+
+			$options = get_option( themeblvd_get_option_name() );
+
+			if ( ! empty($options['homepage_content']) && $options['homepage_content'] == 'custom_layout' ) {
+				$this->error[] = 'old-homepage';
+			}
 		}
 
 		if ( $this->error ) {
@@ -164,7 +171,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 		$messages = array(
 			'framework' 		=> __('You are not using a theme with the Theme Blvd Framework, and so this plugin will not do anything.', 'themeblvd_builder'),
 			'framework-2-2' 	=> __('You are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything. Check to see if there is an updated version of your theme.', 'themeblvd_builder'),
-			'framework-2-5' 	=> __('Because your theme\'s version of the Theme Blvd Framework is not at least v2.5, you are running this plugin in a legacy mode with limited features. Check to see if there is an updated version of your theme.', 'themeblvd_builder')
+			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'themeblvd_builder')
 		);
 
 		if ( isset( $messages[$type] ) ) {

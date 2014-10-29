@@ -27,8 +27,16 @@ function themeblvd_builder_sample_previews() {
 	// Construct output
 	$output = '<div class="sample-layouts">';
 	foreach( $samples as $sample ) {
+
+		if ( isset($sample['preview']) ) {
+			$preview = $sample['preview']; // @deprecated
+		} else {
+			$preview = trailingslashit($sample['uri']).'preview.jpg';
+		}
+
 		$output .= '<div id="sample-'.$sample['id'].'">';
-		$output .= '<img src="'.trailingslashit($sample['uri']).'preview.png" />';
+		$output .= '<img src="'.$preview.'" />';
+
 		if ( isset( $sample['credit'] ) ) {
 			$output .= '<p class="note">'.$sample['credit'].'</p>';
 		}

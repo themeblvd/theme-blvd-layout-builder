@@ -43,7 +43,10 @@ function themeblvd_builder_init() {
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-data.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-notices.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/legacy.php' ); // @deprecated functions used by older themes
+
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+		include_once( TB_BUILDER_PLUGIN_DIR . '/includes/legacy.php' ); // @deprecated functions used by older themes
+	}
 
 	// DEBUG/DEV Mode
 	if ( ! defined( 'TB_BUILDER_DEBUG' ) ) {
@@ -89,11 +92,17 @@ function themeblvd_builder_init() {
 		add_action( 'themeblvd_builder_content', 'themeblvd_builder_content' );
 		add_action( 'themeblvd_featured', 'themeblvd_builder_featured' );
 		add_action( 'themeblvd_featured_below', 'themeblvd_builder_featured_below' );
+		add_filter( 'themeblvd_frontend_config', 'themeblvd_builder_legacy_config' );
 	}
 
 	// Homepage layout (@deprecated -- With current themes, user must set a static frontpage with the template applied)
-	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+	if ( function_exists('themeblvd_builder_legacy_homepage') ) {
 		themeblvd_builder_legacy_homepage();
+	}
+
+	// Legacy sample layouts (@deprecated)
+	if ( function_exists('themeblvd_builder_legacy_samples') ) {
+		add_filter( 'themeblvd_sample_layouts', 'themeblvd_builder_legacy_samples' );
 	}
 
 	// Template Footer Sync

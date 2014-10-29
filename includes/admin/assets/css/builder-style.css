@@ -37,7 +37,12 @@
 #builder_blvd #add_new_builder .warning {
 	margin: 0;
 }
-#builder_blvd #add_new_builder .sample-layouts img {
+#builder_blvd #add_layout .sample-layouts > div {
+	border: 1px solid #dddddd;
+	border-radius: 4px;
+	padding: 4px;
+}
+#builder_blvd #add_layout .sample-layouts img {
 	width: 100%;
 }
 #builder_blvd .tb-tooltip-link {
@@ -61,23 +66,6 @@
 /* Item being added */
 #builder_blvd .column-blocks .widget.add .block-handle {
 	border-color: #9adfa9;
-}
-
-/* Legacy Mode Sticker */
-#builder_blvd .legacy-mode {
-	background: #f8f8f8;
-	border: 1px solid #cccccc;
-	-moz-box-shadow: inset 0 1px 1px #ffffff;
-	-webkit-box-shadow: inset 0 1px 1px #ffffff;
-	box-shadow: inset 0 1px 1px #ffffff;
-	color: #888888;
-	display: block;
-	font-size: 10px;
-	line-height: 1em;
-	padding: 5px;
-	position: absolute;
-	top: 10px;
-	right: 10px;
 }
 
 /* =Manage Layouts
@@ -556,14 +544,14 @@
 	text-decoration: none;
 	z-index: 1;
 }
+/*
 .tb-switch-editor:before {
-	/* content: "\e810"; -- simple */
-	/* content: "\e80b"; -- circled */
-	content: "\e80f"; /* stroke */
+	content: "\e80f";
 	color: #888888;
 	font-family: "theme-blvd-admin";
 	padding-right: 2px;
 }
+*/
 .tb-switch-editor:hover {
 	background: #ffffff;
 	text-decoration: none !important;
@@ -776,10 +764,6 @@
 /* Legacy fixes (for those using old themes) */
 .themeblvd-builder-legacy-1 #tb-editor-builder #builder_blvd #builder .sortable {
 	min-height: 0;
-}
-.themeblvd-builder-legacy-1 #tb-editor-builder #builder_blvd #primary,
-.themeblvd-builder-legacy-1 #tb-editor-builder #builder_blvd #featured_below {
-	margin-top: 35px;
 }
 
 /* =Column Manager
@@ -1089,6 +1073,12 @@
 	display: none;
 }
 
+/* =Apprise prompt
+----------------------------------------------- */
+
+.themeblvd-builder-legacy-1 .appriseOverlay {
+	z-index: 9999;
+}
 
 /* =Responsiveness
 ----------------------------------------------- */

@@ -11,7 +11,7 @@ function themeblvd_builder_homepage( $template ) {
 	// If this is the homepage (but NOT the "posts page")
 	// and the user has selected to show a custom layout,
 	// redirect index.php to template_builder.php
-	if ( is_home() && 'posts' == get_option('show_on_front') && 'custom_layout' == themeblvd_get_option( 'homepage_content', null, 'posts' ) ) {
+	if ( is_home() && get_option('show_on_front') == 'posts' && themeblvd_get_option( 'homepage_content', null, 'posts' ) == 'custom_layout' ) {
 		$template = locate_template( 'template_builder.php' );
 	}
 
@@ -49,7 +49,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 		return;
 	}
 	// Gather elements and only move forward if we have elements to show.
-	$elements = get_post_meta( $layout_id, 'elements', true );
+	$elements = get_post_meta( $layout_id, '_tb_builder_elements', true );
 
 	if ( ! empty( $elements ) && ! empty( $elements[$location] ) ) {
 		$elements = $elements[$location];
@@ -360,6 +360,57 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 }
 
 /**
+ * This function serves as a temporary bridge for plugin
+ * 2.0+ to work with themes with a framework version prior to 2.5.
+ *
+ * @since 2.0.0
+ */
+function themeblvd_builder_legacy_config( $config ) {
+
+	// Layout setup, taking into account elements attached to post
+	if ( ( ! $config['builder'] || $config['builder'] == 'error' ) && is_page_template('template_builder.php') ) {
+
+		// Setup
+		$config['builder'] = true;
+		$config['builder_post_id'] = $config['id'];
+
+		// Sidebar layout
+		$layout_settings = get_post_meta( $config['builder_post_id'], 'settings', true );
+		$config['sidebar_layout'] = $layout_settings['sidebar_layout'];
+
+	}
+
+	// Featured areas
+	if ( $config['builder_post_id'] ) {
+
+		$elements = get_post_meta( $config['builder_post_id'], '_tb_builder_elements', true );
+
+		$front = Theme_Blvd_Frontend_Init::get_instance();
+		$config['featured'] = $front->featured_builder_classes( $elements, 'featured' );
+		$config['featured_below'] = $front->featured_builder_classes( $elements, 'featured_below' );
+
+	}
+
+	// Sidebar Layout
+	if ( ! $config['sidebar_layout'] || $config['sidebar_layout'] == 'default' ) {
+		$config['sidebar_layout']= themeblvd_get_option( 'sidebar_layout' );
+	}
+
+	return $config;
+}
+
+/**
+ * Display builder elements above the primary area.
+ *
+ * @since 1.0.0
+ */
+function themeblvd_builder_content() {
+	if ( themeblvd_config( 'builder' ) ) {
+		themeblvd_builder_elements( themeblvd_config( 'builder_post_id' ), 'primary' );
+	}
+}
+
+/**
  * Display builder elements above the primary area.
  *
  * @since 1.0.0
@@ -386,9 +437,6 @@ function themeblvd_builder_featured_below() {
  * using a theme prior to framework 2.5
  *
  * @since 2.0.0
- *
- * @param string $var Description
- * @return string $var Description
  */
 function themeblvd_builder_legacy_homepage() {
 
@@ -419,12 +467,12 @@ function themeblvd_builder_legacy_homepage() {
 			'type' 		=> 'radio',
 			'options' 	=> array(
 				'posts'			=> __( 'Posts', 'themeblvd_builder' ),
-				'custom_layout' => __( 'Custom Layout', 'themeblvd_builder' )
+				'custom_layout' => __( 'Custom Template', 'themeblvd_builder' )
 			)
 		),
 		'homepage_custom_layout' => array(
-			'name' 		=> __( 'Select Custom Layout', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select from the custom layouts you\'ve built under the <a href="admin.php?page=themeblvd_builder">Builder</a> section.', 'themeblvd_builder' ),
+			'name' 		=> __( 'Select Custom Template', 'themeblvd_builder' ),
+			'desc' 		=> __( 'Select from the custom templates you\'ve built under the <a href="admin.php?page=themeblvd_builder">Templates</a> section.', 'themeblvd_builder' ),
 			'id' 		=> 'homepage_custom_layout',
 			'std' 		=> '',
 			'type' 		=> 'select',
@@ -436,5 +484,657 @@ function themeblvd_builder_legacy_homepage() {
 	// Filter homepage content according to options section
 	// we added above.
 	add_filter( 'template_include', 'themeblvd_builder_homepage' );
+}
 
+/**
+ * Add sample layouts compatible with older themes.
+ *
+ * @since 2.0.0
+ */
+function themeblvd_builder_legacy_samples( $layouts ) {
+
+	// Remove 2.0 defaults
+	$api = Theme_Blvd_Builder_API::get_instance();
+
+	foreach ( $api->core_layouts as $key => $value ) {
+		unset( $layouts[$key] );
+	}
+
+	// Path to images used in sample layouts on frontend.
+	$imgpath = TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/legacy';
+
+	/*--------------------------------------------*/
+	/* (1) Business Homepage #1
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['business_1'] = array(
+		'name'				=> __('Business Homepage #1', 'themeblvd_builder'),
+		'id'				=> 'business_1',
+		'preview' 			=> $imgpath . '/sample-business_1.png',
+		'sidebar_layout' 	=> 'full_width',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['business_1']['featured'] = array(
+		'element_1' => array(
+			'type'			=> 'slider',
+			'query_type'	=> 'secondary',
+			'options' 		=> array(
+				'slider_id' => null
+			)
+		)
+	);
+
+	// Primary Elements
+	$layouts['business_1']['primary'] = array(
+		'element_2' => array(
+			'type' 			=> 'slogan',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+				'slogan'		=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.',
+                'button'		=> 1,
+                'button_text'	=> 'Get Started Today!',
+                'button_color'	=> 'default',
+                'button_url'	=> 'http://www.google.com',
+                'button_target'	=> '_blank'
+			)
+		),
+		'element_3' => array(
+            'type'			=> 'columns',
+            'query_type'	=> 'none',
+            'options'		=> array(
+                'setup' => array(
+					'num' => '3',
+					'width' => array(
+						'2' => 'grid_6-grid_6',
+						'3' => 'grid_4-grid_4-grid_4',
+						'4' => 'grid_3-grid_3-grid_3-grid_3',
+						'5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
+					)
+				),
+                'col_1' => array(
+					'type'			=> 'raw',
+					'page' 			=> null,
+					'raw'			=> "<h3>Sample Headline #1</h3>\n\n<img src=\"$imgpath/business_1.jpg\" />\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n[button link=\"http://google.com\"]Learn More[/button]",
+					'raw_format'	=> 1
+				),
+                'col_2' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw'			=> "<h3>Sample Headline #2</h3>\n\n<img src=\"$imgpath/business_2.jpg\" />\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n[button link=\"http://google.com\"]Learn More[/button]",
+					'raw_format'	=> 1
+				),
+                'col_3' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw'			=> "<h3>Sample Headline #3</h3>\n\n<img src=\"$imgpath/business_3.jpg\" />\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n[button link=\"http://google.com\"]Learn More[/button]",
+					'raw_format'	=> 1
+				),
+                'col_4' => array(
+					'type' 			=> null,
+					'page'			=> null,
+					'raw'			=> null,
+					'raw_format' 	=> 1
+				),
+                'col_5' => array(
+					'type' 			=> null,
+					'page'			=> null,
+					'raw'			=> null,
+					'raw_format'	=> 1
+				)
+            )
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['business_1']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (2) Business Homepage #2
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['business_2'] = array(
+		'name'				=> __('Business Homepage #2', 'themeblvd_builder'),
+		'id'				=> 'business_2',
+		'preview'			=> $imgpath . '/sample-business_2.png',
+		'sidebar_layout'	=> 'full_width',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['business_2']['featured'] = array(
+		'element_1' => array(
+			'type'			=> 'slider',
+			'query_type' 	=> 'secondary',
+			'options'		=> array(
+				'slider_id' => null
+			)
+		)
+	);
+
+	// Main Elements
+	$layouts['business_2']['primary'] = array(
+		'element_2' => array(
+			'type'			=> 'slogan',
+			'query_type'	=> 'none',
+			'options'		=> array(
+				'slogan' 		=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.',
+                'button' 		=> 1,
+                'button_text' 	=> 'Get Started Today!',
+                'button_color' 	=> 'default',
+                'button_url' 	=> 'http://www.google.com',
+                'button_target' => '_blank'
+			)
+		),
+		'element_3' => array(
+            'type'			=> 'columns',
+            'query_type' 	=> 'none',
+            'options' 		=> array(
+                'setup' => array(
+					'num' => '4',
+					'width' => array(
+						'2' => 'grid_6-grid_6',
+						'3' => 'grid_4-grid_4-grid_4',
+						'4' => 'grid_3-grid_3-grid_3-grid_3',
+						'5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
+					)
+				),
+                'col_1' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw'			=> '[icon image="clock" align="left"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+					'raw_format'	=> 1
+				),
+                'col_2' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw' 			=> '[icon image="pie_chart" align="left"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+					'raw_format' 	=> 1
+				),
+                'col_3' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw'			=> '[icon image="coffee_mug" align="left"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+					'raw_format'	=> 1
+				),
+                'col_4' => array(
+					'type'			=> 'raw',
+					'page'			=> null,
+					'raw'			=> '[icon image="computer" align="left"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+					'raw_format'	=> 1
+				),
+                'col_5' => array(
+					'type'			=> null,
+					'page'			=> null,
+					'raw'			=> null,
+					'raw_format'	=> 1
+				)
+            )
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['business_2']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (3) Business Homepage #3
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['business_3'] = array(
+		'name'				=> __('Business Homepage #3', 'themeblvd_builder'),
+		'id'				=> 'business_3',
+		'preview'			=> $imgpath . '/sample-business_3.png',
+		'sidebar_layout'	=> 'sidebar_right',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['business_3']['featured'] = array(
+		'element_1' => array(
+			'type'			=> 'slider',
+			'query_type'	=> 'secondary',
+			'options' 		=> array(
+				'slider_id' => null
+			)
+		),
+		'element_2' => array(
+			'type' 			=> 'slogan',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+				'slogan' 		=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.',
+                'button' 		=> 1,
+                'button_text' 	=> 'Get Started Today!',
+                'button_color' 	=> 'default',
+                'button_url' 	=> 'http://www.google.com',
+                'button_target' => '_blank'
+			)
+		)
+	);
+
+	// Main Elements
+	$layouts['business_3']['primary'] = array(
+		'element_3' => array(
+			'type' 			=> 'content',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+				'source' 		=> 'raw',
+				'page_id' 		=> null,
+				'raw_content' 	=> "<h2>Welcome to our fancy-schmancy website.</h2>\n\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>\n\n<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>\n\n<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.</p>\n\n[one_half]\n<h4>We Rock</h4>\n\n<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>\n\n[/one_half]\n[one_half last]\n<h4>Hire Us</h4>\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n[/one_half]",
+				'raw_format' 	=> 0
+			)
+		),
+	);
+
+	// Featured Below Elements
+	$layouts['business_3']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (4) Business Homepage #4
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['business_4'] = array(
+		'name'				=> __('Business Homepage #4', 'themeblvd_builder'),
+		'id'				=> 'business_4',
+		'preview'			=> $imgpath . '/sample-business_4.png',
+		'sidebar_layout'	=> 'full_width',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['business_4']['featured'] = array();
+
+	// Main Elements
+	$layouts['business_4']['primary'] = array(
+		'element_2' => array(
+			'type' 			=> 'headline',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+				'text' 			=> 'Welcome to our website',
+				'tagline' 		=> '',
+				'tag' 			=> 'h1',
+				'align' 		=> 'left'
+			)
+		),
+		'element_3' => array(
+			'type' => 'columns',
+            'query_type' => 'none',
+            'options' => array(
+                'setup' => array(
+					'num' => '3',
+					'width' => array(
+						'2' => 'grid_6-grid_6',
+						'3' => 'grid_6-grid_3-grid_3', // => 50% | 25% | 25%
+						'4' => 'grid_3-grid_3-grid_3-grid_3',
+						'5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
+					)
+				),
+                'col_1' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "<img src=\"$imgpath/business_4.jpg\" class=\"pretty\" />\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla in bibendum enim. Nunc in est vitae leo imperdiet suscipit et sagittis leo. Nullam consectetur placerat sem, vitae feugiat lorem posuere nec. Etiam et magna nunc, et faucibus elit. Integer vitae pretium sem. Duis vitae lorem magna, ac tincidunt dolor. Phasellus justo metus, luctus in hendrerit eu, mattis eget lacus. Donec nulla turpis, euismod aliquam aliquam sed, semper vitae enim. Sed venenatis ligula eu enim tempor eget imperdiet dui pulvinar. Etiam et magna nunc, et faucibus elit. Integer vitae pretium sem.",
+					'raw_format' 	=> 1
+				),
+                'col_2' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "[icon image=\"clock\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\n\n[icon image=\"pie_chart\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					'raw_format' 	=> 1
+				),
+                'col_3' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "[icon image=\"coffee_mug\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n[icon image=\"computer\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					'raw_format' 	=> 1
+				),
+                'col_4' => array(
+					'type' 			=> null,
+					'page' 			=> null,
+					'raw' 			=> null,
+					'raw_format' 	=> 1
+				),
+                'col_5' => array(
+					'type' 			=> null,
+					'page' 			=> null,
+					'raw' 			=> null,
+					'raw_format' 	=> 1
+				)
+            )
+		),
+		'element_4' => array(
+			'type' 			=> 'post_grid_slider',
+			'query_type' 	=> 'secondary',
+			'options' 		=> array(
+				'fx' 			=> 'slide',
+				'timeout' 		=> 0,
+				'nav_standard' 	=> 1,
+				'nav_arrows' 	=> 1,
+				'pause_play' 	=> 1,
+				'categories' 	=> array('all'=>1),
+				'columns' 		=> 4,
+				'rows' 			=> 1,
+				'numberposts' 	=> -1,
+				'orderby' 		=> 'post_date',
+				'order' 		=> 'DESC',
+				'offset' 		=> 0
+			)
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['business_4']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (5) Classic Magazine #1
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['magazine_1'] = array(
+		'name'				=> __('Classic Magazine #1', 'themeblvd_builder'),
+		'id'				=> 'magazine_1',
+		'preview'			=> $imgpath . '/sample-magazine_1.png',
+		'sidebar_layout'	=> 'sidebar_right',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['magazine_1']['featured'] = array();
+
+	// Main Elements
+	$layouts['magazine_1']['primary'] = array(
+		'element_1' => array(
+			'type' 			=> 'slider',
+			'query_type' 	=> 'secondary',
+			'options' 		=> array(
+				'slider_id' => null
+			)
+		),
+		'element_2' => array(
+			'type'			=> 'post_grid_paginated',
+			'query_type'	=> 'primary',
+			'options' 		=> array(
+				'categories' 	=> array('all'=>1),
+				'columns' 		=> 2,
+				'rows' 			=> 3,
+				'orderby' 		=> 'post_date',
+				'order' 		=> 'DESC',
+				'offset' 		=> 0
+			)
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['magazine_1']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (6) Classic Magazine #2
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['magazine_2'] = array(
+		'name'				=> __('Classic Magazine #2', 'themeblvd_builder'),
+		'id'				=> 'magazine_2',
+		'preview'			=> $imgpath . '/sample-magazine_2.png',
+		'sidebar_layout'	=> 'sidebar_right'
+	);
+
+	// Featured Elements
+	$layouts['magazine_2']['featured'] = array();
+
+	// Main Elements
+	$layouts['magazine_2']['primary'] = array(
+		'element_1' => array(
+			// 1 post featured above everything else
+			'type' 			=> 'post_list',
+			'query_type'	=> 'secondary',
+			'options' 		=> array(
+				'categories' 	=> array('all'=>1),
+				'thumbs' 		=> 'full',
+				'content' 		=> 'default',
+				'numberposts' 	=> 1,
+				'orderby' 		=> 'post_date',
+				'order' 		=> 'DESC',
+				'offset' 		=> 0,
+				'link' 			=> 0,
+				'link_text' 	=> 'View All Posts',
+				'link_url' 		=> 'http://www.your-site.com/your-blog-page',
+				'link_target' 	=> '_self'
+			)
+		),
+		'element_2' => array(
+			// Continue post with offset = 1
+			'type' 			=> 'post_grid',
+			'query_type' 	=> 'secondary',
+			'options' 		=> array(
+				'categories' 	=> array('all'=>1),
+				'columns' 		=> 3,
+				'rows' 			=> 3,
+				'orderby' 		=> 'post_date',
+				'order' 		=> 'DESC',
+				'offset' 		=> 1,
+				'link' 			=> 0,
+				'link_text' 	=> 'View All Posts &rarr;',
+				'link_url' 		=> 'http://www.your-site.com/your-blog-page',
+				'link_target' 	=> '_self'
+			)
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['magazine_2']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (7) Design Agency
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['agency'] = array(
+		'name'				=> __('Design Agency', 'themeblvd_builder'),
+		'id'				=> 'agency',
+		'preview'			=> $imgpath . '/sample-agency.png',
+		'sidebar_layout'	=> 'full_width',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['agency']['featured'] = array(
+		'element_1' => array(
+			'type' => 'slogan',
+			'query_type' => 'none',
+			'options' => array(
+				'slogan' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+				'button' => 0,
+				'button_text' => 'Get Started Today!',
+				'button_color' => 'default',
+				'button_url' => 'http://www.your-site.com/your-landing-page',
+				'button_target' => '_self'
+			)
+		),
+		'element_2' => array(
+			'type' => 'post_grid_slider',
+			'query_type' => 'secondary',
+			'options' => array(
+				'fx' => 'slide',
+				'timeout' => 0,
+				'nav_standard' => 1,
+				'nav_arrows' => 1,
+				'pause_play' => 1,
+				'categories' => array('all'=>1),
+				'columns' => 4,
+				'rows' => 2,
+				'numberposts' => -1,
+				'orderby' => 'post_date',
+				'order' => 'DESC',
+				'offset' => 0
+			)
+		)
+	);
+
+	// Main Elements
+	$layouts['agency']['primary'] = array(
+		'element_3' => array(
+			'type'			=> 'columns',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+                'setup' => array(
+					'num' => '3',
+					'width' => array(
+						'2' => 'grid_6-grid_6',
+						'3' => 'grid_4-grid_4-grid_4',
+						'4' => 'grid_3-grid_3-grid_3-grid_3',
+						'5' => 'grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1-grid_fifth_1'
+					)
+				),
+                'col_1' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"clock\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"computer\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					'raw_format' 	=> 1
+				),
+                'col_2' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"pie_chart\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"image\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					'raw_format' 	=> 1
+				),
+                'col_3' => array(
+					'type' 			=> 'raw',
+					'page' 			=> null,
+					'raw' 			=> "<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"coffee_mug\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n<h3>Lorem ipsum dolor sit</h3>\n\n[icon image=\"camera\" align=\"left\"]Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+					'raw_format' 	=> 1
+				),
+                'col_4' => array(
+					'type' 			=> null,
+					'page' 			=> null,
+					'raw' 			=> null,
+					'raw_format' 	=> 1
+				),
+                'col_5' => array(
+					'type' 			=> null,
+					'page' 			=> null,
+					'raw' 			=> null,
+					'raw_format' 	=> 1
+				)
+            )
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['agency']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (8) Portfolio Homepage
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['portfolio'] = array(
+		'name'				=> __('Portfolio Homepage', 'themeblvd_builder'),
+		'id'				=> 'portfolio',
+		'preview'			=> $imgpath . '/sample-portfolio.png',
+		'sidebar_layout'	=> 'full_width',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['portfolio']['featured'] = array(
+		'element_1' => array(
+			'type' 			=> 'slider',
+			'query_type' 	=> 'secondary',
+			'options' 		=> array(
+				'slider_id' => null
+			)
+		)
+	);
+
+	// Primary Elements
+	$layouts['portfolio']['primary'] = array(
+		'element_2' => array(
+			'type' 			=> 'post_grid_paginated',
+			'query_type' 	=> 'primary',
+			'options' 		=> array(
+				'type' 			=> 'post_grid_paginated',
+				'query_type' 	=> 'primary',
+				'options' 		=> array(
+					'categories' 	=> array('all'=>1),
+					'columns' 		=> 4,
+					'rows'			=> 3,
+					'orderby'		=> 'post_date',
+					'order'			=> 'DESC',
+					'offset' 		=> 0
+				)
+			)
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['portfolio']['featured_below'] = array();
+
+	/*--------------------------------------------*/
+	/* (9) Showcase Blogger
+	/*--------------------------------------------*/
+
+	// Information
+	$layouts['showcase'] = array(
+		'name'				=> __('Showcase Blogger', 'themeblvd_builder'),
+		'id'				=> 'showcase',
+		'preview'			=> $imgpath . '/sample-showcase.png',
+		'sidebar_layout'	=> 'sidebar_right',
+		'dir'				=> null,
+		'uri'				=> null
+	);
+
+	// Featured Elements
+	$layouts['showcase']['featured'] = array(
+		'element_1' => array(
+			'type'			=> 'slider',
+			'query_type'	=> 'secondary',
+			'options'		=> array(
+				'slider_id' => null
+			)
+		),
+		'element_2' => array(
+			'type' 			=> 'slogan',
+			'query_type' 	=> 'none',
+			'options' 		=> array(
+				'slogan'		=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.',
+                'button'		=> 1,
+                'button_text' 	=> 'Get Started Today!',
+                'button_color'	=> 'default',
+                'button_url' 	=> 'http://www.google.com',
+                'button_target'	=> '_blank'
+			)
+		)
+	);
+
+	// Main Elements
+	$layouts['showcase']['primary'] = array(
+		'element_3' => array(
+			'type'			=> 'post_list_paginated',
+			'query_type'	=> 'primary',
+			'options'		=> array(
+				'categories'	=> array('all'=>1),
+				'columns'		=> 4,
+				'rows'			=> 3,
+				'orderby'		=> 'post_date',
+				'order'			=> 'DESC',
+				'offset'		=> 0
+			)
+		)
+	);
+
+	// Featured Below Elements
+	$layouts['showcase']['featured_below'] = array();
+
+	return $layouts;
 }

@@ -572,7 +572,7 @@ jQuery(document).ready(function($) {
 				var data = {
 					action: 'themeblvd_add_template',
 					security: $wrap.find('input[name="tb_nonce"]').val(),
-					data: 'tb_template_name='+encodeURIComponent(name)+'&'+form_data
+					data: 'tb_template_name='+encodeURIComponent(name)+'&'+form_data+'&post_id='+$wrap.find('input[name="tb_post_id"]').val()
 				};
 
 				$wrap.find('.ajax-overlay.full-overlay').fadeIn(100);
@@ -587,9 +587,13 @@ jQuery(document).ready(function($) {
 					// Hide overlay
 					$wrap.find('.ajax-overlay.full-overlay').fadeOut(200);
 
-					// Update the template <select>
+					// Update the starting point <select>
 					var $apply = $wrap.find('.select-layout.apply');
 					$apply.html(r[1]).find('.textbox').text( $apply.find('option[value=""]').text() );
+
+					// Update the template sync <select>
+					var $sync = $wrap.find('.select-layout.sync');
+					$sync.html(r[2]).find('.textbox').text( $sync.find('option[value=""]').text() );
 
 				});
 
@@ -649,11 +653,11 @@ jQuery(document).ready(function($) {
 	$add_template.themeblvd('options', 'setup');
 	$add_template.themeblvd('options', 'bind');
 
-	$add_template.find('.builder-samples #sample').each( function(){
+	$add_template.find('.builder-samples #sample, .builder_samples #sample').each( function(){
 		builder_blvd.sample_preview( $(this) );
 	});
 
-	$add_template.find('.builder-samples #sample').on('change', function(){
+	$add_template.find('.builder-samples #sample, .builder_samples #sample').on('change', function(){
 		builder_blvd.sample_preview( $(this) );
 	});
 
@@ -667,6 +671,16 @@ jQuery(document).ready(function($) {
 		    return false;
 		}
 	});
+
+	// @deprecated
+	$add_template.find('.builder_samples').hide();
+	$add_template.find('.trigger select').on('change', function(){
+		if ( $(this).val() == 'sample' ) {
+			$add_template.find('.builder_samples').show();
+		} else {
+			$add_template.find('.builder_samples').hide();
+		}
+	});;
 
 	/*------------------------------------------------------------*/
 	/* Page: Edit Template
