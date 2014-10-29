@@ -100,25 +100,29 @@ class Theme_Blvd_Layout_Builder_Data {
 		$this->id = $id;
 
 		// Plugin version which layout was created with
-		$created = get_post_meta( $this->id, 'plugin_version_created', true );
+		$created = get_post_meta( $this->id, '_tb_builder_plugin_version_created', true );
+
 		if ( $created ) {
 			$this->created = $created;
 		}
 
 		// Plugin version which layout was last saved with
-		$saved = get_post_meta( $this->id, 'plugin_version_saved', true );
+		$saved = get_post_meta( $this->id, '_tb_builder_plugin_version_saved', true );
+
 		if ( $saved ) {
 			$this->saved = $saved;
 		}
 
 		// Theme Framework version which layout was created with
-		$theme_created = get_post_meta( $this->id, 'framework_version_created', true );
+		$theme_created = get_post_meta( $this->id, '_tb_builder_framework_version_created', true );
+
 		if ( $theme_created ) {
 			$this->theme_created = $theme_created;
 		}
 
 		// Theme Framework version which layout was last saved with
-		$theme_saved = get_post_meta( $this->id, 'framework_version_saved', true );
+		$theme_saved = get_post_meta( $this->id, '_tb_builder_framework_version_saved', true );
+
 		if ( $theme_saved ) {
 			$this->theme_saved = $theme_saved;
 		}
@@ -155,27 +159,47 @@ class Theme_Blvd_Layout_Builder_Data {
 	public function verify_elements() {
 
 		/**
+		 * In v2.0 of the Builder, elements are now saved to meta key
+		 * "_tb_builder_elements" and not "elements". Also, create section data.
+		 */
+		$this->transfer_element_meta();
+
+		/**
+		 * Add section data
+		 */
+		$this->add_section_data();
+
+		/**
 		 * In v2.0 of the Builder, we added display options
 		 * to elements to control the background of each element.
 		 */
 		$this->display_options();
 
 		/**
-		 * In v2.0 of the Builder, we eliminated featured
-		 * sections for elements.
+		 * Update element options that changed in plugin 2.0
+		 * paired with theme 2.5.
+		 *
+		 * (1) Columns
+		 * (2) Jumbotron
+		 * (3) Post Grid
+		 * (4) Post List
+		 * (5) Post Slider
+		 * (6) Tabs
 		 */
-		$this->merge_elements();
+		$this->update_options();
 
 		/**
-		 * In v2.0 of the Builder, we added the system
-		 * of "Blocks" to Columns element This will convert
-		 * data from the old system to the new block system.
+		 * Element conversions for when plugin 2.0 is
+		 * paired with theme 2.5. The following elements
+		 * being converted no longer exist.
 		 *
-		 * Also, when the "Tabs" element is transferred to a
-		 * block within a Columns element, it will be updated
-		 * to use the new sortable option type.
+		 * (1) Content => [applicable type]
+		 * (2) Paginated Post List => Post List
+		 * (3) Paginated Post Grid => Post Grid
+		 * (4) Post Grid Slider => Post Grid
+		 * (5) Paginated List Slider => Post Slider
 		 */
-		$this->to_blocks();
+		$this->convert_elements();
 
 		/**
 		 * Extend
@@ -205,14 +229,148 @@ class Theme_Blvd_Layout_Builder_Data {
 	 */
 	public function finalize() {
 		if ( $this->ran ) {
-			update_post_meta( $this->id, 'plugin_version_saved', $this->version );
-			update_post_meta( $this->id, 'framework_version_saved', $this->theme_version );
+			update_post_meta( $this->id, '_tb_builder_plugin_version_saved', $this->version );
+			update_post_meta( $this->id, '_tb_builder_framework_version_saved', $this->theme_version );
 		}
 	}
 
 	/*--------------------------------------------*/
 	/* Methods, individual checks to build upon
 	/*--------------------------------------------*/
+
+	/**
+	 * Verify that layout's elements are saved to meta key
+	 * "_tb_builder_elements" and not "elements".
+	 *
+	 * @since 2.0.0
+	 */
+	public function transfer_element_meta() {
+
+		// If layout is saved after 2.0 of the plugin we're
+		// good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) ) {
+			return;
+		}
+
+		if ( $elements = get_post_meta( $this->id, 'elements', true ) ) {
+			// delete_post_meta( $this->id, 'elements' ); // For now, leave commented out. This will allow old element options to exist if user switches back.
+			update_post_meta( $this->id, '_tb_builder_elements', $elements);
+		}
+
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
+
+	}
+
+	/**
+	 * Add section data
+	 *
+	 * @since 2.0.0
+	 */
+	public function add_section_data() {
+
+		// If the theme does not contain framework version 2.5+,
+		// altering the data will mess things up.
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
+			return;
+		}
+
+		// If layout is saved after 2.0 of the plugin and v2.5
+		// of the theme framework, we're good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
+			return;
+		}
+
+		if ( ! get_post_meta( $this->id, '_tb_builder_sections', true ) ) {
+
+			$data = array();
+			$sections = get_post_meta( $this->id, '_tb_builder_elements', true );
+
+			if ( ! isset( $sections['primary'] ) ) {
+				$sections['primary'] = array();
+			}
+
+			$sorted = array();
+
+			if ( isset( $sections['featured'] ) ) {
+				$sorted['featured'] = $sections['featured'];
+			}
+
+			$sorted['primary'] = $sections['primary'];
+
+			if ( isset( $sections['featured_below'] ) ) {
+				$sorted['featured_below'] = $sections['featured_below'];
+			}
+
+			foreach ( $sorted as $id => $section ) {
+
+				switch ( $id ) {
+					case 'featured' :
+						$label = 'Featured';
+						break;
+					case 'featured_below' :
+						$label = 'Featured Below';
+						break;
+					default :
+						$label = 'Main';
+				}
+
+				$data[$id] = array(
+					'label'		=> $label,
+					'display'	=> array(
+						'bg_type'					=> 'none',
+						'text_color'				=> 'dark',
+						'bg_color'					=> '#f2f2f2',
+						'bg_color_opacity'			=> 1,
+						'bg_texture'				=> 'arches',
+						'apply_bg_texture_parallax'	=> 0,
+						'bg_texture_parallax'		=> 5,
+						'bg_image' 					=> array(
+							'color'			=> '',
+							'image'			=> '',
+							'repeat'		=> 'no-repeat',
+							'position'		=> 'center top',
+							'attachment'	=> 'scroll',
+							'size'			=> 'auto',
+						),
+						'bg_image_parallax_stretch'	=> 1,
+						'bg_image_parallax'			=> '2',
+						'apply_bg_shade'			=> 0,
+						'bg_shade_color'			=> '#000000',
+						'bg_shade_opacity'			=> '0.5',
+						'bg_slideshow'				=> array(),
+						'bg_slideshow_crop'			=> 'full',
+						'apply_border_top'			=> 0,
+						'border_top_color'			=> '#dddddd',
+						'border_top_width'			=> '1px',
+						'apply_border_bottom'		=> 0,
+						'border_bottom_color'		=> '#dddddd',
+						'border_bottom_width'		=> '1px',
+						'apply_padding'				=> 0,
+						'padding_top'				=> '30px',
+						'padding_right'				=> '30px',
+						'padding_bottom'			=> '30px',
+						'padding_left'				=> '30px',
+						'classes'					=> ''
+					)
+				);
+
+				// If the section was a featured area, automatically
+				// apply old feature area styling for background options of element.
+				if ( $id == 'featured' && themeblvd_supports( 'featured', 'style' ) ) {
+					$data[$id]['display']['bg_type'] = 'featured';
+				} else if ( $id == 'featured_below' && themeblvd_supports( 'featured_below', 'style' ) ) {
+					$data[$id]['display']['bg_type'] = 'featured_below';
+				}
+			}
+
+			update_post_meta( $this->id, '_tb_builder_sections', $data );
+
+		}
+
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
+	}
 
 	/**
 	 * Verify that elements are merged, and not separated
@@ -234,457 +392,578 @@ class Theme_Blvd_Layout_Builder_Data {
 			return;
 		}
 
-		$locations = get_post_meta( $this->id, 'elements', true );
+		$sections = get_post_meta( $this->id, '_tb_builder_elements', true );
 
-		if ( ! isset($locations['featured']) && ! isset($locations['primary']) && ! isset($locations['featured_below']) ) {
+		if ( ! isset($sections['featured']) && ! isset($sections['primary']) && ! isset($sections['featured_below']) ) {
 			return;
 		}
 
 		$new = array();
 
-		foreach ( $locations as $location_id => $elements ) {
-			foreach ( $elements as $element_id => $element ) {
+		if ( $sections ) {
+			foreach ( $sections as $section_id => $elements ) {
+				foreach ( $elements as $element_id => $element ) {
 
-				// Setup display settings
-				$element['display'] = array(
-					'bg_type'           		=> 'none',
-					'text_color'        		=> 'dark',
-					'bg_color'          		=> '#f2f2f2',
-					'bg_color_opacity'  		=> '1',
-					'bg_texture'        		=> 'arches',
-					'apply_bg_texture_parallax'	=> 0,
-					'bg_texture_parallax'		=> '5',
-					'bg_image'          		=> array(
-					    'color'             	=> '',
-					    'image'             	=> '',
-					    'repeat'            	=> 'no-repeat',
-					    'position'          	=> 'top center',
-					    'attachment'        	=> 'scroll',
-					    'size'					=> 'auto'
-					),
-					'bg_image_parallax_stretch'	=> 1,
-					'bg_image_parallax'			=> '5',
-					'apply_bg_shade'    		=> 0,
-					'bg_shade_color'    		=> '#000000',
-					'bg_shade_opacity'  		=> '0.5',
-					'apply_popout'				=> 0,
-					'apply_padding'     		=> 0,
-					'padding_top'       		=> '30px',
-					'padding_right'     		=> '30px',
-					'padding_bottom'    		=> '30px',
-					'padding_left'      		=> '30px',
-					'visibility'        		=> array(
-					    'hide_on_standard'		=> 0,
-					    'hide_on_tablet'    	=> 0,
-					    'hide_on_mobile'    	=> 0
-					),
-					'classes'           		=> ''
-				);
+					// Default element label
+					$element['label'] = 'Element Label';
 
-				// If this element was in a featured element, automatically
-				// apply old feature area styling for background options of element.
-				if ( $location_id == 'featured' && themeblvd_supports( 'featured', 'style' ) ) {
-					$element['display']['bg_type'] = 'featured';
-				} else if ( $location_id == 'featured_below' && themeblvd_supports( 'featured_below', 'style' ) ) {
-					$element['display']['bg_type'] = 'featured_below';
-				}
-
-				// Move responsive visibility settings from element options to
-				// new display options.
-				if ( isset( $element['options']['visibility'] ) ) {
-					$element['display']['visibility'] = $element['options']['visibility'];
-					unset( $element['options']['visibility'] );
-				}
-
-				// Move CSS classes setting from element options to new display options.
-				if ( isset( $element['options']['classes'] ) ) {
-					$element['display']['classes'] = $element['options']['classes'];
-					unset( $element['options']['classes'] );
-				}
-
-				// Now that display settings are added, add entire element back
-				$new[$location_id][$element_id] = $element;
-			}
-		}
-
-		// Update elements
-		update_post_meta( $this->id, 'elements', $new );
-
-		// Allow layout to be finalized at the end of all checks.
-		$this->ran = true;
-
-	}
-
-	/**
-	 * Verify that elements are merged, and not separated
-	 * by old method of Featured/Primary/Featured Below.
-	 *
-	 * @since 2.0.0
-	 */
-	public function merge_elements() {
-
-		// If the theme does not contain framework version 2.5+,
-		// altering the data will mess things up.
-		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
-			return;
-		}
-
-		// If layout is saved after 2.0 of the plugin and v2.5
-		// of the theme framework, we're good to go.
-		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
-			return;
-		}
-
-		$locations = get_post_meta( $this->id, 'elements', true );
-
-		if ( ! isset($locations['featured']) && ! isset($locations['primary']) && ! isset($locations['featured_below']) ) {
-			return;
-		}
-
-		$new = array();
-
-		foreach ( $locations as $location_id => $elements ) {
-			foreach ( $elements as $element_id => $element ) {
-				$new[$element_id] = $element;
-			}
-		}
-
-		// Update elements
-		update_post_meta( $this->id, 'elements', $new );
-
-		// Allow layout to be finalized at the end of all checks.
-		$this->ran = true;
-	}
-
-	/**
-	 * Verify that content block data is setup
-	 * correctly. Applies to those updating the
-	 * Builder plugin from v1 to v2.0+
-	 *
-	 * @since 2.0.0
-	 */
-	public function to_blocks() {
-
-		// If the theme does not contain framework version 2.5+,
-		// altering the data will mess things up.
-		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
-			return;
-		}
-
-		// If layout is saved after 2.0 of the plugin and v2.5
-		// of the theme framework, we're good to go.
-		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
-			return;
-		}
-
-		$elements = get_post_meta( $this->id, 'elements', true );
-
-		// Default values for column display data
-		$col_display = array(
-			'bg_type'           => 'none',
-			'text_color'        => 'dark',
-			'bg_color'          => '#f2f2f2',
-			'bg_color_opacity'  => '1',
-			'bg_texture'        => 'arches',
-			'bg_image'          => array(
-			    'color'             => '',
-			    'image'             => '',
-			    'repeat'            => 'no-repeat',
-			    'position'          => 'top center',
-			    'attachment'        => 'scroll'
-			),
-			'apply_padding'     => 0,
-			'padding_top'       => '30px',
-			'padding_right'     => '30px',
-			'padding_bottom'    => '30px',
-			'padding_left'      => '30px',
-			'classes'           => ''
-		);
-
-		$new = array();
-
-		foreach ( $elements as $element_id => $element ) {
-
-			if ( $element['type'] == 'content' || $element['type'] == 'columns' || $element['type'] == 'tabs' ) {
-
-				// Start settings revisions
-				$new[$element_id]['type'] = $element['type'];
-				$new[$element_id]['query_type'] = $element['query_type'];
-				$new[$element_id]['options'] = array();
-				$new[$element_id]['display'] = $element['display'];
-
-				// As columns elements, all will need following options
-				$element['options']['height'] = 0;
-				$element['options']['align'] = 'top';
-
-				if ( $element['type'] == 'content' ) {
-
-					$blocks = array();
-					$block_id = uniqid( 'block_'.rand() );
-					$blocks[$block_id] = array();
-					$blocks[$block_id]['query_type'] = 'none';
-
-					// Convert Content element
-					switch ( $element['options']['source'] ) {
-
-						case 'current' :
-							$blocks[$block_id]['type'] = 'current';
-							break;
-
-						case 'page' :
-							$blocks[$block_id]['type'] = 'page';
-							$blocks[$block_id]['options'] = array();
-							$blocks[$block_id]['options']['page'] = $element['options']['page_id'];
-							break;
-
-						case 'raw' :
-							$blocks[$block_id]['type'] = 'raw';
-							$blocks[$block_id]['options'] = array();
-							$blocks[$block_id]['options']['raw'] = $element['options']['raw_content'];
-							$blocks[$block_id]['options']['raw_format'] = $element['options']['raw_format'];
-							break;
-
-						case 'widget' :
-							$blocks[$block_id]['type'] = 'widget';
-							$blocks[$block_id]['options'] = array();
-							$blocks[$block_id]['options']['sidebar'] = $element['options']['widget_area'];
-							break;
-					}
-
-					$column = array(
-						'display' 	=> $col_display,
-						'blocks'	=> $blocks
+					// Setup default display settings
+					$element['display'] = array(
+						'type' 				=> 'element',
+						'apply_padding' 	=> '0',
+						'padding_top'		=> '0px',
+						'padding_right' 	=> '0px',
+						'padding_bottom'	=> '0px',
+						'padding_left' 		=> '0px',
+						'apply_popout'		=> '0',
+						'bg_content'		=> '0',
+						'suck_up'			=> '0',
+						'suck_down'			=> '0',
+						'visibility'		=> array(
+					        'hide_on_standard'	=> '0',
+					        'hide_on_tablet' 	=> '0',
+					        'hide_on_mobile' 	=> '0'
+						),
+						'classes' 			=> ''
 					);
 
-					// Add content block to meta data
-					update_post_meta( $this->id, $element_id.'_col_1', $column ); // "element_123_col_1"
+					// Move responsive visibility settings from element options to
+					// new display options.
+					if ( isset( $element['options']['visibility'] ) ) {
+						$element['display']['visibility'] = $element['options']['visibility'];
+						unset( $element['options']['visibility'] );
+					}
 
-					// Get rid of the options no longer needed
-					unset( $element['options']['source'] );
-					unset( $element['options']['page_id'] );
-					unset( $element['options']['raw_content'] );
-					unset( $element['options']['raw_format'] );
-					unset( $element['options']['widget_area'] );
+					// Move CSS classes setting from element options to new display options.
+					if ( isset( $element['options']['classes'] ) ) {
+						$element['display']['classes'] = $element['options']['classes'];
+						unset( $element['options']['classes'] );
+					}
 
-					// Change type to "columns" -- No more "Content"
-					// element; it's now be a 1-column columns element.
-					$new[$element_id]['type'] = 'columns';
+					// Now that display settings are added, add entire element back
+					$new[$section_id][$element_id] = $element;
+				}
+			}
+		}
 
-					// Add revised options for this element
-					$new[$element_id]['options'] = $element['options'];
-					$new[$element_id]['options']['setup'] = '1/1';
+		// Update elements
+		update_post_meta( $this->id, '_tb_builder_elements', $new );
 
-				} else if ( $element['type'] == 'columns' ) {
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
 
-					// Convert Columns element
-					foreach ( $element['options'] as $option_id => $settings ) {
-						if ( in_array( $option_id, array( 'col_1', 'col_2', 'col_3', 'col_4', 'col_5' ) ) ) {
+	}
 
-							$blocks = array();
-							$block_id = uniqid( 'block_'.rand() );
-							$blocks[$block_id] = array();
-							$blocks[$block_id]['query_type'] = 'none';
+	/**
+	 * Update element options that changed in plugin 2.0
+	 * paired with theme 2.5.
+	 *
+	 * (1) Columns
+	 * (2) Jumbotron
+	 * (3) Post Grid
+	 * (4) Post List
+	 * (5) Post Slider
+	 * (6) Tabs
+	 *
+	 * @since 2.0.0
+	 */
+	public function update_options() {
 
-							// Convert Column
-							switch ( $settings['type'] ) {
+		// If the theme does not contain framework version 2.5+,
+		// altering the data will mess things up.
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
+			return;
+		}
 
-								case 'current' :
-									$blocks[$block_id]['type'] = 'current';
-									break;
+		// If layout is saved after 2.0 of the plugin and v2.5
+		// of the theme framework, we're good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
+			return;
+		}
 
-								case 'page' :
-									$blocks[$block_id]['type'] = 'page';
-									$blocks[$block_id]['options'] = array();
-									$blocks[$block_id]['options']['page'] = $settings['page'];
-									break;
+		$new = array();
 
-								case 'raw' :
-									$blocks[$block_id]['type'] = 'raw';
-									$blocks[$block_id]['options'] = array();
-									$blocks[$block_id]['options']['raw'] = $settings['raw'];
-									$blocks[$block_id]['options']['raw_format'] = $settings['raw_format'];
-									break;
+		if ( $sections = get_post_meta( $this->id, '_tb_builder_elements', true ) ) {
+			foreach ( $sections as $section_id => $elements ) {
 
-								case 'widget' :
-									$blocks[$block_id]['type'] = 'widget';
-									$blocks[$block_id]['options'] = array();
-									$blocks[$block_id]['options']['sidebar'] = $settings['sidebar'];
-									break;
+				$new[$section_id] = array();
+
+				foreach ( $elements as $element_id => $element ) {
+
+					$new[$section_id][$element_id] = $element;
+					$options = $element['options'];
+
+					switch ( $element['type'] ) {
+
+						/**
+						 * Columns
+						 */
+						case 'columns' :
+
+							$cols = explode( '-', $options['setup']['width'][$options['setup']['num']] );
+							$setup = array();
+
+							foreach ( $cols as $col ) {
+								$setup[] = themeblvd_grid_fraction($col);
 							}
 
-							$column = array(
-								'display' 	=> $col_display,
-								'blocks'	=> $blocks
+							$num = count($setup);
+							$options['setup'] = implode('-', $setup);
+
+							$options['stack'] = 'md';
+							$options['height'] = '0';
+							$options['align'] = 'top';
+
+							for ( $i = 1; $i <= $num; $i++ ) {
+
+								$col = array();
+
+								$col['display'] = array(
+									'type'						=> 'column',
+									'bg_type'					=> 'none',
+									'text_color'				=> 'dark',
+									'bg_color'					=> '#f2f2f2',
+									'bg_color_opacity'			=> '1',
+									'bg_texture'				=> 'arches',
+									'apply_bg_texture_parallax'	=> '0',
+									'bg_texture_parallax'		=> '5',
+									'bg_image'					=> array(
+										'color'			=> '',
+										'image'			=> '',
+										'repeat'		=> 'no-repeat',
+										'position'		=> 'center top',
+										'attachment'	=> 'scroll',
+										'size'			=> 'auto'
+									),
+									'bg_image_parallax_stretch'	=> '1',
+									'bg_image_parallax'			=> '2',
+									'apply_padding'				=> '0',
+									'padding_top'				=> '30px',
+									'padding_right'				=> '30px',
+									'padding_bottom'			=> '30px',
+									'padding_left'				=> '30px',
+									'classes'					=> ''
+								);
+
+								$col['elements'] = array();
+
+								$block_id = uniqid( 'block_'.rand() );
+								$col['elements'][$block_id] = array();
+
+								switch ( $options['col_'.$i]['type'] ) {
+
+									case 'current' :
+										$col['elements'][$block_id]['type'] = 'current';
+										break;
+
+									case 'page' :
+										$col['elements'][$block_id]['type'] = 'external';
+										$col['elements'][$block_id]['options'] = array();
+										$col['elements'][$block_id]['options']['post_id'] = themeblvd_post_id_by_name( $options['col_'.$i]['page'], 'page' );
+										break;
+
+									case 'raw' :
+										$col['elements'][$block_id]['type'] = 'content';
+										$col['elements'][$block_id]['options'] = array();
+										$col['elements'][$block_id]['options']['content'] = $options['col_'.$i]['raw'];
+										$col['elements'][$block_id]['options']['format'] = $options['col_'.$i]['raw_format'];
+										$col['elements'][$block_id]['options']['style'] = 'none';
+										$col['elements'][$block_id]['options']['text_color'] = 'dark';
+										$col['elements'][$block_id]['options']['bg_color'] = '#eeeeee';
+										$col['elements'][$block_id]['options']['bg_opacity'] = '1';
+										break;
+
+									case 'widget' :
+										$col['elements'][$block_id]['type'] = 'widget';
+										$col['elements'][$block_id]['options'] = array();
+										$col['elements'][$block_id]['options']['sidebar'] = $options['col_'.$i]['sidebar'];
+
+								}
+
+								update_post_meta($this->id, '_tb_builder_'.$element_id.'_col_'.$i, $col);
+
+							}
+
+							break;
+
+						/**
+						 * Jumbotron
+						 */
+						case 'jumbotron' :
+
+							$options['text_color'] = '#444444';
+							$options['buttons_stack'] = '0';
+							$options['buttons_block'] = '0';
+
+							if ( ! empty($options['button']) ) {
+								$options['buttons'] = array(
+							        'btn_1' => array(
+										'color' 		=> $options['button_color'],
+										'custom' 		=> array(),
+										'text'			=> $options['button_text'],
+										'size'			=> $options['button_size'],
+										'url'			=> $options['button_url'],
+										'target'		=> $options['button_target'],
+										'icon_before'	=> '',
+										'icon_after'	=> ''
+									)
+								);
+							} else {
+								$options['buttons'] = array();
+							}
+
+							unset( $options['button'], $options['button_text'], $options['button_color'], $options['button_size'], $options['button_url'], $options['button_target'] );
+
+							break;
+
+						/**
+						 * Post Grid
+						 */
+						case 'post_grid' :
+
+							$options['title'] = '';
+							$options['pages'] = '';
+							$options['display'] = 'grid';
+							$options['paginated_hide'] = '0';
+							$options['filter'] = 'category';
+							$options['filter_max'] = '-1';
+							$options['posts_per_page'] = '12';
+							$options['slides'] = '3';
+							$options['nav'] = '1';
+							$options['thumbs'] = 'default';
+							$options['meta'] = 'default';
+							$options['excerpt'] = 'default';
+							$options['more'] = 'default';
+							$options['more_text'] = 'Read More';
+
+							if ( empty($options['crop']) ) {
+								$options['crop'] = 'tb_grid';
+							}
+
+							break;
+
+						/**
+						 * Post List
+						 */
+						case 'post_list' :
+
+							$options['posts_per_page'] = $options['numberposts'];
+							$options['display'] = 'list';
+							$options['paginated_hide'] = '0';
+							$options['filter'] = 'category';
+							$options['meta'] = 'default';
+							$options['more'] = 'default';
+							$options['more_text'] = 'Read More';
+
+							unset( $options['numberposts'], $options['content'] );
+
+							break;
+
+						/**
+						 * Post List
+						 */
+						case 'post_slider' :
+
+							$old = $options;
+
+							$options = array(
+								'style' 			=> 'style-1',
+								'source' 			=> $old['source'],
+								'categories' 		=> array($old['category'] => 1),
+								'tag' 				=> $old['tag'],
+								'posts_per_page'	=> $old['numberposts'],
+								'orderby' 			=> $old['orderby'],
+								'order' 			=> $old['order'],
+								'offset' 			=> '0',
+								'query' 			=> $old['query'],
+								'crop' 				=> $old['image_size'],
+								'slide_link' 		=> 'none', // convert below
+								'button_color' 		=> 'custom',
+								'button_custom'		=> array(
+									'bg' 				=> '#ffffff',
+									'bg_hover' 			=> '#ffffff',
+									'border' 			=> '#ffffff',
+									'text' 				=> '#ffffff',
+									'text_hover' 		=> '#333333',
+									'include_bg' 		=> '0',
+									'include_border'	=> '1'
+								),
+								'button_text'		=> $old['button'], // convert below
+								'button_size'		=> 'default',
+								'interval'			=> $old['timeout'],
+								'pause' 			=> '1',
+								'wrap' 				=> '1',
+								'nav_standard' 		=> $old['nav_standard'],
+								'nav_arrows' 		=> $old['nav_arrows'],
+								'nav_thumbs' 		=> '0',
+								'dark_text' 		=> '0',
+								'thumb_link' 		=> '1',
+								'title' 			=> '1',
+								'meta' 				=> '1',
+								'excerpts' 			=> '0'
 							);
 
-							// Add content block to meta data
-							update_post_meta( $this->id, $element_id.'_'.$option_id, $column ); // "element_123_col_1"
-
-						} else if ( $option_id == 'setup' ) {
-
-							if ( is_array( $settings ) ) {
-
-								if ( ! empty( $settings['width'] ) && ! empty( $settings['num'] ) ) {
-
-									$widths = $settings['width'][$settings['num']];
-									$widths = explode('-', $widths);
-
-									foreach ( $widths as $key => $value ) {
-										$widths[$key] = themeblvd_grid_fraction($value);
-									}
-
-									$new[$element_id]['options'][$option_id] = implode('-', $widths);
-								}
+							if ( $old['image_link'] == 'option' ) {
+								$options['slide_link'] = 'image_link';
+							} else if ( $old['image_link'] == 'permalink' ) {
+								$options['slide_link'] = 'image_post';
 							}
 
-						} else {
+							if ( ! $options['button_text'] ) {
+								$option['button_text'] = 'View Post';
+							}
 
-							// Option can remain unchanged
-							$new[$element_id]['options'][$option_id] = $settings;
+							break;
 
-						}
+						/**
+						 * Tabs
+						 */
+						case 'tabs' :
+
+							$old = $options;
+
+							$options = array();
+
+							if ( in_array( $old['setup']['nav'], array('pills', 'pills_above', 'pills_below') ) ) {
+								$options['nav'] = 'pills';
+							} else {
+								$options['nav'] = 'tabs';
+							}
+
+							$options['style'] = $old['setup']['style'];
+							$options['height'] = $old['height'];
+
+							$options['tabs'] = array();
+
+							for ( $i = 1; $i <= intval($old['setup']['num']); $i++ ) {
+
+								$tab_id = uniqid('item_');
+
+								$options['tabs'][$tab_id] = array(
+									'title'			=> $old['setup']['names']['tab_'.$i],
+									'content'		=> array(
+										'type'			=> $old['tab_'.$i]['type'],
+										'raw'			=> $old['tab_'.$i]['raw'],
+										'raw_format'	=> $old['tab_'.$i]['raw_format']
+									)
+								);
+
+							}
 					}
 
-				} else if ( $element['type'] == 'tabs' ) {
-
-					$blocks = array();
-					$block_id = uniqid( 'block_'.rand() );
-
-					$blocks[$block_id]['type'] = 'tabs';
-					$blocks[$block_id]['query_type'] = 'none';
-
-					// Tabs
-					$num = 3;
-					$tabs = array();
-
-					if ( ! empty( $element['options']['setup']['num'] ) ) {
-						$num = intval($element['options']['setup']['num']);
-					}
-
-					for ( $i = 1; $i <= $num; $i++ ) {
-
-						$tab = array();
-
-						// Title
-						$tab['title'] = '';
-
-						if ( ! empty( $element['options']['setup']['names']['tab_'.$i] ) ) {
-							$tab['title'] = $element['options']['setup']['names']['tab_'.$i];
-						}
-
-						// Content
-						$tab['content'] = array();
-
-						$tab['content']['type'] = '';
-						if ( ! empty( $element['options']['tab_'.$i]['type'] ) ) {
-							$tab['content']['type'] = $element['options']['tab_'.$i]['type'];
-						}
-
-						switch ( $tab['content']['type'] ) {
-							case 'page' :
-
-								$tab['content']['page'] = '';
-
-								if ( ! empty( $element['options']['tab_'.$i]['page'] ) ) {
-									$tab['content']['page'] = $element['options']['tab_'.$i]['page'];
-								}
-								break;
-
-							case 'raw' :
-
-								$tab['content']['raw'] = '';
-
-								if ( ! empty( $element['options']['tab_'.$i]['raw'] ) ) {
-									$tab['content']['raw'] = $element['options']['tab_'.$i]['raw'];
-								}
-
-								$tab['content']['raw_format'] = 1;
-
-								if ( isset( $element['options']['tab_'.$i]['raw_format'] ) ) {
-									$tab['content']['raw_format'] = $element['options']['tab_'.$i]['raw_format'];
-								}
-								break;
-
-							case 'widget' :
-
-								$tab['content']['sidebar'] = '';
-
-								if ( ! empty( $element['options']['tab_'.$i]['sidebar'] ) ) {
-									$tab['content']['sidebar'] = $element['options']['tab_'.$i]['sidebar'];
-								}
-								break;
-						}
-
-						// Add the tab to the rest
-						$tabs['tab_'.$i] = $tab;
-
-					}
-
-					$blocks[$block_id]['options']['tabs'] = $tabs;
-
-					// Navigation
-					$nav = 'tabs';
-
-					if ( ! empty( $element['options']['setup']['nav'] ) ) {
-						$nav = $element['options']['setup']['nav'];
-					}
-
-					if ( in_array( $nav, array( 'tabs', 'tabs_above', 'tabs_above', 'tabs_right', 'tabs_left' ) ) ) {
-				        $nav = 'tabs';
-				    } else if ( in_array( $nav, array( 'pills', 'pills_above', 'pills_above' ) ) ) {
-				        $nav = 'pills';
-				    }
-
-					$blocks[$block_id]['options']['nav'] = $nav;
-
-					// Style
-					$style = 'framed';
-
-					if ( ! empty( $element['options']['setup']['style'] ) ) {
-						$style = $element['options']['setup']['style'];
-					}
-
-					$blocks[$block_id]['options']['style'] = $style;
-
-					// Fixed height
-					$height = 0;
-
-					if ( ! empty( $element['options']['height'] ) ) {
-						$height = $element['options']['height'];
-					}
-
-					$blocks[$block_id]['options']['height'] = $height;
-
-					// Setup final column
-					$column = array(
-						'display'	=> $col_display,
-						'blocks'	=> $blocks
-					);
-
-					// Add content block to meta data
-					update_post_meta( $this->id, $element_id.'_col_1', $column ); // "element_123_col_1"
-
-					// Change type to "columns
-					$new[$element_id]['type'] = 'columns';
-
-					// Add revised options for this element
-					$new[$element_id]['options'] = array();
-					$new[$element_id]['options']['setup'] = '1/1';
-
+					$new[$section_id][$element_id]['options'] = $options;
 				}
-
-			} else {
-
-				// Not an element using content blocks; so we can just pass it back through.
-				$new[$element_id] = $element;
 			}
 		}
 
 		// Update elements
-		update_post_meta( $this->id, 'elements', $new );
+		update_post_meta( $this->id, '_tb_builder_elements', $new );
 
 		// Allow layout to be finalized at the end of all checks.
 		$this->ran = true;
 	}
 
+	/**
+	 * Convert elements from prior to plugin 2.0 and
+	 * framework 2.5. This does NOT apply if the current
+	 * theme version is prior to 2.5.
+	 *
+	 * @since 2.0.0
+	 */
+	public function convert_elements() {
+
+		// If the theme does not contain framework version 2.5+,
+		// altering the data will mess things up.
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
+			return;
+		}
+
+		// If layout is saved after 2.0 of the plugin and v2.5
+		// of the theme framework, we're good to go.
+		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
+			return;
+		}
+
+		$new = array();
+
+		if ( $sections = get_post_meta( $this->id, '_tb_builder_elements', true ) ) {
+			foreach ( $sections as $section_id => $elements ) {
+
+				$new[$section_id] = array();
+
+				foreach ( $elements as $element_id => $element ) {
+
+					$old = $element['options'];
+
+					switch ( $element['type'] ) {
+
+						/**
+						 * Content to Current, External, Widget (or remain Content)
+						 */
+						case 'content' :
+
+							switch ( $old['source'] ) {
+
+								case 'current' :
+									$element['type'] = 'current';
+									$element['options'] = array();
+									break;
+
+								case 'external' :
+									$element['type'] = 'external';
+									$element['options'] = array();
+									$element['options']['post_id'] = themeblvd_post_id_by_name( $old['page_id'], 'page' );
+									break;
+
+								case 'widget_area' :
+									$element['type'] = 'widget';
+									$element['options'] = array();
+									$element['options']['sidebar'] = $old['widget_area'];
+									break;
+
+								default : // remain Content element
+									$element['options'] = array(
+										'content'		=> $old['raw_content'],
+										'format'		=> $old['raw_format'],
+										'style'			=> 'none',
+										'text_color'	=> 'dark',
+										'bg_color'		=> '#eeeeee',
+										'bg_opacity' 	=> '1'
+									);
+							}
+
+							break;
+
+						/**
+						 * Paginated post list to post list
+						 */
+						case 'post_list_paginated' :
+
+							$element['type'] = 'post_list';
+
+							$element['options'] = array(
+								'source' 			=> $old['source'],
+								'categories'		=> $old['categories'],
+								'tag'				=> $old['tag'],
+								'posts_per_page'	=> $old['posts_per_page'],
+								'orderby' 			=> $old['orderby'],
+								'order'				=> $old['order'],
+								'offset'			=> '0',
+								'query'				=> $old['query'],
+								'display'			=> 'paginated',
+								'paginated_hide'	=> '0',
+								'filter'			=> 'category',
+								'thumbs'			=> 'default',
+								'meta'				=> 'default',
+								'more'				=> 'default',
+								'more_text'			=> 'Read More'
+							);
+
+							break;
+
+						/**
+						 * Post list slider to post slider
+						 */
+						case 'post_list_slider' :
+
+							$element['type'] = 'post_slider';
+
+							$element['options'] = array(
+								'style' 			=> 'style-1',
+								'source' 			=> $old['source'],
+								'categories' 		=> $old['categories'],
+								'tag' 				=> $old['tag'],
+								'posts_per_page'	=> $old['numberposts'],
+								'orderby' 			=> $old['orderby'],
+								'order' 			=> $old['order'],
+								'offset' 			=> $old['offset'],
+								'query' 			=> $old['query'],
+								'crop' 				=> 'slider-large',
+								'slide_link' 		=> 'button',
+								'button_color' 		=> 'custom',
+								'button_custom'		=> array(
+									'bg' 				=> '#ffffff',
+									'bg_hover' 			=> '#ffffff',
+									'border' 			=> '#ffffff',
+									'text' 				=> '#ffffff',
+									'text_hover' 		=> '#333333',
+									'include_bg' 		=> '0',
+									'include_border'	=> '1'
+								),
+								'button_text'		=> 'View Post',
+								'button_size'		=> 'default',
+								'interval'			=> $old['timeout'],
+								'pause' 			=> '1',
+								'wrap' 				=> '1',
+								'nav_standard' 		=> $old['nav_standard'],
+								'nav_arrows' 		=> $old['nav_arrows'],
+								'nav_thumbs' 		=> '0',
+								'dark_text' 		=> '0',
+								'thumb_link' 		=> '1',
+								'title' 			=> '1',
+								'meta' 				=> '1',
+								'excerpts' 			=> '0'
+							);
+
+							break;
+
+						/**
+						 * Paginated post grid/Post grid slider to post grid
+						 */
+						case 'post_grid_paginated' :
+						case 'post_grid_slider' :
+
+							$element['type'] = 'post_grid';
+
+							$element['options'] = array(
+								'title'				=> '',
+								'source' 			=> $old['source'],
+								'categories' 		=> $old['categories'],
+								'tag' 				=> $old['tag'],
+								'orderby' 			=> $old['orderby'],
+								'order' 			=> $old['order'],
+								'offset'			=> '0',
+								'pages'				=> '',
+								'query' 			=> $old['query'],
+								'display'			=> 'paginated',
+								'columns'			=> $old['columns'],
+								'rows'				=> $old['rows'],
+								'paginated_hide'	=> '0',
+								'filter'			=> 'category',
+								'filter_max'		=> '-1',
+								'posts_per_page'	=> '12',
+								'slides'			=> '3',
+								'timeout'			=> '3',
+								'nav'				=> '1',
+								'thumbs'			=> 'default',
+								'meta'				=> 'default',
+								'excerpt'			=> 'default',
+								'more'				=> 'default',
+								'more_text'			=> 'Read More',
+								'crop'				=> $old['crop']
+							);
+
+							if ( empty($element['options']['crop']) ) {
+								$element['options']['crop'] = 'tb_grid';
+							}
+
+							if ( $element['type'] == 'post_grid_slider' ) {
+								$element['options']['display'] = 'slider';
+								$element['options']['nav'] = $old['nav_standard'];
+							}
+
+					}
+
+					$new[$section_id][$element_id] = $element;
+
+				}
+			}
+		}
+
+		// Update elements
+		update_post_meta( $this->id, '_tb_builder_elements', $new );
+
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
+	}
 }
