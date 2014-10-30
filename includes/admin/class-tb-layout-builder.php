@@ -2401,7 +2401,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'bg_color',
 				'name'		=> __('Background Color', 'themeblvd_builder'),
 				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
-				'std'		=> '#f2f2f2',
+				'std'		=> '#f8f8f8',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
 			);
@@ -2513,13 +2513,13 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['subgroup_start_4'] = array(
 					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide hide receiver receiver-image'
+					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow'
 				);
 
 				$options['apply_bg_shade'] = array(
 					'id'		=> 'apply_bg_shade',
 					'name'		=> null,
-					'desc'		=> __('Shade background image with transparent color.', 'themeblvd_builder'),
+					'desc'		=> __('Shade background with transparent color.', 'themeblvd_builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox',
 					'class'		=> 'trigger'
@@ -2528,7 +2528,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_shade_color'] = array(
 					'id'		=> 'bg_shade_color',
 					'name'		=> __('Shade Color', 'themeblvd_builder'),
-					'desc'		=> __('Select the color you want overlaid on your background image.', 'themeblvd_builder'),
+					'desc'		=> __('Select the color you want overlaid on your background.', 'themeblvd_builder'),
 					'std'		=> '#000000',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2537,7 +2537,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_shade_opacity'] = array(
 					'id'		=> 'bg_shade_opacity',
 					'name'		=> __('Shade Opacity', 'themeblvd_builder'),
-					'desc'		=> __('Select the opacity of the shade color overlaid on your background image.', 'themeblvd_builder'),
+					'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'themeblvd_builder'),
 					'std'		=> '0.5',
 					'type'		=> 'select',
 					'options'	=> array(
@@ -2580,11 +2580,42 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
 				);
 
+				$options['subgroup_start_6'] = array(
+					'type'		=> 'subgroup_start',
+					'class'		=> 'show-hide'
+				);
+
+				$options['apply_bg_slideshow_parallax'] = array(
+					'id'		=> 'apply_bg_slideshow_parallax',
+					'name'		=> null,
+					'desc'		=> __('Apply parallax scroll effect to background slideshow.', 'themeblvd_builder'),
+					'type'		=> 'checkbox',
+					'class'		=> 'trigger'
+				);
+
+				$options['bg_slideshow_parallax'] = array(
+					'id'		=> 'bg_slideshow_parallax',
+					'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
+					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+					'type'		=> 'slide',
+					'std'		=> '5',
+					'options'	=> array(
+						'min'	=> '1',
+						'max'	=> '10',
+						'step'	=> '1'
+					),
+					'class'		=> 'hide receiver'
+				);
+
+				$options['subgroup_end_6'] = array(
+					'type'		=> 'subgroup_end'
+				);
+
 				$options['subgroup_end_5'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
-				$options['subgroup_start_6'] = array(
+				$options['subgroup_start_7'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'show-hide'
 				);
@@ -2621,11 +2652,11 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'hide receiver'
 				);
 
-				$options['subgroup_end_6'] = array(
+				$options['subgroup_end_7'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
-				$options['subgroup_start_7'] = array(
+				$options['subgroup_start_8'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'show-hide'
 				);
@@ -2662,7 +2693,7 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'hide receiver'
 				);
 
-				$options['subgroup_end_7'] = array(
+				$options['subgroup_end_8'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
@@ -2697,7 +2728,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Desktop padding
-		$options['subgroup_start_8'] = array(
+		$options['subgroup_start_9'] = array(
 			'type'		=> 'subgroup_start',
 			'class'		=> 'show-hide'
 		);
@@ -2767,14 +2798,14 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['subgroup_end_8'] = array(
+		$options['subgroup_end_9'] = array(
 			'type' => 'subgroup_end'
 		);
 
 		if ( $type == 'section' ) {
 
 			// Tablet Padding
-			$options['subgroup_start_9'] = array(
+			$options['subgroup_start_10'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -2844,12 +2875,12 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_9'] = array(
+			$options['subgroup_end_10'] = array(
 				'type' => 'subgroup_end'
 			);
 
 			// Mobile Padding
-			$options['subgroup_start_10'] = array(
+			$options['subgroup_start_11'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -2919,7 +2950,7 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_10'] = array(
+			$options['subgroup_end_11'] = array(
 				'type' => 'subgroup_end'
 			);
 

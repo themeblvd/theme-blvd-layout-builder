@@ -81,10 +81,20 @@ function themeblvd_builder_layout( $context ) {
 			printf( '<section class="%s" data-parallax="%s">', $class, themeblvd_get_parallax_intensity($display) );
 
 			if ( $display ) {
-				if ( $display['bg_type'] == 'image' && ! empty($display['apply_bg_shade']) ) {
+
+				if ( ( $display['bg_type'] == 'image' || $display['bg_type'] == 'slideshow' ) && ! empty($display['apply_bg_shade']) ) {
 					printf( '<div class="bg-shade" style="background-color: %s; background-color: %s;"></div>', $display['bg_shade_color'], themeblvd_get_rgb( $display['bg_shade_color'], $display['bg_shade_opacity'] ) );
-				} else if ( $display['bg_type'] == 'slideshow' && ! empty($display['bg_slideshow']) ) {
-					themeblvd_bg_slideshow( $section_id, $display['bg_slideshow'] );
+				}
+
+				if ( $display['bg_type'] == 'slideshow' && ! empty($display['bg_slideshow']) ) {
+
+					$parallax = 0;
+
+					if ( ! empty($display['apply_bg_slideshow_parallax']) ) {
+						$parallax = $display['bg_slideshow_parallax'];
+					}
+
+					themeblvd_bg_slideshow( $section_id, $display['bg_slideshow'], $parallax );
 				}
 			}
 
