@@ -1588,6 +1588,13 @@ class Theme_Blvd_Builder_API {
 				'std'		=> '#666666',
 				'type'		=> 'color'
 			),
+			'badge' => array(
+		    	'id' 		=> 'badge',
+				'name'		=> null,
+				'desc'		=> __( 'Display icon as a badge (in a circle).', 'themeblvd_builder' ),
+				'std'		=> '0',
+				'type'		=> 'checkbox'
+			),
 			'title' => array(
 		    	'id' 		=> 'title',
 				'name'		=> __( 'Title (optional)', 'themeblvd_builder' ),
