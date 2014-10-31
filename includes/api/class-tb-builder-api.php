@@ -1023,8 +1023,8 @@ class Theme_Blvd_Builder_API {
 				'std'		=> '1'
 			),
 			'subgroup_start' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide-toggle'
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
 		    ),
 			'style'	=> array(
 				'id' 		=> 'style',
@@ -1608,7 +1608,66 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'textarea',
 				'editor'	=> true,
 				'code'		=> 'html'
-			)
+			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+		    ),
+			'style'	=> array(
+				'id' 		=> 'style',
+				'name' 		=> __( 'Styling', 'themeblvd_builder'),
+				'desc'		=> __( 'Select if you\'d like to apply any special styling for this block.', 'themeblvd_builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> apply_filters('themeblvd_promo_classes', array(
+					'none'		=> __('None', 'themeblvd_builder'),
+					'custom'	=> __('Custom BG color', 'themeblvd_builder')
+				)),
+				'class'		=> 'trigger'
+			),
+			'text_color' => array(
+				'id'		=> 'text_color',
+				'name'		=> __('Text Color'),
+				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
+				'std'		=> 'dark',
+				'type'		=> 'select',
+				'options'	=> array(
+					'dark'	=> __('Dark Text', 'themeblvd_builder'),
+					'light'	=> __('Light Text', 'themeblvd_builder')
+				),
+				'class'		=> 'hide receiver receiver-custom'
+			),
+		    'bg_color' => array(
+				'id' 		=> 'bg_color',
+				'name' 		=> __( 'Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select a background color for the content block.', 'themeblvd_builder'),
+				'std'		=> '#eeeeee',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-custom'
+		    ),
+		    'bg_opacity' => array(
+				'id'		=> 'bg_opacity',
+				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver receiver-custom'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+		    )
 		);
 
 		/*--------------------------------------------*/
@@ -5397,8 +5456,8 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'crop',
 				'std' 		=> 'slider-large',
 				'type' 		=> 'select',
-				'select'	=> 'crop',
-				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+				'select'	=> 'crop'
+				// 'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
 			),
 			'subgroup_end' => array(
 				'type'		=> 'subgroup_end',
@@ -5451,6 +5510,48 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'themeblvd_builder'),
 				'std'		=> false,
 				'type'		=> 'checkbox'
+			),
+			'subgroup_start_2' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
+			'caption_bg'	=> array(
+				'id'		=> 'caption_bg',
+				'desc'		=> __( 'Shade caption with background color.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'caption_bg_color' => array(
+				'id'		=> 'caption_bg_color',
+				'name'		=> __( 'Caption Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select the background color to show behind the text of the captions of the slider.', 'themeblvd_builder'),
+				'std'		=> '#000000',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			),
+			'caption_bg_opacity' => array(
+				'id'		=> 'caption_bg_opacity',
+				'name'		=> __( 'Caption Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __( 'And for that background color you\'ve selected, set the opacity of how that shows through to the images of the slider.', 'themeblvd_builder'),
+				'std'		=> '0.5',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
 			)
 		);
 
@@ -5492,8 +5593,8 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'crop',
 				'std' 		=> 'slider-x-large',
 				'type' 		=> 'select',
-				'select'	=> 'crop',
-				'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+				'select'	=> 'crop'
+				// 'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
 			),
 			'subgroup_end' => array(
 				'type'		=> 'subgroup_end',
