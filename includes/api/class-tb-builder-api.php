@@ -6334,7 +6334,79 @@ class Theme_Blvd_Builder_API {
 
 		$this->core_layouts = array();
 
-		// ...
+		/*--------------------------------------------*/
+		/* Example
+		/*--------------------------------------------*/
+
+		$this->core_layouts['about-the-agency'] = array(
+			'name'				=> __('About the Agency', 'themeblvd_builder'),
+			'id'				=> 'about-the-agency',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/about-the-agency/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/about-the-agency/'
+		);
+
+		$this->core_layouts['about-the-company'] = array(
+			'name'				=> __('About the Company', 'themeblvd_builder'),
+			'id'				=> 'about-the-company',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/about-the-company/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/about-the-company/'
+		);
+
+		$this->core_layouts['business-homepage-1'] = array(
+			'name'				=> __('Business Homepage #1', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-1',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-1/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-1/'
+		);
+
+		$this->core_layouts['business-homepage-2'] = array(
+			'name'				=> __('Business Homepage #2', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-2',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-2/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-2/'
+		);
+
+		$this->core_layouts['business-homepage-3'] = array(
+			'name'				=> __('Business Homepage #3', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-3',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-3/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-3/'
+		);
+
+		$this->core_layouts['business-homepage-4'] = array(
+			'name'				=> __('Business Homepage #4', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-4',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-4/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-4/'
+		);
+
+		$this->core_layouts['business-homepage-5'] = array(
+			'name'				=> __('Business Homepage #5', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-5',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-5/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-5/'
+		);
+
+		$this->core_layouts['business-homepage-6'] = array(
+			'name'				=> __('Business Homepage #6', 'themeblvd_builder'),
+			'id'				=> 'business-homepage-6',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-6/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-6/'
+		);
+
+		$this->core_layouts['contact-us'] = array(
+			'name'				=> __('Contact Us', 'themeblvd_builder'),
+			'id'				=> 'contact-us',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/contact-us/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/contact-us/'
+		);
+
+		$this->core_layouts['the-team'] = array(
+			'name'				=> __('The Team', 'themeblvd_builder'),
+			'id'				=> 'the-team',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/the-team/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/the-team/'
+		);
 
 		$this->core_layouts = apply_filters( 'themeblvd_core_layouts', $this->core_layouts );
 
