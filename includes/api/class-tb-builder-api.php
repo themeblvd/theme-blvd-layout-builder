@@ -5578,7 +5578,7 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['simple_slider_popout']['options'] = array(
-			'subgroup_start' => array(
+			'subgroup_start_1' => array(
 				'type'		=> 'subgroup_start'
 			),
 			'images' => array(
@@ -5596,7 +5596,7 @@ class Theme_Blvd_Builder_API {
 				'select'	=> 'crop'
 				// 'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
 			),
-			'subgroup_end' => array(
+			'subgroup_end_1' => array(
 				'type'		=> 'subgroup_end',
 			),
 			'interval' => array(
@@ -5652,6 +5652,48 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			),
+			'caption_bg'	=> array(
+				'id'		=> 'caption_bg',
+				'desc'		=> __( 'Shade caption with background color.', 'themeblvd_builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+			'caption_bg_color' => array(
+				'id'		=> 'caption_bg_color',
+				'name'		=> __( 'Caption Background Color', 'themeblvd_builder'),
+				'desc'		=> __( 'Select the background color to show behind the text of the captions of the slider.', 'themeblvd_builder'),
+				'std'		=> '#000000',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			),
+			'caption_bg_opacity' => array(
+				'id'		=> 'caption_bg_opacity',
+				'name'		=> __( 'Caption Background Color Opacity', 'themeblvd_builder'),
+				'desc'		=> __( 'And for that background color you\'ve selected, set the opacity of how that shows through to the images of the slider.', 'themeblvd_builder'),
+				'std'		=> '0.5',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
+			),
+			'subgroup_start_3' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
 			'cover'	=> array(
 				'id'		=> 'cover',
 				'desc'		=> __( 'Stretch images full-width of outer container. &mdash; <em>Note: When this is NOT checked, images display and scale down with their natural image dimension ratio. Also, if you\'re using a theme design that is not displayed in a stretch layout, this option, will not be as pronounced.</em>', 'themeblvd_builder'),
@@ -5696,7 +5738,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
 		    ),
-			'subgroup_end_2' => array(
+			'subgroup_end_3' => array(
 				'type'		=> 'subgroup_end'
 			)
 		);
