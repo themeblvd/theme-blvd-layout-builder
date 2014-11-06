@@ -12,22 +12,16 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core element functions. These custom layouts can then be applied to individual pages or your homepage. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend this fuctionality to standard posts and custom post types.
 
+[vimeo https://vimeo.com/70256816]
+
 == Installation ==
 
 1. Upload `theme-blvd-layout-builder` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to *Builder* in your WordPress admin panel to to use the Layout Builder.
-4. Custom layouts can then be applied to pages by selecing the "Custom Layout" page template and then selecting the desired custom layout from the dropdown that then appears.
 
-= Using a custom layout for your Homepage =
+= Overview =
 
-There are two separate methods for applying a custom layouts as your theme's homepage. Which method you use just depends on what you feel is most logical for how you're setting up your homepage.
-
-Method 1: Create your custom layout, apply it to a static page, and then assign that page as your static frontpage under *Settings > Reading > Frontpage Displays*.
-
-Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest posts." Create your custom layout. Then, go to *Appearance > Theme Options > Content > Homepage*, and select your new custom layout as the content for the homepage.
-
-*Note: If you're using an element in your custom layout that uses post pagination, make sure you use method #2.*
+[vimeo https://vimeo.com/70256816]
 
 == Screenshots ==
 
@@ -38,6 +32,36 @@ Method 2: Under *Settings > Reading > Frontpage Displays*, select "your latest p
 == Changelog ==
 
 = 2.0.0 =
+
+* New interface for editing layouts from the Edit Page screen
+* Complete coding overhaul of the Templates (previously "Builder") admin page
+* Separation of "layouts" vs "templates"
+* Enhancements for themes with Theme Blvd Framework 2.5+
+	* Elements: 32 new elements added to layout builder
+	* Elements: Standard set of display options added across all elements
+	* Sections: Add unlimited sections for your elements
+	* Sections: Apply custom background options to each section
+	* Sections: Apply custom border to top or bottom of each section
+	* Sections: Apply custom padding to each section, based on viewport
+	* Sections: Apply custom CSS class to each section
+	* Editing: Use WordPress's Visual editor throughout builder
+	* Editing: New sortable options used for many of the elements
+	* Columns: Complete overhaul of Columns element
+	* Columns: Add unlimited elements within columns
+	* Columns: Up to 5 columns, w/unlimited combos of 10-col and 12-col grid system
+	* Columns: Select at what responsive viewport columns stack for mobile
+	* Columns: Background display options for each individual column
+	* Sample Layouts: All new set of sample layouts
+	* Footer Syncing: Apply template from Theme Options to replace footer columns
+	* Import/Export: Templates can be exported as XML files, and imported
+	* Removed: Sidebar layout option removed, use Columns element instead
+	* Removed: Paginated post grid and list elements removed; pagination can now be applied from standard post list and grid elements.
+	* Removed: Post grid slider removed; standard post grid element can now be set to display as slider.
+	* Removed: Post list slider removed; use updated post slider element instead.
+	* Edits: Enhancements to previous elements, Content, Divider, Headline, Jumbotron, Post Grid, Post List and Tabs
+	* Edits: Slogan element ehanced and renamed "Promo Box"
+
+*Note: Currently, the only theme with Theme Blvd Framework 2.5, is the [Jump Start](http://wpjumpstart.com) 2.0 beta. We're currently working on expanding support.*
 
 = 1.2.3 =
 
