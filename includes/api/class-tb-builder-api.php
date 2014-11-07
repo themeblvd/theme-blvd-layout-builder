@@ -1061,7 +1061,7 @@ class Theme_Blvd_Builder_API {
 		    'bg_opacity' => array(
 				'id'		=> 'bg_opacity',
 				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'themeblvd_builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(
@@ -1648,7 +1648,7 @@ class Theme_Blvd_Builder_API {
 		    'bg_opacity' => array(
 				'id'		=> 'bg_opacity',
 				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'themeblvd_builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(
@@ -5210,7 +5210,7 @@ class Theme_Blvd_Builder_API {
 		    'bg_opacity' => array(
 				'id'		=> 'bg_opacity',
 				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'themeblvd_builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(

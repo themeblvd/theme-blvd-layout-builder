@@ -2433,7 +2433,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_color_opacity'] = array(
 				'id'		=> 'bg_color_opacity',
 				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'themeblvd_builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(
@@ -2655,8 +2655,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_top_color'] = array(
 					'id'		=> 'border_top_color',
-					'name'		=> null,
-					'desc'		=> __('Top Border Color', 'themeblvd_builder'),
+					'name'		=> __('Top Border Color', 'themeblvd_builder'),
+					'desc'		=> __('Select a color for the top border.', 'themeblvd_builder'),
 					'std'		=> '#dddddd',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2664,8 +2664,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_top_width'] = array(
 					'id'		=> 'border_top_width',
-					'name'		=> null,
-					'desc'		=> __('Top Border Width', 'themeblvd_builder'),
+					'name'		=> __('Top Border Width', 'themeblvd_builder'),
+					'desc'		=> __('Select a width in pixels for the top border.', 'themeblvd_builder'),
 					'std'		=> '1px',
 					'type'		=> 'slide',
 					'options'	=> array(
@@ -2696,8 +2696,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_bottom_color'] = array(
 					'id'		=> 'border_bottom_color',
-					'name'		=> null,
-					'desc'		=> __('Bottom Border Color', 'themeblvd_builder'),
+					'name'		=> __('Bottom Border Color', 'themeblvd_builder'),
+					'desc'		=> __('Select a color for the bottom border.', 'themeblvd_builder'),
 					'std'		=> '#dddddd',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2705,8 +2705,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_bottom_width'] = array(
 					'id'		=> 'border_bottom_width',
-					'name'		=> null,
-					'desc'		=> __('Bottom Border Width', 'themeblvd_builder'),
+					'name'		=> __('Bottom Border Width', 'themeblvd_builder'),
+					'desc'		=> __('Select a width in pixels for the bottom border.', 'themeblvd_builder'),
 					'std'		=> '1px',
 					'type'		=> 'slide',
 					'options'	=> array(
