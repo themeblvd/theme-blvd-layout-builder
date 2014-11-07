@@ -2222,10 +2222,6 @@ class Theme_Blvd_Layout_Builder {
 				$options = true;
 			}
 		}
-
-		// Blocks that have "content" option,
-		// but aren't meant to have an editor
-		// ... $exclude_editor = array('post_list', 'panel', 'alert');
 		?>
 		<div id="<?php echo $block_id; ?>" class="widget block block-widget" data-element-id="<?php echo $element_id; ?>" data-field-name="<?php echo $field_name.'[options]'; ?>">
 
@@ -2252,12 +2248,6 @@ class Theme_Blvd_Layout_Builder {
 							<i class="tb-icon-cog"></i>
 						</a>
 					<?php endif; ?>
-
-					<?php //... if ( isset( $blocks[$block_type]['options']['content'] ) && ! in_array( $block_type, $exclude_editor ) ) : ?>
-						<!--<a href="#" class="tb-textarea-editor-link tb-block-editor-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Content', 'themeblvd'); ?>" data-target="themeblvd-editor-modal">
-							<i class="tb-icon-pencil"></i>
-						</a>-->
-					<?php //endif; ?>
 
 					<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
 						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Code', 'themeblvd'); ?>" data-title="<?php _e('Edit Code', 'themeblvd_builder'); ?>" data-target="<?php echo $block_id; ?>">
