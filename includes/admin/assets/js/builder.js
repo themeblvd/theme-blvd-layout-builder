@@ -190,6 +190,13 @@ jQuery(document).ready(function($) {
 						}
 					});
 
+					ui.item.find('.tb-sortable-option').each(function(){
+						var $el = $(this);
+						data_field_name = $el.data('name');
+						data_field_name = data_field_name.replace('col_'+prev_col_num, 'col_'+new_col_num);
+						$el.data('name', data_field_name);
+					});
+
 					// Update data-field-name
 					data_field_name = ui.item.data('field-name');
 					data_field_name = data_field_name.replace('col_'+prev_col_num, 'col_'+new_col_num);
