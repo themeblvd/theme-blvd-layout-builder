@@ -6450,6 +6450,13 @@ class Theme_Blvd_Builder_API {
 			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/showcase-blogger/'
 		);
 
+		$this->core_layouts['stats'] = array(
+			'name'				=> __('Stats', 'themeblvd_builder'),
+			'id'				=> 'stats',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/stats/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/stats/'
+		);
+
 		$this->core_layouts['the-team'] = array(
 			'name'				=> __('The Team', 'themeblvd_builder'),
 			'id'				=> 'the-team',
