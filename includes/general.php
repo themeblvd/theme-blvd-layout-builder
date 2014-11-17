@@ -287,6 +287,7 @@ function themeblvd_builder_styles() {
 						$section_print .= $indent.sprintf("#custom-%s > .%s {\n", $location, $section_id);
 
 						foreach ( $params as $prop => $value ) {
+							$prop = str_replace('-2', '', $prop);
 							$section_print .= $indent.sprintf("\t%s: %s;\n", $prop, $value);
 						}
 
@@ -313,7 +314,7 @@ function themeblvd_builder_styles() {
 
 	// Print after style.css
 	if ( $print ) {
-		wp_add_inline_style( 'themeblvd_theme', trim($print) );
+		wp_add_inline_style( 'themeblvd-theme', trim($print) );
 	}
 
 }
