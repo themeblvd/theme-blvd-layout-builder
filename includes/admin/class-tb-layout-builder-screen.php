@@ -61,7 +61,7 @@ class Theme_Blvd_Layout_Builder_Screen {
 				$nonce = wp_create_nonce( 'themeblvd_save_screen_options' );
 				$output .= '<input type="hidden" class="security" name="_tb_screen_options_nonce" value="'.$nonce.'" />';
 
-				$output .= '<h5>'.__('Show advanced element properties', 'themeblvd_builder').'</h5>';
+				$output .= '<h5>'.__('Show advanced element properties', 'theme-blvd-layout-builder').'</h5>';
 				$output .= '<div class="metabox-prefs">';
 
 				$value = $this->get_value();
@@ -96,12 +96,12 @@ class Theme_Blvd_Layout_Builder_Screen {
 
 		$props = array(
 			'visibility' => array(
-				'name'	=> __( 'Responsive Visibility', 'themeblvd_builder' ),
+				'name'	=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 				'id'	=> 'visibility',
 				'std'	=> true
 			),
 			'classes' => array(
-				'name'	=> __( 'CSS Classes', 'themeblvd_builder' ),
+				'name'	=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
 				'id'	=> 'classes',
 				'std'	=> false
 			)

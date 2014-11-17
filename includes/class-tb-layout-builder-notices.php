@@ -96,7 +96,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 		if ( $this->error ) {
 
 			$theme = wp_get_theme( get_template() );
-			$changelog = '<a href="http://themeblvd.com/changelog/?theme='.get_template().'" target="_blank">'.__('theme\'s changelog', 'themeblvd_builder').'</a>';
+			$changelog = '<a href="http://themeblvd.com/changelog/?theme='.get_template().'" target="_blank">'.__('theme\'s changelog', 'theme-blvd-layout-builder').'</a>';
 
 			foreach ( $this->error as $error ) {
 				if ( ! get_user_meta( $current_user->ID, $error ) ) {
@@ -107,12 +107,12 @@ class Theme_Blvd_Layout_Builder_Notices {
 					// Theme specifics
 					if ( in_array($error, array('framework-2-2', 'framework-2-5') ) ) {
 						echo '<p>';
-						printf( __('You\'re currently using %s v%s. See %s.', 'themeblvd_builder'), $theme->get('Name'), $theme->get('Version'), $changelog );
+						printf( __('You\'re currently using %s v%s. See %s.', 'theme-blvd-layout-builder'), $theme->get('Name'), $theme->get('Version'), $changelog );
 						echo '</p>';
 					}
 
 					// Dismiss link
-					echo '<p><a href="'.$this->disable_url($error).'">'.__('Dismiss this notice', 'themeblvd_builder').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_builder').'</a></p>';
+					echo '<p><a href="'.$this->disable_url($error).'">'.__('Dismiss this notice', 'theme-blvd-layout-builder').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'theme-blvd-layout-builder').'</a></p>';
 
 					echo '</div>';
 				}
@@ -169,9 +169,9 @@ class Theme_Blvd_Layout_Builder_Notices {
 		$message = '';
 
 		$messages = array(
-			'framework' 		=> __('You are not using a theme with the Theme Blvd Framework, and so this plugin will not do anything.', 'themeblvd_builder'),
-			'framework-2-2' 	=> __('You are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything. Check to see if there is an updated version of your theme.', 'themeblvd_builder'),
-			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'themeblvd_builder')
+			'framework' 		=> __('You are not using a theme with the Theme Blvd Framework, and so this plugin will not do anything.', 'theme-blvd-layout-builder'),
+			'framework-2-2' 	=> __('You are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything. Check to see if there is an updated version of your theme.', 'theme-blvd-layout-builder'),
+			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'theme-blvd-layout-builder')
 		);
 
 		if ( isset( $messages[$type] ) ) {

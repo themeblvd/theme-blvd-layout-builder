@@ -36,6 +36,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * New interface for editing layouts from the Edit Page screen
 * Complete coding overhaul of the Templates (previously "Builder") admin page
 * Separation of "layouts" vs "templates"
+* GlotPress compatibility (for 2015 wordpress.org release).
 * Enhancements for themes with Theme Blvd Framework 2.5+
 	* Elements: 32 new elements added to layout builder
 	* Elements: Standard set of display options added across all elements

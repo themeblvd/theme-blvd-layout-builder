@@ -108,6 +108,8 @@ function themeblvd_builder_init() {
 	// Template Footer Sync
 	if ( themeblvd_supports( 'display', 'footer_sync' ) ) {
 
+		$link = sprintf('<a href="%s">%s</a>', admin_url('admin.php?page=themeblvd_builder'), __('Templates', 'theme-blvd-layout-builder'));
+
 		$option = array( // This option won't actually get displayed, but registered for sanitization process
 			'name' 		=> null,
 			'desc' 		=> null,
@@ -118,8 +120,8 @@ function themeblvd_builder_init() {
 		themeblvd_add_option( 'layout', 'footer', 'footer_sync', $option );
 
 		$option = array(
-			'name' 		=> __( 'Custom Template', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select from the custom templates you\'ve built at the <a href="admin.php?page=themeblvd_builder">Templates</a> area. This template will be used to populate the bottom of your site.', 'themeblvd_builder' ),
+			'name' 		=> __( 'Custom Template', 'theme-blvd-layout-builder' ),
+			'desc' 		=> sprintf(__( 'Select from the custom templates you\'ve built at the %s area. This template will be used to populate the bottom of your site.', 'theme-blvd-layout-builder' ), $link),
 			'id' 		=> 'footer_template',
 			'std' 		=> '',
 			'type' 		=> 'select',
@@ -194,6 +196,6 @@ add_action( 'themeblvd_api', 'themeblvd_builder_api_init' );
  * @since 1.0.0
  */
 function themeblvd_builder_textdomain() {
-	load_plugin_textdomain( 'themeblvd_builder', false, TB_BUILDER_PLUGIN_DIR . '/lang' );
+	load_plugin_textdomain('theme-blvd-layout-builder');
 }
-add_action( 'plugins_loaded', 'themeblvd_builder_textdomain' );
+add_action( 'init', 'themeblvd_builder_textdomain' );

@@ -112,7 +112,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'columns' :
 
 				if ( ! function_exists( 'themeblvd_columns' ) ) {
-					_e('Columns element not supported.', 'themeblvd_builder');
+					_e('Columns element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -133,7 +133,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'content' :
 
 				if ( ! function_exists( 'themeblvd_content' ) ) {
-					_e('Content element not supported.', 'themeblvd_builder');
+					_e('Content element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -148,7 +148,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'divider' :
 
 				if ( ! function_exists( 'themeblvd_divider' ) ) {
-					_e('Divider element not supported.', 'themeblvd_builder');
+					_e('Divider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -163,7 +163,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'headline' :
 
 				if ( ! function_exists( 'themeblvd_headline' ) ) {
-					_e('Headline element not supported.', 'themeblvd_builder');
+					_e('Headline element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -178,7 +178,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'jumbotron' :
 
 				if ( ! function_exists( 'themeblvd_jumbotron' ) ) {
-					_e('Jumbotron element not supported.', 'themeblvd_builder');
+					_e('Jumbotron element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -193,7 +193,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid' :
 
 				if ( ! function_exists( 'themeblvd_posts' ) ) {
-					_e('Post Grid element not supported.', 'themeblvd_builder');
+					_e('Post Grid element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -208,7 +208,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid_paginated' :
 
 				if ( ! function_exists( 'themeblvd_posts_paginated' ) ) {
-					_e('Paginated Post Grid element not supported.', 'themeblvd_builder');
+					_e('Paginated Post Grid element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -226,7 +226,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid_slider' :
 
 				if ( ! function_exists( 'themeblvd_post_slider' ) ) {
-					_e('Post Grid Slider element not supported.', 'themeblvd_builder');
+					_e('Post Grid Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -241,7 +241,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list' :
 
 				if ( ! function_exists( 'themeblvd_posts' ) ) {
-					_e('Post List element not supported.', 'themeblvd_builder');
+					_e('Post List element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -256,7 +256,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list_paginated' :
 
 				if ( ! function_exists( 'themeblvd_posts_paginated' ) ) {
-					_e('Paginated Post List element not supported.', 'themeblvd_builder');
+					_e('Paginated Post List element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -274,7 +274,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list_slider' :
 
 				if ( ! function_exists( 'themeblvd_post_slider' ) ) {
-					_e('Post List Slider element not supported.', 'themeblvd_builder');
+					_e('Post List Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -289,7 +289,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_slider' :
 
 				if ( ! function_exists( 'themeblvd_slider_auto' ) ) {
-					_e('Post Slider element not supported.', 'themeblvd_builder');
+					_e('Post Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -304,7 +304,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'slider' :
 
 				if ( ! function_exists( 'themeblvd_slider' ) ) {
-					_e('Slider element not supported.', 'themeblvd_builder');
+					_e('Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -319,7 +319,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'slogan' :
 
 				if ( ! function_exists( 'themeblvd_slogan' ) ) {
-					_e('Slogan element not supported.', 'themeblvd_builder');
+					_e('Slogan element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -334,7 +334,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'tabs' :
 
 				if ( ! function_exists( 'themeblvd_tabs' ) ) {
-					_e('Tabs element not supported.', 'themeblvd_builder');
+					_e('Tabs element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -458,28 +458,30 @@ function themeblvd_builder_legacy_homepage() {
 
 	// Add option to theme options page allowing user to
 	// select custom layout for their homepage.
+	$link = sprintf('<a href="%s">%s</a>', admin_url('admin.php?page=themeblvd_builder'), __('Templates', 'theme-blvd-layout-builder'));
+
 	$options = array(
 		'homepage_content' => array(
-			'name' 		=> __( 'Homepage Content', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'themeblvd_builder' ),
+			'name' 		=> __( 'Homepage Content', 'theme-blvd-layout-builder' ),
+			'desc' 		=> __( 'Select the content you\'d like to show on your homepage. Note that for this setting to take effect, you must go to Settings > Reading > Frontpage displays, and select "your latest posts."', 'theme-blvd-layout-builder' ),
 			'id' 		=> 'homepage_content',
 			'std' 		=> 'posts',
 			'type' 		=> 'radio',
 			'options' 	=> array(
-				'posts'			=> __( 'Posts', 'themeblvd_builder' ),
-				'custom_layout' => __( 'Custom Template', 'themeblvd_builder' )
+				'posts'			=> __( 'Posts', 'theme-blvd-layout-builder' ),
+				'custom_layout' => __( 'Custom Template', 'theme-blvd-layout-builder' )
 			)
 		),
 		'homepage_custom_layout' => array(
-			'name' 		=> __( 'Select Custom Template', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select from the custom templates you\'ve built under the <a href="admin.php?page=themeblvd_builder">Templates</a> section.', 'themeblvd_builder' ),
+			'name' 		=> __( 'Select Custom Template', 'theme-blvd-layout-builder' ),
+			'desc' 		=> sprintf(__( 'Select from the custom templates you\'ve built under the %s section.', 'theme-blvd-layout-builder' ), $link ),
 			'id' 		=> 'homepage_custom_layout',
 			'std' 		=> '',
 			'type' 		=> 'select',
 			'options' 	=> $custom_layouts
 		)
 	);
-	themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'themeblvd_builder' ), null, $options, true );
+	themeblvd_add_option_section( 'content', 'homepage', __( 'Homepage', 'theme-blvd-layout-builder' ), null, $options, true );
 
 	// Filter homepage content according to options section
 	// we added above.
@@ -509,7 +511,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['business_1'] = array(
-		'name'				=> __('Business Homepage #1', 'themeblvd_builder'),
+		'name'				=> __('Business Homepage #1', 'theme-blvd-layout-builder'),
 		'id'				=> 'business_1',
 		'preview' 			=> $imgpath . '/sample-business_1.png',
 		'sidebar_layout' 	=> 'full_width',
@@ -598,7 +600,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['business_2'] = array(
-		'name'				=> __('Business Homepage #2', 'themeblvd_builder'),
+		'name'				=> __('Business Homepage #2', 'theme-blvd-layout-builder'),
 		'id'				=> 'business_2',
 		'preview'			=> $imgpath . '/sample-business_2.png',
 		'sidebar_layout'	=> 'full_width',
@@ -687,7 +689,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['business_3'] = array(
-		'name'				=> __('Business Homepage #3', 'themeblvd_builder'),
+		'name'				=> __('Business Homepage #3', 'theme-blvd-layout-builder'),
 		'id'				=> 'business_3',
 		'preview'			=> $imgpath . '/sample-business_3.png',
 		'sidebar_layout'	=> 'sidebar_right',
@@ -741,7 +743,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['business_4'] = array(
-		'name'				=> __('Business Homepage #4', 'themeblvd_builder'),
+		'name'				=> __('Business Homepage #4', 'theme-blvd-layout-builder'),
 		'id'				=> 'business_4',
 		'preview'			=> $imgpath . '/sample-business_4.png',
 		'sidebar_layout'	=> 'full_width',
@@ -838,7 +840,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['magazine_1'] = array(
-		'name'				=> __('Classic Magazine #1', 'themeblvd_builder'),
+		'name'				=> __('Classic Magazine #1', 'theme-blvd-layout-builder'),
 		'id'				=> 'magazine_1',
 		'preview'			=> $imgpath . '/sample-magazine_1.png',
 		'sidebar_layout'	=> 'sidebar_right',
@@ -881,7 +883,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['magazine_2'] = array(
-		'name'				=> __('Classic Magazine #2', 'themeblvd_builder'),
+		'name'				=> __('Classic Magazine #2', 'theme-blvd-layout-builder'),
 		'id'				=> 'magazine_2',
 		'preview'			=> $imgpath . '/sample-magazine_2.png',
 		'sidebar_layout'	=> 'sidebar_right'
@@ -938,7 +940,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['agency'] = array(
-		'name'				=> __('Design Agency', 'themeblvd_builder'),
+		'name'				=> __('Design Agency', 'theme-blvd-layout-builder'),
 		'id'				=> 'agency',
 		'preview'			=> $imgpath . '/sample-agency.png',
 		'sidebar_layout'	=> 'full_width',
@@ -1038,7 +1040,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['portfolio'] = array(
-		'name'				=> __('Portfolio Homepage', 'themeblvd_builder'),
+		'name'				=> __('Portfolio Homepage', 'theme-blvd-layout-builder'),
 		'id'				=> 'portfolio',
 		'preview'			=> $imgpath . '/sample-portfolio.png',
 		'sidebar_layout'	=> 'full_width',
@@ -1086,7 +1088,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 
 	// Information
 	$layouts['showcase'] = array(
-		'name'				=> __('Showcase Blogger', 'themeblvd_builder'),
+		'name'				=> __('Showcase Blogger', 'theme-blvd-layout-builder'),
 		'id'				=> 'showcase',
 		'preview'			=> $imgpath . '/sample-showcase.png',
 		'sidebar_layout'	=> 'sidebar_right',

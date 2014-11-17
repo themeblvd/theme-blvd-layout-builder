@@ -56,17 +56,17 @@ class Theme_Blvd_Import_Layout {
 	 */
 	public function admin_page() {
 		?>
-		<h2><?php _e('Import Template', 'themeblvd_builder'); ?></h2>
-		<p><?php _e('Upload an XML file previously exported from the Builder.', 'themeblvd_builder'); ?></p>
+		<h2><?php _e('Import Template', 'theme-blvd-layout-builder'); ?></h2>
+		<p><?php _e('Upload an XML file previously exported from the Builder.', 'theme-blvd-layout-builder'); ?></p>
 		<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="admin.php?page=<?php echo $this->id; ?>-import-layout&amp;themeblvd_import=true">
 			<p>
-				<label for="upload"><?php _e('Choose a file from your computer:', 'themeblvd_builder'); ?></label><br />
+				<label for="upload"><?php _e('Choose a file from your computer:', 'theme-blvd-layout-builder'); ?></label><br />
 				<input type="file" id="upload" name="import" size="25" />
 				<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'themeblvd_import_'.$this->id ); ?>" />
 				<input type="hidden" name="max_file_size" value="33554432" />
 			</p>
 			<p class="submit">
-				<input type="submit" name="submit" id="submit" class="button" value="<?php _e('Upload file and import', 'themeblvd_builder'); ?>" disabled="" />
+				<input type="submit" name="submit" id="submit" class="button" value="<?php _e('Upload file and import', 'theme-blvd-layout-builder'); ?>" disabled="" />
 			</p>
 		</form>
 		<?php
@@ -95,7 +95,7 @@ class Theme_Blvd_Import_Layout {
 
 			// Needs to be an XML file
 			if ( $_FILES['import']['type'] != 'text/xml' ) {
-				$this->error = __('Error. You must upload an XML file.', 'themeblvd_builder');
+				$this->error = __('Error. You must upload an XML file.', 'theme-blvd-layout-builder');
 				add_action( 'admin_notices', array( $this, 'fail' ) );
 				return;
 			}
@@ -110,7 +110,7 @@ class Theme_Blvd_Import_Layout {
 		}
 
 		if ( ! $import ) {
-			$this->error = __('Error. The XML file could not be read.', 'themeblvd_builder');
+			$this->error = __('Error. The XML file could not be read.', 'theme-blvd-layout-builder');
 			add_action( 'admin_notices', array( $this, 'fail' ) );
 			return;
 		}
@@ -119,7 +119,7 @@ class Theme_Blvd_Import_Layout {
 		$data = $import->data->meta;
 
 		if ( ! $info || ! $data ) {
-			$this->error = __('Error. The XML file was not formatted properly.', 'themeblvd_builder');
+			$this->error = __('Error. The XML file was not formatted properly.', 'theme-blvd-layout-builder');
 			add_action( 'admin_notices', array( $this, 'fail' ) );
 			return;
 		}
@@ -182,7 +182,7 @@ class Theme_Blvd_Import_Layout {
 	public function success_display() {
 		?>
 		<div class="themeblvd-updated updated fade" style="margin-left: 0;">
-			<p><strong><?php _e('Custom layout imported successfully.', 'themeblvd_builder'); ?></strong></p>
+			<p><strong><?php _e('Custom layout imported successfully.', 'theme-blvd-layout-builder'); ?></strong></p>
 		</div>
 		<?php
 	}

@@ -31,8 +31,8 @@ class Theme_Blvd_Layout_Builder {
 
 		// Setup arguments for admin page
 		$defaults = array(
-			'page_title' 	=> __( 'Templates', 'themeblvd_builder' ),
-			'menu_title' 	=> __( 'Templates', 'themeblvd_builder' ),
+			'page_title' 	=> __( 'Templates', 'theme-blvd-layout-builder' ),
+			'menu_title' 	=> __( 'Templates', 'theme-blvd-layout-builder' ),
 			'icon'			=> 'div',
 			'cap'			=> themeblvd_admin_module_cap( 'builder' ),
 			'priority'		=> 30
@@ -165,7 +165,7 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
 
 		$file = TB_BUILDER_DEBUG ? 'builder-style.css' : 'builder-style.min.css';
-		wp_enqueue_style( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/css/'.$file, null, TB_BUILDER_PLUGIN_VERSION );
+		wp_enqueue_style( 'theme-blvd-layout-builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/css/'.$file, null, TB_BUILDER_PLUGIN_VERSION );
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 			wp_enqueue_style( 'codemirror', TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css', null, '4.0' );
@@ -205,7 +205,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// Builder script
 		$file = TB_BUILDER_DEBUG ? 'builder.js' : 'builder.min.js';
-		wp_enqueue_script( 'themeblvd_builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/'.$file, array('jquery'), TB_BUILDER_PLUGIN_VERSION );
+		wp_enqueue_script( 'theme-blvd-layout-builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/js/'.$file, array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
 		// Code editor and FontAwesome
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
@@ -227,7 +227,7 @@ class Theme_Blvd_Layout_Builder {
 		} else {
 
 			// Localize script for actual Builder page.
-			wp_localize_script( 'themeblvd_builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+			wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
 
 		}
 
@@ -241,23 +241,23 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function add_js_locals( $current ) {
 		$new = array(
-			'builder'				=> __( 'Builder', 'themeblvd_builder' ),
-			'column'				=> __( 'Column', 'themeblvd_builder' ),
-			'columns'				=> __( 'Columns', 'themeblvd_builder' ),
-			'edit_layout'			=> __( 'Edit Layout', 'themeblvd_builder' ),
-			'delete_text'			=> __( 'Delete', 'themeblvd_builder' ),
-			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'themeblvd_builder' ),
-			'delete_layout'			=> __( 'Are you sure you want to delete the template(s)?', 'themeblvd_builder' ),
-			'layout_created'		=> __( 'Layout created!', 'themeblvd_builder' ),
-			'no_layouts'			=> __( 'Oops! You didn\'t select any templates to delete.', 'themeblvd_builder' ),
-			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'themeblvd_builder' ),
-			'shift_up_error'		=> __( 'The section can\'t be shifted up any further.', 'themeblvd_builder' ),
-			'shift_down_error'		=> __( 'The section can\'t be shifted down any further.', 'themeblvd_builder' ),
-			'template_apply'		=> __( 'Are you sure you want to apply the selected starting point? Any work on the current layout for this page will be erased.', 'themeblvd_builder' ),
-			'template_desc'			=> __( 'Enter a name for the new template.', 'themeblvd_builder' ),
-			'template_save'			=> __( 'Save as Template', 'themeblvd_builder' ),
-			'template_title'		=> __( 'Save Current Layout as Template', 'themeblvd_builder' ),
-			'template_updated'		=> __( 'The template has been saved.', 'themeblvd_builder'),
+			'builder'				=> __( 'Builder', 'theme-blvd-layout-builder' ),
+			'column'				=> __( 'Column', 'theme-blvd-layout-builder' ),
+			'columns'				=> __( 'Columns', 'theme-blvd-layout-builder' ),
+			'edit_layout'			=> __( 'Edit Layout', 'theme-blvd-layout-builder' ),
+			'delete_text'			=> __( 'Delete', 'theme-blvd-layout-builder' ),
+			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'theme-blvd-layout-builder' ),
+			'delete_layout'			=> __( 'Are you sure you want to delete the template(s)?', 'theme-blvd-layout-builder' ),
+			'layout_created'		=> __( 'Layout created!', 'theme-blvd-layout-builder' ),
+			'no_layouts'			=> __( 'Oops! You didn\'t select any templates to delete.', 'theme-blvd-layout-builder' ),
+			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'theme-blvd-layout-builder' ),
+			'shift_up_error'		=> __( 'The section can\'t be shifted up any further.', 'theme-blvd-layout-builder' ),
+			'shift_down_error'		=> __( 'The section can\'t be shifted down any further.', 'theme-blvd-layout-builder' ),
+			'template_apply'		=> __( 'Are you sure you want to apply the selected starting point? Any work on the current layout for this page will be erased.', 'theme-blvd-layout-builder' ),
+			'template_desc'			=> __( 'Enter a name for the new template.', 'theme-blvd-layout-builder' ),
+			'template_save'			=> __( 'Save as Template', 'theme-blvd-layout-builder' ),
+			'template_title'		=> __( 'Save Current Layout as Template', 'theme-blvd-layout-builder' ),
+			'template_updated'		=> __( 'The template has been saved.', 'theme-blvd-layout-builder'),
 		);
 		return array_merge($current, $new);
 	}
@@ -307,7 +307,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( ! empty( $_GET['delete'] ) ) {
 			if ( wp_verify_nonce( $_GET['security'], 'delete_template' ) ) {
 				wp_delete_post( $_GET['delete'], true );
-				$this->error = __('The template has been deleted.', 'themeblvd_builder');
+				$this->error = __('The template has been deleted.', 'theme-blvd-layout-builder');
 			}
 		}
 
@@ -321,7 +321,7 @@ class Theme_Blvd_Layout_Builder {
 					}
 				}
 
-				$this->error = __('The templates have been deleted.', 'themeblvd_builder');
+				$this->error = __('The templates have been deleted.', 'theme-blvd-layout-builder');
 
 			}
 		}
@@ -330,7 +330,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( ! empty( $_POST['new_template'] ) ) {
 			if ( wp_verify_nonce( $_POST['tb_nonce'], 'new_template' ) ) {
 				$template_id = $this->new_template( $_POST['new_template'] );
-				$this->updated = __('New template created.', 'themeblvd_builder');
+				$this->updated = __('New template created.', 'theme-blvd-layout-builder');
 			}
 		}
 
@@ -338,7 +338,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( $template_id && isset( $_POST['action'] ) && $_POST['action'] == 'save_template' ) {
 			if ( wp_verify_nonce( $_POST['tb_nonce'], 'save_template' ) ) {
 				$this->save_layout( $template_id, $_POST );
-				$this->updated = __('The template has been saved.', 'themeblvd_builder');
+				$this->updated = __('The template has been saved.', 'theme-blvd-layout-builder');
 			}
 		}
 		?>
@@ -350,10 +350,10 @@ class Theme_Blvd_Layout_Builder {
 			    </div>
 
 			    <h2 class="nav-tab-wrapper">
-			        <a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php _e( 'Manage Templates', 'themeblvd_builder' ); ?>"><?php _e( 'Manage Templates', 'themeblvd_builder' ); ?></a>
-			        <a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php _e( 'Add Template', 'themeblvd_builder' ); ?>"><?php _e( 'Add Template', 'themeblvd_builder' ); ?></a>
+			        <a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php _e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?></a>
+			        <a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php _e( 'Add Template', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Add Template', 'theme-blvd-layout-builder' ); ?></a>
 			        <?php if ( $active == 'edit' ) : ?>
-			       		<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php _e( 'Edit Template', 'themeblvd_builder' ); ?>"><?php _e( 'Edit Template', 'themeblvd_builder' ); ?></span>
+			       		<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php _e( 'Edit Template', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Edit Template', 'theme-blvd-layout-builder' ); ?></span>
 			       	<?php endif; ?>
 			    </h2>
 
@@ -415,15 +415,15 @@ class Theme_Blvd_Layout_Builder {
 					<thead>
 						<tr>
 							<th scope="col" id="cb" class="manage-column column-cb check-column"><input type="checkbox"></th>
-							<th class="head-title"><?php _e('Template Name', 'themeblvd_builder'); ?></th>
-							<th class="head-slug"><?php _e('Template ID', 'themeblvd_builder'); ?></th>
+							<th class="head-title"><?php _e('Template Name', 'theme-blvd-layout-builder'); ?></th>
+							<th class="head-slug"><?php _e('Template ID', 'theme-blvd-layout-builder'); ?></th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
 							<th scope="col" id="cb" class="manage-column column-cb check-column"><input type="checkbox"></th>
-							<th class="head-title"><?php _e('Template Name', 'themeblvd_builder'); ?></th>
-							<th class="head-slug"><?php _e('Template ID', 'themeblvd_builder'); ?></th>
+							<th class="head-title"><?php _e('Template Name', 'theme-blvd-layout-builder'); ?></th>
+							<th class="head-slug"><?php _e('Template ID', 'theme-blvd-layout-builder'); ?></th>
 						</tr>
 					</tfoot>
 					<tbody>
@@ -437,7 +437,7 @@ class Theme_Blvd_Layout_Builder {
 										<strong><a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="title-link edit-tb_layout" title="Edit"><?php echo $template->post_title; ?></a></strong>
 										<div class="row-actions">
 											<span class="edit">
-												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="edit-post edit-tb_layout" title="Edit"><?php _e('Edit', 'themeblvd_builder' ); ?></a> |
+												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="edit-post edit-tb_layout" title="Edit"><?php _e('Edit', 'theme-blvd-layout-builder' ); ?></a> |
 											</span>
 											<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 												<span class="export">
@@ -450,7 +450,7 @@ class Theme_Blvd_Layout_Builder {
 												</span>
 											<?php endif; ?>
 											<span class="trash">
-												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template->ID.'&security='.wp_create_nonce('delete_template')); ?>" title="<?php _e('Delete', 'themeblvd_builder'); ?>" class="delete-layout"><?php _e('Delete', 'themeblvd_builder'); ?></a>
+												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template->ID.'&security='.wp_create_nonce('delete_template')); ?>" title="<?php _e('Delete', 'theme-blvd-layout-builder'); ?>" class="delete-layout"><?php _e('Delete', 'theme-blvd-layout-builder'); ?></a>
 											</span>
 										</div>
 									</td>
@@ -463,8 +463,8 @@ class Theme_Blvd_Layout_Builder {
 							<tr>
 								<td colspan="3">
 									<div class="warning">
-										<p><strong><?php _e('You haven\'t created any templates yet.', 'themeblvd_builder'); ?></strong></p>
-										<p><?php _e('Templates are useful to create custom layouts for pages more quickly. Templates can be applied to the custom layout of individual pages for a quick starting point, or synced for continuity. Manage your templates here, and utilize them when editing a page. Click "Add Template" above to get started.', 'themeblvd_builder'); ?></p>
+										<p><strong><?php _e('You haven\'t created any templates yet.', 'theme-blvd-layout-builder'); ?></strong></p>
+										<p><?php _e('Templates are useful to create custom layouts for pages more quickly. Templates can be applied to the custom layout of individual pages for a quick starting point, or synced for continuity. Manage your templates here, and utilize them when editing a page. Click "Add Template" above to get started.', 'theme-blvd-layout-builder'); ?></p>
 									</div>
 								</td>
 							</tr>
@@ -506,8 +506,8 @@ class Theme_Blvd_Layout_Builder {
 
 		// Layout Name
 		$options['name'] = array(
-			'name' 		=> __( 'Template Name', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Enter a user-friendly name for your template.<br><em>Example: My Layout</em>', 'themeblvd_builder' ),
+			'name' 		=> __( 'Template Name', 'theme-blvd-layout-builder' ),
+			'desc' 		=> __( 'Enter a user-friendly name for your template.<br><em>Example: My Layout</em>', 'theme-blvd-layout-builder' ),
 			'id' 		=> 'name',
 			'type' 		=> 'text'
 		);
@@ -520,14 +520,14 @@ class Theme_Blvd_Layout_Builder {
 
 		// Starting point
 		$options['start'] = array(
-			'name' 		=> __( 'Starting Point', 'themeblvd_builder' ),
-			'desc' 		=> __( 'Select if you\'d like to start building your template from scratch, from a pre-existing template, or from a sample layout.', 'themeblvd_builder' ),
+			'name' 		=> __( 'Starting Point', 'theme-blvd-layout-builder' ),
+			'desc' 		=> __( 'Select if you\'d like to start building your template from scratch, from a pre-existing template, or from a sample layout.', 'theme-blvd-layout-builder' ),
 			'id' 		=> 'start',
 			'type' 		=> 'select',
 			'options' 	=> array(
-				'scratch'	=> __( 'Start From Scratch', 'themeblvd_builder' ),
-				'layout'	=> __( 'Start From Existing Template', 'themeblvd_builder' ),
-				'sample'	=> __( 'Start From Sample Layout', 'themeblvd_builder' )
+				'scratch'	=> __( 'Start From Scratch', 'theme-blvd-layout-builder' ),
+				'layout'	=> __( 'Start From Existing Template', 'theme-blvd-layout-builder' ),
+				'sample'	=> __( 'Start From Sample Layout', 'theme-blvd-layout-builder' )
 			),
 			'class'		=> 'trigger'
 		);
@@ -541,8 +541,8 @@ class Theme_Blvd_Layout_Builder {
 		// Existing Layout
 		if ( $custom_layouts ) {
 			$options['existing'] = array(
-				'name' 		=> __( 'Custom Templates', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select one of the layouts you created previously to start this new one.', 'themeblvd_builder' ),
+				'name' 		=> __( 'Custom Templates', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Select one of the layouts you created previously to start this new one.', 'theme-blvd-layout-builder' ),
 				'id' 		=> 'existing',
 				'type' 		=> 'select',
 				'options' 	=> $custom_layouts,
@@ -554,8 +554,8 @@ class Theme_Blvd_Layout_Builder {
 		if ( $sample_layouts ) {
 
 			$options['sample'] = array(
-				'name' 		=> __( 'Sample Layout', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select a sample layout to start from.<br><br><em>Note: Not all sample layouts will look exactly as pictured, as you will most likely see slight variations, depending on the specific theme you\'re using.</em>', 'themeblvd_builder' ),
+				'name' 		=> __( 'Sample Layout', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Select a sample layout to start from.<br><br><em>Note: Not all sample layouts will look exactly as pictured, as you will most likely see slight variations, depending on the specific theme you\'re using.</em>', 'theme-blvd-layout-builder' ),
 				'id' 		=> 'sample',
 				'type' 		=> 'select',
 				'options' 	=> $sample_layouts,
@@ -563,7 +563,7 @@ class Theme_Blvd_Layout_Builder {
 			);
 
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-				$options['sample']['desc'] = __( 'Select a sample layout to start from.', 'themeblvd_builder' );
+				$options['sample']['desc'] = __( 'Select a sample layout to start from.', 'theme-blvd-layout-builder' );
 				$options['sample']['class'] = 'builder_samples';
 			}
 		}
@@ -578,14 +578,14 @@ class Theme_Blvd_Layout_Builder {
 
 			// Setup sidebar layouts
 			$layouts = themeblvd_sidebar_layouts();
-			$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
+			$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'theme-blvd-layout-builder' ) );
 			foreach ( $layouts as $layout ) {
 				$sidebar_layouts[$layout['id']] = $layout['name'];
 			}
 
 			$options[] = array(
-				'name' 		=> __( 'Sidebar Layout', 'themeblvd_builder' ),
-				'desc' 		=> __( 'Select your sidebar layout for this page.<br><br><em>Note: You can change this later when editing your template.</em>', 'themeblvd_builder' ),
+				'name' 		=> __( 'Sidebar Layout', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Select your sidebar layout for this page.<br><br><em>Note: You can change this later when editing your template.</em>', 'theme-blvd-layout-builder' ),
 				'id' 		=> 'sidebar',
 				'type' 		=> 'select',
 				'options' 	=> $sidebar_layouts,
@@ -606,15 +606,15 @@ class Theme_Blvd_Layout_Builder {
 				?>
 				<div class="metabox-holder">
 					<div class="postbox">
-						<h3><?php _e( 'New Template', 'themeblvd_builder' ); ?></h3>
+						<h3><?php _e( 'New Template', 'theme-blvd-layout-builder' ); ?></h3>
 						<div class="inner-group">
 							<?php echo $form[0]; ?>
 						</div><!-- .group (end) -->
 						<div id="optionsframework-submit">
 							<?php if ( $import ) : ?>
-								<a href="<?php echo $this->importer_url; ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php _e('Import template from XML file.', 'themeblvd_builder'); ?>"><?php _e('Import Template', 'themeblvd_builder'); ?></a>
+								<a href="<?php echo $this->importer_url; ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php _e('Import template from XML file.', 'theme-blvd-layout-builder'); ?>"><?php _e('Import Template', 'theme-blvd-layout-builder'); ?></a>
 							<?php endif; ?>
-							<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Template', 'themeblvd_builder' ); ?>">
+							<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Template', 'theme-blvd-layout-builder' ); ?>">
 							<span class="tb-loader ajax-loading">
 								<i class="tb-icon-spinner"></i>
 							</span>
@@ -635,7 +635,7 @@ class Theme_Blvd_Layout_Builder {
 	public function page_edit( $template_id ) {
 
 		if ( ! $template_id ) {
-			$this->notice( __('No Template ID given to edit.', 'themeblvd_builder'), 'error', false );
+			$this->notice( __('No Template ID given to edit.', 'theme-blvd-layout-builder'), 'error', false );
 			return;
 		}
 
@@ -670,11 +670,11 @@ class Theme_Blvd_Layout_Builder {
 					<div class="inner-sidebar">
 						<?php if ( TB_BUILDER_DEBUG ) : ?>
 							<div id="layout-publish" class="postbox postbox-publish">
-								<h3 class="hndle"><?php _e( 'DEBUG', 'themeblvd_builder' ); ?></h3>
+								<h3 class="hndle"><?php _e( 'DEBUG', 'theme-blvd-layout-builder' ); ?></h3>
 								<div class="submitbox">
 									<div id="major-publishing-actions">
 										<div id="publishing-action">
-											<input class="button-primary" value="<?php _e( 'Update Template (non-ajax)', 'themeblvd_builder' ); ?>" type="submit" />
+											<input class="button-primary" value="<?php _e( 'Update Template (non-ajax)', 'theme-blvd-layout-builder' ); ?>" type="submit" />
 										</div>
 										<div class="clear"></div>
 									</div>
@@ -682,14 +682,14 @@ class Theme_Blvd_Layout_Builder {
 							</div><!-- .post-box (end) -->
 						<?php endif; ?>
 						<div id="layout-publish" class="postbox postbox-publish">
-							<h3 class="hndle"><?php _e( 'Publish', 'themeblvd_builder' ); ?> <?php echo stripslashes($template->post_title); ?></h3>
+							<h3 class="hndle"><?php _e( 'Publish', 'theme-blvd-layout-builder' ); ?> <?php echo stripslashes($template->post_title); ?></h3>
 							<div class="submitbox">
 								<div id="major-publishing-actions">
 									<div id="delete-action">
-										<a class="submitdelete delete-layout" href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template_id.'&security='.wp_create_nonce('delete_template')); ?>"><?php _e( 'Delete', 'themeblvd_builder' ); ?></a>
+										<a class="submitdelete delete-layout" href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template_id.'&security='.wp_create_nonce('delete_template')); ?>"><?php _e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
 									</div>
 									<div id="publishing-action">
-										<a href="#" class="ajax-save-template button-primary" title="<?php _e( 'Update Template', 'themeblvd_builder' ); ?>"><?php _e( 'Update Template', 'themeblvd_builder' ); ?></a>
+										<a href="#" class="ajax-save-template button-primary" title="<?php _e( 'Update Template', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Update Template', 'theme-blvd-layout-builder' ); ?></a>
 										<span class="tb-loader ajax-loading">
 											<i class="tb-icon-spinner"></i>
 										</span>
@@ -699,8 +699,8 @@ class Theme_Blvd_Layout_Builder {
 							</div><!-- .submitbox (end) -->
 						</div><!-- .post-box (end) -->
 						<div id="layout-info" class="postbox postbox-layout-info closed">
-							<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
-							<h3 class="hndle"><?php _e('Template Information', 'themeblvd_builder' ); ?></h3>
+							<div class="handlediv" title="<?php echo __('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
+							<h3 class="hndle"><?php _e('Template Information', 'theme-blvd-layout-builder' ); ?></h3>
 							<div class="tb-widget-content hide">
 								<?php
 								// Current settings
@@ -712,13 +712,13 @@ class Theme_Blvd_Layout_Builder {
 								// Setup attribute options
 								$info_options = array(
 									array(
-										'name'		=> __('Template Name', 'themeblvd_builder' ),
+										'name'		=> __('Template Name', 'theme-blvd-layout-builder' ),
 										'id' 		=> 'post_title',
 										'desc'		=> null,
 										'type' 		=> 'text'
 									),
 									array(
-										'name' 		=> __('Template ID', 'themeblvd_builder' ),
+										'name' 		=> __('Template ID', 'theme-blvd-layout-builder' ),
 										'id' 		=> 'post_name',
 										'desc'		=> null,
 										'type' 		=> 'text'
@@ -734,13 +734,13 @@ class Theme_Blvd_Layout_Builder {
 
 						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) : // After framework 2.5, no more sidebar layouts in custom layouts ?>
 							<div id="layout-options" class="postbox postbox-sidebar-layout closed">
-								<div class="handlediv" title="<?php echo __('Click to toggle', 'themeblvd_builder'); ?>"><br></div>
-								<h3 class="hndle"><?php _e('Sidebar Layout', 'themeblvd_builder' ); ?></h3>
+								<div class="handlediv" title="<?php echo __('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
+								<h3 class="hndle"><?php _e('Sidebar Layout', 'theme-blvd-layout-builder' ); ?></h3>
 								<div class="tb-widget-content hide">
 									<?php
 									// Setup sidebar layouts
 									$layouts = themeblvd_sidebar_layouts();
-									$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'themeblvd_builder' ) );
+									$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'theme-blvd-layout-builder' ) );
 
 									foreach ( $layouts as $layout ) {
 										$sidebar_layouts[$layout['id']] = $layout['name'];
@@ -749,7 +749,7 @@ class Theme_Blvd_Layout_Builder {
 									$options = array(
 										array(
 											'id' 		=> 'sidebar_layout',
-											'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+											'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'theme-blvd-layout-builder' ),
 											'type' 		=> 'select',
 											'options' 	=> $sidebar_layouts
 										)
@@ -1545,7 +1545,7 @@ class Theme_Blvd_Layout_Builder {
 		$data->finalize();
 
 		// Link to "Templates" section of WP Admin
-		$templates_link = sprintf('<a href="%s" target="_blank">%s</a>', admin_url('admin.php?page='.$this->id), __('Templates', 'themeblvd_builder') );
+		$templates_link = sprintf('<a href="%s" target="_blank">%s</a>', admin_url('admin.php?page='.$this->id), __('Templates', 'theme-blvd-layout-builder') );
 
 		// ID of template to sync with (optional)
 		$sync_id = get_post_meta( $post->ID, '_tb_custom_layout', true );
@@ -1581,15 +1581,15 @@ class Theme_Blvd_Layout_Builder {
 						<i class="tb-icon-commercial-building"></i>
 					</div>
 
-					<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a starting point for this page\'s custom layout.', 'themeblvd_builder'); ?>">
+					<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); ?>">
 						<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $post->ID ); ?>
 					</div>
 
-					<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to sync this page\'s custom layout with.', 'themeblvd_builder'); ?>">
+					<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to sync this page\'s custom layout with.', 'theme-blvd-layout-builder'); ?>">
 						<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
 					</div>
 
-					<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'themeblvd_builder'); ?></a>
+					<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
 
 				</div><!-- .meta-box-nav (end) -->
 
@@ -1616,9 +1616,9 @@ class Theme_Blvd_Layout_Builder {
 				<!-- TEMPLATE SYNC (start) -->
 
 				<div id="tb-sync-layout" class="<?php echo $sync_hide; ?>">
-					<h3><i class="tb-icon-arrows-ccw"></i><?php _e('Synced with Template:', 'themeblvd_builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></h3>
-					<p><?php printf(__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'themeblvd_builder'), $templates_link ); ?></p>
-					<p><?php printf('<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', __('Unsync Layout', 'themeblvd_builder')); ?></p>
+					<h3><i class="tb-icon-arrows-ccw"></i><?php _e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></h3>
+					<p><?php printf(__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'theme-blvd-layout-builder'), $templates_link ); ?></p>
+					<p><?php printf('<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', __('Unsync Layout', 'theme-blvd-layout-builder')); ?></p>
 				</div><!-- #tb-sync-layout (end) -->
 
 				<!-- TEMPLATE SYNC (end) -->
@@ -1626,7 +1626,7 @@ class Theme_Blvd_Layout_Builder {
 				<!-- FOOTER (start) -->
 
 				<div class="tb-builder-footer">
-					<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php _e('Version', 'themeblvd_builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
+					<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php _e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
 				</div>
 
 				<!-- FOOTER (end) -->
@@ -1711,9 +1711,9 @@ class Theme_Blvd_Layout_Builder {
 
 			<div class="ajax-overlay add-element"></div>
 
-			<h2><?php _e( 'Manage Elements', 'themeblvd_builder' ); ?></h2>
+			<h2><?php _e( 'Manage Elements', 'theme-blvd-layout-builder' ); ?></h2>
 
-			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'themeblvd_builder'); ?>">
+			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
 				<select>
 					<?php
 					foreach ( $elements as $element ) {
@@ -1727,10 +1727,10 @@ class Theme_Blvd_Layout_Builder {
 				<span class="textbox"></span>
 			</div><!-- .tb-fancy-select (end) -->
 
-			<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add Element', 'themeblvd_builder' ); ?></a>
+			<a href="#" id="add_new_element" class="button-secondary"><?php _e( 'Add Element', 'theme-blvd-layout-builder' ); ?></a>
 
 			<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-				<a href="#" id="add_new_section" class="button-secondary"><?php _e( 'Add Section', 'themeblvd_builder' ); ?></a>
+				<a href="#" id="add_new_section" class="button-secondary"><?php _e( 'Add Section', 'theme-blvd-layout-builder' ); ?></a>
 			<?php endif; ?>
 
 			<span class="tb-loader ajax-loading">
@@ -1760,7 +1760,7 @@ class Theme_Blvd_Layout_Builder {
 			<div class="sidebar-layout-wrap">
 
 				<div class="title">
-					<h2><?php _e( 'Sidebar Layout', 'themeblvd_builder' ); ?></h2>
+					<h2><?php _e( 'Sidebar Layout', 'theme-blvd-layout-builder' ); ?></h2>
 					<div class="clear"></div>
 				</div><!-- #titlediv (end) -->
 
@@ -1778,7 +1778,7 @@ class Theme_Blvd_Layout_Builder {
 					$options = array(
 						array(
 							'id' 		=> 'sidebar_layout',
-							'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'themeblvd_builder' ),
+							'desc'		=> __( 'Select how you\'d like the sidebar(s) arranged in this layout. Your site-wide default sidebar layout can be set from your Theme Options page.<br><br><strong>Note: The sidebar layout is only applied to the "Primary Area" of the custom layout.</strong>', 'theme-blvd-layout-builder' ),
 							'type' 		=> 'images',
 							'options' 	=> $sidebar_layouts
 						)
@@ -1822,7 +1822,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Label
-		$label = __('Section Label', 'themeblvd_builder');
+		$label = __('Section Label', 'theme-blvd-layout-builder');
 
 		if ( isset( $data['label'] ) ) {
 			$label = $data['label'];
@@ -1844,13 +1844,13 @@ class Theme_Blvd_Layout_Builder {
 
 			switch ( $section_id ) {
 				case 'primary' :
-					$label = __('Primary Area', 'themeblvd_builder');
+					$label = __('Primary Area', 'theme-blvd-layout-builder');
 					break;
 				case 'featured' :
-					$label = __('Featured Above', 'themeblvd_builder');
+					$label = __('Featured Above', 'theme-blvd-layout-builder');
 					break;
 				case 'featured_below' :
-					$label = __('Featured Below', 'themeblvd_builder');
+					$label = __('Featured Below', 'theme-blvd-layout-builder');
 			}
 		}
 		?>
@@ -1869,9 +1869,9 @@ class Theme_Blvd_Layout_Builder {
 				<?php else : ?>
 
 					<?php if ( $section_id == 'primary' ) : ?>
-						<span data-tooltip-text="<?php _e('Section cannot be deleted', 'themeblvd_builder'); ?>" class="tb-tooltip-link locked-section"><i class="tb-icon-lock"></i></span>
+						<span data-tooltip-text="<?php _e('Section cannot be deleted', 'theme-blvd-layout-builder'); ?>" class="tb-tooltip-link locked-section"><i class="tb-icon-lock"></i></span>
 					<?php else : ?>
-						<a href="#" title="<?php _e('Delete Section', 'themeblvd_builder'); ?>" data-confirm="<?php _e('Are you sure you want to delete this section and its elements?', 'themeblvd_builder'); ?>" class="tb-tooltip-link delete-section"><i class="tb-icon-cancel-circled"></i></a>
+						<a href="#" title="<?php _e('Delete Section', 'theme-blvd-layout-builder'); ?>" data-confirm="<?php _e('Are you sure you want to delete this section and its elements?', 'theme-blvd-layout-builder'); ?>" class="tb-tooltip-link delete-section"><i class="tb-icon-cancel-circled"></i></a>
 					<?php endif; ?>
 
 					<div class="section-label dynamic-label">
@@ -1880,13 +1880,13 @@ class Theme_Blvd_Layout_Builder {
 					</div>
 
 					<div class="section-options clearfix">
-						<a href="#" class="edit-section-display tb-tooltip-link" data-target="<?php echo $section_id; ?>_background_form" data-title="<?php _e('Section Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Section Display', 'themeblvd_builder'); ?>">
+						<a href="#" class="edit-section-display tb-tooltip-link" data-target="<?php echo $section_id; ?>_background_form" data-title="<?php _e('Section Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Section Display', 'theme-blvd-layout-builder'); ?>">
 							<i class="tb-icon-picture"></i>
 						</a>
-						<a href="#" class="shift-section-down tb-tooltip-link" data-tooltip-text="<?php _e('Shift Section Down', 'themeblvd_builder'); ?>">
+						<a href="#" class="shift-section-down tb-tooltip-link" data-tooltip-text="<?php _e('Shift Section Down', 'theme-blvd-layout-builder'); ?>">
 							<i class="tb-icon-circle-arrow-down"></i>
 						</a>
-						<a href="#" class="shift-section-up tb-tooltip-link" data-tooltip-text="<?php _e('Shift Section Up', 'themeblvd_builder'); ?>">
+						<a href="#" class="shift-section-up tb-tooltip-link" data-tooltip-text="<?php _e('Shift Section Up', 'theme-blvd-layout-builder'); ?>">
 							<i class="tb-icon-circle-arrow-up"></i>
 						</a>
 					</div><!-- .section-options (end) -->
@@ -1921,7 +1921,7 @@ class Theme_Blvd_Layout_Builder {
 					foreach ( $elements as $element_id => $element ) {
 						if ( $api->is_element( $element['type'] ) ) {
 
-							$label = __('Element Label', 'themeblvd_builder');
+							$label = __('Element Label', 'theme-blvd-layout-builder');
 							if ( isset( $element['label'] ) ) {
 								$label = $element['label'];
 							}
@@ -1986,18 +1986,18 @@ class Theme_Blvd_Layout_Builder {
 
 				<i class="tb-icon-sort"></i>
 
-				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text-1="<?php _e('Show Element Options', 'themeblvd_builder'); ?>" data-tooltip-text-2="<?php _e('Hide Element Options', 'themeblvd_builder'); ?>">
+				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text-1="<?php _e('Show Element Options', 'theme-blvd-layout-builder'); ?>" data-tooltip-text-2="<?php _e('Hide Element Options', 'theme-blvd-layout-builder'); ?>">
 					<i class="tb-icon-up-dir"></i>
 				</a>
 
 				<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-					<a href="#" class="edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_background_form" data-title="<?php _e('Element Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Element Display', 'themeblvd_builder'); ?>">
+					<a href="#" class="edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_background_form" data-title="<?php _e('Element Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Element Display', 'theme-blvd-layout-builder'); ?>">
 						<i class="tb-icon-picture"></i>
 					</a>
 				<?php endif; ?>
 
-				<div class="element-label dynamic-label" data-tooltip-text="<?php _e('Click to Edit Label', 'themeblvd_builder'); ?>">
-					<?php $label = $element_label !== null ? $element_label : __('Element Label', 'themeblvd_builder'); ?>
+				<div class="element-label dynamic-label" data-tooltip-text="<?php _e('Click to Edit Label', 'theme-blvd-layout-builder'); ?>">
+					<?php $label = $element_label !== null ? $element_label : __('Element Label', 'theme-blvd-layout-builder'); ?>
 					<span class="label-text"><?php echo $label; ?></span>
 					<input type="text" class="label-input" name="tb_builder_elements[<?php echo $section_id; ?>][<?php echo $element_id; ?>][label]" value="<?php echo esc_attr($label); ?>" />
 				</div>
@@ -2038,10 +2038,10 @@ class Theme_Blvd_Layout_Builder {
 					?>
 					<div class="columns-header clearfix">
 						<span class="info">
-							<span class="col-count"><?php printf( _n( '1 Column', '%s Columns', $col_count, 'themeblvd_builder' ), $col_count ); ?></span>
+							<span class="col-count"><?php printf( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ), $col_count ); ?></span>
 							<span class="col-config"><?php echo $col_config; ?></span>
 						</span>
-						<span class="action"><a href="#" class="edit-columns-config" data-showing="0" data-text-show="<?php _e('Edit Setup', 'themeblvd_builder'); ?>" data-text-hide="<?php _e('Hide Setup', 'themeblvd_builder'); ?>"><?php _e('Edit Setup', 'themeblvd_builder'); ?></a>
+						<span class="action"><a href="#" class="edit-columns-config" data-showing="0" data-text-show="<?php _e('Edit Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php _e('Hide Setup', 'theme-blvd-layout-builder'); ?>"><?php _e('Edit Setup', 'theme-blvd-layout-builder'); ?></a>
 					</div><!-- .columns-header (end) -->
 				<?php endif; ?>
 
@@ -2099,20 +2099,20 @@ class Theme_Blvd_Layout_Builder {
 									<div class="column-heading">
 
 										<?php if ( $col_count > 1 ) : ?>
-											<h4><?php printf(__('Column %s', 'themeblvd_builder'), $i); ?></h4>
+											<h4><?php printf(__('Column %s', 'theme-blvd-layout-builder'), $i); ?></h4>
 										<?php else : ?>
-											<h4><?php _e('Elements', 'themeblvd_builder'); ?></h4>
+											<h4><?php _e('Elements', 'theme-blvd-layout-builder'); ?></h4>
 										<?php endif; ?>
 
-										<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php _e('Column Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Column Display', 'themeblvd_builder'); ?>">
+										<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>">
 											<i class="tb-icon-picture"></i>
 										</a>
 
-										<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Element', 'themeblvd_builder'); ?>" data-tooltip-position="top">
+										<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>" data-tooltip-position="top">
 											<i class="tb-icon-plus-circled"></i>
 										</a>
 
-										<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'themeblvd_builder'); ?>">
+										<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
 											<select class="block-type">
 												<?php
 												foreach ( $elements as $block ) {
@@ -2126,7 +2126,7 @@ class Theme_Blvd_Layout_Builder {
 											<span class="textbox"></span>
 										</div><!-- .tb-fancy-select (end) -->
 
-										<a href="#" class="add-block button-secondary" title="<?php _e('Add Element', 'themeblvd_builder'); ?>"><?php _e('Add Element', 'themeblvd_builder'); ?></a>
+										<a href="#" class="add-block button-secondary" title="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>"><?php _e('Add Element', 'theme-blvd-layout-builder'); ?></a>
 
 										<div class="clear"></div>
 									</div><!-- .column-heading (end) -->
@@ -2180,8 +2180,8 @@ class Theme_Blvd_Layout_Builder {
 				<?php endif; ?>
 
 				<div class="submitbox widget-footer clearfix">
-					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-element" title="<?php _e( 'Are you sure you want to delete this element?', 'themeblvd_builder' ); ?>"><?php _e( 'Delete', 'themeblvd_builder' ); ?></a>
-					<a href="#<?php echo $element_id; ?>" class="duplicate-element tb-tooltip-link" data-tooltip-text="<?php _e( 'Duplicate Element', 'themeblvd_builder' ); ?>"><i class="tb-icon-copy"></i></a>
+					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-element" title="<?php _e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
+					<a href="#<?php echo $element_id; ?>" class="duplicate-element tb-tooltip-link" data-tooltip-text="<?php _e( 'Duplicate Element', 'theme-blvd-layout-builder' ); ?>"><i class="tb-icon-copy"></i></a>
 				</div><!-- .widget-footer (end) -->
 			</div><!-- .element-content (end) -->
 		</div>
@@ -2240,27 +2240,27 @@ class Theme_Blvd_Layout_Builder {
 
 			<div class="block-widget-content clearfix hide">
 
-				<a href="#<?php echo $block_id; ?>" class="delete-block" title="<?php _e( 'Are you sure you want to delete this element?', 'themeblvd_builder' ); ?>"><?php _e( 'Delete', 'themeblvd_builder' ); ?></a>
+				<a href="#<?php echo $block_id; ?>" class="delete-block" title="<?php _e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php _e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
 
 				<nav class="block-nav">
 
 					<?php if ( $options ) : ?>
-						<a href="#" class="tb-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'themeblvd_builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>">
+						<a href="#" class="tb-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php _e('Edit Options', 'theme-blvd-layout-builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>">
 							<i class="tb-icon-cog"></i>
 						</a>
 					<?php endif; ?>
 
 					<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
-						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Code', 'themeblvd'); ?>" data-title="<?php _e('Edit Code', 'themeblvd_builder'); ?>" data-target="<?php echo $block_id; ?>">
+						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php _e('Edit Code', 'themeblvd'); ?>" data-title="<?php _e('Edit Code', 'theme-blvd-layout-builder'); ?>" data-target="<?php echo $block_id; ?>">
 							<i class="tb-icon-code"></i>
 						</a>
 					<?php endif; ?>
 
-					<a href="#" class="edit-block-display tb-tooltip-link" data-target="<?php echo $block_id; ?>_background_form" data-title="<?php _e('Edit Display', 'themeblvd_builder'); ?>" data-tooltip-text="<?php _e('Edit Display', 'themeblvd_builder'); ?>">
+					<a href="#" class="edit-block-display tb-tooltip-link" data-target="<?php echo $block_id; ?>_background_form" data-title="<?php _e('Edit Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Edit Display', 'theme-blvd-layout-builder'); ?>">
 						<i class="tb-icon-picture"></i>
 					</a>
 
-					<a href="#" class="duplicate-block tb-tooltip-link" data-tooltip-text="<?php _e( 'Duplicate', 'themeblvd_builder' ); ?>">
+					<a href="#" class="duplicate-block tb-tooltip-link" data-tooltip-text="<?php _e( 'Duplicate', 'theme-blvd-layout-builder' ); ?>">
 						<i class="tb-icon-copy"></i>
 					</a>
 
@@ -2311,9 +2311,9 @@ class Theme_Blvd_Layout_Builder {
 		$start_text = '';
 
 		if ( $type == 'apply' ) {
-			$start_text = __('Apply Starting Point', 'themeblvd_builder');
+			$start_text = __('Apply Starting Point', 'theme-blvd-layout-builder');
 		} else if ( $type == 'sync' ) {
-			$start_text = __('Sync with Template', 'themeblvd_builder');
+			$start_text = __('Sync with Template', 'theme-blvd-layout-builder');
 		}
 
 		$output .= '<div class="tb-fancy-select condensed">';
@@ -2326,7 +2326,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( $custom_layouts ) {
 
 			if ( $type == 'apply' ) {
-				$output .= '<optgroup label="'.__('Existing Templates', 'themeblvd_builder').'">';
+				$output .= '<optgroup label="'.__('Existing Templates', 'theme-blvd-layout-builder').'">';
 			}
 
 			foreach ( $custom_layouts as $custom_layout ) {
@@ -2346,7 +2346,7 @@ class Theme_Blvd_Layout_Builder {
 
 			if ( $samples ) {
 
-				$output .= '<optgroup label="'.__('Sample Layouts', 'themeblvd_builder').'">';
+				$output .= '<optgroup label="'.__('Sample Layouts', 'theme-blvd-layout-builder').'">';
 
 				foreach ( $samples as $sample ) {
 					$output .= sprintf( '<option value="%s=>%s" %s>%s</option>', $post_id, $sample['id'], selected( $sample['id'], $current, false ), $sample['name'] );
@@ -2391,8 +2391,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_type'] = array(
 				'id'		=> 'bg_type',
-				'name'		=> __('Apply Background', 'themeblvd_builder'),
-				'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'themeblvd_builder'),
+				'name'		=> __('Apply Background', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select if you\'d like to apply a custom background and how you want to control it.', 'theme-blvd-layout-builder'),
 				'std'		=> 'none',
 				'type'		=> 'select',
 				'options'	=> themeblvd_get_bg_types($type),
@@ -2402,20 +2402,20 @@ class Theme_Blvd_Layout_Builder {
 			$options['text_color'] = array(
 				'id'		=> 'text_color',
 				'name'		=> __('Text Color'),
-				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'themeblvd_builder'),
+				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'theme-blvd-layout-builder'),
 				'std'		=> 'dark',
 				'type'		=> 'select',
 				'options'	=> array(
-					'dark'	=> __('Dark Text', 'themeblvd_builder'),
-					'light'	=> __('Light Text', 'themeblvd_builder')
+					'dark'	=> __('Dark Text', 'theme-blvd-layout-builder'),
+					'light'	=> __('Light Text', 'theme-blvd-layout-builder')
 				),
 				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image receiver-slideshow'
 			);
 
 			$options['bg_color'] = array(
 				'id'		=> 'bg_color',
-				'name'		=> __('Background Color', 'themeblvd_builder'),
-				'desc'		=> __('Select a background color.', 'themeblvd_builder'),
+				'name'		=> __('Background Color', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select a background color.', 'theme-blvd-layout-builder'),
 				'std'		=> '#f8f8f8',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
@@ -2423,8 +2423,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_color_opacity'] = array(
 				'id'		=> 'bg_color_opacity',
-				'name'		=> __('Background Color Opacity', 'themeblvd_builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'themeblvd_builder'),
+				'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(
@@ -2444,8 +2444,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_texture'] = array(
 				'id'		=> 'bg_texture',
-				'name'		=> __('Background Texture', 'themeblvd_builder'),
-				'desc'		=> __('Select a background texture.', 'themeblvd_builder'),
+				'name'		=> __('Background Texture', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select a background texture.', 'theme-blvd-layout-builder'),
 				'type'		=> 'select',
 				'select'	=> 'textures',
 				'class'		=> 'hide receiver receiver-texture'
@@ -2459,15 +2459,15 @@ class Theme_Blvd_Layout_Builder {
 			$options['apply_bg_texture_parallax'] = array(
 				'id'		=> 'apply_bg_texture_parallax',
 				'name'		=> null,
-				'desc'		=> __('Apply parallax scroll effect to background texture.', 'themeblvd_builder'),
+				'desc'		=> __('Apply parallax scroll effect to background texture.', 'theme-blvd-layout-builder'),
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
 			);
 
 			$options['bg_texture_parallax'] = array(
 				'id'		=> 'bg_texture_parallax',
-				'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
-				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
 				'type'		=> 'slide',
 				'std'		=> '5',
 				'options'	=> array(
@@ -2489,8 +2489,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_image'] = array(
 				'id'		=> 'bg_image',
-				'name'		=> __('Background Image', 'themeblvd_builder'),
-				'desc'		=> __('Select a background image.', 'themeblvd_builder'),
+				'name'		=> __('Background Image', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select a background image.', 'theme-blvd-layout-builder'),
 				'type'		=> 'background',
 				'color'		=> false,
 				'parallax'	=> true
@@ -2498,8 +2498,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_image_parallax_stretch'] = array(
 				'id'		=> 'bg_image_parallax_stretch',
-				'name'		=> __('Parallax: Stretch Background', 'themeblvd_builder'),
-				'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'themeblvd_builder'),
+				'name'		=> __('Parallax: Stretch Background', 'theme-blvd-layout-builder'),
+				'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'theme-blvd-layout-builder'),
 				'type'		=> 'checkbox',
 				'std'		=> '1',
 				'class'		=> 'hide parallax'
@@ -2507,8 +2507,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['bg_image_parallax'] = array(
 				'id'		=> 'bg_image_parallax',
-				'name'		=> __('Parallax: Intensity', 'themeblvd_builder'),
-				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+				'name'		=> __('Parallax: Intensity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
 				'type'		=> 'slide',
 				'std'		=> '2',
 				'options'	=> array(
@@ -2534,7 +2534,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_bg_shade'] = array(
 					'id'		=> 'apply_bg_shade',
 					'name'		=> null,
-					'desc'		=> __('Shade background with transparent color.', 'themeblvd_builder'),
+					'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox',
 					'class'		=> 'trigger'
@@ -2542,8 +2542,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['bg_shade_color'] = array(
 					'id'		=> 'bg_shade_color',
-					'name'		=> __('Shade Color', 'themeblvd_builder'),
-					'desc'		=> __('Select the color you want overlaid on your background.', 'themeblvd_builder'),
+					'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
 					'std'		=> '#000000',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2551,8 +2551,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['bg_shade_opacity'] = array(
 					'id'		=> 'bg_shade_opacity',
-					'name'		=> __('Shade Opacity', 'themeblvd_builder'),
-					'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'themeblvd_builder'),
+					'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
 					'std'		=> '0.5',
 					'type'		=> 'select',
 					'options'	=> array(
@@ -2580,14 +2580,14 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['bg_slideshow'] = array(
 					'id' 		=> 'bg_slideshow',
-					'name'		=> __('Slideshow Images', 'themeblvd_builder'),
+					'name'		=> __('Slideshow Images', 'theme-blvd-layout-builder'),
 					'desc'		=> null,
 					'type'		=> 'slider'
 				);
 
 				$options['bg_slideshow_crop'] = array(
-					'name' 		=> __( 'Slideshow Crop Size', 'themeblvd_builder' ),
-					'desc' 		=> __( 'Select the crop size to be used for the background slideshow images. Remember that the background images will be stretched to cover the area.', 'themeblvd_builder' ),
+					'name' 		=> __( 'Slideshow Crop Size', 'theme-blvd-layout-builder' ),
+					'desc' 		=> __( 'Select the crop size to be used for the background slideshow images. Remember that the background images will be stretched to cover the area.', 'theme-blvd-layout-builder' ),
 					'id' 		=> 'bg_slideshow_crop',
 					'std' 		=> 'full',
 					'type' 		=> 'select',
@@ -2602,15 +2602,15 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_bg_slideshow_parallax'] = array(
 					'id'		=> 'apply_bg_slideshow_parallax',
 					'name'		=> null,
-					'desc'		=> __('Apply parallax scroll effect to background slideshow.', 'themeblvd_builder'),
+					'desc'		=> __('Apply parallax scroll effect to background slideshow.', 'theme-blvd-layout-builder'),
 					'type'		=> 'checkbox',
 					'class'		=> 'trigger'
 				);
 
 				$options['bg_slideshow_parallax'] = array(
 					'id'		=> 'bg_slideshow_parallax',
-					'name'		=> __('Parallax Intensity', 'themeblvd_builder'),
-					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'themeblvd_builder'),
+					'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
 					'type'		=> 'slide',
 					'std'		=> '5',
 					'options'	=> array(
@@ -2637,7 +2637,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_border_top'] = array(
 					'id'		=> 'apply_border_top',
 					'name'		=> null,
-					'desc'		=> '<strong>'.__('Top Border', 'themeblvd_builder').'</strong>: '.__('Apply top border to section.', 'themeblvd_builder'),
+					'desc'		=> '<strong>'.__('Top Border', 'theme-blvd-layout-builder').'</strong>: '.__('Apply top border to section.', 'theme-blvd-layout-builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox',
 					'class'		=> 'trigger'
@@ -2645,8 +2645,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_top_color'] = array(
 					'id'		=> 'border_top_color',
-					'name'		=> __('Top Border Color', 'themeblvd_builder'),
-					'desc'		=> __('Select a color for the top border.', 'themeblvd_builder'),
+					'name'		=> __('Top Border Color', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select a color for the top border.', 'theme-blvd-layout-builder'),
 					'std'		=> '#dddddd',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2654,8 +2654,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_top_width'] = array(
 					'id'		=> 'border_top_width',
-					'name'		=> __('Top Border Width', 'themeblvd_builder'),
-					'desc'		=> __('Select a width in pixels for the top border.', 'themeblvd_builder'),
+					'name'		=> __('Top Border Width', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select a width in pixels for the top border.', 'theme-blvd-layout-builder'),
 					'std'		=> '1px',
 					'type'		=> 'slide',
 					'options'	=> array(
@@ -2678,7 +2678,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_border_bottom'] = array(
 					'id'		=> 'apply_border_bottom',
 					'name'		=> null,
-					'desc'		=> '<strong>'.__('Bottom Border', 'themeblvd_builder').'</strong>: '.__('Apply bottom border to section.', 'themeblvd_builder'),
+					'desc'		=> '<strong>'.__('Bottom Border', 'theme-blvd-layout-builder').'</strong>: '.__('Apply bottom border to section.', 'theme-blvd-layout-builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox',
 					'class'		=> 'trigger'
@@ -2686,8 +2686,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_bottom_color'] = array(
 					'id'		=> 'border_bottom_color',
-					'name'		=> __('Bottom Border Color', 'themeblvd_builder'),
-					'desc'		=> __('Select a color for the bottom border.', 'themeblvd_builder'),
+					'name'		=> __('Bottom Border Color', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select a color for the bottom border.', 'theme-blvd-layout-builder'),
 					'std'		=> '#dddddd',
 					'type'		=> 'color',
 					'class'		=> 'hide receiver'
@@ -2695,8 +2695,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$options['border_bottom_width'] = array(
 					'id'		=> 'border_bottom_width',
-					'name'		=> __('Bottom Border Width', 'themeblvd_builder'),
-					'desc'		=> __('Select a width in pixels for the bottom border.', 'themeblvd_builder'),
+					'name'		=> __('Bottom Border Width', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select a width in pixels for the bottom border.', 'theme-blvd-layout-builder'),
 					'std'		=> '1px',
 					'type'		=> 'slide',
 					'options'	=> array(
@@ -2724,13 +2724,13 @@ class Theme_Blvd_Layout_Builder {
 			case 'section' :
 				$first_title = __('Desktop Padding', 'themeblvd');
 				$id_suffix = '_desktop';
-				$term = __('section', 'themeblvd_builder');
+				$term = __('section', 'theme-blvd-layout-builder');
 				$default = '30px';
 				break;
 			case 'column' :
 				$first_title = __('Padding', 'themeblvd');
 				$id_suffix = '';
-				$term = __('column', 'themeblvd_builder');
+				$term = __('column', 'theme-blvd-layout-builder');
 				$default = '30px';
 				break;
 			case 'element' :
@@ -2738,7 +2738,7 @@ class Theme_Blvd_Layout_Builder {
 				$first_title = __('Padding', 'themeblvd');
 				$id_suffix = '';
 				$default = '0px';
-				$term = __('element', 'themeblvd_builder');
+				$term = __('element', 'theme-blvd-layout-builder');
 		}
 
 		// Desktop padding
@@ -2750,7 +2750,7 @@ class Theme_Blvd_Layout_Builder {
 		$options['apply_padding'.$id_suffix] = array(
 			'id'		=> 'apply_padding'.$id_suffix,
 			'name'		=> null,
-			'desc'		=> '<strong>'.$first_title.':</strong> '.sprintf(__('Apply custom padding around %s.', 'themeblvd_builder'), $term),
+			'desc'		=> '<strong>'.$first_title.':</strong> '.sprintf(__('Apply custom padding around %s.', 'theme-blvd-layout-builder'), $term),
 			'std'		=> 0,
 			'type'		=> 'checkbox',
 			'class'		=> 'trigger'
@@ -2758,8 +2758,8 @@ class Theme_Blvd_Layout_Builder {
 
 		$options['padding_top'.$id_suffix] = array(
 			'id'		=> 'padding_top'.$id_suffix,
-			'name'		=> __('Top Padding', 'themeblvd_builder'),
-			'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+			'name'		=> __('Top Padding', 'theme-blvd-layout-builder'),
+			'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
 			'std'		=> $default,
 			'type'		=> 'slide',
 			'options'	=> array(
@@ -2772,8 +2772,8 @@ class Theme_Blvd_Layout_Builder {
 
 		$options['padding_right'.$id_suffix] = array(
 			'id'		=> 'padding_right'.$id_suffix,
-			'name'		=> __('Right Padding', 'themeblvd_builder'),
-			'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+			'name'		=> __('Right Padding', 'theme-blvd-layout-builder'),
+			'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
 			'std'		=> $default,
 			'type'		=> 'slide',
 			'options'	=> array(
@@ -2786,8 +2786,8 @@ class Theme_Blvd_Layout_Builder {
 
 		$options['padding_bottom'.$id_suffix] = array(
 			'id'		=> 'padding_bottom'.$id_suffix,
-			'name'		=> __('Bottom Padding', 'themeblvd_builder'),
-			'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+			'name'		=> __('Bottom Padding', 'theme-blvd-layout-builder'),
+			'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
 			'std'		=> $default,
 			'type'		=> 'slide',
 			'options'	=> array(
@@ -2800,8 +2800,8 @@ class Theme_Blvd_Layout_Builder {
 
 		$options['padding_left'.$id_suffix] = array(
 			'id'		=> 'padding_left'.$id_suffix,
-			'name'		=> __('Left Padding', 'themeblvd_builder'),
-			'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+			'name'		=> __('Left Padding', 'theme-blvd-layout-builder'),
+			'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
 			'std'		=> $default,
 			'type'		=> 'slide',
 			'options'	=> array(
@@ -2827,7 +2827,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['apply_padding_tablet'] = array(
 				'id'		=> 'apply_padding_tablet',
 				'name'		=> null,
-				'desc'		=> '<strong>'.__('Tablet Padding', 'themeblvd_builder').':</strong> '.sprintf(__('Apply custom padding around %s when at the tablet viewport size.', 'themeblvd_builder'), $term),
+				'desc'		=> '<strong>'.__('Tablet Padding', 'theme-blvd-layout-builder').':</strong> '.sprintf(__('Apply custom padding around %s when at the tablet viewport size.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> 0,
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
@@ -2835,8 +2835,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_top_tablet'] = array(
 				'id'		=> 'padding_top_tablet',
-				'name'		=> __('Tablet Top Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Tablet Top Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2849,8 +2849,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_right_tablet'] = array(
 				'id'		=> 'padding_right_tablet',
-				'name'		=> __('Tablet Right Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Tablet Right Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2863,8 +2863,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_bottom_tablet'] = array(
 				'id'		=> 'padding_bottom_tablet',
-				'name'		=> __('Tablet Bottom Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Tablet Bottom Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2877,8 +2877,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_left_tablet'] = array(
 				'id'		=> 'padding_left_tablet',
-				'name'		=> __('Tablet Left Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Tablet Left Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2902,7 +2902,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['apply_padding_mobile'] = array(
 				'id'		=> 'apply_padding_mobile',
 				'name'		=> null,
-				'desc'		=> '<strong>'.__('Mobile Padding', 'themeblvd_builder').':</strong> '.sprintf(__('Apply custom padding around %s when at the mobile viewport size.', 'themeblvd_builder'), $term),
+				'desc'		=> '<strong>'.__('Mobile Padding', 'theme-blvd-layout-builder').':</strong> '.sprintf(__('Apply custom padding around %s when at the mobile viewport size.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> 0,
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
@@ -2910,8 +2910,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_top_mobile'] = array(
 				'id'		=> 'padding_top_mobile',
-				'name'		=> __('Mobile Top Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Mobile Top Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2924,8 +2924,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_right_mobile'] = array(
 				'id'		=> 'padding_right_mobile',
-				'name'		=> __('Mobile Right Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Mobile Right Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2938,8 +2938,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_bottom_mobile'] = array(
 				'id'		=> 'padding_bottom_mobile',
-				'name'		=> __('Mobile Bottom Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Mobile Bottom Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2952,8 +2952,8 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['padding_left_mobile'] = array(
 				'id'		=> 'padding_left_mobile',
-				'name'		=> __('Mobile Left Padding', 'themeblvd_builder'),
-				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'themeblvd_builder'), $term),
+				'name'		=> __('Mobile Left Padding', 'theme-blvd-layout-builder'),
+				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
 				'std'		=> $default,
 				'type'		=> 'slide',
 				'options'	=> array(
@@ -2980,7 +2980,7 @@ class Theme_Blvd_Layout_Builder {
 				$options['apply_popout'] = array(
 					'id'		=> 'apply_popout',
 					'name'		=> null,
-					'desc'		=> '<strong>'.__('Popout', 'themeblvd_builder').':</strong> '.__('Stretch content of element to fill outer container. &mdash; <em>Note: If you\'re using a theme design that is not displayed in a stretch layout, this option will not be as pronounced.</em>', 'themeblvd_builder'),
+					'desc'		=> '<strong>'.__('Popout', 'theme-blvd-layout-builder').':</strong> '.__('Stretch content of element to fill outer container. &mdash; <em>Note: If you\'re using a theme design that is not displayed in a stretch layout, this option will not be as pronounced.</em>', 'theme-blvd-layout-builder'),
 					'std'		=> 0,
 					'type'		=> 'checkbox'
 				);
@@ -2995,7 +2995,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_content'] = array(
 				'id'		=> 'bg_content',
 				'name'		=> null,
-				'desc'		=> '<strong>'.__('Content Background', 'themeblvd_builder').':</strong> '.__('Add theme\'s default content background color around element. &mdash; <em>Note: This can be helpful if the element sits in a section or column that has a background color set.</em>', 'themeblvd_builder'),
+				'desc'		=> '<strong>'.__('Content Background', 'theme-blvd-layout-builder').':</strong> '.__('Add theme\'s default content background color around element. &mdash; <em>Note: This can be helpful if the element sits in a section or column that has a background color set.</em>', 'theme-blvd-layout-builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
@@ -3004,14 +3004,14 @@ class Theme_Blvd_Layout_Builder {
 			$options['suck_up'] = array(
 				'id'		=> 'suck_up',
 				'name'		=> null,
-				'desc'		=> '<strong>'.__('Suck Up', 'themeblvd_builder').':</strong> '.__('Suck element up closer to the element that comes before it.', 'themeblvd_builder'),
+				'desc'		=> '<strong>'.__('Suck Up', 'theme-blvd-layout-builder').':</strong> '.__('Suck element up closer to the element that comes before it.', 'theme-blvd-layout-builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
 			$options['suck_down'] = array(
 				'id'		=> 'suck_down',
 				'name'		=> null,
-				'desc'		=> '<strong>'.__('Suck Down', 'themeblvd_builder').':</strong> '.__('Suck element down closer to the element that comes after it.', 'themeblvd_builder'),
+				'desc'		=> '<strong>'.__('Suck Down', 'theme-blvd-layout-builder').':</strong> '.__('Suck element down closer to the element that comes after it.', 'theme-blvd-layout-builder'),
 				'std'		=> 0,
 				'type'		=> 'checkbox'
 			);
@@ -3025,14 +3025,14 @@ class Theme_Blvd_Layout_Builder {
 
 			$options['visibility'] = array(
 		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility', 'themeblvd_builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'themeblvd_builder' ),
+				'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'multicheck',
 				'class'		=> 'section-visibility',
 				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'themeblvd_builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'themeblvd_builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'themeblvd_builder' )
+					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'theme-blvd-layout-builder' ),
+					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'theme-blvd-layout-builder' ),
+					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'theme-blvd-layout-builder' )
 				)
 			);
 
@@ -3046,8 +3046,8 @@ class Theme_Blvd_Layout_Builder {
 
 		$options['classes'] = array(
 	    	'id' 		=> 'classes',
-			'name'		=> __( 'CSS Classes', 'themeblvd_builder' ),
-			'desc'		=> __( 'Enter any CSS classes you\'d like attached.', 'themeblvd_builder' ),
+			'name'		=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
+			'desc'		=> __( 'Enter any CSS classes you\'d like attached.', 'theme-blvd-layout-builder' ),
 			'type'		=> 'text',
 			'class'		=> 'section-classes'
 		);
