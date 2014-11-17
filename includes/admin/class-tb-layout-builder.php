@@ -966,13 +966,15 @@ class Theme_Blvd_Layout_Builder {
 		// DEBUG
 		// echo '<pre>'; print_r($data); echo '</pre>';
 
-		$sections = array();
+		$sections = array('primary'=>array());
 		$elements = array();
 		$columns = array(); // Keep track of any columns of elements from "Columns" element
 		$element_id_list = array(); // For cleanup later on
 
 		// Layout Sections
 		if ( isset( $data['tb_builder_sections'] ) ) {
+
+			$sections = array();
 
 			foreach ( $data['tb_builder_sections'] as $section_id => $section ) {
 				$sections[$section_id] = array(
@@ -987,15 +989,15 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Elements (by section)
+
+		// Ensure that if any sections were left empty, we still save them as empty.
+		foreach ( $sections as $section_id => $section ) {
+			$elements[$section_id] = array();
+		}
+
+		// Elements data is sent with them separated into sections, which is how
+		// we'll save them at the end, as well.
 		if ( isset( $data['tb_builder_elements'] ) ) {
-
-			// Ensure that if any sections were left empty, we still save them as empty.
-			foreach ( $sections as $section_id => $section ) {
-				$elements[$section_id] = array();
-			}
-
-			// Elements data is sent with them separated into sections, which is how
-			// we'll save them at the end, as well.
 			foreach ( $data['tb_builder_elements'] as $section_id => $section_elements ) {
 
 				$elements[$section_id] = array();
@@ -1040,12 +1042,11 @@ class Theme_Blvd_Layout_Builder {
 					$elements[$section_id][$element_id] = $element;
 
 				}
-
-				// Store meta to post
-				update_post_meta( $post_id, '_tb_builder_elements', $elements );
-
 			}
 		}
+
+		// Store meta to post
+		update_post_meta( $post_id, '_tb_builder_elements', $elements );
 
 		// Columns
 		if ( count($columns) > 0 ) {
@@ -1248,8 +1249,8 @@ class Theme_Blvd_Layout_Builder {
 
 				$crop = 'full';
 
-				if ( ! empty($settings['crop']) ) {
-					$crop = wp_kses( $settings['crop'], array() );
+				if ( ! empty( $settings[$option_id.'_crop'] ) ) {
+					$crop = wp_kses( $settings[$option_id.'_crop'], array() );
 				}
 
 				$settings[$option_id]['crop'] = $crop;
@@ -2587,11 +2588,10 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_slideshow_crop'] = array(
 					'name' 		=> __( 'Slideshow Crop Size', 'themeblvd_builder' ),
 					'desc' 		=> __( 'Select the crop size to be used for the background slideshow images. Remember that the background images will be stretched to cover the area.', 'themeblvd_builder' ),
-					'id' 		=> 'crop',
+					'id' 		=> 'bg_slideshow_crop',
 					'std' 		=> 'full',
 					'type' 		=> 'select',
-					'select'	=> 'crop',
-					'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
+					'select'	=> 'crop'
 				);
 
 				$options['subgroup_start_6'] = array(
