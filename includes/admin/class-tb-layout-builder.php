@@ -2326,7 +2326,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( $custom_layouts ) {
 
 			if ( $type == 'apply' ) {
-				$output .= '<optgroup label="'.__('Existing Templates', 'theme-blvd-layout-builder').'">';
+				$output .= '<optgroup label="'.__('Templates', 'theme-blvd-layout-builder').'">';
 			}
 
 			foreach ( $custom_layouts as $custom_layout ) {
