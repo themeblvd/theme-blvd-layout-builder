@@ -142,6 +142,17 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Current Page
+			/*------------------------------------------------------*/
+
+			case 'current' :
+
+				$post = get_post( themeblvd_config('id') );
+				echo apply_filters('themeblvd_the_content', $post->post_content );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Divider
 			/*------------------------------------------------------*/
 

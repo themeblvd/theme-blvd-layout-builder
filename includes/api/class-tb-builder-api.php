@@ -180,6 +180,7 @@ class Theme_Blvd_Builder_API {
 		$this->registered_elements = array(
 			'content',
 			'columns',
+			'current',
 			'divider',
 			'headline',
 			'jumbotron',
@@ -199,7 +200,6 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'chart_line';
 			$this->registered_elements[] = 'chart_pie';
 			$this->registered_elements[] = 'contact';
-			$this->registered_elements[] = 'current';
 			$this->registered_elements[] = 'custom_field';
 			$this->registered_elements[] = 'external';
 			$this->registered_elements[] = 'map'; // Google map
