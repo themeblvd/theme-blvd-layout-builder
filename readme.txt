@@ -33,6 +33,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.1 =
 
+* Fixed issues with "Promo Box" (formerly "Slogan") element after last update.
+
 = 2.0.0 =
 
 * New interface for editing layouts from the Edit Page screen
