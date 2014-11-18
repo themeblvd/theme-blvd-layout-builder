@@ -25,9 +25,9 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Screenshots ==
 
-1. Manage your custom layouts.
-2. Add a new custom layout.
-3. Edit a custom layout with the Builder interface.
+1. Edit a page's custom layout.
+2. Manage templates page.
+3. Editing a template.
 
 == Changelog ==
 
