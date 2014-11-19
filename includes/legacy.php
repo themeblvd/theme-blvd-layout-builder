@@ -393,13 +393,9 @@ function themeblvd_builder_legacy_config( $config ) {
 
 	// Featured areas
 	if ( $config['builder_post_id'] ) {
-
 		$elements = get_post_meta( $config['builder_post_id'], '_tb_builder_elements', true );
-
-		$front = Theme_Blvd_Frontend_Init::get_instance();
-		$config['featured'] = $front->featured_builder_classes( $elements, 'featured' );
-		$config['featured_below'] = $front->featured_builder_classes( $elements, 'featured_below' );
-
+		$config['featured'] = themeblvd_builder_legacy_featured_classes( $elements, 'featured' );
+		$config['featured_below'] = themeblvd_builder_legacy_featured_classes( $elements, 'featured_below' );
 	}
 
 	// Sidebar Layout
@@ -1150,4 +1146,77 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 	$layouts['showcase']['featured_below'] = array();
 
 	return $layouts;
+}
+
+/**
+ * Get CSS classes for featured areas of custom
+ * layout for old themes.
+ *
+ * @since 2.0.1
+ */
+function themeblvd_builder_legacy_featured_classes( $elements, $area ) {
+
+	$classes = array();
+
+	if ( ! empty( $elements[$area] ) ) {
+
+		$classes[] = 'has_builder';
+
+		foreach ( $elements[$area] as $element ) {
+			switch ( $element['type'] ) {
+				case 'slider' :
+					$classes[] = 'has_slider';
+					break;
+				case 'post_grid_slider' :
+					$classes[] = 'has_slider';
+					$classes[] = 'has_grid';
+					$classes[] = 'has_post_grid_slider';
+					break;
+				case 'post_list_slider' :
+					$classes[] = 'has_slider';
+					$classes[] = 'has_post_list_slider';
+					break;
+				case 'post_grid' :
+					$classes[] = 'has_grid';
+					break;
+			}
+		}
+
+		$sliders = apply_filters('themeblvd_slider_element_list', array('slider', 'post_slider', 'post_grid_slider', 'post_list_slider'));
+
+		// First element classes
+		$first_element = array_values( $elements[$area] );
+		$first_element = array_shift( $first_element );
+		$first_element = $first_element['type'];
+
+		if ( in_array( $first_element, $sliders ) ) {
+			$classes[] = 'slider_is_first';
+		}
+
+		if ( $first_element == 'post_grid' || $first_element == 'post_grid_slider' ) {
+			$classes[] = 'grid_is_first';
+		}
+
+		if ( $first_element == 'slogan' ) {
+			$classes[] = 'slogan_is_first';
+		}
+
+		// Last element classes
+		$last_element = end( $elements[$area] );
+		$last_element = $last_element['type'];
+
+		if ( in_array( $last_element, $sliders ) ) {
+			$classes[] = 'slider_is_last';
+		}
+
+		if ( $last_element == 'post_grid' || $last_element == 'post_grid_slider' ) {
+			$classes[] = 'grid_is_last';
+		}
+
+		if ( $last_element == 'slogan' ) {
+			$classes[] = 'slogan_is_last';
+		}
+	}
+
+	return apply_filters( 'featured_builder_classes', $classes, $elements, $area );
 }
