@@ -1480,9 +1480,7 @@ class Theme_Blvd_Layout_Builder {
 				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ) {
 
 					add_action( 'save_post', array( $this, 'save_post' ) );
-					add_action( 'edit_form_after_title', array( $this, 'builder_start' ) );
-					add_action( 'edit_form_after_editor', array( $this, 'builder' ) );
-					add_action( 'edit_form_after_editor', array( $this, 'builder_end' ) );
+					add_action( 'edit_form_after_title', array( $this, 'builder' ) );
 
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
@@ -1561,97 +1559,81 @@ class Theme_Blvd_Layout_Builder {
 			$sync_hide = '';
 		}
 		?>
-		<div id="builder_blvd">
-			<div id="optionsframework" class="tb-options-js">
+		<div id="tb-editor-builder" class="<?php if(get_post_meta($post->ID, '_wp_page_template', true) == 'template_builder.php') echo 'template-active'; ?>">
+			<div id="builder_blvd">
+				<div id="optionsframework" class="tb-options-js">
 
-				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
-				<input type="hidden" name="tb_post_id" value="<?php echo $post->ID; ?>" />
+					<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
+					<input type="hidden" name="tb_post_id" value="<?php echo $post->ID; ?>" />
 
-				<!-- HEADER (start) -->
+					<!-- HEADER (start) -->
 
-				<div class="meta-box-nav clearfix">
+					<div class="meta-box-nav clearfix">
 
-					<div class="ajax-overlay add-element"></div>
-					<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
+						<div class="ajax-overlay add-element"></div>
+						<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
 
-					<div class="icon-holder">
-						<span class="tb-loader ajax-loading">
-							<i class="tb-icon-spinner"></i>
-						</span>
-						<i class="tb-icon-commercial-building"></i>
+						<div class="icon-holder">
+							<span class="tb-loader ajax-loading">
+								<i class="tb-icon-spinner"></i>
+							</span>
+							<i class="tb-icon-commercial-building"></i>
+						</div>
+
+						<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); ?>">
+							<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $post->ID ); ?>
+						</div>
+
+						<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to sync this page\'s custom layout with.', 'theme-blvd-layout-builder'); ?>">
+							<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
+						</div>
+
+						<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
+
+					</div><!-- .meta-box-nav (end) -->
+
+					<!-- HEADER (end) -->
+
+					<!-- EDIT LAYOUT (start) -->
+
+					<div id="tb-edit-layout" class="<?php echo $edit_hide; ?>">
+
+						<div class="ajax-overlay full-overlay">
+							<span class="tb-loader ajax-loading">
+								<i class="tb-icon-spinner"></i>
+							</span>
+						</div>
+
+						<div class="ajax-mitt">
+							<?php $this->edit_layout( $post->ID ); ?>
+						</div><!-- .ajax-mitt (end) -->
+
+					</div><!-- #tb-edit-layout (end) -->
+
+					<!-- EDIT LAYOUT (end) -->
+
+					<!-- TEMPLATE SYNC (start) -->
+
+					<div id="tb-sync-layout" class="<?php echo $sync_hide; ?>">
+						<h3><i class="tb-icon-arrows-ccw"></i><?php _e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></h3>
+						<p><?php printf(__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'theme-blvd-layout-builder'), $templates_link ); ?></p>
+						<p><?php printf('<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', __('Unsync Layout', 'theme-blvd-layout-builder')); ?></p>
+					</div><!-- #tb-sync-layout (end) -->
+
+					<!-- TEMPLATE SYNC (end) -->
+
+					<!-- FOOTER (start) -->
+
+					<div class="tb-builder-footer">
+						<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php _e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
 					</div>
 
-					<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php _e('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); ?>">
-						<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $post->ID ); ?>
-					</div>
+					<!-- FOOTER (end) -->
 
-					<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php _e('Select a template to sync this page\'s custom layout with.', 'theme-blvd-layout-builder'); ?>">
-						<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
-					</div>
-
-					<a href="#" id="save-new-template" class="button-secondary"><?php _e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
-
-				</div><!-- .meta-box-nav (end) -->
-
-				<!-- HEADER (end) -->
-
-				<!-- EDIT LAYOUT (start) -->
-
-				<div id="tb-edit-layout" class="<?php echo $edit_hide; ?>">
-
-					<div class="ajax-overlay full-overlay">
-						<span class="tb-loader ajax-loading">
-							<i class="tb-icon-spinner"></i>
-						</span>
-					</div>
-
-					<div class="ajax-mitt">
-						<?php $this->edit_layout( $post->ID ); ?>
-					</div><!-- .ajax-mitt (end) -->
-
-				</div><!-- #tb-edit-layout (end) -->
-
-				<!-- EDIT LAYOUT (end) -->
-
-				<!-- TEMPLATE SYNC (start) -->
-
-				<div id="tb-sync-layout" class="<?php echo $sync_hide; ?>">
-					<h3><i class="tb-icon-arrows-ccw"></i><?php _e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></h3>
-					<p><?php printf(__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'theme-blvd-layout-builder'), $templates_link ); ?></p>
-					<p><?php printf('<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', __('Unsync Layout', 'theme-blvd-layout-builder')); ?></p>
-				</div><!-- #tb-sync-layout (end) -->
-
-				<!-- TEMPLATE SYNC (end) -->
-
-				<!-- FOOTER (start) -->
-
-				<div class="tb-builder-footer">
-					<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php _e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
-				</div>
-
-				<!-- FOOTER (end) -->
-
-			</div><!-- #optionsframework (end) -->
-		</div><!-- #builder_blvd (end) -->
+				</div><!-- #optionsframework (end) -->
+			</div><!-- #builder_blvd (end) -->
+		</div><!-- #tb-editor-builder (end) -->
 		<?php
-	}
-
-	/**
-	 * Add opening DIV before entire WP editor
-	 *
-	 * @since 2.0.0
-	 */
-	public function builder_start() {
-		echo '<div id="tb-editor-builder">';
-	}
-
-	/**
-	 * Add closing DIV around after WP editor
-	 *
-	 * @since 2.0.0
-	 */
-	public function builder_end() {
-		echo '</div><!-- #tb-editor-builder (end) -->';
 	}
 
 	/*--------------------------------------------*/
@@ -1739,6 +1721,7 @@ class Theme_Blvd_Layout_Builder {
 
 			<div class="clear"></div>
 		</div><!-- .manage-elements (end) -->
+
 		<div id="builder">
 			<?php
 			if ( is_array($saved_sections) && count($saved_sections) > 0 ) {
@@ -1979,6 +1962,10 @@ class Theme_Blvd_Layout_Builder {
 		if ( ! empty( $elements[$element_type]['options'] ) ) {
 			$form = themeblvd_option_fields( $field_name, $elements[$element_type]['options'], $element_settings, false );
 		}
+
+		if ( ! empty( $form[0] ) ) {
+			$form[0] = str_replace('id="content"', 'id="option-content"', $form[0]); // Having anything with ID "content" will screw up the WP editor
+		}
 		?>
 		<div id="<?php echo $element_id; ?>" class="widget element-options" data-field-name="<?php echo $field_name; ?>">
 
@@ -2211,6 +2198,10 @@ class Theme_Blvd_Layout_Builder {
 		$block_form = array();
 		if ( ! empty( $blocks[$block_type]['options'] ) ) {
 			$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
+		}
+
+		if ( ! empty( $block_form[0] ) ) {
+			$block_form[0] = str_replace('id="content"', 'id="option-content"', $block_form[0]); // Having anything with ID "content" will screw up the WP editor
 		}
 
 		// Whether to show options icon link

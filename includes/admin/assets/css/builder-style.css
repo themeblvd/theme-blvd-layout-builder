@@ -395,40 +395,6 @@
 /* =Editor Builder (for Edit Page screen)
 ----------------------------------------------- */
 
-/* Disable WP's fixed Editor bar (WP 4.0+) */
-#tb-editor-builder.template-active #wp-content-wrap,
-#tb-editor-builder.template-active div.mce-panel {
-	padding-top: 0 !important;
-	position: static !important;
-}
-#tb-editor-builder.template-active div.mce-panel iframe {
-	height: 300px !important;
-}
-#tb-editor-builder.template-active .wp-editor-area {
-	height: 320px !important;
-}
-#tb-editor-builder.template-active #postdivrich #content {
-	margin-top: 0 !important;
-}
-#tb-editor-builder.template-active #wp-content-editor-tools {
-	width: auto !important;
-}
-#tb-editor-builder.template-active #wp-content-editor-tools,
-#tb-editor-builder.template-active #ed_toolbar,
-#tb-editor-builder.template-active div.mce-toolbar-grp {
-	position: relative !important;
-	top: inherit !important;
-	right: inherit !important;
-	bottom: inherit !important;
-	left: inherit !important;
-}
-#tb-editor-builder.builder-active #post-status-info {
-	display: none;
-}
-#tb-editor-builder.template-active #post-status-info {
-	position: static !important;
-}
-
 /* General */
 #tb-editor-builder.builder-active #postdivrich {
 	margin-bottom: 0;
@@ -436,13 +402,17 @@
 #tb-editor-builder #builder_blvd {
 	background: #ffffff;
 	border: 1px solid #e5e5e5;
-	border-top: none;
 	box-sizing: border-box;
 	display: none;
 	clear: both;
+	margin-top: 20px;
 	/* margin-bottom: 20px; */
 	/* min-height: 485px; */
 	position: relative;
+	z-index: 1000; /* Sit above WP Editor's #post-status-info at 999 */
+}
+#tb-editor-builder.template-active #builder_blvd {
+	display: block;
 }
 #tb-editor-builder .wp-media-buttons.tb-inactive {
 	position: relative;

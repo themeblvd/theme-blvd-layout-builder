@@ -33,6 +33,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.1 =
 
+* Removed the "Builder" tab from Edit Page screen for better compatibility with WP's Visual/Text editors; builder now shows above editor.
 * Fixed issues with "Promo Box" (formerly "Slogan") element after last update.
 
 = 2.0.0 =

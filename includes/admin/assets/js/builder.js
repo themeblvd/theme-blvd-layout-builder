@@ -374,79 +374,8 @@ jQuery(document).ready(function($) {
 					return false;
 				}
 			});
-    	},
-
-    	/**
-		 * Show builder when editing page.
-    	 */
-    	show : function( $wrap, $button ) {
-
-    		if ( ! $button ) {
-    			var $button = $wrap.find('#tb-content-layout');
-    		}
-
-    		var $container = $button.closest('.wp-editor-wrap');;
-
-			$button.show();
-			$wrap.addClass('builder-active');
-			$button.addClass('tb-active');
-
-			if ( $container.hasClass('html-active') ) {
-				$container.removeClass('html-active');
-				$container.addClass('tb-html-active');
-			} else if ( $container.hasClass('tmce-active') ) {
-				$container.removeClass('tmce-active');
-				$container.addClass('tb-tmce-active');
-			}
-
-			// Make media buttons inactive
-			$('#wp-content-media-buttons').addClass('tb-inactive').prepend('<div class="tb-overlay"></div>').find('.tb-overlay').animate({opacity: .8}, 200);
-
-			// Hide current WP editor
-			$('#wp-content-editor-container, #post-status-info').hide();
-
-			// Show builder
-			$wrap.find('#builder_blvd').show();
-
-    	},
-
-    	/**
-		 * Hide builder when editing page.
-    	 */
-    	hide : function( $wrap, $button ) {
-
-	    	var $container = $wrap.find('.wp-editor-wrap');
-
-	    	if ( ! $button ) {
-
-	    		var $button;
-
-    			if ( $container.hasClass('tb-tmce-active') ) {
-    				$button = $wrap.find('#content-tmce');
-    			} else {
-    				$button = $wrap.find('#content-html');
-    			}
-    		}
-
-			if ( $container.hasClass('tb-html-active') || $container.hasClass('tb-tmce-active') ) {
-				$wrap.removeClass('builder-active');
-				$container.find('.tb-switch-editor').removeClass('tb-active');
-				$('#wp-content-media-buttons').removeClass('tb-inactive').find('.tb-overlay').remove();
-				$('#wp-content-editor-container, #post-status-info').show();
-				$button.closest('#tb-editor-builder').find('#builder_blvd').hide();
-			}
-
-			if ( $button.attr('id') == 'content-html' && $container.hasClass('tb-html-active') ) {
-				$container.removeClass('tb-html-active');
-				$container.addClass('html-active');
-			}
-
-			if ( $button.attr('id') == 'content-tmce' && $container.hasClass('tb-tmce-active') ) {
-				$container.removeClass('tb-tmce-active');
-				$container.addClass('tmce-active');
-			}
-
     	}
+
 	};
 
 	/*------------------------------------------------------------*/
@@ -456,41 +385,14 @@ jQuery(document).ready(function($) {
 	var $wrap = $('#tb-editor-builder'),
 		$template = $('#page_template'); // WP <select> for page template
 
-	// Add nav button after Visual and Text tabs in Editor
-	$wrap.find('.wp-editor-tabs').prepend('<a href="#" id="tb-content-layout" class="tb-switch-editor switch-layout" style="display:none;">'+themeblvd.builder+'</a>');
-
-	// Show or hide the "Builder" tab, depending on if the
+	// Show or hide the Builder, depending on if the
 	// user selects the "Custom Layout" page template.
 	$template.on('change', function(){
 		if ( $(this).val() == 'template_builder.php' ) {
 			$wrap.addClass('template-active');
-			$wrap.find('#tb-content-layout').fadeIn(100);
-			// builder_blvd.show( $wrap ); // Show Builder tab on switch to custom layout
 		} else {
 			$wrap.removeClass('template-active');
-			$wrap.find('#tb-content-layout').fadeOut(100);
-			builder_blvd.hide( $wrap );
 		}
-	});
-
-	// If they have the "Custom Layout" page template
-	// saved, show the Builder to start.
-	if ( $template.val() == 'template_builder.php' ) {
-		$wrap.addClass('template-active');
-		builder_blvd.show( $wrap );
-	}
-
-	// Setup nav for showing builder
-	$wrap.find('#tb-content-layout').on('click', function(){
-		builder_blvd.show( $wrap, $(this) );
-		return false;
-	});
-
-	// If they click the "Text" or "Visual" tab and it's
-	// already active, put the wrap class back.
-	$wrap.find('#content-html, #content-tmce').on('click', function(){
-		builder_blvd.hide( $wrap, $(this) );
-		//return false;
 	});
 
 	// Make sure any controls outside of the custom layout
