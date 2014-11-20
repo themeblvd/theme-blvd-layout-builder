@@ -6696,9 +6696,23 @@ class Theme_Blvd_Builder_API {
 	 *
 	 * @since 1.1.1
 	 *
-	 * @param string All arguments to create element
+	 * @param array $args All arguments to create element or @deprecated string ID of new element
+	 * @param @deprecated string $element_name Element name
+	 * @param @deprecated string $uery_type Type of query
+	 * @param @deprecated array $options Options for element
+	 * @param @deprecated string $callback Callback function for output of element
 	 */
-	public function add_element( $args ) {
+	public function add_element( $args, $element_name = '', $query_type = null, $options = array(), $callback = '' ) {
+
+		if ( is_string($args) ) { // @deprecated
+			$args = array(
+				'id'			=> $args,
+				'name'			=> $element_name,
+				'query_type'	=> $query_type,
+				'options'		=> $options,
+				'callback'		=> $callback
+			);
+		}
 
 		$defaults = array(
 			'id'		=> '',
@@ -6722,7 +6736,7 @@ class Theme_Blvd_Builder_API {
 			);
 			$args['support'] = wp_parse_args( $args['support'], $support_defaults );
 
-			$this->client_elements[$element_id] = array(
+			$this->client_elements[$args['id']] = array(
 				'info' => array(
 					'name' 		=> $args['name'],
 					'id'		=> $args['id'],
