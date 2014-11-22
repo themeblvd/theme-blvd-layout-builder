@@ -33,6 +33,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.2 =
 
+* Fix for using Columns in template footer sync feature for framework 2.5+ themes.
+
 = 2.0.1 =
 
 * Removed the "Builder" tab from Edit Page screen for better compatibility with WP's Visual/Text editors; builder now shows above editor.

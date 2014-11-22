@@ -38,9 +38,9 @@ function themeblvd_builder_layout( $context ) {
 	// Where to pull custom layout data from. Will either be
 	// current page or synced template.
 	if ( $context == 'footer' ) {
-		$post_id = themeblvd_config( 'bottom_builder_post_id' );
+		$post_id = themeblvd_set_att('footer_sync', themeblvd_config('bottom_builder_post_id') );
 	} else {
-		$post_id = themeblvd_config( 'builder_post_id' );
+		$post_id = themeblvd_config('builder_post_id');
 	}
 
 	// Get section data
