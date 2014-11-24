@@ -39,8 +39,10 @@ function themeblvd_builder_layout( $context ) {
 	// current page or synced template.
 	if ( $context == 'footer' ) {
 		$post_id = themeblvd_set_att('footer_sync', themeblvd_config('bottom_builder_post_id') );
+		$layout_name = themeblvd_config('bottom_builder');
 	} else {
 		$post_id = themeblvd_config('builder_post_id');
+		$layout_name = themeblvd_config('builder');
 	}
 
 	// Get section data
@@ -58,6 +60,8 @@ function themeblvd_builder_layout( $context ) {
 
 	// Loop through sections of elements
 	if ( $sections ) {
+
+		$counter = 1;
 
 		// Check for pagination handling
 		$sections = themeblvd_builder_paginated_layout( $post_id, $sections );
@@ -78,7 +82,7 @@ function themeblvd_builder_layout( $context ) {
 			// Open section
 			do_action( 'themeblvd_section_before', $section_id, $section_data[$section_id] );
 
-			printf( '<section class="%s" data-parallax="%s">', $class, themeblvd_get_parallax_intensity($display) );
+			printf( '<section id="%s-section-%s" class="%s" data-parallax="%s">', $layout_name, $counter, $class, themeblvd_get_parallax_intensity($display) );
 
 			if ( $display ) {
 
