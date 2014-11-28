@@ -5428,7 +5428,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide'
 			    ),
 				'button' => array(
-				'id' 		=> 'button',
+					'id' 		=> 'button',
 					'name'		=> __( 'Button', 'themeblvd_builder' ),
 					'desc'		=> __( 'Show call-to-action button next to slogan?', 'themeblvd_builder' ),
 					'type'		=> 'checkbox',

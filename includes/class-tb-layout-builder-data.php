@@ -184,7 +184,8 @@ class Theme_Blvd_Layout_Builder_Data {
 		 * (3) Post Grid
 		 * (4) Post List
 		 * (5) Post Slider
-		 * (6) Tabs
+		 * (6) Promo Box
+		 * (7) Tabs
 		 */
 		$this->update_options();
 
@@ -465,7 +466,8 @@ class Theme_Blvd_Layout_Builder_Data {
 	 * (3) Post Grid
 	 * (4) Post List
 	 * (5) Post Slider
-	 * (6) Tabs
+	 * (6) Promo Box
+	 * (7) Tabs
 	 *
 	 * @since 2.0.0
 	 */
@@ -714,6 +716,43 @@ class Theme_Blvd_Layout_Builder_Data {
 							if ( ! $options['button_text'] ) {
 								$option['button_text'] = 'View Post';
 							}
+
+							break;
+
+						/**
+						 * Promo Box
+						 */
+						case 'slogan' :
+
+							$old = $options;
+
+							$options = array(
+								'headline'				=> $old['slogan'],
+								'desc'					=> '',
+								'wpautop'				=> '1',
+								'style'					=> 'none',
+								'bg_color'				=> '#eeeeee',
+								'bg_opacity'			=> '1',
+								'text_color'			=> '#444444',
+								'button'				=> $old['button'],
+								'button_color'			=> $old['button_color'],
+								'button_custom'			=> array(
+									'bg' 				=> '#ffffff',
+									'bg_hover'			=> '#ebebeb',
+									'border' 			=> '#cccccc',
+									'text'				=> '#333333',
+									'text_hover'		=> '#333333',
+									'include_bg'		=> '1',
+									'include_border'	=> '1'
+								),
+								'button_text'			=> $old['button_text'],
+								'button_url'			=> $old['button_url'],
+								'button_size'			=> $old['button_size'],
+								'button_placement'		=> 'right',
+								'button_target'			=> $old['button_target'],
+								'button_icon_before'	=> '',
+								'button_icon_after'		=> ''
+							);
 
 							break;
 
