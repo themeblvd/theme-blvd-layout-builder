@@ -1823,7 +1823,7 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 					'units'	=> 'px',
 					'min'	=> '10',
-					'max'	=> '50',
+					'max'	=> '150',
 					'step'	=> '1'
 				)
 		    ),
@@ -1843,7 +1843,7 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 					'units'	=> 'px',
 					'min'	=> '10',
-					'max'	=> '50',
+					'max'	=> '150',
 					'step'	=> '1'
 				)
 		    ),
