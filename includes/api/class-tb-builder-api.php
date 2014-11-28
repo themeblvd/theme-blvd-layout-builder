@@ -284,7 +284,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['alert']['options'] = array(
 			'content' => array(
-		    	'id' 		=> 'content',
+				'id' 		=> 'content',
 				'name'		=> __( 'Content', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the content of the alert.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'textarea',
@@ -330,7 +330,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['author_box']['options'] = array(
 			'user' => array(
-		    	'id' 		=> 'user',
+				'id' 		=> 'user',
 				'name'		=> __( 'Author', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select a WordPress user to pull the author box for. The individual author box settings can be set from the user\'s profile settings.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -366,7 +366,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -379,7 +379,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -388,14 +388,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -403,7 +403,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -417,7 +417,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -429,7 +429,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post list.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -437,7 +437,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -452,7 +452,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to display the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -465,7 +465,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'tb-query-check trigger'
 			),
 			'paginated_hide' => array(
-		    	'id' 		=> 'paginated_hide',
+				'id' 		=> 'paginated_hide',
 				'name'		=> null,
 				'desc'		=> __( 'Hide other elements of the layout after page 1 of the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -567,48 +567,48 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['chart_bar']['options'] = array(
 			'data' => array(
-		    	'id' 		=> 'data',
+				'id' 		=> 'data',
 				'name'		=> __( 'Line Chart Data Sets', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Each data set will represent a set of bars on your chart. Within each data set, you\'ll be inputting a list of values; make sure that you use the same amount of values for each data set.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'datasets'
 			),
 			'labels' => array(
-		    	'id' 		=> 'labels',
+				'id' 		=> 'labels',
 				'name'		=> __( 'Chart Labels (x-axis)', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma separated list of labels for the x-axis of the chart. The number of labels should match number of values you ented in each data set.<br>Ex: Jan, Feb, March, April, May, June', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> ''
 			),
 			'width' => array(
-		    	'id' 		=> 'width',
+				'id' 		=> 'width',
 				'name'		=> __( 'Chart Width', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a width in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '400'
 			),
 			'height' => array(
-		    	'id' 		=> 'height',
+				'id' 		=> 'height',
 				'name'		=> __( 'Chart Height', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a height in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '200'
 			),
 			'zero' => array(
-		    	'id' 		=> 'zero',
+				'id' 		=> 'zero',
 				'name'		=> null,
 				'desc'		=> __( 'Always start scale (y-axis) at 0.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'tooltips' => array(
-		    	'id' 		=> 'tooltips',
+				'id' 		=> 'tooltips',
 				'name'		=> null,
 				'desc'		=> __( 'Display labels when data points are hovered over.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '0'
 			),
 			'legend' => array(
-		    	'id' 		=> 'legend',
+				'id' 		=> 'legend',
 				'name'		=> null,
 				'desc'		=> __( 'Display chart legend.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -640,69 +640,69 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['chart_line']['options'] = array(
 			'data' => array(
-		    	'id' 		=> 'data',
+				'id' 		=> 'data',
 				'name'		=> __( 'Line Chart Data Sets', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Each data set will represent a line on your chart. Within each data set, you\'ll be inputting a list of values; make sure that you use the same amount of values for each data set.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'datasets'
 			),
 			'labels' => array(
-		    	'id' 		=> 'labels',
+				'id' 		=> 'labels',
 				'name'		=> __( 'Chart Labels (x-axis)', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma separated list of labels for the x-axis of the chart. The number of labels should match number of values you ented in each data set.<br>Ex: Jan, Feb, March, April, May, June', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> ''
 			),
 			'width' => array(
-		    	'id' 		=> 'width',
+				'id' 		=> 'width',
 				'name'		=> __( 'Chart Width', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a width in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '400'
 			),
 			'height' => array(
-		    	'id' 		=> 'height',
+				'id' 		=> 'height',
 				'name'		=> __( 'Chart Height', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a height in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '200'
 			),
 			'curve' => array(
-		    	'id' 		=> 'curve',
+				'id' 		=> 'curve',
 				'name'		=> null,
 				'desc'		=> __( 'Curve line in between points.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'fill' => array(
-		    	'id' 		=> 'fill',
+				'id' 		=> 'fill',
 				'name'		=> null,
 				'desc'		=> __( 'Fill each dataset with color.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'dot' => array(
-		    	'id' 		=> 'dot',
+				'id' 		=> 'dot',
 				'name'		=> null,
 				'desc'		=> __( 'Show dot for each data point.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'zero' => array(
-		    	'id' 		=> 'zero',
+				'id' 		=> 'zero',
 				'name'		=> null,
 				'desc'		=> __( 'Always start scale (y-axis) at 0.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'tooltips' => array(
-		    	'id' 		=> 'tooltips',
+				'id' 		=> 'tooltips',
 				'name'		=> null,
 				'desc'		=> __( 'Display labels when data points are hovered over.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '0'
 			),
 			'legend' => array(
-		    	'id' 		=> 'legend',
+				'id' 		=> 'legend',
 				'name'		=> null,
 				'desc'		=> __( 'Display chart legend.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -733,41 +733,41 @@ class Theme_Blvd_Builder_API {
 
 		$this->core_elements['chart_pie']['options'] = array(
 			'data' => array(
-		    	'id' 		=> 'data',
+				'id' 		=> 'data',
 				'name'		=> __( 'Pie Chart Sectors', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
 				'type'		=> 'sectors'
 			),
 			'width' => array(
-		    	'id' 		=> 'width',
+				'id' 		=> 'width',
 				'name'		=> __( 'Chart Width', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a width in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '200'
 			),
 			'height' => array(
-		    	'id' 		=> 'height',
+				'id' 		=> 'height',
 				'name'		=> __( 'Chart Height', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a height in pixels for the chart.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'std'		=> '200'
 			),
 			'doughnut' => array(
-		    	'id' 		=> 'doughnut',
+				'id' 		=> 'doughnut',
 				'name'		=> null,
 				'desc'		=> __( 'Display chart as doughnut.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '0'
 			),
 			'tooltips' => array(
-		    	'id' 		=> 'tooltips',
+				'id' 		=> 'tooltips',
 				'name'		=> null,
 				'desc'		=> __( 'Display labels when sectors are hovered over.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
 			'legend' => array(
-		    	'id' 		=> 'legend',
+				'id' 		=> 'legend',
 				'name'		=> null,
 				'desc'		=> __( 'Display chart legend.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -815,7 +815,7 @@ class Theme_Blvd_Builder_API {
 				'options'	=> 'element'
 			),
 			'stack' => array(
-		    	'id' 		=> 'stack',
+				'id' 		=> 'stack',
 				'name'		=> __( 'Column Stack', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'When viewing your site responsively, at what point should your columns stack on top of each other? Be careful when selecting "Never stack"; this can break your mobile layout, depending on the content in your columns.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -834,7 +834,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'cshow-hide column-height'
 		    ),
 		    'height' => array(
-		    	'id' 		=> 'height',
+				'id' 		=> 'height',
 				'name'		=> __( 'Column Height', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Force all columns to be equal in height, based on content. &mdash; <em>Note: This can be helpful when applying backgrounds to individual columns</em>.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -842,7 +842,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'trigger'
 			),
 			'align' => array(
-		    	'id' 		=> 'align',
+				'id' 		=> 'align',
 				'name'		=> __( 'Content Alignment', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to align the content within the equal height columns.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -950,7 +950,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['contact']['options'] = array(
 			'buttons' => array(
-		    	'id' 		=> 'buttons',
+				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Configure the buttons to be used for the contact bar.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'social_media'
@@ -1007,7 +1007,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['content']['options'] = array(
 			'content' => array(
-		    	'id' 		=> 'content',
+				'id' 		=> 'content',
 				'name'		=> __( 'Content', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
 				'type'		=> 'textarea',
@@ -1016,7 +1016,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'full-width'
 			),
 			'format' => array(
-		    	'id' 		=> 'format',
+				'id' 		=> 'format',
 				'name'		=> null,
 				'desc'		=> __( 'Apply WordPress automatic formatting.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -1092,7 +1092,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_start'
 			    ),
 			    'source' => array(
-			    	'id' 		=> 'source',
+					'id' 		=> 'source',
 					'name'		=> __( 'Content Source', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Choose where you\'d like to have content feed from. The content can either be from the current page you\'re applying this layout to or an external page.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -1105,21 +1105,21 @@ class Theme_Blvd_Builder_API {
 					'class'		=> 'custom-content-types'
 				),
 				'page_id' => array(
-			    	'id' 		=> 'page_id',
+					'id' 		=> 'page_id',
 					'name'		=> __( 'External Page', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the slug of a page you\'d like to pull from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class'		=> 'hide page-content'
 				),
 				'raw_content' => array(
-			    	'id' 		=> 'raw_content',
+					'id' 		=> 'raw_content',
 					'name'		=> __( 'Raw Content', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'textarea',
 					'class'		=> 'hide raw-content'
 				),
 				'raw_format' => array(
-			    	'id' 		=> 'raw_format',
+					'id' 		=> 'raw_format',
 					'name'		=> __( 'Raw Content Formatting', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Apply WordPress automatic formatting.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'checkbox',
@@ -1127,7 +1127,7 @@ class Theme_Blvd_Builder_API {
 					'class'		=> 'hide raw-content'
 				),
 				'widget_area' => array(
-			    	'id' 		=> 'widget_area',
+					'id' 		=> 'widget_area',
 					'name'		=> __( 'Widget Area', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the ID of a widget area.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -1202,7 +1202,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text'
 			),
 			'wpautop' => array(
-		    	'id' 		=> 'wpautop',
+				'id' 		=> 'wpautop',
 				'desc'		=> __( 'Apply WordPress automatic formatting to custom field output.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'std'		=> '0'
@@ -1232,8 +1232,12 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['divider']['options'] = array(
+			'sub_group_start' => array(
+				'type' 		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+			),
 			'type' => array(
-		    	'id' 		=> 'type',
+				'id' 		=> 'type',
 				'name'		=> __( 'Divider Type', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select which style of divider you\'d like to use here.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -1241,9 +1245,43 @@ class Theme_Blvd_Builder_API {
 					'shadow' 		=> __( 'Shadow Line', 'theme-blvd-layout-builder' ),
 					'solid' 		=> __( 'Solid Line', 'theme-blvd-layout-builder' ),
 			        'dashed' 		=> __( 'Dashed Line', 'theme-blvd-layout-builder' ),
+			        'thick-solid' 	=> __( 'Thick Solid Line', 'theme-blvd-layout-builder' ),
+			        'thick-dashed' 	=> __( 'Thick Dashed Line', 'theme-blvd-layout-builder' ),
 					'double-solid' 	=> __( 'Double Solid Lines', 'theme-blvd-layout-builder' ),
 					'double-dashed' => __( 'Double Dashed Lines', 'theme-blvd-layout-builder' )
-				)
+				),
+				'class'		=> 'trigger'
+			),
+			'color' => array(
+				'id' 		=> 'color',
+				'name'		=> __( 'Divider Color', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select a custom color for your divider.', 'theme-blvd-layout-builder' ),
+				'std'		=> '#cccccc',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-solid receiver-dashed receiver-thick-solid receiver-thick-dashed receiver-double-solid receiver-double-dashed'
+			),
+			'opacity' => array(
+				'id' 		=> 'opacity',
+				'name'		=> __( 'Divider Opacity', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select an opacity for your divider. Selecting "1.0" means that the divider is not transparent, at all.', 'theme-blvd-layout-builder' ),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver receiver-solid receiver-dashed receiver-thick-solid receiver-thick-dashed receiver-double-solid receiver-double-dashed'
+			),
+			'sub_group_end' => array(
+				'type' 		=> 'subgroup_end'
 			),
 			'width' => array(
 				'id' 		=> 'width',
@@ -1254,8 +1292,15 @@ class Theme_Blvd_Builder_API {
 		);
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			unset( $this->core_elements['divider']['options']['sub_group_start'] );
+			unset( $this->core_elements['divider']['options']['type']['options']['thick-solid'] );
+			unset( $this->core_elements['divider']['options']['type']['options']['thick-dashed'] );
 			unset( $this->core_elements['divider']['options']['type']['options']['double-solid'] );
 			unset( $this->core_elements['divider']['options']['type']['options']['double-dashed'] );
+			unset( $this->core_elements['divider']['options']['type']['class'] );
+			unset( $this->core_elements['divider']['options']['color'] );
+			unset( $this->core_elements['divider']['options']['opacity'] );
+			unset( $this->core_elements['divider']['options']['sub_group_end'] );
 			unset( $this->core_elements['divider']['options']['width'] );
 		}
 
@@ -1283,7 +1328,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['external']['options'] = array(
 			'post_id' => array(
-		    	'id' 		=> 'post_id',
+				'id' 		=> 'post_id',
 				'name'		=> __( 'Post or Page ID', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Insert a post or page ID to pull the content from. Remember that you are only pulling in the post\'s content and no other attributes.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -1325,7 +1370,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'show-hide-toggle'
 			),
 			'center_type' => array(
-		    	'id' 		=> 'center_type',
+				'id' 		=> 'center_type',
 				'name'		=> __( 'Map Center', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'When the map is initially displayed, where do you want the center point to be?', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -1336,7 +1381,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'trigger'
 			),
 			'center' => array(
-		    	'id' 		=> 'center',
+				'id' 		=> 'center',
 				'name'		=> __( 'Map Center Point', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter custom coordinates for the center point of the map. ', 'theme-blvd-layout-builder' ),
 				'type'		=> 'geo',
@@ -1346,14 +1391,14 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_end'
 			),
 			'height' => array(
-		    	'id' 		=> 'height',
+				'id' 		=> 'height',
 				'name'		=> __( 'Map Height', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the height of the map in pixels.', 'theme-blvd-layout-builder' ),
 				'std'		=> '400',
 				'type'		=> 'text'
 			),
 			'zoom' => array(
-		    	'id' 		=> 'zoom',
+				'id' 		=> 'zoom',
 				'name'		=> __( 'Map Zoom', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the zoom of the initially loaded map from 1 (very far) to 20 (very close).<br><br><em>Note: Depending on the distance of your location markers from the center point, you may need to adjust the zoom in order for all markers to be visable.</em>', 'theme-blvd-layout-builder' ),
 				'std'		=> '15',
@@ -1365,7 +1410,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'lightness' => array(
-		    	'id' 		=> 'lightness',
+				'id' 		=> 'lightness',
 				'name'		=> __( 'Map Color Brightness', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the map\'s color brightness.', 'theme-blvd-layout-builder' ),
 				'std'		=> '0',
@@ -1377,7 +1422,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'saturation' => array(
-		    	'id' 		=> 'saturation',
+				'id' 		=> 'saturation',
 				'name'		=> __( 'Map Color Saturation', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the map\'s color saturation.', 'theme-blvd-layout-builder' ),
 				'std'		=> '0',
@@ -1393,7 +1438,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'show-hide'
 			),
 			'has_hue' => array(
-		    	'id' 		=> 'has_hue',
+				'id' 		=> 'has_hue',
 				'name'		=> null,
 				'desc'		=> __( 'Apply overlay color to map.', 'theme-blvd-layout-builder' ),
 				'std'		=> '',
@@ -1401,7 +1446,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'trigger'
 			),
 			'hue' => array(
-		    	'id' 		=> 'hue',
+				'id' 		=> 'hue',
 				'name'		=> __( 'Map Overlay Color', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select a custom color for your map. The map will be tinted with this color.', 'theme-blvd-layout-builder' ),
 				'std'		=> '#ff0000',
@@ -1464,13 +1509,13 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'textarea',
 			),
 			'tagline' => array(
-		    	'id' 		=> 'tagline',
+				'id' 		=> 'tagline',
 				'name'		=> __( 'Tagline', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter any text you\'d like to display below the headline as a tagline. Feel free to leave this blank. It is better if you use plain text here and not try and use HTML tags.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'textarea'
 			),
 		    'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Headline Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the type of header tag you\'d like to wrap this headline.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -1551,14 +1596,14 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['icon_box']['options'] = array(
 			'icon' => array(
-		    	'id' 		=> 'icon',
+				'id' 		=> 'icon',
 				'name'		=> __( 'Icon', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'This can be any FontAwesome vector icon ID.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'icon'		=> 'vector'
 			),
 			'size' => array(
-		    	'id' 		=> 'size',
+				'id' 		=> 'size',
 				'name'		=> __( 'Icon Size', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how large the icon should be displayed.', 'theme-blvd-layout-builder' ),
 				'std'		=> '65px',
@@ -1571,7 +1616,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'location' => array(
-		    	'id' 		=> 'location',
+				'id' 		=> 'location',
 				'name'		=> __( 'Icon Placement', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how the icon should be displayed within the block.', 'theme-blvd-layout-builder' ),
 				'std'		=> 'above',
@@ -1582,27 +1627,27 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'color' => array(
-		    	'id' 		=> 'color',
+				'id' 		=> 'color',
 				'name'		=> __( 'Icon Color', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the color of the icon.', 'theme-blvd-layout-builder' ),
 				'std'		=> '#666666',
 				'type'		=> 'color'
 			),
 			'badge' => array(
-		    	'id' 		=> 'badge',
+				'id' 		=> 'badge',
 				'name'		=> null,
 				'desc'		=> __( 'Display icon as a badge (in a circle).', 'theme-blvd-layout-builder' ),
 				'std'		=> '0',
 				'type'		=> 'checkbox'
 			),
 			'title' => array(
-		    	'id' 		=> 'title',
+				'id' 		=> 'title',
 				'name'		=> __( 'Title (optional)', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Add the title above your content.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text'
 			),
 			'text' => array(
-		    	'id' 		=> 'text',
+				'id' 		=> 'text',
 				'name'		=> __( 'Content (optional)', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Add the content for this icon box.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'textarea',
@@ -1761,7 +1806,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text'
 			),
 			'width' => array(
-		    	'id' 		=> 'width',
+				'id' 		=> 'width',
 		    	'name'		=> __( 'Display Width (optional)', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a width in pixels if you\'d like to force a width for the image. This can be useful for displaying retina-optimized images by entering a display width that is half the actual width of the image.<br>Ex: 200', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text'
@@ -1808,7 +1853,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'full-width'
 		    ),
 		    'wpautop' => array(
-		    	'id' 		=> 'wpautop',
+				'id' 		=> 'wpautop',
 				'name'		=> __( 'Content Formatting', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -1887,7 +1932,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'trigger'
 			),
 		    'buttons' => array(
-		    	'id' 		=> 'buttons',
+				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
 				'type'		=> 'buttons'
@@ -1927,7 +1972,7 @@ class Theme_Blvd_Builder_API {
 					'type'		=> 'textarea'
 			    ),
 			    'wpautop' => array(
-			    	'id' 		=> 'wpautop',
+				'id' 		=> 'wpautop',
 					'name'		=> __( 'Content Formatting', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'checkbox',
@@ -1950,7 +1995,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide'
 			    ),
 				'button' => array(
-			    	'id' 		=> 'button',
+				'id' 		=> 'button',
 					'name'		=> __( 'Button', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Show button at the bottom of unit?', 'theme-blvd-layout-builder' ),
 					'type'		=> 'checkbox',
@@ -2173,7 +2218,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2187,7 +2232,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -2196,14 +2241,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2211,7 +2256,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2225,7 +2270,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2237,7 +2282,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post list.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2245,14 +2290,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'gallery' => array(
-		    	'id' 		=> 'gallery',
+				'id' 		=> 'gallery',
 				'name'		=> __( 'Gallery', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter an instance of the [gallery] shortcode.<br>Ex: [gallery ids="1,2,3"]', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-gallery'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2323,7 +2368,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2336,7 +2381,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -2345,14 +2390,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2360,7 +2405,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2374,7 +2419,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2386,7 +2431,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post list.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2394,7 +2439,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2470,7 +2515,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['panel']['options'] = array(
 			'content' => array(
-		    	'id' 		=> 'content',
+				'id' 		=> 'content',
 				'name'		=> __( 'Content', 'theme-blvd-layout-builder' ),
 				'desc' 		=> __( 'Enter the content to show in the panel\'s main section.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'textarea',
@@ -2556,7 +2601,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Logo Display', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to display the logos.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2582,7 +2627,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-slider'
 			),
 			'timeout' => array(
-		    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 				'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2661,7 +2706,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-			    	'id' 		=> 'source',
+				'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2674,7 +2719,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'categories' => array(
-			    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 					'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 					'std'		=> array( 'all' => 1 ),
@@ -2683,14 +2728,14 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-			    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'orderby' => array(
-			    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2704,7 +2749,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-			    	'id' 		=> 'order',
+				'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2716,7 +2761,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-			    	'id' 		=> 'query',
+				'id' 		=> 'query',
 					'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: The number of posts displayed is determined from the rows and columns.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -2727,7 +2772,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 				'columns' => array(
-			    	'id' 		=> 'columns',
+				'id' 		=> 'columns',
 					'name'		=> __( 'Columns', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2740,14 +2785,14 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'rows' => array(
-			    	'id' 		=> 'rows',
+				'id' 		=> 'rows',
 					'name'		=> __( 'Rows per page', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the number of rows <strong>per page</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each page. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'std'		=> '3'
 				),
 				'crop' => array(
-			    	'id' 		=> 'crop',
+				'id' 		=> 'crop',
 					'name'		=> __( 'Custom Image Crop Size (optional)', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -2791,7 +2836,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text'
 			),
 		    'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2805,7 +2850,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -2814,14 +2859,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2835,7 +2880,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2847,7 +2892,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post grid.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2855,14 +2900,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'pages' => array(
-		    	'id' 		=> 'pages',
+				'id' 		=> 'pages',
 				'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a grid based on the rows and columns, except when using masonry.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2877,7 +2922,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to display the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2895,7 +2940,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger tb-query-check'
 			),
 			'columns' => array(
-		    	'id' 		=> 'columns',
+				'id' 		=> 'columns',
 				'name'		=> __( 'Columns', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how many posts per row (or slide) you\'d like displayed.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2908,7 +2953,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'rows' => array(
-		    	'id' 		=> 'rows',
+				'id' 		=> 'rows',
 				'name'		=> __( 'Maximum Number of Rows', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the maximum number of rows you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed. You can leave this option blank if you\'d like to show all posts from your configured query.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2916,14 +2961,14 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-grid receiver-paginated'
 			),
 			'paginated_hide' => array(
-		    	'id' 		=> 'paginated_hide',
+				'id' 		=> 'paginated_hide',
 				'name'		=> null,
 				'desc'		=> __( 'Hide other elements of the layout after first page of posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-paginated'
 			),
 			'filter' => array(
-		    	'id' 		=> 'filter',
+				'id' 		=> 'filter',
 				'name'		=> __( 'Filtering: Filter by', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -2935,7 +2980,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
 			),
 			'filter_max' => array(
-		    	'id' 		=> 'filter_max',
+				'id' 		=> 'filter_max',
 				'name'		=> __( 'Filtering: Max Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'By using <code>-1</code>, it means all posts for the queried criteria will be pulled, and this works great for filtering. However, performance issues can arrise if you have a large volume of posts you\'re pulling from. If this is an issue, you can set a maximum here. Ex: <code>50</code>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2943,7 +2988,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Masonry: Number of posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the maximum number of posts, or posts per page, if using pagination.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2951,7 +2996,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-masonry receiver-masonry_paginated'
 			),
 			'slides' => array(
-		    	'id' 		=> 'slides',
+				'id' 		=> 'slides',
 				'name'		=> __( 'Grid Slider: Maximum Number of Slides', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the maximum number of slides you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed in the slider. You can leave this option blank if you\'d like to show all posts from your configured query.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -2959,7 +3004,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-slider'
 			),
 			'timeout' => array(
-		    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 				'name'		=> __( 'Grid Slider: Speed', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -3043,7 +3088,7 @@ class Theme_Blvd_Builder_API {
 				'type' 		=> 'subgroup_end'
 			),
 			'crop' => array(
-		    	'id' 		=> 'crop',
+				'id' 		=> 'crop',
 				'name'		=> __( 'Featured Image Crop Size', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select a custom crop size to be used for the images in the grid. If you select a crop size that doesn\'t have a consistent height, then you may want to use one of the "Masonry" display options above.<br><br><em>Note: Images are scaled proportionally to fit within their current containers.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3161,7 +3206,7 @@ class Theme_Blvd_Builder_API {
 			// Options
 			$this->core_elements['post_grid_slider']['options'] = array(
 				'fx' => array(
-			    	'id' 		=> 'fx',
+				'id' 		=> 'fx',
 					'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3172,7 +3217,7 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'timeout' => array(
-			    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 					'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3216,7 +3261,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-			    	'id' 		=> 'source',
+				'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3229,7 +3274,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'categories' => array(
-			    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 					'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 					'std'		=> array( 'all' => 1 ),
@@ -3238,14 +3283,14 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-			    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'numberposts' => array(
-			    	'id' 		=> 'numberposts',
+				'id' 		=> 'numberposts',
 					'name'		=> __( 'Total Number of Posts', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3253,7 +3298,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
-			    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3267,7 +3312,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-			    	'id' 		=> 'order',
+				'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3279,7 +3324,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'offset' => array(
-			    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 					'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3287,7 +3332,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-			    	'id' 		=> 'query',
+				'id' 		=> 'query',
 					'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3298,7 +3343,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 				'columns' => array(
-			    	'id' 		=> 'columns',
+				'id' 		=> 'columns',
 					'name'		=> __( 'Columns', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3311,14 +3356,14 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'rows' => array(
-			    	'id' 		=> 'rows',
+				'id' 		=> 'rows',
 					'name'		=> __( 'Rows per slide', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the number of rows <strong>per slide</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each slide.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'std'		=> '3'
 				),
 				'crop' => array(
-			    	'id' 		=> 'crop',
+				'id' 		=> 'crop',
 					'name'		=> __( 'Custom Image Crop Size (optional)', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3359,7 +3404,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 			    'source' => array(
-			    	'id' 		=> 'source',
+				'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3372,7 +3417,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'categories' => array(
-			    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 					'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 					'std'		=> array( 'all' => 1 ),
@@ -3381,14 +3426,14 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-			    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'posts_per_page' => array(
-			    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 					'name'		=> __( 'Posts per page', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the number of posts <strong>per page</strong> you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3396,7 +3441,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
-			    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3410,7 +3455,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-			    	'id' 		=> 'order',
+				'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3422,7 +3467,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-			    	'id' 		=> 'query',
+				'id' 		=> 'query',
 					'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&posts_per_page=10', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3488,7 +3533,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3501,7 +3546,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -3510,14 +3555,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <code>-1</code> if you don\'t want there to be a limit, which can be helpful if you\'re using the "List, with filtering" display option below.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -3525,7 +3570,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3539,7 +3584,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3551,7 +3596,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post list.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -3559,7 +3604,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -3574,7 +3619,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to display the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3588,14 +3633,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'tb-query-check trigger'
 			),
 			'paginated_hide' => array(
-		    	'id' 		=> 'paginated_hide',
+				'id' 		=> 'paginated_hide',
 				'name'		=> null,
 				'desc'		=> __( 'Hide other elements of the layout after page 1 of the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-paginated'
 			),
 			'filter' => array(
-		    	'id' 		=> 'filter',
+				'id' 		=> 'filter',
 				'name'		=> __( 'Filtering', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -3674,7 +3719,7 @@ class Theme_Blvd_Builder_API {
 				if ( $key == 'posts_per_page' ) {
 
 					$legacy['numberposts'] = array(
-				    	'id' 		=> 'numberposts',
+				'id' 		=> 'numberposts',
 						'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 						'desc'		=> __( 'Enter in the <strong>total number</strong> of posts you\'d like to show. You can enter <em>-1</em> if you\'d like to show all posts from the categories you\'ve selected.', 'theme-blvd-layout-builder' ),
 						'type'		=> 'text',
@@ -3804,7 +3849,7 @@ class Theme_Blvd_Builder_API {
 			// Options
 			$this->core_elements['post_list_slider']['options'] = array(
 				'fx' => array(
-			    	'id' 		=> 'fx',
+				'id' 		=> 'fx',
 					'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3815,7 +3860,7 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'timeout' => array(
-			    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 					'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3859,7 +3904,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-			    	'id' 		=> 'source',
+				'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3872,7 +3917,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'categories' => array(
-			    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 					'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 					'std'		=> array( 'all' => 1 ),
@@ -3881,14 +3926,14 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-			    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'numberposts' => array(
-			    	'id' 		=> 'numberposts',
+				'id' 		=> 'numberposts',
 					'name'		=> __( 'Total Number of Posts', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the maximum number of posts you\'d like to show from the categories selected. You can use <em>-1</em> to show all posts from the selected categories.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3896,7 +3941,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
-			    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3910,7 +3955,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-			    	'id' 		=> 'order',
+				'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -3922,7 +3967,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'offset' => array(
-			    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 					'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>. Utilizing this option could be useful, for example, if you wanted to have the first post in an element above this one, and then you could offset this set by <em>1</em> so the posts start after that post in the previous element. If that makes no sense, just ignore this option and leave it at <em>0</em>!', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3930,7 +3975,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-			    	'id' 		=> 'query',
+				'id' 		=> 'query',
 					'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -3966,7 +4011,7 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'posts_per_slide' => array(
-			    	'id' 		=> 'posts_per_slide',
+				'id' 		=> 'posts_per_slide',
 					'name'		=> __( 'Posts per slide', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the number of posts <strong>per slide</strong> you\'d like to show.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -4010,7 +4055,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text'
 			),
 		    'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4024,7 +4069,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -4033,14 +4078,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4054,7 +4099,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4066,7 +4111,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.<br><br><em>Note: Offset will not take effect if you\'re using pagination for this post showcase.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4074,14 +4119,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'pages' => array(
-		    	'id' 		=> 'pages',
+				'id' 		=> 'pages',
 				'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ<br><br><em>Note: You cannot set the number of posts because this is generated in a showcase based on the rows and columns, except when using masonry.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4096,7 +4141,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to display the posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4113,7 +4158,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger tb-query-check'
 			),
 			'columns' => array(
-		    	'id' 		=> 'columns',
+				'id' 		=> 'columns',
 				'name'		=> __( 'Columns', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how many posts per row (or slide) you\'d like displayed.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4126,7 +4171,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'rows' => array(
-		    	'id' 		=> 'rows',
+				'id' 		=> 'rows',
 				'name'		=> __( 'Maximum Number of Rows', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the maximum number of rows you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed. You can leave this option blank if you\'d like to show all posts from your configured query.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4134,14 +4179,14 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-showcase receiver-paginated'
 			),
 			'paginated_hide' => array(
-		    	'id' 		=> 'paginated_hide',
+				'id' 		=> 'paginated_hide',
 				'name'		=> null,
 				'desc'		=> __( 'Hide other elements of the layout after first page of posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
 				'class'		=> 'hide receiver receiver-paginated'
 			),
 			'filter' => array(
-		    	'id' 		=> 'filter',
+				'id' 		=> 'filter',
 				'name'		=> __( 'Filtering: Filter by', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how the the posts can be filtered by the website visitor.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4153,7 +4198,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
 			),
 			'filter_max' => array(
-		    	'id' 		=> 'filter_max',
+				'id' 		=> 'filter_max',
 				'name'		=> __( 'Filtering: Max Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'By using <code>-1</code>, it means all posts for the queried criteria will be pulled, and this works great for filtering. However, performance issues can arrise if you have a large volume of posts you\'re pulling from. If this is an issue, you can set a maximum here. Ex: <code>50</code>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4161,7 +4206,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver receiver-filter receiver-masonry_filter'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Masonry: Number of posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the maximum number of posts, or posts per page, if using pagination.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4196,7 +4241,7 @@ class Theme_Blvd_Builder_API {
 				)
 			),
 			'crop' => array(
-		    	'id' 		=> 'crop',
+				'id' 		=> 'crop',
 				'name'		=> __( 'Featured Image Crop Size', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select a custom crop size to be used for the images in the showcase. If you select a crop size that doesn\'t have a consistent height, then you may want to use one of the "Masonry" display options above.<br><br><em>Note: Images are scaled proportionally to fit within their current containers.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4245,7 +4290,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4258,7 +4303,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -4267,14 +4312,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the maximum number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4282,7 +4327,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4296,7 +4341,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4308,7 +4353,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4316,7 +4361,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4495,7 +4540,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'fx' => array(
-			    	'id' 		=> 'fx',
+				'id' 		=> 'fx',
 					'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -4522,7 +4567,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 				'timeout' => array(
-			    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 					'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -4627,7 +4672,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-			    	'id' 		=> 'source',
+				'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts to generate this slider.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -4640,21 +4685,21 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'category' => array(
-			    	'id' 		=> 'category',
+				'id' 		=> 'category',
 					'name'		=> __( 'Category', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a category slug to pull most recent posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-			    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a tag to pull most recent posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'numberposts' => array(
-			    	'id' 		=> 'numberposts',
+				'id' 		=> 'numberposts',
 					'name'		=> __( 'Total Number of Posts', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the maximum number of posts you\'d like to pull. You can use <em>-1</em> to show all posts from the selected criteria.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -4662,7 +4707,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
-			    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -4676,7 +4721,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-			    	'id' 		=> 'order',
+				'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -4688,7 +4733,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-			    	'id' 		=> 'query',
+				'id' 		=> 'query',
 					'name'		=> __( 'Custom Query', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -4698,7 +4743,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 			    'mobile_fallback' => array(
-			    	'id' 		=> 'mobile_fallback',
+				'id' 		=> 'mobile_fallback',
 					'name'		=> __( 'How to display on mobile devices?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like this slider to be displayed on mobile devices. Sometimes full, animated sliders can cause problems on mobile devices, and so you may find it\'s better to setup a fallback option.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'radio',
@@ -4758,7 +4803,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'source' => array(
-		    	'id' 		=> 'source',
+				'id' 		=> 'source',
 				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4771,7 +4816,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'trigger'
 			),
 			'categories' => array(
-		    	'id' 		=> 'categories',
+				'id' 		=> 'categories',
 				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 				'std'		=> array( 'all' => 1 ),
@@ -4780,14 +4825,14 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category select-categories'
 			),
 			'tag' => array(
-		    	'id' 		=> 'tag',
+				'id' 		=> 'tag',
 				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
 				'class' 	=> 'hide receiver receiver-tag'
 			),
 			'posts_per_page' => array(
-		    	'id' 		=> 'posts_per_page',
+				'id' 		=> 'posts_per_page',
 				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in the maximum number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4795,7 +4840,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'orderby' => array(
-		    	'id' 		=> 'orderby',
+				'id' 		=> 'orderby',
 				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4809,7 +4854,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'order' => array(
-		    	'id' 		=> 'order',
+				'id' 		=> 'order',
 				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -4821,7 +4866,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'offset' => array(
-		    	'id' 		=> 'offset',
+				'id' 		=> 'offset',
 				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -4829,7 +4874,7 @@ class Theme_Blvd_Builder_API {
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
 			),
 			'query' => array(
-		    	'id' 		=> 'query',
+				'id' 		=> 'query',
 				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -5075,7 +5120,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['pricing_table']['options'] = array(
 			'columns' => array(
-		    	'id' 		=> 'columns',
+				'id' 		=> 'columns',
 				'name'		=> null,
 				'desc'		=> null,
 				'type'		=> 'price_cols'
@@ -5243,7 +5288,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide'
 		    ),
 			'button' => array(
-		    	'id' 		=> 'button',
+				'id' 		=> 'button',
 				'name'		=> __( 'Button', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Show call-to-action button next to promo content?', 'theme-blvd-layout-builder' ),
 				'type'		=> 'checkbox',
@@ -5383,7 +5428,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide'
 			    ),
 				'button' => array(
-			    	'id' 		=> 'button',
+				'id' 		=> 'button',
 					'name'		=> __( 'Button', 'themeblvd_builder' ),
 					'desc'		=> __( 'Show call-to-action button next to slogan?', 'themeblvd_builder' ),
 					'type'		=> 'checkbox',
@@ -5528,7 +5573,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_start'
 			),
 			'images' => array(
-		    	'id' 		=> 'images',
+				'id' 		=> 'images',
 				'name'		=> null,
 				'desc'		=> null,
 				'type'		=> 'slider'
@@ -5665,7 +5710,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_start'
 			),
 			'images' => array(
-		    	'id' 		=> 'images',
+				'id' 		=> 'images',
 				'name'		=> null,
 				'desc'		=> null,
 				'type'		=> 'slider'
@@ -5857,7 +5902,7 @@ class Theme_Blvd_Builder_API {
 					'type' 		=> 'info'
 				),
 			    'slider_id' => array(
-			    	'id' 		=> 'slider_id',
+				'id' 		=> 'slider_id',
 					'name'		=> __( 'Choose Slider', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Choose from the sliders you\'ve created. You can edit these sliders at any time under the \'Sliders\' tab above.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -6178,7 +6223,7 @@ class Theme_Blvd_Builder_API {
 				'advanced'	=> true
 		    ),
 		    'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display Style', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'The "Standard" style will fit well with other content, while the "Showcase" style will work better as a stand-alone element, displaying the testimonial much larger.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -6225,7 +6270,7 @@ class Theme_Blvd_Builder_API {
 		    	'class'		=> 'show-hide-toggle'
 		    ),
 			'display' => array(
-		    	'id' 		=> 'display',
+				'id' 		=> 'display',
 				'name'		=> __( 'Display Style', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'The "Standard" style will fit well with other content, while the "Showcase" style will work better as a stand-alone element, displaying the testimonials much larger.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -6246,7 +6291,7 @@ class Theme_Blvd_Builder_API {
 			),
 			/*
 			'fx' => array(
-		    	'id' 		=> 'fx',
+				'id' 		=> 'fx',
 				'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -6259,7 +6304,7 @@ class Theme_Blvd_Builder_API {
 			),
 			*/
 			'timeout' => array(
-		    	'id' 		=> 'timeout',
+				'id' 		=> 'timeout',
 				'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text',
@@ -6339,7 +6384,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['video']['options'] = array(
 			'video' => array(
-		    	'id' 		=> 'video',
+				'id' 		=> 'video',
 				'name'		=> __( 'Video URL', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( '<p>Upload a video or enter a video URL compatible with <a href="" target="_blank">WordPress\'s oEmbed</a>.</p><p>Examples:<br />http://vimeo.com/11178250</br />http://youtube.com/watch?v=ginTCwWfGNY</p>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'upload',
@@ -6371,7 +6416,7 @@ class Theme_Blvd_Builder_API {
 		// Options
 		$this->core_elements['widget']['options'] = array(
 			'sidebar' => array(
-		    	'id' 		=> 'sidebar',
+				'id' 		=> 'sidebar',
 				'name'		=> __( 'Widget Area', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select from your registered widget areas.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
@@ -6390,7 +6435,7 @@ class Theme_Blvd_Builder_API {
 
 				// Responsive Visibility
 				$this->core_elements[$id]['options']['visibility'] = array(
-			    	'id' 		=> 'visibility',
+				'id' 		=> 'visibility',
 					'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'multicheck',
@@ -6404,7 +6449,7 @@ class Theme_Blvd_Builder_API {
 
 				// CSS Classes
 				$this->core_elements[$id]['options']['classes'] = array(
-			    	'id' 		=> 'classes',
+				'id' 		=> 'classes',
 					'name'		=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
