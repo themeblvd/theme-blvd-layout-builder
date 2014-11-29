@@ -80,9 +80,13 @@ function themeblvd_builder_layout( $context ) {
 			}
 
 			// Open section
-			do_action( 'themeblvd_section_before', $section_id, $section_data[$section_id] );
+			do_action( 'themeblvd_section_before', $section_id, $layout_name, $section_data[$section_id], $counter );
 
-			printf( '<section id="%s-section-%s" class="%s" data-parallax="%s">', $layout_name, $counter, $class, themeblvd_get_parallax_intensity($display) );
+			// Section ID
+			$html_id = apply_filters( 'themeblvd_section_html_id', sprintf('%s-section-%s', $layout_name, $counter), $section_id, $layout_name, $section_data[$section_id], $counter );
+
+			// Output section
+			printf( '<section id="%s" class="%s" data-parallax="%s">', $html_id, $class, themeblvd_get_parallax_intensity($display) );
 
 			if ( $display ) {
 
@@ -102,18 +106,20 @@ function themeblvd_builder_layout( $context ) {
 				}
 			}
 
-			do_action( 'themeblvd_section_top', $section_id, $section_data[$section_id] );
+			do_action( 'themeblvd_section_top', $section_id, $layout_name, $section_data[$section_id], $counter );
 
 			// Display elements
 			themeblvd_elements( $section_id, $elements );
 
 			// Close section
-			do_action( 'themeblvd_section_bottom', $section_id, $section_data[$section_id] );
+			do_action( 'themeblvd_section_bottom', $section_id, $layout_name, $section_data[$section_id], $counter );
 			printf( '</section><!-- #%s (end) -->', $section_id );
-			do_action( 'themeblvd_section_after', $section_id, $section_data[$section_id] );
+			do_action( 'themeblvd_section_after', $section_id, $layout_name, $section_data[$section_id], $counter );
 
 			// End section
-			do_action( 'themeblvd_section_close', $section_data[$section_id]['display'] );
+			do_action( 'themeblvd_section_close', $section_id, $layout_name, $section_data[$section_id], $counter );
+
+			$counter++;
 
 		}
 
