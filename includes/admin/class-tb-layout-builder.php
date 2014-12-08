@@ -159,10 +159,14 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.0.0
 	 */
 	public function load_styles() {
+
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
-		wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+			wp_enqueue_style( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' );
+		}
 
 		$file = TB_BUILDER_DEBUG ? 'builder-style.css' : 'builder-style.min.css';
 		wp_enqueue_style( 'theme-blvd-layout-builder', TB_BUILDER_PLUGIN_URI . '/includes/admin/assets/css/'.$file, null, TB_BUILDER_PLUGIN_VERSION );
@@ -200,8 +204,12 @@ class Theme_Blvd_Layout_Builder {
 		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 			wp_enqueue_script( 'themeblvd_modal', TB_FRAMEWORK_URI . '/admin/assets/js/modal.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		}
+
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+			wp_enqueue_script( 'color-picker', TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js', array('jquery') );
+		}
 
 		// Builder script
 		$file = TB_BUILDER_DEBUG ? 'builder.js' : 'builder.min.js';
