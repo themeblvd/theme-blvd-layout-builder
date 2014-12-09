@@ -44,6 +44,14 @@ function themeblvd_builder_init() {
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-notices.php' );
 	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
 
+	// Error handling
+	$notices = Theme_Blvd_Layout_Builder_Notices::get_instance();
+
+	if ( $notices->do_stop() ) {
+		// Stop plugin from running
+		return;
+	}
+
 	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 		include_once( TB_BUILDER_PLUGIN_DIR . '/includes/legacy.php' ); // @deprecated functions used by older themes
 	}
@@ -51,14 +59,6 @@ function themeblvd_builder_init() {
 	// DEBUG/DEV Mode
 	if ( ! defined( 'TB_BUILDER_DEBUG' ) ) {
 		define( 'TB_BUILDER_DEBUG', false );
-	}
-
-	// Error handling
-	$notices = Theme_Blvd_Layout_Builder_Notices::get_instance();
-
-	if ( $notices->do_stop() ) {
-		// Stop plugin from running
-		return;
 	}
 
 	// Register custom layout hidden post type
