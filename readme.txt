@@ -37,6 +37,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Fix for using Columns in template footer sync feature (for framework 2.5+ themes).
 * Expanded options for Divider element (for framework 2.5+ themes).
 * Reduced plugin size by compressing included sample images.
+* Minor security fixes.
 
 = 2.0.1 =
 

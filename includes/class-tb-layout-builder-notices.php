@@ -56,15 +56,21 @@ class Theme_Blvd_Layout_Builder_Notices {
 	 */
 	private function __construct() {
 
-		if ( ! defined( 'TB_FRAMEWORK_VERSION' ) ) {
+		$v = 0;
+
+		if ( defined('TB_FRAMEWORK_VERSION') ) {
+			$v = TB_FRAMEWORK_VERSION;
+		}
+
+		if ( ! $v ) {
 			$this->error[] = 'framework';
 			$this->stop = true;
-		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
+		} else if ( version_compare( $v, '2.2.0', '<' ) ) {
 			$this->error[] = 'framework-2-2';
 			$this->stop = true;
 		}
 
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+		if ( version_compare( $v, '2.5.0', '>=' ) ) {
 
 			$options = get_option( themeblvd_get_option_name() );
 
@@ -99,7 +105,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 			$changelog = '<a href="http://themeblvd.com/changelog/?theme='.get_template().'" target="_blank">'.__('theme\'s changelog', 'theme-blvd-layout-builder').'</a>';
 
 			foreach ( $this->error as $error ) {
-				if ( ! get_user_meta( $current_user->ID, $error ) ) {
+				if ( ! get_user_meta( $current_user->ID, 'tb-nag-'.$error, true ) ) {
 
 					echo '<div class="updated">';
 					echo '<p><strong>Theme Blvd Layout Builder</strong>: '.$this->get_message($error).'</p>';
@@ -129,8 +135,16 @@ class Theme_Blvd_Layout_Builder_Notices {
 
 		global $current_user;
 
-	    if ( isset( $_GET['tb_nag_ignore'] ) ) {
-			add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+		if ( ! isset($_GET['nag-ignore']) ) {
+			return;
+		}
+
+		if ( strpos($_GET['nag-ignore'], 'tb-nag-') !== 0 ) { // meta key must start with "tb-nag-"
+			return;
+		}
+
+		if ( isset($_GET['security']) && wp_verify_nonce( $_GET['security'], 'themeblvd-builder-nag' ) ) {
+			add_user_meta( $current_user->ID, $_GET['nag-ignore'], 'true', true );
 		}
 	}
 
@@ -146,10 +160,12 @@ class Theme_Blvd_Layout_Builder_Notices {
 		$url = admin_url( $pagenow );
 
 		if ( ! empty( $_SERVER['QUERY_STRING'] ) ) {
-			$url .= sprintf( '?%s&tb_nag_ignore=%s', $_SERVER['QUERY_STRING'], $id );
+			$url .= sprintf( '?%s&nag-ignore=%s', $_SERVER['QUERY_STRING'], 'tb-nag-'.$id );
 		} else {
-			$url .= sprintf( '?tb_nag_ignore=%s', $id );
+			$url .= sprintf( '?nag-ignore=%s', 'tb-nag-'.$id );
 		}
+
+		$url .= sprintf( '&security=%s', wp_create_nonce('themeblvd-builder-nag') );
 
 		return $url;
 	}
