@@ -2204,6 +2204,11 @@ class Theme_Blvd_Layout_Builder {
 
 		// Options form
 		$block_form = array();
+
+		if ( $block_type == 'html' ) {
+			$blocks[$block_type]['options']['html']['type'] = 'textarea';
+		}
+
 		if ( ! empty( $blocks[$block_type]['options'] ) ) {
 			$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
 		}

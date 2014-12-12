@@ -35,6 +35,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 * Increased limits on Jumbotron font sizes (for framework 2.5+ themes).
 * Fix for using Columns in template footer sync feature (for framework 2.5+ themes).
+* Fix for saving "HTML" element within "Columns" element (for framework 2.5+ themes).
 * Expanded options for Divider element (for framework 2.5+ themes).
 * Reduced plugin size by compressing included sample images.
 * Minor security fixes.
