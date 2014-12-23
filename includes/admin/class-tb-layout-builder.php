@@ -48,7 +48,7 @@ class Theme_Blvd_Layout_Builder {
 		add_action( 'themeblvd_builder_update', array( $this, 'notice' ) );
 
 		// Manage Custom Layouts via Edit Page screen
-		add_action( 'admin_init', array( $this, 'builder_init' ) );
+		add_action( 'current_screen', array( $this, 'builder_init' ) );
 
 		// Filter on javascript locals specifically for Builder onto
 		// Theme Blvd framework locals.
@@ -1485,7 +1485,7 @@ class Theme_Blvd_Layout_Builder {
 
 		if ( $post_types ) {
 			foreach ( $post_types as $post_type ) {
-				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ) {
+				if ( ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) && $typenow == $post_type ) {
 
 					add_action( 'save_post', array( $this, 'save_post' ) );
 					add_action( 'edit_form_after_title', array( $this, 'builder' ) );

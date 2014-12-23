@@ -38,6 +38,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Fix for saving "HTML" element within "Columns" element (for framework 2.5+ themes).
 * Expanded options for Divider element (for framework 2.5+ themes).
 * Reduced plugin size by compressing included sample images.
+* Fix to ensure hidden Builder is only inserted when editing pages, needed for [Theme Blvd Layouts to Posts](https://wordpress.org/plugins/theme-blvd-layouts-to-posts/) plugin to save properly when editing posts.
 * Minor security fixes.
 
 = 2.0.1 =
