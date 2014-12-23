@@ -4246,7 +4246,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Select a custom crop size to be used for the images in the showcase. If you select a crop size that doesn\'t have a consistent height, then you may want to use one of the "Masonry" display options above.<br><br><em>Note: Images are scaled proportionally to fit within their current containers.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
 				'select'	=> 'crop',
-				'std'		=> 'tb_large'
+				'std'		=> 'tb_grid'
 			)
 		);
 
