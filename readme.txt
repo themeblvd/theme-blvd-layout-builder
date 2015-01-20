@@ -33,6 +33,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.3 =
 
+* Added "Current Featured Image" element.
+
 = 2.0.2 =
 
 * Increased limits on Jumbotron font sizes (for framework 2.5+ themes).

@@ -153,6 +153,16 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 				break;
 
 			/*------------------------------------------------------*/
+			/* Current Featurd Image
+			/*------------------------------------------------------*/
+
+			case 'featured_image' :
+
+				themeblvd_the_post_thumbnail( $element['options']['crop'] );
+
+				break;
+
+			/*------------------------------------------------------*/
 			/* Divider
 			/*------------------------------------------------------*/
 

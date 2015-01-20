@@ -180,6 +180,7 @@ class Theme_Blvd_Builder_API {
 		$this->registered_elements = array(
 			'content',
 			'columns',
+			'featured_image',
 			'current',
 			'divider',
 			'headline',
@@ -1147,14 +1148,52 @@ class Theme_Blvd_Builder_API {
 		}
 
 		/*--------------------------------------------*/
-		/* Current Page
+		/* Current Featured Image
+		/*--------------------------------------------*/
+
+		$this->core_elements['featured_image'] = array();
+
+		// Information
+		$this->core_elements['featured_image']['info'] = array(
+			'name'		=> __( 'Current Featured Image', 'theme-blvd-layout-builder' ),
+			'id'		=> 'featured_image',
+			'hook'		=> 'themeblvd_current',
+			'shortcode'	=> false,
+			'desc'		=> __( 'Featured image from the current page.', 'theme-blvd-layout-builder' )
+		);
+
+		// Support
+		$this->core_elements['featured_image']['support'] = array(
+			'popout'		=> false,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['featured_image']['options'] = array(
+			'crop' => array(
+				'id' 		=> 'crop',
+				'name'		=> __( 'Crop Size', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select a crop size to be used for the image\'s display.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'select',
+				'select'	=> 'crop',
+				'std'		=> 'tb_x_large'
+			)
+		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			$this->core_elements['featured_image']['options']['crop']['type'] = 'text';
+			$this->core_elements['featured_image']['options']['crop']['std'] = 'full';
+		}
+
+		/*--------------------------------------------*/
+		/* Current Page Content
 		/*--------------------------------------------*/
 
 		$this->core_elements['current'] = array();
 
 		// Information
 		$this->core_elements['current']['info'] = array(
-			'name'		=> __( 'Current Page', 'theme-blvd-layout-builder' ),
+			'name'		=> __( 'Current Page Content', 'theme-blvd-layout-builder' ),
 			'id'		=> 'current',
 			'hook'		=> 'themeblvd_current',
 			'shortcode'	=> false,
@@ -2706,7 +2745,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-				'id' 		=> 'source',
+					'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2719,7 +2758,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'categories' => array(
-				'id' 		=> 'categories',
+					'id' 		=> 'categories',
 					'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
 					'std'		=> array( 'all' => 1 ),
@@ -2728,14 +2767,14 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-				'id' 		=> 'tag',
+					'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'orderby' => array(
-				'id' 		=> 'orderby',
+					'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2749,7 +2788,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-				'id' 		=> 'order',
+					'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2761,7 +2800,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-				'id' 		=> 'query',
+					'id' 		=> 'query',
 					'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10<br><br><em>Note: The number of posts displayed is determined from the rows and columns.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -2772,7 +2811,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 				'columns' => array(
-				'id' 		=> 'columns',
+					'id' 		=> 'columns',
 					'name'		=> __( 'Columns', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how many posts per row you\'d like displayed.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -2785,14 +2824,14 @@ class Theme_Blvd_Builder_API {
 					)
 				),
 				'rows' => array(
-				'id' 		=> 'rows',
+					'id' 		=> 'rows',
 					'name'		=> __( 'Rows per page', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in the number of rows <strong>per page</strong> you\'d like to show. The number you enter here will be multiplied by the amount of columns you selected in the previous option to figure out how many posts should be showed on each page. You can leave this option blank if you\'d like to show all posts from the categories you\'ve selected on a single page.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'std'		=> '3'
 				),
 				'crop' => array(
-				'id' 		=> 'crop',
+					'id' 		=> 'crop',
 					'name'		=> __( 'Custom Image Crop Size (optional)', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a custom image crop size. Always leave this blank unless you know what you\'re doing here. When left blank, the theme will generate this crop size for you depending on the amount of columns in your post grid.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
