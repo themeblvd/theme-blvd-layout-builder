@@ -137,7 +137,12 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 					break;
 				}
 
-				echo themeblvd_content( $element['options'] );
+				if ( isset($element['options']['source']) && $element['options']['source'] == 'current' ) {
+					wp_reset_query();
+					the_content();
+				} else {
+					echo themeblvd_content( $element['options'] );
+				}
 
 				break;
 
@@ -147,8 +152,8 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 			case 'current' :
 
-				$post = get_post( themeblvd_config('id') );
-				echo apply_filters('themeblvd_the_content', $post->post_content );
+				wp_reset_query();
+				the_content();
 
 				break;
 
