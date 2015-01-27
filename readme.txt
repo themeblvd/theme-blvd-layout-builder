@@ -34,7 +34,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = 2.0.3 =
 
 * Added "Current Featured Image" element.
-* Added support for "Preview Changes" when inserting current page's content into a custom layout (for framework 2.2-2.4 themes).
+* Fixed Bug: "Preview Changes" when inserting current page's content into a custom layout wasn't working right (for framework 2.2-2.4 themes).
+* Fixed Bug: When editing a page, sidebar layout option would disappear when applying elements from Template or Sample Layout (for framework 2.2-2.4 themes).
 
 = 2.0.2 =
 

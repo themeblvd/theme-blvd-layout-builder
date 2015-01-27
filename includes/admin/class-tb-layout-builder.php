@@ -667,7 +667,7 @@ class Theme_Blvd_Layout_Builder {
 
 					<div id="post-body">
 						<div id="post-body-content">
-							<?php $this->edit_layout( $template_id ); ?>
+							<?php $this->edit_layout( $template_id, true ); ?>
 						</div><!-- .post-body-content (end) -->
 					</div><!-- #post-body (end) -->
 
@@ -1653,9 +1653,10 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $post_id string ID of template, or ID of post with layout
+	 * @param int $post_id ID of template, or ID of post with layout
+	 * @param bool $template Only TRUE if editing a template
 	 */
-	public function edit_layout( $post_id = 0 ) {
+	public function edit_layout( $post_id = 0, $template = false ) {
 
 		$api = Theme_Blvd_Builder_API::get_instance();
 		$elements = $this->get_elements(); // Elements that can be used in Builder, NOT elements saved to current layout
@@ -1747,7 +1748,7 @@ class Theme_Blvd_Layout_Builder {
 			?>
 		</div><!-- #builder (end) -->
 
-		<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && get_post_type($post_id) != 'tb_layout' ) : ?>
+		<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && ! $template ) : ?>
 			<div class="sidebar-layout-wrap">
 
 				<div class="title">
