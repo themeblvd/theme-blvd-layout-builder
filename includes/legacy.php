@@ -163,6 +163,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 
 			case 'featured_image' :
 
+				wp_reset_query();
 				themeblvd_the_post_thumbnail( $element['options']['crop'] );
 
 				break;
