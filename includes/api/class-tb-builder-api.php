@@ -5892,7 +5892,7 @@ class Theme_Blvd_Builder_API {
 		    'height_tablet' => array(
 				'id'		=> 'height_tablet',
 				'name' 		=> __( 'Tablet Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Slider height (in pixels) when displayed at the tablet viewport range.', 'theme-blvd-layout-builder' ),
 				'std'		=> '300',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
@@ -5900,7 +5900,7 @@ class Theme_Blvd_Builder_API {
 		    'height_mobile' => array(
 				'id'		=> 'height_mobile',
 				'name' 		=> __( 'Mobile Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Slider height (in pixels) when displayed at the mobile viewport range.', 'theme-blvd-layout-builder' ),
 				'std'		=> '200',
 				'type'		=> 'text',
 				'class'		=> 'hide receiver'
