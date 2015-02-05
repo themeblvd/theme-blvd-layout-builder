@@ -334,7 +334,6 @@ class Theme_Blvd_Layout_Builder_Data {
 							'attachment'	=> 'scroll',
 							'size'			=> 'auto',
 						),
-						'bg_image_parallax_stretch'		=> 1,
 						'bg_image_parallax'				=> '2',
 						'apply_bg_shade'				=> 0,
 						'bg_shade_color'				=> '#000000',
@@ -539,7 +538,6 @@ class Theme_Blvd_Layout_Builder_Data {
 										'attachment'	=> 'scroll',
 										'size'			=> 'auto'
 									),
-									'bg_image_parallax_stretch'	=> '1',
 									'bg_image_parallax'			=> '2',
 									'apply_padding'				=> '0',
 									'padding_top'				=> '30px',

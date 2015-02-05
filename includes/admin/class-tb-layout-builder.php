@@ -2501,15 +2501,6 @@ class Theme_Blvd_Layout_Builder {
 				'parallax'	=> true
 			);
 
-			$options['bg_image_parallax_stretch'] = array(
-				'id'		=> 'bg_image_parallax_stretch',
-				'name'		=> __('Parallax: Stretch Background', 'theme-blvd-layout-builder'),
-				'desc'		=> __('When this is checked, your background image will be expanded to fit horizontally, but never condensed. &mdash; <em>Note: This will only work if Background Repeat is set to "No Repeat."</em>', 'theme-blvd-layout-builder'),
-				'type'		=> 'checkbox',
-				'std'		=> '1',
-				'class'		=> 'hide parallax'
-			);
-
 			$options['bg_image_parallax'] = array(
 				'id'		=> 'bg_image_parallax',
 				'name'		=> __('Parallax: Intensity', 'theme-blvd-layout-builder'),
