@@ -877,7 +877,7 @@ class Theme_Blvd_Layout_Builder {
 
 			if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 
-				$this->sample_uri = trailingslashit($samples[$data['sample']]['uri']);
+				$this->sample_uri = trailingslashit($samples[$data['sample']]['uri']); // not currently used for anything
 				$this->sample_dir = $dir = trailingslashit($samples[$data['sample']]['dir']);
 				$xml = $dir.'layout.xml';
 				$import = '';
@@ -1462,7 +1462,7 @@ class Theme_Blvd_Layout_Builder {
 		$replace = $img[1];
 
 		foreach ( $find as $key => $val ) {
-			$url = sprintf('%s/img/%s', untrailingslashit($this->sample_uri), $replace[$key] );
+			$url = sprintf('%s/includes/admin/sample/assets/%s', untrailingslashit(TB_BUILDER_PLUGIN_URI), $replace[$key] );
 			$str = str_replace( $val, $url, $str );
 		}
 
