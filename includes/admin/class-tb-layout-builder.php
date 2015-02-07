@@ -1436,6 +1436,8 @@ class Theme_Blvd_Layout_Builder {
 					$val[$key]['id'] = 0;
 					$val[$key]['src'] = $this->sample_img_replace($item['src']);
 					$val[$key]['thumb'] = $this->sample_img_replace($item['thumb']);
+				} else {
+					unset($val[$key]);
 				}
 			}
 		}

@@ -34,6 +34,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = 2.0.4 =
 
 * Removed "Parallax: Stretch Background" option for sections (for framework 2.5+ themes).
+* Fixed Bug: Importing from a sample layout with a slider would import an extra, empty slide (for framework 2.5+ themes).
 
 = 2.0.3 =
 
