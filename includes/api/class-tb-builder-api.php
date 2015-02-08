@@ -5267,6 +5267,13 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'std'		=> '1'
 			),
+			'max' => array(
+				'id' 		=> 'max',
+				'name'		=> __( 'Maximum Width', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'If you\'d like to limit the width of the promo box, give it a maximum width in pixels or as a percentage.<br>Ex: 400px, 50%, etc.', 'theme-blvd-layout-builder' ),
+				'std'		=> '',
+				'type'		=> 'text'
+			),
 		    'subgroup_start' => array(
 		    	'type'		=> 'subgroup_start',
 		    	'class'		=> 'show-hide-toggle'
