@@ -34,6 +34,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = 2.0.4 =
 
 * Added "Maximum Width" option to Promo Box element (for framework 2.5+ themes).
+* Added new sample layout, "Business Homepage #7" (for framework 2.5+ themes).
 * Removed "Parallax: Stretch Background" option for sections (for framework 2.5+ themes).
 * Modified design of "Business Homepage #2" sample layout (for framework 2.5+ themes).
 * Reduced plugin size, by pulling from unified assets directory for sample layouts (for framework 2.5+ themes).
