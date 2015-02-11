@@ -1661,8 +1661,9 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'above',
 				'type'		=> 'radio',
 				'options'	=> array(
-					'above'	=> __('Icon is above title and content.', 'theme-blvd-layout-builder'),
-					'side'	=> __('Icon is to the side of title and content.', 'theme-blvd-layout-builder'),
+					'above'		=> __('Icon is above title and content.', 'theme-blvd-layout-builder'),
+					'side'		=> __('Icon is to the left of title and content.', 'theme-blvd-layout-builder'),
+					'side-alt'	=> __('Icon is to the right of title and content.', 'theme-blvd-layout-builder')
 				)
 			),
 			'color' => array(
@@ -1672,13 +1673,29 @@ class Theme_Blvd_Builder_API {
 				'std'		=> '#666666',
 				'type'		=> 'color'
 			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+			),
 			'badge' => array(
 				'id' 		=> 'badge',
 				'name'		=> null,
 				'desc'		=> __( 'Display icon as a badge (in a circle).', 'theme-blvd-layout-builder' ),
 				'std'		=> '0',
-				'type'		=> 'checkbox'
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
 			),
+			'badge_trans' => array(
+				'id' 		=> 'badge_trans',
+				'name'		=> null,
+				'desc'		=> __( 'Use transparent icon badge.', 'theme-blvd-layout-builder' ),
+				'std'		=> '0',
+				'type'		=> 'checkbox',
+				'class'		=> 'receiver hide'
+			),
+			'subgroup_end' => array(
+		    	'type'		=> 'subgroup_end'
+		    ),
 			'title' => array(
 				'id' 		=> 'title',
 				'name'		=> __( 'Title (optional)', 'theme-blvd-layout-builder' ),
@@ -1693,7 +1710,7 @@ class Theme_Blvd_Builder_API {
 				'editor'	=> true,
 				'code'		=> 'html'
 			),
-			'subgroup_start' => array(
+			'subgroup_start_2' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide-toggle'
 		    ),
@@ -1749,7 +1766,7 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'hide receiver receiver-custom'
 			),
-			'subgroup_end' => array(
+			'subgroup_end_2' => array(
 				'type'		=> 'subgroup_end'
 		    )
 		);
@@ -2034,7 +2051,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide'
 			    ),
 				'button' => array(
-				'id' 		=> 'button',
+					'id' 		=> 'button',
 					'name'		=> __( 'Button', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Show button at the bottom of unit?', 'theme-blvd-layout-builder' ),
 					'type'		=> 'checkbox',
