@@ -2739,6 +2739,28 @@ class Theme_Blvd_Layout_Builder {
 				$term = __('element', 'theme-blvd-layout-builder');
 		}
 
+		if ( $type == 'section' ) {
+
+			// Blend up
+			$options['blend_up'] = array(
+				'id'		=> 'blend_up',
+				'name'		=> null,
+				'desc'		=> '<strong>'.__('Blend Up', 'theme-blvd-layout-builder').':</strong> '.__('Blend to section above.', 'theme-blvd-layout-builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			);
+
+			// Blend down
+			$options['blend_down'] = array(
+				'id'		=> 'blend_down',
+				'name'		=> null,
+				'desc'		=> '<strong>'.__('Blend Down', 'theme-blvd-layout-builder').':</strong> '.__('Blend to section below.', 'theme-blvd-layout-builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox'
+			);
+
+		}
+
 		// Desktop padding
 		$options['subgroup_start_9'] = array(
 			'type'		=> 'subgroup_start',

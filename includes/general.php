@@ -104,6 +104,24 @@ function themeblvd_builder_layout( $context ) {
 
 					themeblvd_bg_slideshow( $section_id, $display['bg_slideshow'], $parallax );
 				}
+
+				if ( ! empty( $display['blend_up'] ) || ! empty( $display['blend_down'] ) ) {
+
+					$bg_color = apply_filters('themeblvd_blend_section_color_default', '#ffffff');
+
+					if ( ! empty( $display['bg_color'] ) ) {
+						$bg_color = $display['bg_color'];
+					}
+
+					if ( ! empty( $display['blend_up'] ) ) {
+						printf('<span class="tb-blend up"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', $bg_color);
+					}
+
+					if ( ! empty( $display['blend_down'] ) ) {
+						printf('<span class="tb-blend down"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', $bg_color);
+					}
+
+				}
 			}
 
 			do_action( 'themeblvd_section_top', $section_id, $layout_name, $section_data[$section_id], $counter );
