@@ -1285,7 +1285,7 @@ class Theme_Blvd_Builder_API {
 
 		// Options
 		$this->core_elements['divider']['options'] = array(
-			'sub_group_start' => array(
+			'sub_group_start_1' => array(
 				'type' 		=> 'subgroup_start',
 				'class'		=> 'show-hide-toggle'
 			),
@@ -1333,7 +1333,73 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'hide receiver receiver-solid receiver-dashed receiver-thick-solid receiver-thick-dashed receiver-double-solid receiver-double-dashed'
 			),
-			'sub_group_end' => array(
+			'sub_group_start_2' => array(
+				'type' 		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle hide receiver receiver-solid receiver-dashed receiver-thick-solid receiver-thick-dashed receiver-double-solid receiver-double-dashed'
+			),
+			'insert' => array(
+				'id' 		=> 'insert',
+				'name'		=> __( 'Divider Insert', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select if you\'d like to insert text or an icon within the middle of the divider.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'select',
+				'options'		=> array(
+					'none'	=> __( 'None', 'theme-blvd-layout-builder' ),
+					'icon'	=> __( 'Icon', 'theme-blvd-layout-builder' ),
+					'text'	=> __( 'Text', 'theme-blvd-layout-builder' )
+
+				),
+				'class'		=> 'trigger'
+			),
+			'icon' => array(
+				'id' 		=> 'icon',
+				'name'		=> __( 'Divider Icon', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Enter the icon placed in the middle of the divider line.', 'theme-blvd-layout-builder' ),
+				'std'		=> '',
+				'type'		=> 'text',
+				'icon'		=> 'vector',
+				'class'		=> 'hide receiver receiver-icon'
+			),
+			'text' => array(
+				'id' 		=> 'text',
+				'name'		=> __( 'Divider Text', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Enter the text placed in the middle of the divider line.', 'theme-blvd-layout-builder' ),
+				'std'		=> '',
+				'type'		=> 'text',
+				'class'		=> 'hide receiver receiver-text'
+			),
+			'bold' => array(
+				'id' 		=> 'bold',
+				'name'		=> null,
+				'desc'		=> __( 'Bold the above divider text.', 'theme-blvd-layout-builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox',
+				'class'		=> 'hide receiver receiver-text'
+			),
+			'text_color' => array(
+				'id' 		=> 'text_color',
+				'name'		=> __( 'Icon/Text Color', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'For an icon or text, select a color.', 'theme-blvd-layout-builder' ),
+				'std'		=> '#666666',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver receiver-icon receiver-text'
+			),
+			'text_size' => array(
+				'id' 		=> 'text_size',
+				'name'		=> __( 'Icon/Text Size', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'For an icon or text, select the size.', 'theme-blvd-layout-builder' ),
+				'std'		=> '15',
+				'type'		=> 'slide',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '150',
+					'step'	=> '1'
+				),
+				'class'		=> 'hide receiver receiver-icon receiver-text'
+			),
+			'sub_group_end_2' => array(
+				'type' 		=> 'subgroup_end'
+			),
+			'sub_group_end_1' => array(
 				'type' 		=> 'subgroup_end'
 			),
 			'width' => array(
