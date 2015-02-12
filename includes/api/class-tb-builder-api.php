@@ -6728,6 +6728,13 @@ class Theme_Blvd_Builder_API {
 			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-9/'
 		);
 
+		$this->core_layouts['business-homepage-10'] = array(
+			'name'				=> __('Business Homepage #10', 'theme-blvd-layout-builder'),
+			'id'				=> 'business-homepage-10',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/business-homepage-10/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-10/'
+		);
+
 		$this->core_layouts['contact-us'] = array(
 			'name'				=> __('Contact Us', 'theme-blvd-layout-builder'),
 			'id'				=> 'contact-us',

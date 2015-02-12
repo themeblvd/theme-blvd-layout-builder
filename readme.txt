@@ -34,7 +34,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = 2.0.4 =
 
 * Added "Maximum Width" option to Promo Box element (for framework 2.5+ themes).
-* Added new sample layouts (for framework 2.5+ themes).
+* Added new sample layouts, and improved previous ones (for framework 2.5+ themes).
 * Added options to Icon Box element (for framework 2.5+ themes).
 * Added options to Content element (for framework 2.5+ themes).
 * Added options to Divider element (for framework 2.5+ themes).
