@@ -2717,28 +2717,7 @@ class Theme_Blvd_Layout_Builder {
 
 		}
 
-		// Custom padding options
-		switch ( $type ) {
-			case 'section' :
-				$first_title = __('Desktop Padding', 'themeblvd');
-				$id_suffix = '_desktop';
-				$term = __('section', 'theme-blvd-layout-builder');
-				$default = '30px';
-				break;
-			case 'column' :
-				$first_title = __('Padding', 'themeblvd');
-				$id_suffix = '';
-				$term = __('column', 'theme-blvd-layout-builder');
-				$default = '30px';
-				break;
-			case 'element' :
-			case 'block' :
-				$first_title = __('Padding', 'themeblvd');
-				$id_suffix = '';
-				$default = '0px';
-				$term = __('element', 'theme-blvd-layout-builder');
-		}
-
+		// Section blending
 		if ( $type == 'section' ) {
 
 			// Blend up
@@ -2761,6 +2740,28 @@ class Theme_Blvd_Layout_Builder {
 
 		}
 
+		// Custom padding options
+		switch ( $type ) {
+			case 'section' :
+				$first_title = __('Desktop Padding', 'themeblvd');
+				$id_suffix = '_desktop';
+				$term = __('section', 'theme-blvd-layout-builder');
+				$default = array('60px', '0px', '60px', '0px');
+				break;
+			case 'column' :
+				$first_title = __('Padding', 'themeblvd');
+				$id_suffix = '';
+				$term = __('column', 'theme-blvd-layout-builder');
+				$default = array('30px', '30px', '30px', '30px');
+				break;
+			case 'element' :
+			case 'block' :
+				$first_title = __('Padding', 'themeblvd');
+				$id_suffix = '';
+				$default = array('0px', '0px', '0px', '0px');
+				$term = __('element', 'theme-blvd-layout-builder');
+		}
+
 		// Desktop padding
 		$options['subgroup_start_9'] = array(
 			'type'		=> 'subgroup_start',
@@ -2780,7 +2781,7 @@ class Theme_Blvd_Layout_Builder {
 			'id'		=> 'padding_top'.$id_suffix,
 			'name'		=> __('Top Padding', 'theme-blvd-layout-builder'),
 			'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
-			'std'		=> $default,
+			'std'		=> $default[0],
 			'type'		=> 'slide',
 			'options'	=> array(
 				'units'		=> 'px',
@@ -2794,7 +2795,7 @@ class Theme_Blvd_Layout_Builder {
 			'id'		=> 'padding_right'.$id_suffix,
 			'name'		=> __('Right Padding', 'theme-blvd-layout-builder'),
 			'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
-			'std'		=> $default,
+			'std'		=> $default[1],
 			'type'		=> 'slide',
 			'options'	=> array(
 				'units'		=> 'px',
@@ -2808,7 +2809,7 @@ class Theme_Blvd_Layout_Builder {
 			'id'		=> 'padding_bottom'.$id_suffix,
 			'name'		=> __('Bottom Padding', 'theme-blvd-layout-builder'),
 			'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
-			'std'		=> $default,
+			'std'		=> $default[2],
 			'type'		=> 'slide',
 			'options'	=> array(
 				'units'		=> 'px',
@@ -2822,7 +2823,7 @@ class Theme_Blvd_Layout_Builder {
 			'id'		=> 'padding_left'.$id_suffix,
 			'name'		=> __('Left Padding', 'theme-blvd-layout-builder'),
 			'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
-			'std'		=> $default,
+			'std'		=> $default[3],
 			'type'		=> 'slide',
 			'options'	=> array(
 				'units'		=> 'px',
@@ -2857,7 +2858,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_top_tablet',
 				'name'		=> __('Tablet Top Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[0],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2871,7 +2872,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_right_tablet',
 				'name'		=> __('Tablet Right Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[1],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2885,7 +2886,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_bottom_tablet',
 				'name'		=> __('Tablet Bottom Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[2],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2899,7 +2900,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_left_tablet',
 				'name'		=> __('Tablet Left Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[3],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2932,7 +2933,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_top_mobile',
 				'name'		=> __('Mobile Top Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the top of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[0],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2946,7 +2947,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_right_mobile',
 				'name'		=> __('Mobile Right Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the right of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[1],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2960,7 +2961,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_bottom_mobile',
 				'name'		=> __('Mobile Bottom Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the bottom of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[2],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
@@ -2974,7 +2975,7 @@ class Theme_Blvd_Layout_Builder {
 				'id'		=> 'padding_left_mobile',
 				'name'		=> __('Mobile Left Padding', 'theme-blvd-layout-builder'),
 				'desc'		=> sprintf(__('Set the padding on the left of the %s.', 'theme-blvd-layout-builder'), $term),
-				'std'		=> $default,
+				'std'		=> $default[3],
 				'type'		=> 'slide',
 				'options'	=> array(
 					'units'		=> 'px',
