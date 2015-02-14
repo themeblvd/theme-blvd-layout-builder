@@ -281,6 +281,7 @@ function themeblvd_builder_styles() {
 			foreach ( $sections as $section_id => $section ) {
 
 				$section_print = '';
+
 				$styles = themeblvd_get_display_inline_style( $section['display'], 'external' );
 
 				if ( $styles ) {
@@ -321,6 +322,34 @@ function themeblvd_builder_styles() {
 
 						$section_print .= $indent."}\n";
 
+						// Add modified styles for any popout elements when section has custom padding
+						if ( ! empty($params['padding-right']) || ! empty($params['padding-left']) ) {
+
+							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout {\n", $location, $section_id);
+
+							if ( ! empty($params['padding-right']) ) {
+								$section_print .= $indent.sprintf("\tmargin-right: -%s;\n", $params['padding-right']);
+							}
+
+							if ( ! empty($params['padding-left']) ) {
+								$section_print .= $indent.sprintf("\tmargin-left: -%s;\n", $params['padding-left']);
+							}
+
+							$section_print .= $indent."}\n";
+						}
+
+						if ( ! empty($params['padding-top']) ) {
+							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout.first {\n", $location, $section_id);
+							$section_print .= $indent.sprintf("\tmargin-top: -%s;\n", $params['padding-top']);
+							$section_print .= $indent."}\n";
+						}
+
+						if ( ! empty($params['padding-bottom']) ) {
+							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout.last {\n", $location, $section_id);
+							$section_print .= $indent.sprintf("\tmargin-bottom: -%s;\n", $params['padding-bottom']);
+							$section_print .= $indent."}\n";
+						}
+
 						if ( $type != 'general' ) {
 							$section_print .= "}\n";
 						}
@@ -338,7 +367,6 @@ function themeblvd_builder_styles() {
 		}
 
 	}
-
 
 	// Print after style.css
 	if ( $print ) {
