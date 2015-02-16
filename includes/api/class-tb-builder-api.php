@@ -4356,7 +4356,7 @@ class Theme_Blvd_Builder_API {
 				'name' 		=> __( 'Titles', 'theme-blvd-layout-builder' ),
 				'desc' 		=> __( 'Select if you\'d like to show the title or not for each post.', 'theme-blvd-layout-builder' ),
 				'id' 		=> 'titles',
-				'std' 		=> 'show',
+				'std' 		=> 'default',
 				'type' 		=> 'select',
 				'options' 	=> array(
 					'default'	=> __( 'Use default post showcase setting', 'theme-blvd-layout-builder' ),
@@ -4374,6 +4374,18 @@ class Theme_Blvd_Builder_API {
 					'default'	=> __( 'Use default post showcase setting', 'theme-blvd-layout-builder' ),
 					'show'		=> __( 'Show excerpts', 'theme-blvd-layout-builder' ),
 					'hide' 		=> __( 'Hide excerpts', 'theme-blvd-layout-builder' )
+				)
+			),
+			'gutters' => array(
+				'name' 		=> __( 'Gutters', 'themeblvd' ),
+				'desc' 		=> __( 'Select if you\'d like to show spacing in between the showcase items.<br><br><em>Note: Hiding the gutters works best if you\'re using a consistent image crop size, or a masonry display.</em>', 'themeblvd' ),
+				'id' 		=> 'gutters',
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default post showcase setting', 'theme-blvd-layout-builder' ),
+					'show'		=> __( 'Show gutters', 'theme-blvd-layout-builder' ),
+					'hide' 		=> __( 'Hide gutters', 'theme-blvd-layout-builder' )
 				)
 			),
 			'crop' => array(
