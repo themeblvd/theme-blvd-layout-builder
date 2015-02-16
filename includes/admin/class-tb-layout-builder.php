@@ -1387,6 +1387,7 @@ class Theme_Blvd_Layout_Builder {
 
 			remove_filter( 'themeblvd_sanitize_slider', 'themeblvd_sanitize_slider' );
 			remove_filter( 'themeblvd_sanitize_logos', 'themeblvd_sanitize_logos' );
+			remove_filter( 'themeblvd_sanitize_upload', 'themeblvd_sanitize_upload' );
 
 		} else if ( $todo == 'remove' ) {
 
@@ -1399,6 +1400,7 @@ class Theme_Blvd_Layout_Builder {
 
 			add_filter( 'themeblvd_sanitize_slider', 'themeblvd_sanitize_slider' );
 			add_filter( 'themeblvd_sanitize_logos', 'themeblvd_sanitize_logos' );
+			add_filter( 'themeblvd_sanitize_upload', 'themeblvd_sanitize_upload' );
 
 		}
 
@@ -1423,10 +1425,9 @@ class Theme_Blvd_Layout_Builder {
 			// complex upload (src)
 			$val['src'] = $this->sample_img_replace($val['src']);
 
-		} if ( isset( $val['full'] ) ) {
-
-			// complex upload (full image)
-			$val['full'] = $this->sample_img_replace($val['full']);
+			if ( ! empty( $val['full'] ) ) {
+				$val['full'] = $this->sample_img_replace($val['full']);
+			}
 
 		} else if ( is_array($val) ) {
 
