@@ -328,6 +328,16 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			/* Slider
 			/*------------------------------------------------------*/
 
+			case 'revslider' :
+
+				echo apply_filters( 'the_content', sprintf('[rev_slider %s]', $element['options']['id']) );
+
+				break;
+
+			/*------------------------------------------------------*/
+			/* Slider
+			/*------------------------------------------------------*/
+
 			case 'slider' :
 
 				if ( ! function_exists( 'themeblvd_slider' ) ) {

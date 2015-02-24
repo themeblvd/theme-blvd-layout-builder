@@ -237,6 +237,11 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'post_list_paginated';
 			$this->registered_elements[] = 'post_list_slider';
 		}
+
+		// Revolution Slider
+		if ( class_exists('RevSliderFront') || class_exists('RevSliderAdmin') ) {
+			$this->registered_elements[] = 'revslider';
+		}
 	}
 
 	/**
@@ -5700,6 +5705,41 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
+
+		/*--------------------------------------------*/
+		/* Revolution Slider
+		/*--------------------------------------------*/
+
+		if ( class_exists('RevSliderFront') || class_exists('RevSliderAdmin') ) {
+
+			$this->core_elements['revslider'] = array();
+
+			// Information
+			$this->core_elements['revslider']['info'] = array(
+				'name' 		=> __('Revolution Slider', 'theme-blvd-layout-builder'),
+				'id'		=> 'revslider',
+				'hook'		=> 'themeblvd_revslider',
+				'shortcode'	=> '[rev_slider]',
+				'desc' 		=> __( 'A slider from the Revolution Slider plugin.', 'theme-blvd-layout-builder' )
+			);
+
+			// Support
+			$this->core_elements['revslider']['support'] = array(
+				'popout'		=> true,
+				'padding'		=> true
+			);
+
+			// Options
+			$this->core_elements['revslider']['options'] = array(
+				'id' => array(
+					'id' 		=> 'id',
+					'name'		=> __( 'Slider ID', 'theme-blvd-layout-builder' ),
+					'desc'		=> __( 'Enter the ID of the revolution slider.', 'theme-blvd-layout-builder' ),
+					'type'		=> 'text'
+				)
+			);
+
+		}
 
 		/*--------------------------------------------*/
 		/* Simple Slider
