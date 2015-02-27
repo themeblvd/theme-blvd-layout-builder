@@ -2410,12 +2410,13 @@ class Theme_Blvd_Layout_Builder {
 			$options['text_color'] = array(
 				'id'		=> 'text_color',
 				'name'		=> __('Text Color'),
-				'desc'		=> __('If you\'re using a dark background color, select to show light text, and vice versa.<br><br><em>Note: When using "Light Text" on a darker background color, general styling on more complex items may be limited.</em>', 'theme-blvd-layout-builder'),
-				'std'		=> 'dark',
+				'desc'		=> __('Only use this option, if needed, depending on how your theme is setup. If you\'re using a dark background color, and you need to display light text you can do that here, and vice versa.', 'theme-blvd-layout-builder'),
+				'std'		=> 'none',
 				'type'		=> 'select',
 				'options'	=> array(
-					'dark'	=> __('Dark Text', 'theme-blvd-layout-builder'),
-					'light'	=> __('Light Text', 'theme-blvd-layout-builder')
+					'none'	=> __('None', 'theme-blvd-layout-builder'),
+					'dark'	=> __('Force Dark Text', 'theme-blvd-layout-builder'),
+					'light'	=> __('Force Light Text', 'theme-blvd-layout-builder')
 				),
 				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image receiver-slideshow'
 			);
