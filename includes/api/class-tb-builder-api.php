@@ -6787,11 +6787,18 @@ class Theme_Blvd_Builder_API {
 			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/business-homepage-10/'
 		);
 
-		$this->core_layouts['contact-us'] = array(
-			'name'				=> __('Contact Us', 'theme-blvd-layout-builder'),
-			'id'				=> 'contact-us',
-			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/contact-us/',
-			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/contact-us/'
+		$this->core_layouts['contact-us-1'] = array(
+			'name'				=> __('Contact Us #1', 'theme-blvd-layout-builder'),
+			'id'				=> 'contact-us-1',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/contact-us-1/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/contact-us-1/'
+		);
+
+		$this->core_layouts['contact-us-2'] = array(
+			'name'				=> __('Contact Us #2', 'theme-blvd-layout-builder'),
+			'id'				=> 'contact-us-2',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/contact-us-2/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/contact-us-2/'
 		);
 
 		$this->core_layouts['showcase-blogger'] = array(
