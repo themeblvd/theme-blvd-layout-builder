@@ -3052,28 +3052,24 @@ class Theme_Blvd_Layout_Builder {
 		// $screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
 		// $screen_settings = $screen_options->get_value();
 
-		if ( $type == 'element' || $type == 'block' ) {
+		$options['visibility'] = array(
+	    	'id' 		=> 'visibility',
+			'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
+			'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
+			'type'		=> 'multicheck',
+			'class'		=> 'section-visibility',
+			'options'	=> array(
+				'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'theme-blvd-layout-builder' ),
+				'hide_on_tablet' 	=> __( 'Hide on Tablets', 'theme-blvd-layout-builder' ),
+				'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'theme-blvd-layout-builder' )
+			)
+		);
 
-			$options['visibility'] = array(
-		    	'id' 		=> 'visibility',
-				'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'multicheck',
-				'class'		=> 'section-visibility',
-				'options'	=> array(
-					'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'theme-blvd-layout-builder' ),
-					'hide_on_tablet' 	=> __( 'Hide on Tablets', 'theme-blvd-layout-builder' ),
-					'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'theme-blvd-layout-builder' )
-				)
-			);
-
-			/*
-			if ( empty( $screen_settings['visibility'] ) ) {
-				$options['visibility']['class'] .= ' hide';
-			}
-			*/
-
+		/*
+		if ( empty( $screen_settings['visibility'] ) ) {
+			$options['visibility']['class'] .= ' hide';
 		}
+		*/
 
 		$options['classes'] = array(
 	    	'id' 		=> 'classes',
