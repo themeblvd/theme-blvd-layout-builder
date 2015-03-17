@@ -90,8 +90,12 @@ function themeblvd_builder_layout( $context ) {
 
 			if ( $display ) {
 
-				if ( ( $display['bg_type'] == 'image' || $display['bg_type'] == 'slideshow' ) && ! empty($display['apply_bg_shade']) ) {
+				if ( in_array($display['bg_type'], array('image', 'slideshow', 'video')) && ! empty($display['apply_bg_shade']) ) {
 					printf( '<div class="bg-shade" style="background-color: %s; background-color: %s;"></div>', $display['bg_shade_color'], themeblvd_get_rgb( $display['bg_shade_color'], $display['bg_shade_opacity'] ) );
+				}
+
+				if ( $display['bg_type'] == 'video' && ! empty($display['bg_video']) ) {
+					themeblvd_bg_video( $display['bg_video'] );
 				}
 
 				if ( $display['bg_type'] == 'slideshow' && ! empty($display['bg_slideshow']) ) {

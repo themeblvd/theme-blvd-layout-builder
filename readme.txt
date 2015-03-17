@@ -39,6 +39,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Added options to Content element (for framework 2.5+ themes).
 * Added options to Divider element (for framework 2.5+ themes).
 * Added "Gutters" option to Post Showcase element (for framework 2.5+ themes).
+* Added video background support for sections (for framework 2.5+ themes).
 * Added Revolution Slider element.
 * Removed "Parallax: Stretch Background" option for sections (for framework 2.5+ themes).
 * Modified design of "Business Homepage #2" sample layout (for framework 2.5+ themes).

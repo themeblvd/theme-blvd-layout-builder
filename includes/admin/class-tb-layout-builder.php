@@ -2418,7 +2418,7 @@ class Theme_Blvd_Layout_Builder {
 					'dark'	=> __('Force Dark Text', 'theme-blvd-layout-builder'),
 					'light'	=> __('Force Light Text', 'theme-blvd-layout-builder')
 				),
-				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image receiver-slideshow'
+				'class'		=> 'hide receiver receiver-color receiver-texture receiver-image receiver-slideshow receiver-video'
 			);
 
 			$options['bg_color'] = array(
@@ -2523,12 +2523,20 @@ class Theme_Blvd_Layout_Builder {
 				'type'		=> 'subgroup_end'
 			);
 
+			$options['bg_video'] = array(
+				'id'		=> 'bg_video',
+				'name'		=> __('Background Video', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder'),
+				'type'		=> 'background_video',
+				'class'		=> 'hide receiver receiver-video'
+			);
+
 			// Extended Background options (for section only)
 			if ( $type == 'section' ) {
 
 				$options['subgroup_start_4'] = array(
 					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow'
+					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
 				);
 
 				$options['apply_bg_shade'] = array(
@@ -3185,7 +3193,7 @@ class Theme_Blvd_Layout_Builder {
 	public function add_texture_browser() {
 
 		// Requires Framework 2.5+
-		if ( function_exists( 'themeblvd_icon_browser' ) ) {
+		if ( function_exists( 'themeblvd_texture_browser' ) ) {
 
 			$page = get_current_screen();
 

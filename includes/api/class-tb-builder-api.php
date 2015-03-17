@@ -837,7 +837,7 @@ class Theme_Blvd_Builder_API {
 		    ),
 			'subgroup_start_3' => array(
 		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'cshow-hide column-height'
+		    	'class'		=> 'show-hide column-height'
 		    ),
 		    'height' => array(
 				'id' 		=> 'height',
@@ -6613,7 +6613,7 @@ class Theme_Blvd_Builder_API {
 			'sidebar' => array(
 				'id' 		=> 'sidebar',
 				'name'		=> __( 'Widget Area', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select from your registered widget areas.', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select from your registered widget areas.<em>Note: If your theme contains styling options for "Sidebar Widgets", these will only get applied if you pick a widget areas that is assigned for the Left or Right sidebar location.</em>', 'theme-blvd-layout-builder' ),
 				'type'		=> 'select',
 				'select'	=> 'sidebars_all'
 			)
