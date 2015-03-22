@@ -102,6 +102,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 				$this->admin_page->sample_uri = trailingslashit($samples[$name]['uri']);
 				$this->admin_page->sample_dir = $dir = trailingslashit($samples[$name]['dir']);
+				$this->admin_page->sample_asset_uri = trailingslashit($samples[$name]['assets']);
 				$xml = $dir.'layout.xml';
 				$import = '';
 

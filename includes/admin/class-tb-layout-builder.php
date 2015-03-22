@@ -14,6 +14,7 @@ class Theme_Blvd_Layout_Builder {
 	private $error = '';
 	public $sample_dir = '';
 	public $sample_uri = '';
+	public $sample_asset_uri = '';
 
 	/**
 	 * Constructor.
@@ -879,6 +880,7 @@ class Theme_Blvd_Layout_Builder {
 
 				$this->sample_uri = trailingslashit($samples[$data['sample']]['uri']); // not currently used for anything
 				$this->sample_dir = $dir = trailingslashit($samples[$data['sample']]['dir']);
+				$this->sample_asset_uri = trailingslashit($samples[$data['sample']]['assets']);;
 				$xml = $dir.'layout.xml';
 				$import = '';
 
@@ -1429,6 +1431,10 @@ class Theme_Blvd_Layout_Builder {
 				$val['full'] = $this->sample_img_replace($val['full']);
 			}
 
+		} else if ( isset( $val['mp4'] ) ) {
+
+			// video
+
 		} else if ( is_array($val) ) {
 
 			// sortable image group
@@ -1463,7 +1469,7 @@ class Theme_Blvd_Layout_Builder {
 		$replace = $img[1];
 
 		foreach ( $find as $key => $val ) {
-			$url = sprintf('%s/includes/admin/sample/assets/%s', untrailingslashit(TB_BUILDER_PLUGIN_URI), $replace[$key] );
+			$url = $this->sample_asset_uri . $replace[$key];
 			$str = str_replace( $val, $url, $str );
 		}
 
