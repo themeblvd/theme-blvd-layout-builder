@@ -1065,8 +1065,9 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'dark',
 				'type'		=> 'select',
 				'options'	=> array(
-					'dark'	=> __('Dark Text', 'theme-blvd-layout-builder'),
-					'light'	=> __('Light Text', 'theme-blvd-layout-builder')
+					'none'	=> __('None', 'theme-blvd-layout-builder'),
+					'dark'	=> __('Force Dark Text', 'theme-blvd-layout-builder'),
+					'light'	=> __('Force Light Text', 'theme-blvd-layout-builder')
 				),
 				'class'		=> 'hide receiver receiver-custom'
 			),
@@ -1818,8 +1819,9 @@ class Theme_Blvd_Builder_API {
 				'std'		=> 'dark',
 				'type'		=> 'select',
 				'options'	=> array(
-					'dark'	=> __('Dark Text', 'theme-blvd-layout-builder'),
-					'light'	=> __('Light Text', 'theme-blvd-layout-builder')
+					'none'	=> __('None', 'theme-blvd-layout-builder'),
+					'dark'	=> __('Force Dark Text', 'theme-blvd-layout-builder'),
+					'light'	=> __('Force Light Text', 'theme-blvd-layout-builder')
 				),
 				'class'		=> 'hide receiver receiver-custom'
 			),
