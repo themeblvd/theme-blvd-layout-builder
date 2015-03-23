@@ -1386,6 +1386,7 @@ class Theme_Blvd_Layout_Builder {
 			add_filter( 'themeblvd_sanitize_upload', array( $this, 'sample_option_filter' ) );
 			add_filter( 'themeblvd_sanitize_slider', array( $this, 'sample_option_filter' ) );
 			add_filter( 'themeblvd_sanitize_logos', array( $this, 'sample_option_filter' ) );
+			add_filter( 'themeblvd_sanitize_background_video', array( $this, 'sample_option_filter' ) );
 
 			remove_filter( 'themeblvd_sanitize_slider', 'themeblvd_sanitize_slider' );
 			remove_filter( 'themeblvd_sanitize_logos', 'themeblvd_sanitize_logos' );
@@ -1399,6 +1400,7 @@ class Theme_Blvd_Layout_Builder {
 			remove_filter( 'themeblvd_sanitize_upload', array( $this, 'sample_option_filter' ) );
 			remove_filter( 'themeblvd_sanitize_slider', array( $this, 'sample_option_filter' ) );
 			remove_filter( 'themeblvd_sanitize_logos', array( $this, 'sample_option_filter' ) );
+			remove_filter( 'themeblvd_sanitize_background_video', array( $this, 'sample_option_filter' ) );
 
 			add_filter( 'themeblvd_sanitize_slider', 'themeblvd_sanitize_slider' );
 			add_filter( 'themeblvd_sanitize_logos', 'themeblvd_sanitize_logos' );
@@ -1420,20 +1422,31 @@ class Theme_Blvd_Layout_Builder {
 		if ( is_string($val) ) {
 
 			// text, textarea, simple upload
-			$val = $this->sample_img_replace($val);
+			$val = $this->sample_media_replace($val);
 
 		} else if ( isset( $val['src'] ) ) {
 
 			// complex upload (src)
-			$val['src'] = $this->sample_img_replace($val['src']);
+			$val['src'] = $this->sample_media_replace($val['src']);
 
 			if ( ! empty( $val['full'] ) ) {
-				$val['full'] = $this->sample_img_replace($val['full']);
+				$val['full'] = $this->sample_media_replace($val['full']);
 			}
 
 		} else if ( isset( $val['mp4'] ) ) {
 
-			// video
+			// video background
+			if ( ! empty( $val['mp4'] ) ) {
+				$val['mp4'] = $this->sample_media_replace($val['mp4'], 'video');
+			}
+
+			if ( ! empty( $val['webm'] ) ) {
+				$val['webm'] = $this->sample_media_replace($val['webm'], 'video');
+			}
+
+			if ( ! empty( $val['fallback'] ) ) {
+				$val['fallback'] = $this->sample_media_replace($val['fallback'], 'img');
+			}
 
 		} else if ( is_array($val) ) {
 
@@ -1441,8 +1454,8 @@ class Theme_Blvd_Layout_Builder {
 			foreach ( $val as $key => $item ) {
 				if ( isset($item['src']) && isset($item['thumb']) ) {
 					$val[$key]['id'] = 0;
-					$val[$key]['src'] = $this->sample_img_replace($item['src']);
-					$val[$key]['thumb'] = $this->sample_img_replace($item['thumb']);
+					$val[$key]['src'] = $this->sample_media_replace($item['src']);
+					$val[$key]['thumb'] = $this->sample_media_replace($item['thumb']);
 				} else {
 					unset($val[$key]);
 				}
@@ -1460,9 +1473,10 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 2.0.0
 	 */
-	public function sample_img_replace( $str ) {
+	public function sample_media_replace( $str, $media = 'img' ) {
 
-		$pattern = sprintf( '/%s(.*?)%s/', preg_quote('[img]', '/'), preg_quote('[/img]', '/') );
+		$pattern = sprintf( '/%s(.*?)%s/', preg_quote('['.$media.']', '/'), preg_quote('[/'.$media.']', '/') );
+
 		preg_match_all( $pattern, $str, $img );
 
 		$find = $img[0];
