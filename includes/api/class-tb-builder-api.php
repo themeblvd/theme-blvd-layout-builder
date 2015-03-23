@@ -2074,6 +2074,49 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'trigger'
 			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+		    ),
+			'apply_bg_color'	=> array(
+				'id' 		=> 'apply_bg_color',
+				'name' 		=> null,
+				'desc'		=> __( 'Apply background color to unit.', 'theme-blvd-layout-builder'),
+				'std'		=> '',
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+		    'bg_color' => array(
+				'id' 		=> 'bg_color',
+				'name' 		=> __( 'Background Color', 'theme-blvd-layout-builder'),
+				'desc'		=> __( 'Select a background color for the jumbotron.', 'theme-blvd-layout-builder'),
+				'std'		=> '',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+		    ),
+		    'bg_opacity' => array(
+				'id'		=> 'bg_opacity',
+				'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+		    ),
 		    'buttons' => array(
 				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
@@ -2115,7 +2158,7 @@ class Theme_Blvd_Builder_API {
 					'type'		=> 'textarea'
 			    ),
 			    'wpautop' => array(
-				'id' 		=> 'wpautop',
+					'id' 		=> 'wpautop',
 					'name'		=> __( 'Content Formatting', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'checkbox',
