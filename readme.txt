@@ -43,8 +43,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Added video background support for sections (for framework 2.5+ themes).
 * Added responsive visibility options to columns and sections (for framework 2.5+ themes).
 * Added Revolution Slider element.
-* Removed "Parallax: Stretch Background" option for sections (for framework 2.5+ themes).
-* Modified design of "Business Homepage #2" sample layout (for framework 2.5+ themes).
+* Modified how you can set the background image sizing with parallax backgrounds for sections (for framework 2.5+ themes).
 * Reduced plugin size, by pulling from unified assets directory for sample layouts (for framework 2.5+ themes).
 * Fixed Bug: Importing from a sample layout with a slider would import an extra, empty slide (for framework 2.5+ themes).
 
