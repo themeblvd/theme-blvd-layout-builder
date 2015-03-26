@@ -14,6 +14,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 [vimeo https://vimeo.com/70256816]
 
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes Jump Start 2. For all other themes, [see this video](https://vimeo.com/112649094).*
+
 == Installation ==
 
 1. Upload `theme-blvd-layout-builder` folder to the `/wp-content/plugins/` directory
@@ -22,6 +24,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = Overview =
 
 [vimeo https://vimeo.com/70256816]
+
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes Jump Start 2. For all other themes, [see this video](https://vimeo.com/112649094).*
 
 == Screenshots ==
 
