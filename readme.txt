@@ -14,7 +14,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 [vimeo https://vimeo.com/70256816]
 
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes Jump Start 2. For all other themes, [see this video](https://vimeo.com/112649094).*
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://wpjumpstart.com). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 == Installation ==
 
@@ -35,11 +35,11 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Changelog ==
 
-= 2.0.5 =
+= 2.0.5 - 04/19/2015 =
 
 * Fixed: Errors with inner elements, when duplicating outter "Columns elements" (for framework 2.5+ themes).
 
-= 2.0.4 =
+= 2.0.4 - 03/27/2015 =
 
 * Added new sample layouts, and improved previous ones (for framework 2.5+ themes).
 * Added options to Icon Box element (for framework 2.5+ themes).
@@ -55,13 +55,13 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Reduced plugin size, by pulling from unified assets directory for sample layouts (for framework 2.5+ themes).
 * Fixed Bug: Importing from a sample layout with a slider would import an extra, empty slide (for framework 2.5+ themes).
 
-= 2.0.3 =
+= 2.0.3 - 01/28/2015 =
 
 * Added "Current Featured Image" element.
 * Fixed Bug: "Preview Changes" when inserting current page's content into a custom layout wasn't working right (for framework 2.2-2.4 themes).
 * Fixed Bug: When editing a page, sidebar layout option would disappear when applying elements from Template or Sample Layout (for framework 2.2-2.4 themes).
 
-= 2.0.2 =
+= 2.0.2 - 12/22/2014 =
 
 * Increased limits on Jumbotron font sizes (for framework 2.5+ themes).
 * Fix for using Columns in template footer sync feature (for framework 2.5+ themes).
@@ -71,13 +71,13 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Fix to ensure hidden Builder is only inserted when editing pages, needed for [Theme Blvd Layouts to Posts](https://wordpress.org/plugins/theme-blvd-layouts-to-posts/) plugin to save properly when editing posts.
 * Minor security fixes.
 
-= 2.0.1 =
+= 2.0.1 - 11/19/2014 =
 
 * Removed the "Builder" tab from Edit Page screen for better compatibility with WP's Visual/Text editors; builder now shows above editor.
 * Fixed issues with "Promo Box" (formerly "Slogan") element after last update.
 * Fixed some errors with themes, which aren't up-to-date.
 
-= 2.0.0 =
+= 2.0.0 - 11/17/2014 =
 
 * New interface for editing layouts from the Edit Page screen
 * Complete coding overhaul of the Templates (previously "Builder") admin page
@@ -110,21 +110,21 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 *Note: Currently, the only theme with Theme Blvd Framework 2.5, is the [Jump Start](http://wpjumpstart.com) 2.0 beta. We're currently working on expanding support.*
 
-= 1.2.3 =
+= 1.2.3 - 03/18/2014 =
 
 * Added Jumbotron element (requires Theme Blvd Framework 2.4.2+).
 * Added support for "element-unstyled" CSS class (requires Theme Blvd Framework 2.4.2+).
 
-= 1.2.2 =
+= 1.2.2 - 12/11/2013 =
 
 * Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd Framework 2.4+).
 
-= 1.2.1 =
+= 1.2.1 - 10/11/2013 =
 
 * Added "Screen Options" tab to Builder interface.
 * Added "CSS Classes" advanced option for all elements.
 
-= 1.2.0 =
+= 1.2.0 - 06/31/2013 =
 
 * Added support for WordPress 3.5 media uploader (requires Theme Blvd framework v2.3+).
 * Added support for Theme Blvd framework v2.3's Builder API modifications.
@@ -138,7 +138,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Removed "Tweet" element. Use [Tweeple](http://wordpress.org/extend/plugins/tweeple) instead.
 * Fixed any conflicts when activated with [Theme Blvd Bundle](http://wordpress.org/extend/plugins/theme-blvd-bundle).
 
-= 1.1.0 =
+= 1.1.0 - 03/22/2013 =
 
 * Added Meta Box to apply and edit custom layouts directly from Edit page screen.
 * Added support for "Post Slider" when used with [Theme Blvd Sliders](http://wordpress.org/extend/plugins/theme-blvd-sliders) plugin.
@@ -146,10 +146,10 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Added check so if user designates a "posts page" under Settings > Reading, the homepage custom layout option will not get applied (many people do this by accident).
 * Update requires Theme Blvd framework v2.2.1+.
 
-= 1.0.1 =
+= 1.0.1 - 12/05/12 =
 
 * Fixed issues with applying custom layouts to as homepage from Appearance > Theme Options > Content > Homepage.
 
-= 1.0.0 =
+= 1.0.0 - 09/07/12 =
 
 * This is the first release.
