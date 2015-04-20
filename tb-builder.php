@@ -2,7 +2,7 @@
 /*
 Plugin Name: Theme Blvd Layout Builder
 Description: This plugins gives you a slick interface that ties int the Theme Blvd framework to create custom layouts for your WordPress pages.
-Version: 2.0.4
+Version: 2.0.5
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
@@ -25,7 +25,7 @@ License: GPL2
 
 */
 
-define( 'TB_BUILDER_PLUGIN_VERSION', '2.0.4' );
+define( 'TB_BUILDER_PLUGIN_VERSION', '2.0.5' );
 define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
