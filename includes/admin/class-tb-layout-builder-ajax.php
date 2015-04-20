@@ -381,6 +381,12 @@ class Theme_Blvd_Layout_Builder_Ajax {
 						} else {
 							$blocks[$block_id]['display'] = array();
 						}
+
+						// Move current block to new key, representing a new unique ID
+						$new_block_id = uniqid( 'block_'.rand() );
+						$blocks[$new_block_id] = $blocks[$block_id];
+						unset($blocks[$block_id]);
+
 					}
 				}
 

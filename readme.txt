@@ -37,6 +37,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.5 =
 
+* Fixed: Errors with inner elements, when duplicating outter "Columns elements" (for framework 2.5+ themes).
+
 = 2.0.4 =
 
 * Added new sample layouts, and improved previous ones (for framework 2.5+ themes).
