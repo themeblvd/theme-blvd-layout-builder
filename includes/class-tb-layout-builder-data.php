@@ -478,12 +478,13 @@ class Theme_Blvd_Layout_Builder_Data {
 			return;
 		}
 
-		// If layout is saved after 2.0 of the plugin and v2.5
+		// If layout is saved after 2.0.0 of the plugin and v2.5
 		// of the theme framework, we're good to go.
 		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
 			return;
 		}
 
+		// Updates for going to framework 2.5 and builder 2.0
 		$new = array();
 
 		if ( $sections = get_post_meta( $this->id, '_tb_builder_elements', true ) ) {
@@ -593,28 +594,63 @@ class Theme_Blvd_Layout_Builder_Data {
 						 */
 						case 'jumbotron' :
 
-							$options['text_color'] = '#444444';
+							$options['blocks'] = array();
+
+							if ( ! empty( $options['title'] ) ) {
+								$options['blocks']['block_1'] = array(
+									'text'				=> $options['title'],
+								    'size'				=> '450%',
+								    'color'				=> '#444444',
+								    'apply_bg_color'	=> '0',
+								    'bg_color'			=> '#f2f2f2',
+								    'bg_opacity'		=> '1',
+								    'bold'				=> '0',
+								    'italic'			=> '0',
+								    'caps'				=> '0',
+								    'wpautop'			=> '1'
+								);
+							}
+
+							if ( ! empty( $options['content'] ) ) {
+								$options['blocks']['block_2'] = array(
+									'text'				=> $options['content'],
+								    'size'				=> '150%',
+								    'color'				=> '#444444',
+								    'apply_bg_color'	=> '0',
+								    'bg_color'			=> '#f2f2f2',
+								    'bg_opacity'		=> '1',
+								    'bold'				=> '0',
+								    'italic'			=> '0',
+								    'caps'				=> '0',
+								    'wpautop'			=> '1'
+								);
+							}
+
+							$options['max'] = '';
+							$options['align'] = 'center';
+							$options['apply_bg_color'] = '0';
+							$options['bg_color'] = '#f2f2f2';
+							$options['bg_opacity'] = '1';
+
 							$options['buttons_stack'] = '0';
 							$options['buttons_block'] = '0';
 
+							$options['buttons'] = array();
+
 							if ( ! empty($options['button']) ) {
-								$options['buttons'] = array(
-							        'btn_1' => array(
-										'color' 		=> $options['button_color'],
-										'custom' 		=> array(),
-										'text'			=> $options['button_text'],
-										'size'			=> $options['button_size'],
-										'url'			=> $options['button_url'],
-										'target'		=> $options['button_target'],
-										'icon_before'	=> '',
-										'icon_after'	=> ''
-									)
+								$options['buttons']['btn_1'] = array(
+									'color' 		=> $options['button_color'],
+									'custom' 		=> array(),
+									'text'			=> $options['button_text'],
+									'size'			=> $options['button_size'],
+									'url'			=> $options['button_url'],
+									'target'		=> $options['button_target'],
+									'icon_before'	=> '',
+									'icon_after'	=> ''
 								);
-							} else {
-								$options['buttons'] = array();
 							}
 
-							unset( $options['button'], $options['button_text'], $options['button_color'], $options['button_size'], $options['button_url'], $options['button_target'] );
+							unset( $options['title'], $options['content'], $options['button'], $options['button_text'], $options['button_color'], $options['button_size'], $options['button_url'], $options['button_target'] );
 
 							break;
 

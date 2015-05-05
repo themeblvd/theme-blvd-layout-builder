@@ -1743,7 +1743,7 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'bg_color',
 				'name' 		=> __( 'Background Color', 'theme-blvd-layout-builder'),
 				'desc'		=> __( 'Select a background color for the jumbotron.', 'theme-blvd-layout-builder'),
-				'std'		=> '',
+				'std'		=> '#f2f2f2',
 				'type'		=> 'color',
 				'class'		=> 'hide receiver'
 		    ),
