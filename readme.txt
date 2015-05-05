@@ -37,6 +37,9 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.6 - XX/XX/2015 =
 
+* Renamed "Jumbotron" to "Hero Unit".
+* Improvements to Hero Unit (for framework 2.5+ themes).
+
 = 2.0.5 - 04/19/2015 =
 
 * Fixed: Errors with inner elements, when duplicating outter "Columns elements" (for framework 2.5+ themes).

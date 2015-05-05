@@ -91,6 +91,7 @@ class Theme_Blvd_Layout_Builder {
 			$advanced->create('social_media');
 			$advanced->create('tabs');
 			$advanced->create('testimonials');
+			$advanced->create('text_blocks');
 			$advanced->create('toggles');
 		}
 
