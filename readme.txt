@@ -39,6 +39,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 * Renamed "Jumbotron" to "Hero Unit".
 * Improvements to Hero Unit (for framework 2.5+ themes).
+* Added more button size selections elements with buttons (for framework 2.5+ themes).
 
 = 2.0.5 - 04/19/2015 =
 

@@ -4589,7 +4589,9 @@ class Theme_Blvd_Builder_API {
 					'small' 	=> __( 'Small', 'theme-blvd-layout-builder' ),
 					'default' 	=> __( 'Normal', 'theme-blvd-layout-builder' ),
 					'large' 	=> __( 'Large', 'theme-blvd-layout-builder' ),
-					'x-large' 	=> __( 'Extra Large', 'theme-blvd-layout-builder' )
+					'x-large' 	=> __( 'X-Large', 'theme-blvd-layout-builder' ),
+					'xx-large' 	=> __( 'XX-Large', 'theme-blvd-layout-builder' ),
+					'xxx-large' => __( 'XXX-Large', 'theme-blvd-layout-builder' )
 				),
 				'class'		=> 'hide receiver receiver-button'
 			),
@@ -5102,7 +5104,9 @@ class Theme_Blvd_Builder_API {
 					'small' 	=> __( 'Small', 'theme-blvd-layout-builder' ),
 					'default' 	=> __( 'Normal', 'theme-blvd-layout-builder' ),
 					'large' 	=> __( 'Large', 'theme-blvd-layout-builder' ),
-					'x-large' 	=> __( 'Extra Large', 'theme-blvd-layout-builder' )
+					'x-large' 	=> __( 'X-Large', 'theme-blvd-layout-builder' ),
+					'xx-large' 	=> __( 'XX-Large', 'theme-blvd-layout-builder' ),
+					'xxx-large' => __( 'XXX-Large', 'theme-blvd-layout-builder' )
 				),
 				'class'		=> 'hide receiver receiver-button'
 			),
@@ -5501,7 +5505,9 @@ class Theme_Blvd_Builder_API {
 					'small' 	=> __( 'Small', 'theme-blvd-layout-builder' ),
 					'default' 	=> __( 'Normal', 'theme-blvd-layout-builder' ),
 					'large' 	=> __( 'Large', 'theme-blvd-layout-builder' ),
-					'x-large' 	=> __( 'Extra Large', 'theme-blvd-layout-builder' )
+					'x-large' 	=> __( 'X-Large', 'theme-blvd-layout-builder' ),
+					'xx-large' 	=> __( 'XX-Large', 'theme-blvd-layout-builder' ),
+					'xxx-large' => __( 'XXX-Large', 'theme-blvd-layout-builder' )
 				)
 			),
 			'button_placement' => array(
