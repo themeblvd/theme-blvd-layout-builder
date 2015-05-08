@@ -1693,6 +1693,32 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'blocks',
 				'name'		=> __( 'Content', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
+				'std'		=> array(
+					'block_1' => array(
+						'text'				=> __('Hero Unit Title', 'theme-blvd-layout-builder'),
+				        'size'				=> '450%',
+				        'color'				=> '#444444',
+				        'apply_bg_color'	=> '0',
+				        'bg_color'			=> '#f2f2f2',
+				        'bg_opacity'		=> '1',
+				        'bold'				=> '1',
+				        'italic'			=> '0',
+				        'caps'				=> '0',
+				        'wpautop'			=> '1'
+					),
+					'block_2' => array(
+						'text'				=> 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+				        'size'				=> '150%',
+				        'color'				=> '#444444',
+				        'apply_bg_color'	=> '0',
+				        'bg_color'			=> '#f2f2f2',
+				        'bg_opacity'		=> '1',
+				        'bold'				=> '0',
+				        'italic'			=> '0',
+				        'caps'				=> '0',
+				        'wpautop'			=> '1'
+					)
+				),
 				'type'		=> 'text_blocks'
 			),
 		    'text_align' => array(
@@ -1774,6 +1800,18 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
+				'std'		=> array(
+					'btn_1' => array(
+						'color' 		=> 'default',
+					    'custom' 		=> array(),
+					    'text'			=> __('Get Started', 'theme-blvd-layout-builder'),
+					    'size'			=> 'xx-large',
+					    'url'			=> '',
+					    'target'		=> '_self',
+					    'icon_before'	=> '',
+					    'icon_after'	=> ''
+					)
+				),
 				'type'		=> 'buttons'
 			),
 			'buttons_stack' => array(
