@@ -349,10 +349,26 @@ class Theme_Blvd_Layout_Builder_Data {
 						'border_bottom_color'			=> '#dddddd',
 						'border_bottom_width'			=> '1px',
 						'apply_padding'					=> 0,
-						'padding_top'					=> '30px',
-						'padding_right'					=> '30px',
-						'padding_bottom'				=> '30px',
-						'padding_left'					=> '30px',
+						'padding_top'					=> '60px',
+						'padding_right'					=> '0px',
+						'padding_bottom'				=> '60px',
+						'padding_left'					=> '0px',
+						'apply_padding_tablet'			=> 0,
+						'padding_top_tablet'			=> '60px',
+						'padding_right_tablet'			=> '0px',
+						'padding_bottom_tablet'			=> '60px',
+						'padding_left_tablet'			=> '0px',
+						'apply_padding_mobile'			=> 0,
+						'padding_top_mobile'			=> '60px',
+						'padding_right_mobile'			=> '0px',
+						'padding_bottom_mobile'			=> '60px',
+						'padding_left_mobile'			=> '0px',
+						'hide'							=> array(
+							'xs' 			=> 0,
+							'sm' 			=> 0,
+							'md' 			=> 0,
+							'lg' 			=> 0
+						),
 						'classes'						=> ''
 					)
 				);
@@ -421,10 +437,11 @@ class Theme_Blvd_Layout_Builder_Data {
 						'bg_content'		=> '0',
 						'suck_up'			=> '0',
 						'suck_down'			=> '0',
-						'visibility'		=> array(
-					        'hide_on_standard'	=> '0',
-					        'hide_on_tablet' 	=> '0',
-					        'hide_on_mobile' 	=> '0'
+						'hide'				=> array(
+							'xs' => 0,
+							'sm' => 0,
+							'md' => 0,
+							'lg' => 0
 						),
 						'classes' 			=> ''
 					);
@@ -432,7 +449,20 @@ class Theme_Blvd_Layout_Builder_Data {
 					// Move responsive visibility settings from element options to
 					// new display options.
 					if ( isset( $element['options']['visibility'] ) ) {
-						$element['display']['visibility'] = $element['options']['visibility'];
+
+						if ( ! empty( $element['options']['visibility']['hide_on_standard'] ) ) {
+							$element['display']['hide']['md'] = 1;
+							$element['display']['hide']['lg'] = 1;
+						}
+
+						if ( ! empty( $element['options']['visibility']['hide_on_tablet'] ) ) {
+							$element['display']['hide']['sm'] = 1;
+						}
+
+						if ( ! empty( $element['options']['visibility']['hide_on_mobile'] ) ) {
+							$element['display']['hide']['xs'] = 1;
+						}
+
 						unset( $element['options']['visibility'] );
 					}
 

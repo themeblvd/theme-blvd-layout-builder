@@ -3073,18 +3073,21 @@ class Theme_Blvd_Layout_Builder {
 		// $screen_options = Theme_Blvd_Layout_Builder_Screen::get_instance();
 		// $screen_settings = $screen_options->get_value();
 
-		$options['visibility'] = array(
-	    	'id' 		=> 'visibility',
-			'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
-			'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
-			'type'		=> 'multicheck',
-			'class'		=> 'section-visibility',
-			'options'	=> array(
-				'hide_on_standard' 	=> __( 'Hide on Standard Resolutions', 'theme-blvd-layout-builder' ),
-				'hide_on_tablet' 	=> __( 'Hide on Tablets', 'theme-blvd-layout-builder' ),
-				'hide_on_mobile' 	=> __( 'Hide on Mobile Devices', 'theme-blvd-layout-builder' )
-			)
-		);
+		if ( $type != 'column' ) {
+			$options['hide'] = array(
+		    	'id' 		=> 'hide',
+				'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'multicheck',
+				'class'		=> 'section-visibility',
+				'options'	=> array(
+					'xs'	=> __('Hide on phones', 'theme-blvd-layout-builder'),
+					'sm'	=> __('Hide on tablets', 'theme-blvd-layout-builder'),
+					'md'	=> __('Hide on small desktops', 'theme-blvd-layout-builder'),
+					'lg'	=> __('Hide on large desktops', 'theme-blvd-layout-builder')
+				)
+			);
+		}
 
 		/*
 		if ( empty( $screen_settings['visibility'] ) ) {

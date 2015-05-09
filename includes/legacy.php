@@ -93,7 +93,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			$classes .= ' '.$element['options']['classes'];
 		}
 		if ( isset( $element['options']['visibility'] ) ) {
-			$classes .= themeblvd_responsive_visibility_class( $element['options']['visibility'], true );
+			$classes .= ' '.themeblvd_responsive_visibility_class( $element['options']['visibility'] );
 		}
 		$classes .= themeblvd_get_classes( 'element_'.$element['type'], true, false, $element['type'], $element['options'], $location );
 
