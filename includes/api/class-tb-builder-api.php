@@ -1696,7 +1696,7 @@ class Theme_Blvd_Builder_API {
 				'std'		=> array(
 					'block_1' => array(
 						'text'				=> __('Hero Unit Title', 'theme-blvd-layout-builder'),
-				        'size'				=> '450%',
+				        'size'				=> '350%',
 				        'color'				=> '#444444',
 				        'apply_bg_color'	=> '0',
 				        'bg_color'			=> '#f2f2f2',
