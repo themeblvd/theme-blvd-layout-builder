@@ -6847,6 +6847,22 @@ class Theme_Blvd_Builder_API {
 			'assets'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/assets/'
 		);
 
+		$this->core_layouts['shop-homepage-1'] = array(
+			'name'				=> __('Shop Homepage #1', 'theme-blvd-layout-builder'),
+			'id'				=> 'shop-homepage-1',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/shop-homepage-1/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/shop-homepage-1/',
+			'assets'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/assets/'
+		);
+
+		$this->core_layouts['shop-homepage-2'] = array(
+			'name'				=> __('Shop Homepage #2', 'theme-blvd-layout-builder'),
+			'id'				=> 'shop-homepage-2',
+			'dir'				=> TB_BUILDER_PLUGIN_DIR . '/includes/admin/sample/shop-homepage-2/',
+			'uri'				=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/shop-homepage-2/',
+			'assets'			=> TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/assets/'
+		);
+
 		$this->core_layouts['showcase-blogger'] = array(
 			'name'				=> __('Showcase Blogger', 'theme-blvd-layout-builder'),
 			'id'				=> 'showcase-blogger',
