@@ -1796,13 +1796,29 @@ class Theme_Blvd_Builder_API {
 			'subgroup_end' => array(
 				'type'		=> 'subgroup_end'
 		    ),
+			'subgroup_start_2' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+		    ),
 			'height_100vh'	=> array(
 				'id' 		=> 'height_100vh',
 				'name' 		=> null,
-				'desc'		=> __( 'Match height to viewport.', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Match height to viewport.', 'theme-blvd-layout-builder'),
 				'std'		=> '',
-				'type'		=> 'checkbox'
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
 			),
+			'section_jump'	=> array(
+				'id' 		=> 'section_jump',
+				'name' 		=> null,
+				'desc'		=> __('Add button that leads to next section.', 'theme-blvd-layout-builder'),
+				'std'		=> '',
+				'type'		=> 'checkbox',
+				'class'		=> 'receiver hide'
+			),
+			'subgroup_end_2' => array(
+				'type'		=> 'subgroup_end'
+		    ),
 		    'buttons' => array(
 				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
