@@ -1796,6 +1796,13 @@ class Theme_Blvd_Builder_API {
 			'subgroup_end' => array(
 				'type'		=> 'subgroup_end'
 		    ),
+			'height_100vh'	=> array(
+				'id' 		=> 'height_100vh',
+				'name' 		=> null,
+				'desc'		=> __( 'Match height to viewport.', 'theme-blvd-layout-builder'),
+				'std'		=> '',
+				'type'		=> 'checkbox'
+			),
 		    'buttons' => array(
 				'id' 		=> 'buttons',
 				'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
