@@ -304,10 +304,10 @@ function themeblvd_builder_styles() {
 
 						switch ( $type ) {
 							case 'desktop' :
-								$section_print .= "@media (min-width: 993px) {\n";
+								$section_print .= "@media (min-width: 992px) {\n";
 								break;
 							case 'tablet' :
-								$section_print .= "@media (max-width: 992px) and (min-width: 768px) {\n";
+								$section_print .= "@media (max-width: 991px) and (min-width: 768px) {\n";
 								break;
 							case 'mobile' :
 								$section_print .= "@media (max-width: 767px) {\n";
