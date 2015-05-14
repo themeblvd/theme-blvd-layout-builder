@@ -280,6 +280,7 @@ function themeblvd_builder_styles() {
 	foreach ( $layouts as $location => $post_id ) {
 
 		$sections = get_post_meta( $post_id, '_tb_builder_sections', true );
+		$count = 1;
 
 		if ( $sections ) {
 			foreach ( $sections as $section_id => $section ) {
@@ -289,8 +290,30 @@ function themeblvd_builder_styles() {
 				$styles = themeblvd_get_display_inline_style( $section['display'], 'external' );
 
 				if ( $styles ) {
-
 					foreach ( $styles as $type => $params ) {
+
+						// Add extra top padding for transparent "suck up" header, if first section
+						if ( $location == 'main' && $count == 1 && themeblvd_config('suck_up') ) {
+
+							if ( $type == 'desktop' || $type == 'tablet' ) {
+
+								if ( $type == 'tablet' ) {
+									$top = intval(themeblvd_config('top_height_tablet'));
+								} else {
+									$top = intval(themeblvd_config('top_height'));
+								}
+
+								if ( empty( $params['padding-top'] ) ) { // user didn't set custom padding
+									$top = $top + 60; // themelvd.css default top padding for section is 60
+								} else {
+									$top = $top + intval($params['padding-top']);
+								}
+
+								$params['padding-top'] = strval($top).'px';
+
+							}
+
+						}
 
 						if ( ! $params ) {
 							continue;
@@ -327,28 +350,28 @@ function themeblvd_builder_styles() {
 						$section_print .= $indent."}\n";
 
 						// Add modified styles for any popout elements when section has custom padding
-						if ( ! empty($params['padding-right']) || ! empty($params['padding-left']) ) {
+						if ( ( ! empty($params['padding-right']) && $params['padding-right'] != '0px' ) || ( ! empty($params['padding-left']) && $params['padding-left'] != '0px' ) ) {
 
 							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout {\n", $location, $section_id);
 
-							if ( ! empty($params['padding-right']) ) {
+							if ( ! empty($params['padding-right']) && $params['padding-right'] != '0px' ) {
 								$section_print .= $indent.sprintf("\tmargin-right: -%s;\n", $params['padding-right']);
 							}
 
-							if ( ! empty($params['padding-left']) ) {
+							if ( ! empty($params['padding-left']) && $params['padding-left'] != '0px' ) {
 								$section_print .= $indent.sprintf("\tmargin-left: -%s;\n", $params['padding-left']);
 							}
 
 							$section_print .= $indent."}\n";
 						}
 
-						if ( ! empty($params['padding-top']) ) {
+						if ( ! empty($params['padding-top']) && $params['padding-top'] != '0px' ) {
 							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout.first {\n", $location, $section_id);
 							$section_print .= $indent.sprintf("\tmargin-top: -%s;\n", $params['padding-top']);
 							$section_print .= $indent."}\n";
 						}
 
-						if ( ! empty($params['padding-bottom']) ) {
+						if ( ! empty($params['padding-bottom']) && $params['padding-bottom'] != '0px' ) {
 							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout.last {\n", $location, $section_id);
 							$section_print .= $indent.sprintf("\tmargin-bottom: -%s;\n", $params['padding-bottom']);
 							$section_print .= $indent."}\n";
@@ -359,6 +382,35 @@ function themeblvd_builder_styles() {
 						}
 
 					}
+				}
+
+				// If this is the first section of a page's layout and using transparent,
+				// header, look to see if first element uses the match to viewport height
+				// feature. If yes, then we'll zero out the padding when the viewport is
+				// larger than 992 x 500.
+				if ( $count == 1 && $location == 'main' && themeblvd_config('suck_up') ) {
+
+					$elements = get_post_meta( $post_id, '_tb_builder_elements', true );
+
+					$id = $section_id;
+
+					if ( $id == 'section_primary' ) {
+						$id = 'primary';
+					}
+
+				    if ( ! empty($elements[$id]) ) {
+
+						$first = current($elements[$id]);
+
+						if ( in_array('height-100vh', themeblvd_get_element_class($first) ) ) {
+							$section_print .= "@media (min-width: 992px) and (min-height: 500px) {\n";
+							$section_print .= sprintf("\t#custom-%s > .%s { /* First element is set to match viewport height w/suck up header */\n", $location, $section_id);
+							$section_print .= "\t\tpadding-top: 0;\n";
+							$section_print .= "\t\tpadding-bottom: 0;\n";
+							$section_print .= "\t}\n";
+							$section_print .= "}\n";
+						}
+				    }
 
 				}
 
@@ -367,9 +419,10 @@ function themeblvd_builder_styles() {
 					$print .= $section_print;
 				}
 
+				$count++;
 			}
-		}
 
+		}
 	}
 
 	// Print after style.css
