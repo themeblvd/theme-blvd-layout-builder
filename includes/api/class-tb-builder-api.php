@@ -827,8 +827,9 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'select',
 				'std'		=> 'md',
 				'options'	=> array(
-					'md'		=> __('Tablet (992px and below)', 'theme-blvd-layout-builder'),
-					'sm'		=> __('Mobile (767px and below)', 'theme-blvd-layout-builder'),
+					'lg'		=> __('Small Desktops (below 1200px)', 'theme-blvd-layout-builder'),
+					'md'		=> __('Tablet (below 992px)', 'theme-blvd-layout-builder'),
+					'sm'		=> __('Mobile (below 768px)', 'theme-blvd-layout-builder'),
 					'xs'		=> __('Never stack', 'theme-blvd-layout-builder')
 				),
 			),

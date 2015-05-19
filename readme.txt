@@ -42,6 +42,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 * Allow layout's first section padding to adjust automatically to height of theme header, when displaying "Transparent Header" (for framework 2.5+ themes).
 * Added more button size selections elements with buttons (for framework 2.5+ themes).
 * Added two shop homepage sample layouts for use with WooCommerce (for framework 2.5+ themes).
+* Added "Small Desktops" breakpoint for Columns element (for framework 2.5+ themes).
 
 = 2.0.5 - 04/19/2015 =
 
