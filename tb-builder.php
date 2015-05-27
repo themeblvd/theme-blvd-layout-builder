@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Theme Blvd Layout Builder
-Description: This plugins gives you a slick interface that ties int the Theme Blvd framework to create custom layouts for your WordPress pages.
+Description: When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 Version: 2.0.6
 Author: Theme Blvd
 Author URI: http://themeblvd.com
