@@ -1852,6 +1852,175 @@ class Theme_Blvd_Builder_API {
 			)
 		);
 
+		// Modified options for Jump Start dev versions
+		// @TODO Eventually we can remove this
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '==' ) ) {
+
+			$theme = wp_get_theme( get_template() );
+
+			if ( $theme->get('Name') == 'Jump Start' && in_array( $theme->get('Version'), array('2.0.0-beta1', '2.0.0-beta2', '2.0.0-beta3', '2.0.0-RC1') ) ) {
+
+				$this->core_elements['jumbotron']['options'] = array(
+					'title' => array(
+						'id' 		=> 'title',
+						'name' 		=> __( 'Title', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Enter the text you\'d like to show for a title.', 'theme-blvd-layout-builder'),
+						'type'		=> 'text'
+				    ),
+					'content' => array(
+						'id' 		=> 'content',
+						'name' 		=> __( 'Content', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Enter in the content you\'d like to show. You may use basic HTML, and most shortcodes.', 'theme-blvd-layout-builder'),
+						'std'		=> '',
+						'type'		=> 'textarea',
+						'editor'	=> true,
+						'code'		=> 'html',
+						'class'		=> 'full-width'
+				    ),
+				    'wpautop' => array(
+						'id' 		=> 'wpautop',
+						'name'		=> __( 'Content Formatting', 'theme-blvd-layout-builder' ),
+						'desc'		=> __( 'Apply WordPress automatic formatting to above content.', 'theme-blvd-layout-builder' ),
+						'type'		=> 'checkbox',
+						'std'		=> '1'
+					),
+					'title_size' => array(
+						'id' 		=> 'title_size',
+						'name' 		=> __( 'Title Size', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select the size of the title text.', 'theme-blvd-layout-builder'),
+						'std'		=> '30px',
+						'type'		=> 'slide',
+						'options'	=> array(
+							'units'	=> 'px',
+							'min'	=> '10',
+							'max'	=> '150',
+							'step'	=> '1'
+						)
+				    ),
+					'title_color' => array(
+						'id' 		=> 'title_color',
+						'name' 		=> __( 'Title Color', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select a text color for the title text.', 'theme-blvd-layout-builder'),
+						'std'		=> '#444444',
+						'type'		=> 'color'
+					),
+					'text_size' => array(
+						'id' 		=> 'text_size',
+						'name' 		=> __( 'Text Size', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select the size of the content text.', 'theme-blvd-layout-builder'),
+						'std'		=> '18px',
+						'type'		=> 'slide',
+						'options'	=> array(
+							'units'	=> 'px',
+							'min'	=> '10',
+							'max'	=> '150',
+							'step'	=> '1'
+						)
+				    ),
+					'text_color' => array(
+						'id' 		=> 'text_color',
+						'name' 		=> __( 'Text Color', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select a text color for the content text.', 'theme-blvd-layout-builder'),
+						'std'		=> '#444444',
+						'type'		=> 'color'
+					),
+				    'text_align' => array(
+						'id' 		=> 'text_align',
+						'name' 		=> __( 'Text Alignment', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select how you\'d like the text within the unit aligned.', 'theme-blvd-layout-builder'),
+						'std'		=> 'center',
+						'type'		=> 'select',
+						'options'	=> array(
+							'left' 		=> __( 'Left', 'theme-blvd-layout-builder' ),
+							'right' 	=> __( 'Right', 'theme-blvd-layout-builder' ),
+							'center' 	=> __( 'Center', 'theme-blvd-layout-builder' )
+						)
+				    ),
+					'max' => array(
+						'id' 		=> 'max',
+						'name'		=> __( 'Maximum Width', 'theme-blvd-layout-builder' ),
+						'desc'		=> __( 'If you\'d like to limit the width of the unit, give it a maximum width in pixels or as a percentage.<br>Ex: 400px, 50%, etc.', 'theme-blvd-layout-builder' ),
+						'std'		=> '',
+						'type'		=> 'text'
+					),
+					'align' => array(
+						'name' 		=> __( 'Unit Alignment', 'themeblvd_shortcodes' ),
+						'desc' 		=> __( 'If you\'ve set a maximum width, how you\'d like to align the entire unit on the page.', 'themeblvd_shortcodes' ),
+						'id' 		=> 'align',
+						'std' 		=> 'center',
+						'type' 		=> 'select',
+						'options' 	=> array(
+							'left' 		=> __('Left', 'theme-blvd-layout-builder'),
+							'right' 	=> __('Right', 'theme-blvd-layout-builder'),
+							'center' 	=> __('Center', 'theme-blvd-layout-builder')
+						),
+						'class'		=> 'trigger'
+					),
+					'subgroup_start' => array(
+						'type'		=> 'subgroup_start',
+						'class'		=> 'show-hide'
+				    ),
+					'apply_bg_color'	=> array(
+						'id' 		=> 'apply_bg_color',
+						'name' 		=> null,
+						'desc'		=> __( 'Apply background color to unit.', 'theme-blvd-layout-builder'),
+						'std'		=> '',
+						'type'		=> 'checkbox',
+						'class'		=> 'trigger'
+					),
+				    'bg_color' => array(
+						'id' 		=> 'bg_color',
+						'name' 		=> __( 'Background Color', 'theme-blvd-layout-builder'),
+						'desc'		=> __( 'Select a background color for the jumbotron.', 'theme-blvd-layout-builder'),
+						'std'		=> '',
+						'type'		=> 'color',
+						'class'		=> 'hide receiver'
+				    ),
+				    'bg_opacity' => array(
+						'id'		=> 'bg_opacity',
+						'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
+						'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
+						'std'		=> '1',
+						'type'		=> 'select',
+						'options'	=> array(
+							'0.1'	=> '0.1',
+							'0.2'	=> '0.2',
+							'0.3'	=> '0.3',
+							'0.4'	=> '0.4',
+							'0.5'	=> '0.5',
+							'0.6'	=> '0.6',
+							'0.7'	=> '0.7',
+							'0.8'	=> '0.8',
+							'0.9'	=> '0.9',
+							'1'		=> '1.0'
+						),
+						'class'		=> 'hide receiver'
+					),
+					'subgroup_end' => array(
+						'type'		=> 'subgroup_end'
+				    ),
+				    'buttons' => array(
+						'id' 		=> 'buttons',
+						'name'		=> __( 'Buttons (optional)', 'theme-blvd-layout-builder' ),
+						'desc'		=> null,
+						'type'		=> 'buttons'
+					),
+					'buttons_stack' => array(
+						'id' 		=> 'buttons_stack',
+						'name'		=> null,
+						'desc'		=> __('Stack buttons on top of each other (if multiple buttons).', 'theme-blvd-layout-builder'),
+						'type'		=> 'checkbox'
+					),
+					'buttons_block' => array(
+						'id' 		=> 'buttons_block',
+						'name'		=> null,
+						'desc'		=> __('Display buttons as block-level elements (will also result in stacking).', 'theme-blvd-layout-builder'),
+						'type'		=> 'checkbox'
+					)
+				);
+			}
+		}
+
 		// Modified options for older themes
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 			$this->core_elements['jumbotron']['options'] = array(
