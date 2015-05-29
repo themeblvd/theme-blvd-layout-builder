@@ -35,7 +35,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Changelog ==
 
-= 2.0.6 - XX/XX/2015 =
+= 2.0.6 - 05/29/2015 =
 
 * Renamed "Jumbotron" to "Hero Unit".
 * Improvements to Hero Unit (for framework 2.5+ themes).
