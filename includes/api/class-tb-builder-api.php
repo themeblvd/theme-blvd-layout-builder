@@ -252,6 +252,7 @@ class Theme_Blvd_Builder_API {
 	 */
 	private function set_core_elements() {
 
+		$theme = wp_get_theme( get_template() );
 		$this->core_elements = array();
 
 		/*--------------------------------------------*/
@@ -510,6 +511,18 @@ class Theme_Blvd_Builder_API {
 					'hide' 		=> __( 'Hide meta info', 'theme-blvd-layout-builder' )
 				)
 			),
+			'sub_meta' => array(
+				'name' 		=> __( 'Sub Meta Information', 'theme-blvd-layout-builder' ),
+				'desc' 		=> __( 'Select if you\'d like the sub meta information (like categories, tags, etc) to show below each post.', 'theme-blvd-layout-builder' ),
+				'id' 		=> 'sub_meta',
+				'std' 		=> 'default',
+				'type' 		=> 'select',
+				'options' 	=> array(
+					'default'	=> __( 'Use default blog display setting', 'theme-blvd-layout-builder' ),
+					'show'		=> __( 'Show sub meta info', 'theme-blvd-layout-builder' ),
+					'hide' 		=> __( 'Hide sub meta info', 'theme-blvd-layout-builder' )
+				)
+			),
 			'content' => array(
 				'id' 		=> 'content',
 				'name' 		=> __( 'Show excerpts of full content?', 'theme-blvd-layout-builder' ), /* Required by Framework */
@@ -523,6 +536,14 @@ class Theme_Blvd_Builder_API {
 				)
 			)
 		);
+
+		// Modified options for Jump Start dev versions
+		// @TODO Eventually we can remove this
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '==' ) ) {
+			if ( $theme->get('Name') == 'Jump Start' && in_array( $theme->get('Version'), array('2.0.0-beta1', '2.0.0-beta2', '2.0.0-beta3', '2.0.0-RC1') ) ) {
+				unset($this->core_elements['blog']['options']['sub_meta']);
+			}
+		}
 
 		/*--------------------------------------------*/
 		/* Breadcrumbs
@@ -1855,8 +1876,6 @@ class Theme_Blvd_Builder_API {
 		// Modified options for Jump Start dev versions
 		// @TODO Eventually we can remove this
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '==' ) ) {
-
-			$theme = wp_get_theme( get_template() );
 
 			if ( $theme->get('Name') == 'Jump Start' && in_array( $theme->get('Version'), array('2.0.0-beta1', '2.0.0-beta2', '2.0.0-beta3', '2.0.0-RC1') ) ) {
 
