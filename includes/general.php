@@ -402,6 +402,20 @@ function themeblvd_builder_styles() {
 
 						$first = current($elements[$id]);
 
+						if ( $first['type'] == 'jumbotron' || $first['type'] == 'jumbotron_slider' && ! empty($first['display']['apply_popout']) ) {
+
+							$section_print .= "#custom-main > .section_primary > .element.popout.first .jumbotron-outer {\n";
+							$section_print .= sprintf("\tpadding-top: %spx;\n", intval(themeblvd_config('top_height')) + 60);
+							$section_print .= "}\n";
+
+							$section_print .= "@media (max-width: 991px) {\n";
+							$section_print .= "\t#custom-main > .section_primary > .element.popout.first .jumbotron-outer {\n";
+							$section_print .= sprintf("\t\tpadding-top: %spx;\n", intval(themeblvd_config('top_height_tablet')) + 60);
+							$section_print .= "\t}\n";
+							$section_print .= "}\n";
+
+						}
+
 						if ( in_array('height-100vh', themeblvd_get_element_class($first) ) ) {
 							$section_print .= "@media (min-width: 992px) and (min-height: 500px) {\n";
 							$section_print .= sprintf("\t#custom-%s > .%s { /* First element is set to match viewport height w/suck up header */\n", $location, $section_id);
