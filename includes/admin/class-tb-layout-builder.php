@@ -2497,7 +2497,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_texture_parallax'] = array(
 				'id'		=> 'bg_texture_parallax',
 				'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the intensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
 				'type'		=> 'slide',
 				'std'		=> '5',
 				'options'	=> array(

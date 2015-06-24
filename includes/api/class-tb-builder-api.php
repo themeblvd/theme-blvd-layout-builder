@@ -1743,6 +1743,162 @@ class Theme_Blvd_Builder_API {
 				),
 				'type'		=> 'text_blocks'
 			),
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide-toggle'
+		    ),
+			'bg_type' => array(
+				'id'		=> 'bg_type',
+				'name'		=> __('Outer Background', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select if you\'d like to apply a custom background around the outer wrap of the unit.', 'theme-blvd-layout-builder'),
+				'std'		=> 'none',
+				'type'		=> 'select',
+				'options'	=> themeblvd_get_bg_types('jumbotron'),
+				'class'		=> 'trigger'
+			),
+			'bg_color' => array(
+			    'id'		=> 'bg_color',
+			    'name'		=> __('Background Color', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select a background color.', 'theme-blvd-layout-builder'),
+			    'std'		=> '#f8f8f8',
+			    'type'		=> 'color',
+			    'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			),
+			'bg_color_opacity' => array(
+			    'id'		=> 'bg_color_opacity',
+			    'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
+			    'std'		=> '1',
+			    'type'		=> 'select',
+			    'options'	=> array(
+			        '0.1'	=> '0.1',
+			        '0.2'	=> '0.2',
+			        '0.3'	=> '0.3',
+			        '0.4'	=> '0.4',
+			        '0.5'	=> '0.5',
+			        '0.6'	=> '0.6',
+			        '0.7'	=> '0.7',
+			        '0.8'	=> '0.8',
+			        '0.9'	=> '0.9',
+			        '1'		=> '1.0'
+			    ),
+			    'class'		=> 'hide receiver receiver-color receiver-texture receiver-image'
+			),
+			'bg_texture' => array(
+			    'id'		=> 'bg_texture',
+			    'name'		=> __('Background Texture', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select a background texture.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'select',
+			    'select'	=> 'textures',
+			    'class'		=> 'hide receiver receiver-texture'
+			),
+			'subgroup_start_2' => array(
+			    'type'		=> 'subgroup_start',
+			    'class'		=> 'show-hide hide receiver receiver-texture'
+			),
+			'apply_bg_texture_parallax' => array(
+			    'id'		=> 'apply_bg_texture_parallax',
+			    'name'		=> null,
+			    'desc'		=> __('Apply parallax scroll effect to background texture.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'checkbox',
+			    'class'		=> 'trigger'
+			),
+			'bg_texture_parallax' => array(
+			    'id'		=> 'bg_texture_parallax',
+			    'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select the intensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'slide',
+			    'std'		=> '5',
+			    'options'	=> array(
+			        'min'	=> '1',
+			        'max'	=> '10',
+			        'step'	=> '1'
+			    ),
+			    'class'		=> 'hide receiver'
+			),
+			'subgroup_end_2' => array(
+			    'type'		=> 'subgroup_end'
+			),
+			'subgroup_start_3' => array(
+			    'type'		=> 'subgroup_start',
+			    'class'		=> 'select-parallax hide receiver receiver-image'
+			),
+			'bg_image' => array(
+			    'id'		=> 'bg_image',
+			    'name'		=> __('Background Image', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select a background image.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'background',
+			    'color'		=> false,
+			    'parallax'	=> true
+			),
+			'bg_image_parallax' => array(
+			    'id'		=> 'bg_image_parallax',
+			    'name'		=> __('Parallax: Intensity', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'slide',
+			    'std'		=> '2',
+			    'options'	=> array(
+			        'min'	=> '1',
+			        'max'	=> '10',
+			        'step'	=> '1'
+			    ),
+			    'class'		=> 'hide parallax'
+			),
+			'subgroup_end_3' => array(
+			    'type'		=> 'subgroup_end'
+			),
+			'bg_video' => array(
+			    'id'		=> 'bg_video',
+			    'name'		=> __('Background Video', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder'),
+			    'type'		=> 'background_video',
+			    'class'		=> 'hide receiver receiver-video'
+			),
+			'subgroup_start_4' => array(
+			    'type'		=> 'subgroup_start',
+			    'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
+			),
+			'apply_bg_shade' => array(
+			    'id'		=> 'apply_bg_shade',
+			    'name'		=> null,
+			    'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
+			    'std'		=> 0,
+			    'type'		=> 'checkbox',
+			    'class'		=> 'trigger'
+			),
+			'bg_shade_color' => array(
+			    'id'		=> 'bg_shade_color',
+			    'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
+			    'std'		=> '#000000',
+			    'type'		=> 'color',
+			    'class'		=> 'hide receiver'
+			),
+			'bg_shade_opacity' => array(
+			    'id'		=> 'bg_shade_opacity',
+			    'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
+			    'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
+			    'std'		=> '0.5',
+			    'type'		=> 'select',
+			    'options'	=> array(
+			        '0.1'	=> '0.1',
+			        '0.2'	=> '0.2',
+			        '0.3'	=> '0.3',
+			        '0.4'	=> '0.4',
+			        '0.5'	=> '0.5',
+			        '0.6'	=> '0.6',
+			        '0.7'	=> '0.7',
+			        '0.8'	=> '0.8',
+			        '0.9'	=> '0.9'
+			    ),
+			    'class'		=> 'hide receiver'
+			),
+			'subgroup_end_4' => array(
+			    'type'		=> 'subgroup_end'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+		    ),
 		    'text_align' => array(
 				'id' 		=> 'text_align',
 				'name' 		=> __( 'Text Alignment', 'theme-blvd-layout-builder'),
@@ -1757,14 +1913,14 @@ class Theme_Blvd_Builder_API {
 		    ),
 			'max' => array(
 				'id' 		=> 'max',
-				'name'		=> __( 'Maximum Width', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'If you\'d like to limit the width of the unit, give it a maximum width in pixels or as a percentage.<br>Ex: 400px, 50%, etc.', 'theme-blvd-layout-builder' ),
+				'name'		=> __( 'Maximum Content Width', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'If you\'d like to limit the width of the unit content, give it a maximum width in pixels or as a percentage.<br>Ex: 400px, 50%, etc.', 'theme-blvd-layout-builder' ),
 				'std'		=> '',
 				'type'		=> 'text'
 			),
 			'align' => array(
-				'name' 		=> __( 'Unit Alignment', 'themeblvd_shortcodes' ),
-				'desc' 		=> __( 'If you\'ve set a maximum width, select how you\'d like to align the entire unit in its section.', 'themeblvd_shortcodes' ),
+				'name' 		=> __( 'Content Alignment', 'themeblvd_shortcodes' ),
+				'desc' 		=> __( 'If you\'ve set a maximum width, select how you\'d like to align the entire unit\'s content area.', 'themeblvd_shortcodes' ),
 				'id' 		=> 'align',
 				'std' 		=> 'center',
 				'type' 		=> 'select',
@@ -1775,50 +1931,7 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'trigger'
 			),
-			'subgroup_start' => array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
-		    ),
-			'apply_bg_color'	=> array(
-				'id' 		=> 'apply_bg_color',
-				'name' 		=> null,
-				'desc'		=> __( 'Apply background color to unit.', 'theme-blvd-layout-builder'),
-				'std'		=> '',
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-		    'bg_color' => array(
-				'id' 		=> 'bg_color',
-				'name' 		=> __( 'Background Color', 'theme-blvd-layout-builder'),
-				'desc'		=> __( 'Select a background color for the jumbotron.', 'theme-blvd-layout-builder'),
-				'std'		=> '#f2f2f2',
-				'type'		=> 'color',
-				'class'		=> 'hide receiver'
-		    ),
-		    'bg_opacity' => array(
-				'id'		=> 'bg_opacity',
-				'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
-				'std'		=> '1',
-				'type'		=> 'select',
-				'options'	=> array(
-					'0.1'	=> '0.1',
-					'0.2'	=> '0.2',
-					'0.3'	=> '0.3',
-					'0.4'	=> '0.4',
-					'0.5'	=> '0.5',
-					'0.6'	=> '0.6',
-					'0.7'	=> '0.7',
-					'0.8'	=> '0.8',
-					'0.9'	=> '0.9',
-					'1'		=> '1.0'
-				),
-				'class'		=> 'hide receiver'
-			),
-			'subgroup_end' => array(
-				'type'		=> 'subgroup_end'
-		    ),
-			'subgroup_start_2' => array(
+			'subgroup_start_5' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 		    ),
@@ -1838,7 +1951,50 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'receiver hide'
 			),
-			'subgroup_end_2' => array(
+			'subgroup_end_5' => array(
+				'type'		=> 'subgroup_end'
+		    ),
+			'subgroup_start_6' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide'
+		    ),
+			'apply_content_bg'	=> array(
+				'id' 		=> 'apply_content_bg',
+				'name' 		=> null,
+				'desc'		=> __( 'Apply background color directly around unit content.', 'theme-blvd-layout-builder'),
+				'std'		=> '',
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			),
+		    'content_bg_color' => array(
+				'id' 		=> 'content_bg_color',
+				'name' 		=> __('Content Background Color', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select a background color for the jumbotron.', 'theme-blvd-layout-builder'),
+				'std'		=> '#f2f2f2',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+		    ),
+		    'content_bg_opacity' => array(
+				'id'		=> 'bg_opacity',
+				'name'		=> __('Content Background Color Opacity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
+				'std'		=> '1',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.1'	=> '0.1',
+					'0.2'	=> '0.2',
+					'0.3'	=> '0.3',
+					'0.4'	=> '0.4',
+					'0.5'	=> '0.5',
+					'0.6'	=> '0.6',
+					'0.7'	=> '0.7',
+					'0.8'	=> '0.8',
+					'0.9'	=> '0.9',
+					'1'		=> '1.0'
+				),
+				'class'		=> 'hide receiver'
+			),
+			'subgroup_end_6' => array(
 				'type'		=> 'subgroup_end'
 		    ),
 		    'buttons' => array(
