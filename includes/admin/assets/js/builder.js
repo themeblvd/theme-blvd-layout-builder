@@ -33,8 +33,8 @@ jQuery(document).ready(function($) {
 			// Setup sorting w/jQuery UI
 			builder_blvd.sort_setup();
 
-			// Setup column elements
-			$builder.find('.element-columns').each(function(){
+			// Setup column & hero slider elements
+			$builder.find('.element-columns, .element-jumbotron_slider').each(function(){
 				builder_blvd.columns( $(this).closest('.widget') );
 			});
 
@@ -911,7 +911,7 @@ jQuery(document).ready(function($) {
 				$element.themeblvd('options', 'column-widths');
 				$element.themeblvd('options', 'sortable');
 
-				if ( $element.find('.widget-content').hasClass('element-columns') ) {
+				if ( $element.find('.widget-content').hasClass('element-columns') || $element.find('.widget-content').hasClass('element-jumbotron_slider') ) {
 					builder_blvd.columns( $element );
 				}
 
@@ -978,7 +978,7 @@ jQuery(document).ready(function($) {
 				$new_element.themeblvd('options', 'column-widths');
 				$new_element.themeblvd('options', 'sortable');
 
-                if ( $new_element.find('.widget-content').hasClass('element-columns') ) {
+                if ( $new_element.find('.widget-content').hasClass('element-columns') || $new_element.find('.widget-content').hasClass('element-jumbotron_slider') ) {
 					builder_blvd.columns( $new_element );
 				}
 

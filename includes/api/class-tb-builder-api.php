@@ -207,6 +207,7 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'html';
 			$this->registered_elements[] = 'icon_box';
 			$this->registered_elements[] = 'image';
+			$this->registered_elements[] = 'jumbotron_slider';
 			$this->registered_elements[] = 'milestone';
 			$this->registered_elements[] = 'milestone_ring';
 			$this->registered_elements[] = 'mini_post_grid';
@@ -2199,8 +2200,8 @@ class Theme_Blvd_Builder_API {
 		// Modified options for older themes
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 			$this->core_elements['jumbotron']['options'] = array(
-				'jumbotron_slider_desc' => array(
-					'id' 		=> 'jumbotron_slider_desc',
+				'jumbotron_desc' => array(
+					'id' 		=> 'jumbotron_desc',
 					'desc' 		=> __( 'This element utilizes the Jumbotron component of Twitter Bootstrap.', 'theme-blvd-layout-builder' ),
 					'type' 		=> 'info'
 				),
@@ -2301,6 +2302,63 @@ class Theme_Blvd_Builder_API {
 			    )
 			);
 		}
+
+		/*--------------------------------------------*/
+		/* Hero Unit Slider (jumbotron_slider)
+		/*--------------------------------------------*/
+
+		$this->core_elements['jumbotron_slider'] = array();
+
+		// Information
+		$this->core_elements['jumbotron_slider']['info'] = array(
+			'name' 		=> __('Hero Unit Slider', 'theme-blvd-layout-builder'),
+			'id'		=> 'jumbotron_slider',
+			'hook'		=> 'themeblvd_jumbotron_slider',
+			'shortcode'	=> false,
+			'desc' 		=> __( 'Multiple Hero Unit elements displayed as slider.', 'theme-blvd-layout-builder' )
+		);
+
+		// Support
+		$this->core_elements['jumbotron_slider']['support'] = array(
+			'popout'		=> true,
+			'padding'		=> true
+		);
+
+		// Options
+		$this->core_elements['jumbotron_slider']['options'] = array(
+			'subgroup_start' => array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'columns-setup hide'
+			),
+			'fx' => array(
+				'id' 		=> 'fx',
+				'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'select',
+				'std'		=> 'fade',
+				'options'	=> array(
+			        'fade' 	=> __( 'Fade', 'theme-blvd-layout-builder' ),
+					'slide'	=> __( 'Slide', 'theme-blvd-layout-builder' )
+				)
+			),
+			'timeout' => array(
+				'id' 		=> 'timeout',
+				'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'text',
+				'std'		=> '3'
+			),
+			'nav' => array(
+				'id' 		=> 'nav',
+				'name'		=> null,
+				'desc'		=> __( 'Display slider navigation.', 'theme-blvd-layout-builder' ),
+				'std'		=> '1',
+				'type'		=> 'checkbox'
+			),
+			'subgroup_end' => array(
+				'type'		=> 'subgroup_end'
+			)
+		);
 
 		/*--------------------------------------------*/
 		/* HTML Block

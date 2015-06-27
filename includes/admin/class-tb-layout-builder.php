@@ -979,7 +979,7 @@ class Theme_Blvd_Layout_Builder {
 
 		$sections = array('primary'=>array());
 		$elements = array();
-		$columns = array(); // Keep track of any columns of elements from "Columns" element
+		$columns = array(); // Keep track of any columns of elements from "Columns" or "Hero Unit Slider" elements
 		$element_id_list = array(); // For cleanup later on
 
 		// Layout Sections
@@ -1020,8 +1020,15 @@ class Theme_Blvd_Layout_Builder {
 
 					// Separate columns
 					if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
-						if ( $element['type'] == 'columns' ) {
-							for ( $i = 1; $i <= 5; $i++ ) {
+						if ( $element['type'] == 'columns' || $element['type'] == 'jumbotron_slider' ) {
+
+							$total = 1;
+
+							if ( $element['type'] == 'columns' ) {
+								$total = 5;
+							}
+
+							for ( $i = 1; $i <= $total; $i++ ) {
 							    if ( isset( $element['columns']['col_'.$i] ) ) {
 							    	$columns[$element_id.'_col_'.$i] = $element['columns']['col_'.$i];
 							    } else {
@@ -2046,21 +2053,31 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- ELEMENT OPTIONS (start) -->
 
-				<?php if ( $element_type == 'columns' && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) :
+				<?php if ( ($element_type == 'columns' || $element_type == 'jumbotron_slider') && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) :
 
-					$col_count = 2; // Default
-					$col_config = '1/2 - 1/2'; // Default
+					if ( $element_type == 'columns' ) {
 
-					if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
-						$col_count = count( explode('-', $element_settings['setup'] ) );
-						$col_config = str_replace( '-', ' - ', $element_settings['setup'] );
+						$col_count = 2; // Default
+						$col_config = '1/2 - 1/2'; // Default
+
+						if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
+							$col_count = count( explode('-', $element_settings['setup'] ) );
+							$col_config = str_replace( '-', ' - ', $element_settings['setup'] );
+						}
+
+					} else {
+
+						$col_count = 1; // Always only 1 column
+
 					}
 					?>
 					<div class="columns-header clearfix">
-						<span class="info">
-							<span class="col-count"><?php printf( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ), $col_count ); ?></span>
-							<span class="col-config"><?php echo $col_config; ?></span>
-						</span>
+						<?php if ( $element_type == 'columns' ) : ?>
+							<span class="info">
+								<span class="col-count"><?php printf( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ), $col_count ); ?></span>
+								<span class="col-config"><?php echo $col_config; ?></span>
+							</span>
+						<?php endif; ?>
 						<span class="action"><a href="#" class="edit-columns-config" data-showing="0" data-text-show="<?php _e('Edit Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php _e('Hide Setup', 'theme-blvd-layout-builder'); ?>"><?php _e('Edit Setup', 'theme-blvd-layout-builder'); ?></a>
 					</div><!-- .columns-header (end) -->
 				<?php endif; ?>
@@ -2071,13 +2088,21 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- ELEMENT OPTIONS (end) -->
 
-				<?php if ( $element_type == 'columns' && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+				<?php if ( ($element_type == 'columns' || $element_type == 'jumbotron_slider') && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 
 					<!-- COLUMNS (start) -->
 
 					<div class="columns-config columns-<?php echo $col_count; ?>">
 
-						<?php for ( $i = 1; $i <= 5; $i++ ) : ?>
+						<?php
+						$total = 1;
+
+						if ( $element_type == 'columns' ) {
+							$total = 5;
+						}
+						?>
+
+						<?php for ( $i = 1; $i <= $total; $i++ ) : ?>
 
 							<?php
 							// Saved column data
@@ -2118,37 +2143,48 @@ class Theme_Blvd_Layout_Builder {
 
 									<div class="column-heading">
 
-										<?php if ( $col_count > 1 ) : ?>
-											<h4><?php printf(__('Column %s', 'theme-blvd-layout-builder'), $i); ?></h4>
+										<?php if ( $element_type == 'columns' ) : ?>
+
+											<?php if ( $col_count > 1 ) : ?>
+												<h4><?php printf(__('Column %s', 'theme-blvd-layout-builder'), $i); ?></h4>
+											<?php else : ?>
+												<h4><?php _e('Elements', 'theme-blvd-layout-builder'); ?></h4>
+											<?php endif; ?>
+
+											<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>">
+												<i class="tb-icon-picture"></i>
+											</a>
+
+											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>" data-tooltip-position="top">
+												<i class="tb-icon-plus-circled"></i>
+											</a>
+
+											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
+												<select class="block-type">
+													<?php
+													foreach ( $elements as $block ) {
+														if ( $api->is_block( $block['info']['id'] ) ) {
+															echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+														}
+													}
+													?>
+												</select>
+												<span class="trigger"></span>
+												<span class="textbox"></span>
+											</div><!-- .tb-fancy-select (end) -->
+
+											<a href="#" class="add-block button-secondary" title="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>"><?php _e('Add Element', 'theme-blvd-layout-builder'); ?></a>
+
 										<?php else : ?>
-											<h4><?php _e('Elements', 'theme-blvd-layout-builder'); ?></h4>
+
+											<h4><?php _e('Hero Units', 'theme-blvd-layout-builder'); ?></h4>
+											<input type="hidden" class="block-type" value="jumbotron" />
+											<a href="#" class="add-block button-secondary" title="<?php _e('Add Hero Unit', 'theme-blvd-layout-builder'); ?>"><?php _e('Add Hero Unit', 'theme-blvd-layout-builder'); ?></a>
+
 										<?php endif; ?>
 
-										<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php _e('Column Display', 'theme-blvd-layout-builder'); ?>">
-											<i class="tb-icon-picture"></i>
-										</a>
-
-										<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>" data-tooltip-position="top">
-											<i class="tb-icon-plus-circled"></i>
-										</a>
-
-										<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php _e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
-											<select class="block-type">
-												<?php
-												foreach ( $elements as $block ) {
-													if ( $api->is_block( $block['info']['id'] ) ) {
-														echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
-													}
-												}
-												?>
-											</select>
-											<span class="trigger"></span>
-											<span class="textbox"></span>
-										</div><!-- .tb-fancy-select (end) -->
-
-										<a href="#" class="add-block button-secondary" title="<?php _e('Add Element', 'theme-blvd-layout-builder'); ?>"><?php _e('Add Element', 'theme-blvd-layout-builder'); ?></a>
-
 										<div class="clear"></div>
+
 									</div><!-- .column-heading (end) -->
 
 									<div class="element-display-options-wrap hide">
