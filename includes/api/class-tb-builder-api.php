@@ -2330,6 +2330,7 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_start',
 				'class'		=> 'columns-setup hide'
 			),
+			/* Why removed? "Slide" transition looks bad with video BG &
 			'fx' => array(
 				'id' 		=> 'fx',
 				'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
@@ -2341,6 +2342,7 @@ class Theme_Blvd_Builder_API {
 					'slide'	=> __( 'Slide', 'theme-blvd-layout-builder' )
 				)
 			),
+			*/
 			'timeout' => array(
 				'id' 		=> 'timeout',
 				'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
