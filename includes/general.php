@@ -404,11 +404,13 @@ function themeblvd_builder_styles() {
 
 						if ( $first['type'] == 'jumbotron' || $first['type'] == 'jumbotron_slider' && ! empty($first['display']['apply_popout']) ) {
 
-							$section_print .= "#custom-main > .section_primary > .element.popout.first .jumbotron-outer {\n";
-							$section_print .= sprintf("\tpadding-top: %spx;\n", intval(themeblvd_config('top_height')) + 60);
+							$section_print .= "@media (min-width: 992px) {\n";
+							$section_print .= "\t#custom-main > .section_primary > .element.popout.first .jumbotron-outer {\n";
+							$section_print .= sprintf("\t\tpadding-top: %spx;\n", intval(themeblvd_config('top_height')) + 60);
+							$section_print .= "\t}\n";
 							$section_print .= "}\n";
 
-							$section_print .= "@media (max-width: 991px) {\n";
+							$section_print .= "@media (max-width: 991px) and (min-width: 768px) {\n";
 							$section_print .= "\t#custom-main > .section_primary > .element.popout.first .jumbotron-outer {\n";
 							$section_print .= sprintf("\t\tpadding-top: %spx;\n", intval(themeblvd_config('top_height_tablet')) + 60);
 							$section_print .= "\t}\n";
