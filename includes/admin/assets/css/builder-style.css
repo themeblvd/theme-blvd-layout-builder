@@ -1052,6 +1052,21 @@
 	display: none;
 }
 
+/* Align toggles on sortable items */
+.themeblvd-modal #optionsframework .full-width .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-bars .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-locations .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
+	right: 0;
+}
+
 /* =Apprise prompt
 ----------------------------------------------- */
 
