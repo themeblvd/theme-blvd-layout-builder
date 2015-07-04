@@ -35,7 +35,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Changelog ==
 
-= 2.0.7 - 06/04/2015 =
+= 2.0.7 =
 
 * Added extended custom background support to Hero Unit element (for framework 2.5+ themes).
 * Added hero unit slider element (for framework 2.5+ themes).
