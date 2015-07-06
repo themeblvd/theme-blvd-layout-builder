@@ -1710,12 +1710,6 @@ class Theme_Blvd_Builder_API {
 			'padding'		=> true
 		);
 
-		$bg_types = array();
-
-		if ( function_exists('themeblvd_get_bg_types') ) {
-			$bg_types = themeblvd_get_bg_types('jumbotron');
-		}
-
 		// Options
 		$this->core_elements['jumbotron']['options'] = array(
 			'blocks' => array(
@@ -1760,7 +1754,7 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __('Select if you\'d like to apply a custom background around the outer wrap of the unit.', 'theme-blvd-layout-builder'),
 				'std'		=> 'none',
 				'type'		=> 'select',
-				'options'	=> $bg_types,
+				'options'	=> themeblvd_get_bg_types('jumbotron'),
 				'class'		=> 'trigger'
 			),
 			'bg_color' => array(
