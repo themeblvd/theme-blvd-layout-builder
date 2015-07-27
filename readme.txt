@@ -37,14 +37,16 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.9 - XX/XX/XXXX =
 
+* Added: More accuracy for opacity selections. 
+
 = 2.0.8 - 07/06/2015 =
 
-* Fixed fatal error in previous version (for framework 2.2-2.4 themes).
+* Fixed: Fatal error in previous version (for framework 2.2-2.4 themes).
 
 = 2.0.7 - 07/04/2015 =
 
-* Added extended custom background support to Hero Unit element (for framework 2.5+ themes).
-* Added hero unit slider element (for framework 2.5+ themes).
+* Added: Extended custom background support for Hero Unit element (for framework 2.5+ themes).
+* Added: Hero unit slider element (for framework 2.5+ themes).
 
 = 2.0.6 - 05/29/2015 =
 
