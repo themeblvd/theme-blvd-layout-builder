@@ -61,7 +61,7 @@ function themeblvd_builder_layout( $context ) {
 	// Loop through sections of elements
 	if ( $sections ) {
 
-		$counter = 1;
+		$counter = apply_filters('themeblvd_builder_section_start_count', 1);
 
 		// Check for pagination handling
 		$sections = themeblvd_builder_paginated_layout( $post_id, $sections );
@@ -280,7 +280,7 @@ function themeblvd_builder_styles() {
 	foreach ( $layouts as $location => $post_id ) {
 
 		$sections = get_post_meta( $post_id, '_tb_builder_sections', true );
-		$count = 1;
+		$count = apply_filters('themeblvd_builder_section_start_count', 1);
 
 		if ( $sections ) {
 			foreach ( $sections as $section_id => $section ) {
