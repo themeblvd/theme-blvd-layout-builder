@@ -3251,7 +3251,6 @@ class Theme_Blvd_Layout_Builder {
 	}
 	public function display_icon_browser() {
 		themeblvd_icon_browser( array( 'type' => 'vector' ) );
-		themeblvd_icon_browser( array( 'type' => 'image' ) );
 	}
 
 	/**
