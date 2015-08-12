@@ -7253,6 +7253,9 @@ class Theme_Blvd_Builder_API {
 		// Extend
 		$this->elements = apply_filters( 'themeblvd_elements', $this->elements );
 
+		// Sort alphabetically
+		uasort( $this->elements, array($this, 'sort_by_name') );
+
 	}
 
 	/**
@@ -7435,7 +7438,7 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function set_layouts() {
 
-		// For 2.5- themes, merge client added layouts with core layouts -- @deprecated
+		// For 2.4- themes, merge client added layouts with core layouts -- @deprecated
 		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
 
 			if ( $this->client_layouts ) {
@@ -7519,6 +7522,9 @@ class Theme_Blvd_Builder_API {
 
 		// Extend
 		$this->layouts = apply_filters( 'themeblvd_sample_layouts', $this->layouts );
+
+		// Sort alphabetically
+		uasort( $this->layouts, array($this, 'sort_by_name') );
 	}
 
 	/*--------------------------------------------*/
@@ -7832,6 +7838,20 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function is_block( $block_id ) {
 		return in_array( $block_id, $this->get_registered_blocks() );
+	}
+
+	/**
+	 * Callback for uasort() to sort alphabetically by name
+	 *
+	 * @since 2.0.9
+	 */
+	public function sort_by_name( $a, $b ) {
+
+		if ( isset($a['info']) ) { // sorting elements
+			return strcmp( $a['info']['name'], $b['info']['name'] );
+		}
+
+		return strcmp( $a['name'], $b['name'] ); // sorting sample layouts
 	}
 
 } // End class Theme_Blvd_Builder_API

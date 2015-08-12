@@ -37,7 +37,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.9 - XX/XX/XXXX =
 
-* Added: More accuracy for opacity selections. 
+* Added: More accuracy for opacity selections.
+* Improved: Elements and sample layouts sorted alphabetically, after merged with client-API.
 
 = 2.0.8 - 07/06/2015 =
 
