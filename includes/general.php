@@ -86,12 +86,16 @@ function themeblvd_builder_layout( $context ) {
 			$html_id = apply_filters( 'themeblvd_section_html_id', sprintf('%s-section-%s', $layout_name, $counter), $section_id, $layout_name, $section_data[$section_id], $counter );
 
 			// Output section
-			printf( '<section id="%s" class="%s" data-parallax="%s">', $html_id, $class, themeblvd_get_parallax_intensity($display) );
+			printf( '<section id="%s" class="%s">', $html_id, $class );
 
 			if ( $display ) {
 
 				if ( in_array($display['bg_type'], array('image', 'slideshow', 'video')) && ! empty($display['apply_bg_shade']) ) {
 					printf( '<div class="bg-shade" style="background-color: %s;"></div>', themeblvd_get_rgb( $display['bg_shade_color'], $display['bg_shade_opacity'] ) );
+				}
+
+				if ( function_exists('themeblvd_do_parallax') && themeblvd_do_parallax($display) ) { // framework 2.5.1+
+					themeblvd_bg_parallax( $display );
 				}
 
 				if ( $display['bg_type'] == 'video' && ! empty($display['bg_video']) ) {
@@ -100,10 +104,10 @@ function themeblvd_builder_layout( $context ) {
 
 				if ( $display['bg_type'] == 'slideshow' && ! empty($display['bg_slideshow']) ) {
 
-					$parallax = 0;
+					$parallax = false;
 
 					if ( ! empty($display['apply_bg_slideshow_parallax']) ) {
-						$parallax = $display['bg_slideshow_parallax'];
+						$parallax = true;
 					}
 
 					themeblvd_bg_slideshow( $section_id, $display['bg_slideshow'], $parallax );

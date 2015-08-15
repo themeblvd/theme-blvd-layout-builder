@@ -37,8 +37,12 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.9 - XX/XX/XXXX =
 
-* Added: More accuracy for opacity selections.
-* Improved: Elements and sample layouts sorted alphabetically, after merged with client-API.
+* Added: More accuracy for opacity selections (for framework 2.5+ themes).
+* Improvement: Elements and sample layouts sorted alphabetically, after merged with client-API.
+* Improvement: Parallax background image performance (for framework 2.5+ themes).
+* Removed: Parallax intensity options; now it's based on height of image, proportional to container (for framework 2.5+ themes).
+
+** Note: If you're using a theme with framework 2.5.0, you must update it to the latest version containing framework 2.5.1.**
 
 = 2.0.8 - 07/06/2015 =
 

@@ -1829,34 +1829,14 @@ class Theme_Blvd_Builder_API {
 			    'select'	=> 'textures',
 			    'class'		=> 'hide receiver receiver-texture'
 			),
-			'subgroup_start_2' => array(
-			    'type'		=> 'subgroup_start',
-			    'class'		=> 'show-hide hide receiver receiver-texture'
-			),
 			'apply_bg_texture_parallax' => array(
 			    'id'		=> 'apply_bg_texture_parallax',
 			    'name'		=> null,
 			    'desc'		=> __('Apply parallax scroll effect to background texture.', 'theme-blvd-layout-builder'),
 			    'type'		=> 'checkbox',
-			    'class'		=> 'trigger'
+			    'class'		=> 'hide receiver receiver-texture'
 			),
-			'bg_texture_parallax' => array(
-			    'id'		=> 'bg_texture_parallax',
-			    'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
-			    'desc'		=> __('Select the intensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
-			    'type'		=> 'slide',
-			    'std'		=> '5',
-			    'options'	=> array(
-			        'min'	=> '1',
-			        'max'	=> '10',
-			        'step'	=> '1'
-			    ),
-			    'class'		=> 'hide receiver'
-			),
-			'subgroup_end_2' => array(
-			    'type'		=> 'subgroup_end'
-			),
-			'subgroup_start_3' => array(
+			'subgroup_start_2' => array(
 			    'type'		=> 'subgroup_start',
 			    'class'		=> 'select-parallax hide receiver receiver-image'
 			),
@@ -1868,20 +1848,7 @@ class Theme_Blvd_Builder_API {
 			    'color'		=> false,
 			    'parallax'	=> true
 			),
-			'bg_image_parallax' => array(
-			    'id'		=> 'bg_image_parallax',
-			    'name'		=> __('Parallax: Intensity', 'theme-blvd-layout-builder'),
-			    'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
-			    'type'		=> 'slide',
-			    'std'		=> '2',
-			    'options'	=> array(
-			        'min'	=> '1',
-			        'max'	=> '10',
-			        'step'	=> '1'
-			    ),
-			    'class'		=> 'hide parallax'
-			),
-			'subgroup_end_3' => array(
+			'subgroup_end_2' => array(
 			    'type'		=> 'subgroup_end'
 			),
 			'bg_video' => array(
@@ -1891,7 +1858,7 @@ class Theme_Blvd_Builder_API {
 			    'type'		=> 'background_video',
 			    'class'		=> 'hide receiver receiver-video'
 			),
-			'subgroup_start_4' => array(
+			'subgroup_start_3' => array(
 			    'type'		=> 'subgroup_start',
 			    'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
 			),
@@ -1940,7 +1907,7 @@ class Theme_Blvd_Builder_API {
 			    ),
 			    'class'		=> 'hide receiver'
 			),
-			'subgroup_end_4' => array(
+			'subgroup_end_3' => array(
 			    'type'		=> 'subgroup_end'
 			),
 			'subgroup_end' => array(
@@ -1978,7 +1945,7 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'trigger'
 			),
-			'subgroup_start_5' => array(
+			'subgroup_start_4' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 		    ),
@@ -1998,10 +1965,10 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'checkbox',
 				'class'		=> 'receiver hide'
 			),
-			'subgroup_end_5' => array(
+			'subgroup_end_4' => array(
 				'type'		=> 'subgroup_end'
 		    ),
-			'subgroup_start_6' => array(
+			'subgroup_start_5' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 		    ),
@@ -2051,7 +2018,7 @@ class Theme_Blvd_Builder_API {
 				),
 				'class'		=> 'hide receiver'
 			),
-			'subgroup_end_6' => array(
+			'subgroup_end_5' => array(
 				'type'		=> 'subgroup_end'
 		    ),
 		    'buttons' => array(

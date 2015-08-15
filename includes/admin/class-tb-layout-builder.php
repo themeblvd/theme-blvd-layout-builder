@@ -2527,38 +2527,15 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver receiver-texture'
 			);
 
-			$options['subgroup_start_2'] = array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide hide receiver receiver-texture'
-			);
-
 			$options['apply_bg_texture_parallax'] = array(
 				'id'		=> 'apply_bg_texture_parallax',
 				'name'		=> null,
 				'desc'		=> __('Apply parallax scroll effect to background texture.', 'theme-blvd-layout-builder'),
 				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
+				'class'		=> 'hide receiver receiver-texture'
 			);
 
-			$options['bg_texture_parallax'] = array(
-				'id'		=> 'bg_texture_parallax',
-				'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the intensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
-				'type'		=> 'slide',
-				'std'		=> '5',
-				'options'	=> array(
-					'min'	=> '1',
-					'max'	=> '10',
-					'step'	=> '1'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['subgroup_end_2'] = array(
-				'type'		=> 'subgroup_end'
-			);
-
-			$options['subgroup_start_3'] = array(
+			$options['subgroup_start_2'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'select-parallax hide receiver receiver-image'
 			);
@@ -2572,21 +2549,7 @@ class Theme_Blvd_Layout_Builder {
 				'parallax'	=> true
 			);
 
-			$options['bg_image_parallax'] = array(
-				'id'		=> 'bg_image_parallax',
-				'name'		=> __('Parallax: Intensity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
-				'type'		=> 'slide',
-				'std'		=> '2',
-				'options'	=> array(
-					'min'	=> '1',
-					'max'	=> '10',
-					'step'	=> '1'
-				),
-				'class'		=> 'hide parallax'
-			);
-
-			$options['subgroup_end_3'] = array(
+			$options['subgroup_end_2'] = array(
 				'type'		=> 'subgroup_end'
 			);
 
@@ -2601,7 +2564,7 @@ class Theme_Blvd_Layout_Builder {
 			// Extended Background options (for section only)
 			if ( $type == 'section' ) {
 
-				$options['subgroup_start_4'] = array(
+				$options['subgroup_start_3'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
 				);
@@ -2654,11 +2617,11 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'hide receiver'
 				);
 
-				$options['subgroup_end_4'] = array(
+				$options['subgroup_end_3'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
-				$options['subgroup_start_5'] = array(
+				$options['subgroup_start_4'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'section-bg-slideshow hide receiver receiver-slideshow'
 				);
@@ -2679,42 +2642,18 @@ class Theme_Blvd_Layout_Builder {
 					'select'	=> 'crop'
 				);
 
-				$options['subgroup_start_6'] = array(
-					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide'
-				);
-
 				$options['apply_bg_slideshow_parallax'] = array(
 					'id'		=> 'apply_bg_slideshow_parallax',
 					'name'		=> null,
 					'desc'		=> __('Apply parallax scroll effect to background slideshow.', 'theme-blvd-layout-builder'),
-					'type'		=> 'checkbox',
-					'class'		=> 'trigger'
+					'type'		=> 'checkbox'
 				);
 
-				$options['bg_slideshow_parallax'] = array(
-					'id'		=> 'bg_slideshow_parallax',
-					'name'		=> __('Parallax Intensity', 'theme-blvd-layout-builder'),
-					'desc'		=> __('Select the instensity of the scroll effect. 1 is the least intense, and 10 is the most intense.', 'theme-blvd-layout-builder'),
-					'type'		=> 'slide',
-					'std'		=> '5',
-					'options'	=> array(
-						'min'	=> '1',
-						'max'	=> '10',
-						'step'	=> '1'
-					),
-					'class'		=> 'hide receiver'
-				);
-
-				$options['subgroup_end_6'] = array(
+				$options['subgroup_end_4'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
-				$options['subgroup_end_5'] = array(
-					'type'		=> 'subgroup_end'
-				);
-
-				$options['subgroup_start_7'] = array(
+				$options['subgroup_start_5'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'show-hide'
 				);
@@ -2751,11 +2690,11 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'hide receiver'
 				);
 
-				$options['subgroup_end_7'] = array(
+				$options['subgroup_end_5'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
-				$options['subgroup_start_8'] = array(
+				$options['subgroup_start_6'] = array(
 					'type'		=> 'subgroup_start',
 					'class'		=> 'show-hide'
 				);
@@ -2792,7 +2731,7 @@ class Theme_Blvd_Layout_Builder {
 					'class'		=> 'hide receiver'
 				);
 
-				$options['subgroup_end_8'] = array(
+				$options['subgroup_end_6'] = array(
 					'type'		=> 'subgroup_end'
 				);
 
@@ -2850,7 +2789,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Desktop padding
-		$options['subgroup_start_9'] = array(
+		$options['subgroup_start_7'] = array(
 			'type'		=> 'subgroup_start',
 			'class'		=> 'show-hide'
 		);
@@ -2920,14 +2859,14 @@ class Theme_Blvd_Layout_Builder {
 			'class'		=> 'hide receiver'
 		);
 
-		$options['subgroup_end_9'] = array(
+		$options['subgroup_end_7'] = array(
 			'type' => 'subgroup_end'
 		);
 
 		if ( $type == 'section' ) {
 
 			// Tablet Padding
-			$options['subgroup_start_10'] = array(
+			$options['subgroup_start_8'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -2997,12 +2936,12 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_10'] = array(
+			$options['subgroup_end_8'] = array(
 				'type' => 'subgroup_end'
 			);
 
 			// Mobile Padding
-			$options['subgroup_start_11'] = array(
+			$options['subgroup_start_9'] = array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			);
@@ -3072,7 +3011,7 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver'
 			);
 
-			$options['subgroup_end_11'] = array(
+			$options['subgroup_end_9'] = array(
 				'type' => 'subgroup_end'
 			);
 
