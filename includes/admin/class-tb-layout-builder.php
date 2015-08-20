@@ -2490,7 +2490,7 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_color_opacity'] = array(
 				'id'		=> 'bg_color_opacity',
 				'name'		=> __('Background Color Opacity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the opacity of the background color. Selecting "1.0" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the opacity of the background color. Selecting "100%" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
 				'std'		=> '1',
 				'type'		=> 'select',
 				'options'	=> array(
