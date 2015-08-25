@@ -35,6 +35,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Changelog ==
 
+= 2.0.9.1 =
+
 = 2.0.9 - 08/24/2015 =
 
 * Added: More accuracy for opacity selections (for framework 2.5+ themes).
