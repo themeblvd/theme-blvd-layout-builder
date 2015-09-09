@@ -37,6 +37,8 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 = 2.0.9.1 =
 
+* Fixed: Hero Unit Slider element shouldn't be available to be inserted within a Columns element (for framework 2.5+ themes).
+
 = 2.0.9 - 08/24/2015 =
 
 * Added: More accuracy for opacity selections (for framework 2.5+ themes).

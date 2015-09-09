@@ -7727,7 +7727,7 @@ class Theme_Blvd_Builder_API {
 
 		$blocks = $this->registered_elements;
 
-		$remove = apply_filters( 'themeblvd_remove_elem_for_blocks', array('columns', 'post_slider_popout', 'simple_slider_popout') );
+		$remove = apply_filters( 'themeblvd_remove_elem_for_blocks', array('columns', 'post_slider_popout', 'simple_slider_popout', 'jumbotron_slider') );
 
 		if ( $remove ) {
 			foreach ( $remove as $elem ) {
