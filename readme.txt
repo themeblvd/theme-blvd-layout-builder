@@ -38,6 +38,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 = 2.0.9.1 =
 
 * Fixed: Hero Unit Slider element shouldn't be available to be inserted within a Columns element (for framework 2.5+ themes).
+* Fixed: Negative horizontal margin overflow when using "popout" element in section with custom left/right padding set to `0px` (for framework 2.5+ themes).
 
 = 2.0.9 - 08/24/2015 =
 

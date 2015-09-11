@@ -354,16 +354,25 @@ function themeblvd_builder_styles() {
 						$section_print .= $indent."}\n";
 
 						// Add modified styles for any popout elements when section has custom padding
-						if ( ( ! empty($params['padding-right']) && $params['padding-right'] != '0px' ) || ( ! empty($params['padding-left']) && $params['padding-left'] != '0px' ) ) {
+						if ( ! empty($params['padding-right']) || ! empty($params['padding-left']) ) {
 
 							$section_print .= $indent.sprintf("#custom-%s > .%s > .element.popout {\n", $location, $section_id);
 
-							if ( ! empty($params['padding-right']) && $params['padding-right'] != '0px' ) {
-								$section_print .= $indent.sprintf("\tmargin-right: -%s;\n", $params['padding-right']);
+							if ( ! empty($params['padding-right']) ) {
+								if ( $params['padding-right'] == '0px' ) {
+									$section_print .= $indent."\tmargin-right: 0;\n";
+								} else {
+									$section_print .= $indent.sprintf("\tmargin-right: -%s;\n", $params['padding-right']);
+								}
+
 							}
 
-							if ( ! empty($params['padding-left']) && $params['padding-left'] != '0px' ) {
-								$section_print .= $indent.sprintf("\tmargin-left: -%s;\n", $params['padding-left']);
+							if ( ! empty($params['padding-left']) ) {
+								if ( $params['padding-left'] == '0px' ) {
+									$section_print .= $indent."\tmargin-left: 0;\n";
+								} else {
+									$section_print .= $indent.sprintf("\tmargin-left: -%s;\n", $params['padding-left']);
+								}
 							}
 
 							$section_print .= $indent."}\n";
