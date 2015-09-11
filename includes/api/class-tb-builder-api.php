@@ -2690,7 +2690,7 @@ class Theme_Blvd_Builder_API {
 			'width' => array(
 				'id' 		=> 'width',
 		    	'name'		=> __( 'Display Width (optional)', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter a width in pixels if you\'d like to force a width for the image. This can be useful for displaying retina-optimized images by entering a display width that is half the actual width of the image.<br>Ex: 200', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'Enter a width if you\'d like to force one for the image display. This can be useful for displaying retina-optimized images, by entering a display width that is half the actual width of the image. Conversely, it can be useful to stretch the image.<br>Ex: 200px, 100%', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text'
 			)
 		);
