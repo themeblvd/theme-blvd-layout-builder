@@ -2769,20 +2769,20 @@ class Theme_Blvd_Layout_Builder {
 		// Custom padding options
 		switch ( $type ) {
 			case 'section' :
-				$first_title = __('Desktop Padding', 'themeblvd');
+				$first_title = __('Desktop Padding', 'theme-blvd-layout-builder');
 				$id_suffix = '_desktop';
 				$term = __('section', 'theme-blvd-layout-builder');
 				$default = array('60px', '0px', '60px', '0px');
 				break;
 			case 'column' :
-				$first_title = __('Padding', 'themeblvd');
+				$first_title = __('Padding', 'theme-blvd-layout-builder');
 				$id_suffix = '';
 				$term = __('column', 'theme-blvd-layout-builder');
 				$default = array('30px', '30px', '30px', '30px');
 				break;
 			case 'element' :
 			case 'block' :
-				$first_title = __('Padding', 'themeblvd');
+				$first_title = __('Padding', 'theme-blvd-layout-builder');
 				$id_suffix = '';
 				$default = array('0px', '0px', '0px', '0px');
 				$term = __('element', 'theme-blvd-layout-builder');
