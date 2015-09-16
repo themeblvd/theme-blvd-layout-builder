@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.0.9.1
+Stable Tag: 2.0.9.2
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -10,13 +10,32 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 **NOTE: This plugin requires Theme Blvd framework v2.2+**
 
-When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements. 
+When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 
 You can build these layouts directly into your WordPress pages through the standard Edit Page screen, or you can create templates that can be synced to multiple pages. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend the templates to standard posts and custom post types.
 
 [vimeo https://vimeo.com/70256816]
 
 *Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://wpjumpstart.com) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
+
+= Theme Compatibility =
+
+This plugin works with the following themes only.
+
+**Theme Blvd Framework 2.5+ Themes**
+
+* [Jump Start](http://wpjumpstart.com)
+* [Denali](http://themeblvd.com/links/buy-denali)
+
+**Theme Blvd Framework 2.2-2.4 Themes**
+
+* [Akita](http://themeforest.net/item/akita-responsive-wordpress-theme/1530025?ref=themeblvd)
+* [Alyeska](http://themeforest.net/item/alyeska-responsive-wordpress-theme/164366?ref=themeblvd)
+* [Arcadian](http://themeforest.net/item/the-arcadian-responsive-wordpress-theme/1266406?ref=themeblvd)
+* [Barely Corporate](http://themeforest.net/item/barely-corporate-responsive-wordpress-theme/93069?ref=themeblvd)
+* [Breakout](http://www.mojo-themes.com/item/breakout-premium-wordpress-theme/?r=themeblvd)
+* [Commodore](http://themeforest.net/item/commodore-responsive-wordpress-theme/111713?ref=themeblvd)
+* [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
 == Installation ==
 
@@ -37,7 +56,7 @@ You can build these layouts directly into your WordPress pages through the stand
 
 == Changelog ==
 
-= 2.0.9.1 - 09/14/2015 =
+= 2.0.9.2 - 09/14/2015 =
 
 * Fixed: Hero Unit Slider element shouldn't be available to be inserted within a Columns element (for framework 2.5+ themes).
 * Fixed: Negative horizontal margin overflow when using "popout" element in section with custom left/right padding set to `0px` (for framework 2.5+ themes).
