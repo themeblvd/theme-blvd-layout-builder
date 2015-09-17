@@ -16,7 +16,7 @@ You can build these layouts directly into your WordPress pages through the stand
 
 [vimeo https://vimeo.com/70256816]
 
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://wpjumpstart.com) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 = Theme Compatibility =
 
@@ -24,7 +24,7 @@ This plugin works with the following themes only.
 
 **Theme Blvd Framework 2.5+ Themes**
 
-* [Jump Start](http://wpjumpstart.com)
+* [Jump Start](http://themeblvd.com/links/buy-jumpstart)
 * [Denali](http://themeblvd.com/links/buy-denali)
 
 **Theme Blvd Framework 2.2-2.4 Themes**
@@ -46,7 +46,7 @@ This plugin works with the following themes only.
 
 [vimeo https://vimeo.com/70256816]
 
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://wpjumpstart.com) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 == Screenshots ==
 
@@ -161,7 +161,7 @@ This plugin works with the following themes only.
 	* Edits: Enhancements to previous elements, Content, Divider, Headline, Jumbotron, Post Grid, Post List and Tabs
 	* Edits: Slogan element ehanced and renamed "Promo Box"
 
-*Note: Currently, the only theme with Theme Blvd Framework 2.5, is the [Jump Start](http://wpjumpstart.com) 2.0 beta. We're currently working on expanding support.*
+*Note: Currently, the only theme with Theme Blvd Framework 2.5, is the [Jump Start](http://themeblvd.com/links/buy-jumpstart) 2.0 beta. We're currently working on expanding support.*
 
 = 1.2.3 - 03/18/2014 =
 
