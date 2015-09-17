@@ -61,7 +61,7 @@ class Theme_Blvd_Layout_Builder_Screen {
 				$nonce = wp_create_nonce( 'themeblvd_save_screen_options' );
 				$output .= '<input type="hidden" class="security" name="_tb_screen_options_nonce" value="'.$nonce.'" />';
 
-				$output .= '<h5>'.__('Show advanced element properties', 'theme-blvd-layout-builder').'</h5>';
+				$output .= '<h5>'.esc_html__('Show advanced element properties', 'theme-blvd-layout-builder').'</h5>';
 				$output .= '<div class="metabox-prefs">';
 
 				$value = $this->get_value();

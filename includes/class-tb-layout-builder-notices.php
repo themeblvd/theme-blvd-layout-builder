@@ -102,23 +102,23 @@ class Theme_Blvd_Layout_Builder_Notices {
 		if ( $this->error ) {
 
 			$theme = wp_get_theme( get_template() );
-			$changelog = '<a href="http://themeblvd.com/changelog/?theme='.get_template().'" target="_blank">'.__('theme\'s changelog', 'theme-blvd-layout-builder').'</a>';
+			$changelog = '<a href="http://themeblvd.com/changelog/?theme='.get_template().'" target="_blank">'.esc_html__('theme\'s changelog', 'theme-blvd-layout-builder').'</a>';
 
 			foreach ( $this->error as $error ) {
 				if ( ! get_user_meta( $current_user->ID, 'tb-nag-'.$error, true ) ) {
 
 					echo '<div class="updated">';
-					echo '<p><strong>Theme Blvd Layout Builder</strong>: '.$this->get_message($error).'</p>';
+					echo '<p><strong>Theme Blvd Layout Builder</strong>: '.esc_html( $this->get_message($error) ).'</p>';
 
 					// Theme specifics
 					if ( in_array($error, array('framework-2-2', 'framework-2-5') ) ) {
 						echo '<p>';
-						printf( __('You\'re currently using %s v%s. See %s.', 'theme-blvd-layout-builder'), $theme->get('Name'), $theme->get('Version'), $changelog );
+						printf( esc_html__('You\'re currently using %s v%s. See %s.', 'theme-blvd-layout-builder'), $theme->get('Name'), $theme->get('Version'), $changelog );
 						echo '</p>';
 					}
 
 					// Dismiss link
-					echo '<p><a href="'.$this->disable_url($error).'">'.__('Dismiss this notice', 'theme-blvd-layout-builder').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'theme-blvd-layout-builder').'</a></p>';
+					echo '<p><a href="'.esc_url( $this->disable_url($error) ).'">'.esc_html__('Dismiss this notice', 'theme-blvd-layout-builder').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.esc_html__('Visit ThemeBlvd.com', 'theme-blvd-layout-builder').'</a></p>';
 
 					echo '</div>';
 				}

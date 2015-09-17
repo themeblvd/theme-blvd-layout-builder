@@ -112,7 +112,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'columns' :
 
 				if ( ! function_exists( 'themeblvd_columns' ) ) {
-					_e('Columns element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Columns element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -133,7 +133,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'content' :
 
 				if ( ! function_exists( 'themeblvd_content' ) ) {
-					_e('Content element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Content element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -175,7 +175,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'divider' :
 
 				if ( ! function_exists( 'themeblvd_divider' ) ) {
-					_e('Divider element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Divider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -190,7 +190,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'headline' :
 
 				if ( ! function_exists( 'themeblvd_headline' ) ) {
-					_e('Headline element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Headline element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -205,7 +205,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'jumbotron' :
 
 				if ( ! function_exists( 'themeblvd_jumbotron' ) ) {
-					_e('Jumbotron element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Jumbotron element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -220,7 +220,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid' :
 
 				if ( ! function_exists( 'themeblvd_posts' ) ) {
-					_e('Post Grid element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Post Grid element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -235,7 +235,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid_paginated' :
 
 				if ( ! function_exists( 'themeblvd_posts_paginated' ) ) {
-					_e('Paginated Post Grid element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Paginated Post Grid element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -253,7 +253,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_grid_slider' :
 
 				if ( ! function_exists( 'themeblvd_post_slider' ) ) {
-					_e('Post Grid Slider element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Post Grid Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -268,7 +268,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list' :
 
 				if ( ! function_exists( 'themeblvd_posts' ) ) {
-					_e('Post List element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Post List element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -283,7 +283,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list_paginated' :
 
 				if ( ! function_exists( 'themeblvd_posts_paginated' ) ) {
-					_e('Paginated Post List element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Paginated Post List element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -301,7 +301,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_list_slider' :
 
 				if ( ! function_exists( 'themeblvd_post_slider' ) ) {
-					_e('Post List Slider element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Post List Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -316,7 +316,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'post_slider' :
 
 				if ( ! function_exists( 'themeblvd_slider_auto' ) ) {
-					_e('Post Slider element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Post Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -341,7 +341,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'slider' :
 
 				if ( ! function_exists( 'themeblvd_slider' ) ) {
-					_e('Slider element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Slider element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -356,7 +356,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'slogan' :
 
 				if ( ! function_exists( 'themeblvd_slogan' ) ) {
-					_e('Slogan element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Slogan element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -371,7 +371,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 			case 'tabs' :
 
 				if ( ! function_exists( 'themeblvd_tabs' ) ) {
-					_e('Tabs element not supported.', 'theme-blvd-layout-builder');
+					esc_html_e('Tabs element not supported.', 'theme-blvd-layout-builder');
 					break;
 				}
 
@@ -491,7 +491,7 @@ function themeblvd_builder_legacy_homepage() {
 
 	// Add option to theme options page allowing user to
 	// select custom layout for their homepage.
-	$link = sprintf('<a href="%s">%s</a>', admin_url('admin.php?page=themeblvd_builder'), __('Templates', 'theme-blvd-layout-builder'));
+	$link = sprintf('<a href="%s">%s</a>', esc_url( admin_url('admin.php?page=themeblvd_builder') ), esc_html__('Templates', 'theme-blvd-layout-builder'));
 
 	$options = array(
 		'homepage_content' => array(

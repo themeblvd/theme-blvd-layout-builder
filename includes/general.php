@@ -50,7 +50,7 @@ function themeblvd_builder_layout( $context ) {
 
 	if ( ! $section_data ) {
 		echo '<section class="element-section">';
-		printf('<div class="element"><div class="alert alert-warning">%s</div></div>', __('The template has not been configured yet.', 'theme-blvd-layout-builder'));
+		printf('<div class="element"><div class="alert alert-warning">%s</div></div>', esc_html__('The template has not been configured yet.', 'theme-blvd-layout-builder'));
 		echo '</section>';
 		return;
 	}
@@ -152,7 +152,7 @@ function themeblvd_builder_layout( $context ) {
 	} else {
 
 		echo '<section class="element-section">';
-		printf('<div class="element"><div class="alert alert-warning">%s</div></div>', __('No element data could be found for this custom layout.', 'theme-blvd-layout-builder'));
+		printf('<div class="element"><div class="alert alert-warning">%s</div></div>', esc_html__('No element data could be found for this custom layout.', 'theme-blvd-layout-builder'));
 		echo '</section>';
 
 	}

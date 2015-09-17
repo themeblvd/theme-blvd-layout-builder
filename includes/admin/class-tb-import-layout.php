@@ -56,17 +56,17 @@ class Theme_Blvd_Import_Layout {
 	 */
 	public function admin_page() {
 		?>
-		<h2><?php _e('Import Template', 'theme-blvd-layout-builder'); ?></h2>
-		<p><?php _e('Upload an XML file previously exported from the Builder.', 'theme-blvd-layout-builder'); ?></p>
+		<h2><?php esc_html_e('Import Template', 'theme-blvd-layout-builder'); ?></h2>
+		<p><?php esc_html_e('Upload an XML file previously exported from the Builder.', 'theme-blvd-layout-builder'); ?></p>
 		<form enctype="multipart/form-data" id="import-upload-form" method="post" class="wp-upload-form" action="admin.php?page=<?php echo $this->id; ?>-import-layout&amp;themeblvd_import=true">
 			<p>
-				<label for="upload"><?php _e('Choose a file from your computer:', 'theme-blvd-layout-builder'); ?></label><br />
+				<label for="upload"><?php esc_html_e('Choose a file from your computer:', 'theme-blvd-layout-builder'); ?></label><br />
 				<input type="file" id="upload" name="import" size="25" />
 				<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'themeblvd_import_'.$this->id ); ?>" />
 				<input type="hidden" name="max_file_size" value="33554432" />
 			</p>
 			<p class="submit">
-				<input type="submit" name="submit" id="submit" class="button" value="<?php _e('Upload file and import', 'theme-blvd-layout-builder'); ?>" disabled="" />
+				<input type="submit" name="submit" id="submit" class="button" value="<?php esc_attr_e('Upload file and import', 'theme-blvd-layout-builder'); ?>" disabled="" />
 			</p>
 		</form>
 		<?php
@@ -182,7 +182,7 @@ class Theme_Blvd_Import_Layout {
 	public function success_display() {
 		?>
 		<div class="themeblvd-updated updated fade" style="margin-left: 0;">
-			<p><strong><?php _e('Custom layout imported successfully.', 'theme-blvd-layout-builder'); ?></strong></p>
+			<p><strong><?php esc_html_e('Custom layout imported successfully.', 'theme-blvd-layout-builder'); ?></strong></p>
 		</div>
 		<?php
 	}
@@ -195,7 +195,7 @@ class Theme_Blvd_Import_Layout {
 	public function fail() {
 		?>
 		<div class="themeblvd-updated error settings-error" style="margin-left: 0;">
-			<p><strong><?php echo $this->error; ?></strong></p>
+			<p><strong><?php echo esc_html($this->error); ?></strong></p>
 		</div>
 		<?php
 	}

@@ -55,7 +55,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		$template_id = $this->admin_page->new_template( array( 'name' => $name ) );
 
 		if ( ! $template_id ) {
-			_e('An error occurred and the template could not be created.', 'theme-blvd-layout-builder');
+			esc_html_e('An error occurred and the template could not be created.', 'theme-blvd-layout-builder');
 			die();
 		}
 
@@ -69,7 +69,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Populate the new template
 		$this->admin_page->save_layout( $template_id, $data );
 
-		printf(__('The new template, %s, was created successfully.', 'theme-blvd-layout-builder'), $name );
+		printf(esc_html__('The new template, %s, was created successfully.', 'theme-blvd-layout-builder'), $name );
 		echo '[(=>)]';
 		echo $this->admin_page->layout_select( '', 'apply', '_tb_apply_layout', $post_id );
 		echo '[(=>)]';
@@ -255,7 +255,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 			// Display update message
 			echo '<div id="setting-error-delete_layout" class="updated fade settings-error ajax-update">';
-			echo '	<p><strong>'.__( 'Layout(s) deleted.', 'theme-blvd-layout-builder' ).'</strong></p>';
+			echo '	<p><strong>'.esc_html__( 'Layout(s) deleted.', 'theme-blvd-layout-builder' ).'</strong></p>';
 			echo '</div>';
 
 		}
