@@ -140,19 +140,20 @@ function themeblvd_builder_init() {
 		if ( themeblvd_supports( 'admin', 'builder' ) && current_user_can( themeblvd_admin_module_cap( 'builder' ) ) ) {
 
 			// Setup exporting capabilities
-			if ( class_exists( 'Theme_Blvd_Export' ) ) { // Theme Blvd framework 2.5+
+			if ( class_exists('Theme_Blvd_Export') ) { // Theme Blvd framework 2.5+ and Theme Blvd Import plugin
 
 				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-export-layout.php' );
+				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-import-layout.php' );
 
 				$args = array(
 					'filename'	=> 'template-{name}.xml', // string {name} will be dynamically replaced with each export
 					'base_url'	=> admin_url('admin.php?page=themeblvd_builder')
 				);
+
 				$_themeblvd_export_layout = new Theme_Blvd_Export_Layout( 'layout', $args ); // Extends class Theme_Blvd_Export
 			}
 
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/builder-samples.php' );
-			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-import-layout.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder.php' );
 

@@ -96,11 +96,15 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Allow for importing
-		$args = array(
-			'redirect' => admin_url('admin.php?page='.$this->id) // Builder page URL
-		);
-		$import = new Theme_Blvd_Import_Layout( $this->id, $args );
-		$this->importer_url = $import->get_url(); // URL of page where importer is
+		if ( class_exists('Theme_Blvd_Import_Layout') ) {
+
+			$args = array(
+				'redirect' => admin_url('admin.php?page='.$this->id) // Builder page URL
+			);
+
+			$import = new Theme_Blvd_Import_Layout( $this->id, $args );
+			$this->importer_url = $import->get_url(); // URL of page where importer is
+		}
 
 	}
 
@@ -449,15 +453,17 @@ class Theme_Blvd_Layout_Builder {
 											<span class="edit">
 												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="edit-post edit-tb_layout" title="Edit"><?php _e('Edit', 'theme-blvd-layout-builder' ); ?></a> |
 											</span>
-											<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-												<span class="export">
-													<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_layout')); ?>" class="export-layout" title="<?php _e( 'Export', 'themeblvd' ); ?>"><?php _e( 'Export', 'themeblvd' ); ?></a> |
-												</span>
-											<?php endif; ?>
-											<?php if ( defined('TB_SAMPLE_LAYOUT_PLUGIN_VERSION') ) : ?>
-												<span class="export-sample">
-													<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_sample_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_sample_layout')); ?>" class="export-layout" title="<?php _e( 'Export as Sample Layout', 'themeblvd' ); ?>"><?php _e( 'Export as Sample Layout', 'themeblvd' ); ?></a> |
-												</span>
+											<?php if ( class_exists('Theme_Blvd_Export_Layout') ) : ?>
+												<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+													<span class="export">
+														<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_layout')); ?>" class="export-layout" title="<?php _e( 'Export', 'themeblvd' ); ?>"><?php _e( 'Export', 'themeblvd' ); ?></a> |
+													</span>
+												<?php endif; ?>
+												<?php if ( defined('TB_SAMPLE_LAYOUT_PLUGIN_VERSION') ) : ?>
+													<span class="export-sample">
+														<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_sample_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_sample_layout')); ?>" class="export-layout" title="<?php _e( 'Export as Sample Layout', 'themeblvd' ); ?>"><?php _e( 'Export as Sample Layout', 'themeblvd' ); ?></a> |
+													</span>
+												<?php endif; ?>
 											<?php endif; ?>
 											<span class="trash">
 												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template->ID.'&security='.wp_create_nonce('delete_template')); ?>" title="<?php _e('Delete', 'theme-blvd-layout-builder'); ?>" class="delete-layout"><?php _e('Delete', 'theme-blvd-layout-builder'); ?></a>
@@ -612,7 +618,7 @@ class Theme_Blvd_Layout_Builder {
 			<form action="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit'); ?>" method="post">
 				<?php
 				echo '<input type="hidden" name="tb_nonce" value="'.wp_create_nonce( 'new_template' ).'" />';
-				$import = version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ? true : false;
+				$import = version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') && class_exists('Theme_Blvd_Import_Layout') ? true : false;
 				?>
 				<div class="metabox-holder">
 					<div class="postbox">
