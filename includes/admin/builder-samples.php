@@ -6,7 +6,6 @@
  *
  * @return array
  */
-
 function themeblvd_get_sample_layouts() {
 	$api = Theme_Blvd_Builder_API::get_instance();
 	return $api->get_layouts();
@@ -31,14 +30,14 @@ function themeblvd_builder_sample_previews() {
 		if ( isset($sample['preview']) ) {
 			$preview = $sample['preview']; // @deprecated
 		} else {
-			$preview = trailingslashit($sample['uri']).'preview.jpg';
+			$preview = trailingslashit($sample['uri']) . 'preview.jpg';
 		}
 
 		$output .= '<div id="sample-'.$sample['id'].'">';
-		$output .= '<img src="'.$preview.'" />';
+		$output .= '<img src="'.esc_url($preview).'" />';
 
 		if ( isset( $sample['credit'] ) ) {
-			$output .= '<p class="note">'.$sample['credit'].'</p>';
+			$output .= '<p class="note">'.esc_html($sample['credit']).'</p>';
 		}
 		$output .= '</div>';
 	}

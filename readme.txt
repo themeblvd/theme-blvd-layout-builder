@@ -56,7 +56,12 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.0.9.2 - 09/14/2015 =
+= 2.0.9.2 - XX/XX/XXXX =
+
+* Improvements to overall security and sanitization.
+* Fixed: Import & Export buttons will only show if [Theme Blvd Importer plugin](https://wordpress.org/plugins/theme-blvd-importer) is installed.
+
+= 2.0.9.1 - 09/14/2015 =
 
 * Fixed: Hero Unit Slider element shouldn't be available to be inserted within a Columns element (for framework 2.5+ themes).
 * Fixed: Negative horizontal margin overflow when using "popout" element in section with custom left/right padding set to `0px` (for framework 2.5+ themes).

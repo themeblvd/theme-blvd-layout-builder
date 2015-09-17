@@ -86,12 +86,12 @@ function themeblvd_builder_layout( $context ) {
 			$html_id = apply_filters( 'themeblvd_section_html_id', sprintf('%s-section-%s', $layout_name, $counter), $section_id, $layout_name, $section_data[$section_id], $counter );
 
 			// Output section
-			printf( '<section id="%s" class="%s">', $html_id, $class );
+			printf( '<section id="%s" class="%s">', esc_attr($html_id), esc_attr($class) );
 
 			if ( $display ) {
 
 				if ( in_array($display['bg_type'], array('image', 'slideshow', 'video')) && ! empty($display['apply_bg_shade']) ) {
-					printf( '<div class="bg-shade" style="background-color: %s;"></div>', themeblvd_get_rgb( $display['bg_shade_color'], $display['bg_shade_opacity'] ) );
+					printf( '<div class="bg-shade" style="background-color: %s;"></div>', esc_attr( themeblvd_get_rgb( $display['bg_shade_color'], $display['bg_shade_opacity'] ) ) );
 				}
 
 				if ( function_exists('themeblvd_do_parallax') && themeblvd_do_parallax($display) ) { // framework 2.5.1+
@@ -122,11 +122,11 @@ function themeblvd_builder_layout( $context ) {
 					}
 
 					if ( ! empty( $display['blend_up'] ) ) {
-						printf('<span class="tb-blend up"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', $bg_color);
+						printf('<span class="tb-blend up"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', esc_attr($bg_color));
 					}
 
 					if ( ! empty( $display['blend_down'] ) ) {
-						printf('<span class="tb-blend down"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', $bg_color);
+						printf('<span class="tb-blend down"><span class="blend-outer"><span class="blend-inner" style="background-color:%s"></span></span></span>', esc_attr($bg_color));
 					}
 
 				}
@@ -139,7 +139,7 @@ function themeblvd_builder_layout( $context ) {
 
 			// Close section
 			do_action( 'themeblvd_section_bottom', $section_id, $layout_name, $section_data[$section_id], $counter );
-			printf( '</section><!-- #%s (end) -->', $section_id );
+			printf( '</section><!-- #%s (end) -->', esc_attr($section_id) );
 			do_action( 'themeblvd_section_after', $section_id, $layout_name, $section_data[$section_id], $counter );
 
 			// End section
@@ -454,9 +454,14 @@ function themeblvd_builder_styles() {
 		}
 	}
 
+	// Sanitize
+	$print = trim($print);
+	$print = wp_kses( $print, array() );
+	$print = htmlspecialchars_decode( $print );
+
 	// Print after style.css
 	if ( $print ) {
-		wp_add_inline_style( 'themeblvd-theme', trim($print) );
+		wp_add_inline_style( 'themeblvd-theme', $print );
 	}
 
 }

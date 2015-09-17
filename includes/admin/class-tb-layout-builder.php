@@ -422,7 +422,7 @@ class Theme_Blvd_Layout_Builder {
 						<input type="submit" id="doaction" class="button-secondary action" value="<?php esc_attr_e( 'Apply', 'themeblvd' ); ?>">
 					</div>
 					<div class="alignright tablenav-pages">
-						<span class="displaying-num"><?php printf( _n( '1 Template', '%s Templates', count($templates) ), number_format_i18n( count($templates) ) ); ?></span>
+						<span class="displaying-num"><?php printf( esc_html( _n( '1 Template', '%s Templates', count($templates) ) ), number_format_i18n( count($templates) ) ); ?></span>
 					</div>
 				</div><!-- .tablenav (end) -->
 				<table class="widefat">
@@ -448,30 +448,30 @@ class Theme_Blvd_Layout_Builder {
 										<input type="checkbox" name="posts[]" value="<?php echo $template->ID; ?>" />
 									</th>
 									<td class="post-title page-title column-title">
-										<strong><a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="title-link edit-tb_layout" title="Edit"><?php echo $template->post_title; ?></a></strong>
+										<strong><a href="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'tab' => 'edit', 'template' => $template->ID), admin_url('admin.php') ) ); ?>" class="title-link edit-tb_layout" title="Edit"><?php echo esc_html($template->post_title); ?></a></strong>
 										<div class="row-actions">
 											<span class="edit">
-												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template->ID); ?>" class="edit-post edit-tb_layout" title="Edit"><?php esc_attr_e('Edit', 'theme-blvd-layout-builder' ); ?></a> |
+												<a href="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'tab' => 'edit', 'template' => $template->ID), admin_url('admin.php') ) ); ?>" class="edit-post edit-tb_layout" title="Edit"><?php esc_attr_e('Edit', 'theme-blvd-layout-builder' ); ?></a> |
 											</span>
 											<?php if ( class_exists('Theme_Blvd_Export_Layout') ) : ?>
 												<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 													<span class="export">
-														<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_layout')); ?>" class="export-layout" title="<?php esc_attr_e( 'Export', 'themeblvd' ); ?>"><?php esc_html_e( 'Export', 'themeblvd' ); ?></a> |
+														<a href="<?php echo esc_url( add_query_arg( array('page' => 'themeblvd_builder', 'themeblvd_export_layout' => 'true', 'layout' => $template->ID, 'security' => wp_create_nonce('themeblvd_export_layout')), admin_url('admin.php') ) ); ?>" class="export-layout" title="<?php esc_attr_e( 'Export', 'themeblvd' ); ?>"><?php esc_html_e( 'Export', 'themeblvd' ); ?></a> |
 													</span>
 												<?php endif; ?>
 												<?php if ( defined('TB_SAMPLE_LAYOUT_PLUGIN_VERSION') ) : ?>
 													<span class="export-sample">
-														<a href="<?php echo admin_url('admin.php?page=themeblvd_builder&themeblvd_export_sample_layout=true&layout='.esc_attr($template->ID).'&security='.wp_create_nonce('themeblvd_export_sample_layout')); ?>" class="export-layout" title="<?php esc_attr_e( 'Export as Sample Layout', 'themeblvd' ); ?>"><?php esc_html_e( 'Export as Sample Layout', 'themeblvd' ); ?></a> |
+														<a href="<?php echo esc_url( add_query_arg( array('page' => 'themeblvd_builder', 'themeblvd_export_sample_layout' => 'true', 'layout' => $template->ID, 'security' => wp_create_nonce('themeblvd_export_sample_layout')), admin_url('admin.php') ) ); ?>" class="export-layout" title="<?php esc_attr_e( 'Export as Sample Layout', 'themeblvd' ); ?>"><?php esc_html_e( 'Export as Sample Layout', 'themeblvd' ); ?></a> |
 													</span>
 												<?php endif; ?>
 											<?php endif; ?>
 											<span class="trash">
-												<a href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template->ID.'&security='.wp_create_nonce('delete_template')); ?>" title="<?php esc_attr_e('Delete', 'theme-blvd-layout-builder'); ?>" class="delete-layout"><?php esc_html_e('Delete', 'theme-blvd-layout-builder'); ?></a>
+												<a href="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'delete' => $template->ID, 'security' => wp_create_nonce('delete_template')), admin_url('admin.php') ) ); ?>" class="delete-layout"><?php esc_html_e('Delete', 'theme-blvd-layout-builder'); ?></a>
 											</span>
 										</div>
 									</td>
 									<td class="post-slug">
-										<?php echo $template->post_name; ?>
+										<?php echo esc_html($template->post_name); ?>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -502,6 +502,7 @@ class Theme_Blvd_Layout_Builder {
 		// Setup sample layouts
 		$samples = themeblvd_get_sample_layouts();
 		$sample_layouts = array();
+
 		if ( $samples ) {
 			foreach ( $samples as $sample ) {
 				$sample_layouts[$sample['id']] = $sample['name'];
@@ -511,6 +512,7 @@ class Theme_Blvd_Layout_Builder {
 		// Setup existing layouts
 		$layouts = get_posts('post_type=tb_layout&order=ASC&orderby=title&numberposts=-1');
 		$custom_layouts = array();
+
 		if ( $layouts ) {
 			foreach ( $layouts as $layout ) {
 				$custom_layouts[$layout->ID] = $layout->post_title;
@@ -595,6 +597,7 @@ class Theme_Blvd_Layout_Builder {
 			// Setup sidebar layouts
 			$layouts = themeblvd_sidebar_layouts();
 			$sidebar_layouts = array( 'default' => __( 'Default Sidebar Layout', 'theme-blvd-layout-builder' ) );
+
 			foreach ( $layouts as $layout ) {
 				$sidebar_layouts[$layout['id']] = $layout['name'];
 			}
@@ -628,7 +631,7 @@ class Theme_Blvd_Layout_Builder {
 						</div><!-- .group (end) -->
 						<div id="optionsframework-submit">
 							<?php if ( $import ) : ?>
-								<a href="<?php echo $this->importer_url; ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php esc_attr_e('Import template from XML file.', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Import Template', 'theme-blvd-layout-builder'); ?></a>
+								<a href="<?php echo esc_url($this->importer_url); ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php esc_attr_e('Import template from XML file.', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Import Template', 'theme-blvd-layout-builder'); ?></a>
 							<?php endif; ?>
 							<input type="submit" class="button-primary" name="update" value="<?php esc_attr_e( 'Add New Template', 'theme-blvd-layout-builder' ); ?>">
 							<span class="tb-loader ajax-loading">
@@ -665,9 +668,9 @@ class Theme_Blvd_Layout_Builder {
 		$template = get_post( $template_id );
 		?>
 		<div id="tb-edit-layout">
-			<form id="edit_builder" method="post" action="<?php echo admin_url('admin.php?page='.$this->id.'&tab=edit&template='.$template_id); ?>">
+			<form id="edit_builder" method="post" action="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'tab' => 'edit', 'template' => $template_id), admin_url('admin.php') ) ); ?>">
 				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('save_template'); ?>" />
-				<input type="hidden" name="template_id" value="<?php echo $template_id; ?>" />
+				<input type="hidden" name="template_id" value="<?php echo esc_attr($template_id); ?>" />
 				<input type="hidden" name="action" value="save_template" />
 				<div id="poststuff" class="metabox-holder full-width has-right-sidebar">
 
@@ -698,11 +701,11 @@ class Theme_Blvd_Layout_Builder {
 							</div><!-- .post-box (end) -->
 						<?php endif; ?>
 						<div id="layout-publish" class="postbox postbox-publish">
-							<h3 class="hndle"><?php esc_html_e( 'Publish', 'theme-blvd-layout-builder' ); ?> <?php echo stripslashes($template->post_title); ?></h3>
+							<h3 class="hndle"><?php esc_html_e( 'Publish', 'theme-blvd-layout-builder' ); ?> <?php echo esc_html($template->post_title); ?></h3>
 							<div class="submitbox">
 								<div id="major-publishing-actions">
 									<div id="delete-action">
-										<a class="submitdelete delete-layout" href="<?php echo admin_url('admin.php?page='.$this->id.'&delete='.$template_id.'&security='.wp_create_nonce('delete_template')); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
+										<a class="submitdelete delete-layout" href="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'delete' => $template_id, 'security' => wp_create_nonce('delete_template')), admin_url('admin.php') ) ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
 									</div>
 									<div id="publishing-action">
 										<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?></a>
@@ -1609,7 +1612,7 @@ class Theme_Blvd_Layout_Builder {
 				<div id="optionsframework" class="tb-options-js">
 
 					<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
-					<input type="hidden" name="tb_post_id" value="<?php echo $post->ID; ?>" />
+					<input type="hidden" name="tb_post_id" value="<?php echo esc_attr($post->ID); ?>" />
 
 					<!-- HEADER (start) -->
 
@@ -1719,7 +1722,6 @@ class Theme_Blvd_Layout_Builder {
 					'featured' => array(),
 					'primary' => array(),
 					'featured_below' => array()
-
 				);
 
 				// Working with a temlate just created
@@ -1728,7 +1730,6 @@ class Theme_Blvd_Layout_Builder {
 						'featured' => array(),
 						'primary' => array(),
 						'featured_below' => array()
-
 					);
 				}
 			}
@@ -1746,7 +1747,7 @@ class Theme_Blvd_Layout_Builder {
 					<?php
 					foreach ( $elements as $element ) {
 						if ( $api->is_element( $element['info']['id'] ) ) {
-							echo '<option value="'.$element['info']['id'].'">'.$element['info']['name'].'</option>';
+							echo '<option value="'.esc_attr($element['info']['id']).'">'.esc_attr($element['info']['name']).'</option>';
 						}
 					}
 					?>
@@ -1799,6 +1800,7 @@ class Theme_Blvd_Layout_Builder {
 					$imagepath =  get_template_directory_uri() . '/framework/admin/assets/images/';
 					$sidebar_layouts = array('default' => $imagepath.'layout-default.png');
 					$layouts = themeblvd_sidebar_layouts();
+
 					foreach ( $layouts as $layout ) {
 						$sidebar_layouts[$layout['id']] = $imagepath.'layout-'.$layout['id'].'.png';
 					}
@@ -1892,7 +1894,7 @@ class Theme_Blvd_Layout_Builder {
 				<?php if ( $legacy ) : ?>
 
 					<div class="section-label legacy">
-						<span class="label-text"><?php echo $label; ?></span>
+						<span class="label-text"><?php echo esc_html($label); ?></span>
 					</div>
 
 				<?php else : ?>
@@ -1904,12 +1906,12 @@ class Theme_Blvd_Layout_Builder {
 					<?php endif; ?>
 
 					<div class="section-label dynamic-label">
-						<span class="label-text"><?php echo $label; ?></span>
-						<input type="text" class="label-input" name="tb_builder_sections[<?php echo $section_id; ?>][label]" value="<?php echo esc_attr($label); ?>" />
+						<span class="label-text"><?php echo esc_html($label); ?></span>
+						<input type="text" class="label-input" name="tb_builder_sections[<?php echo esc_attr($section_id); ?>][label]" value="<?php echo esc_attr($label); ?>" />
 					</div>
 
 					<div class="section-options clearfix">
-						<a href="#" class="edit-section-display tb-tooltip-link" data-target="<?php echo $section_id; ?>_background_form" data-title="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>">
+						<a href="#" class="edit-section-display tb-tooltip-link" data-target="<?php echo esc_attr($section_id); ?>_background_form" data-title="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>">
 							<i class="tb-icon-picture"></i>
 						</a>
 						<a href="#" class="shift-section-down tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Shift Section Down', 'theme-blvd-layout-builder'); ?>">
@@ -1930,7 +1932,7 @@ class Theme_Blvd_Layout_Builder {
 
 			<?php if ( ! $legacy ) : ?>
 				<div class="section-background-options-wrap hide">
-					<div id="<?php echo $section_id; ?>_background_form" class="section-background-options">
+					<div id="<?php echo esc_attr($section_id); ?>_background_form" class="section-background-options">
 						<?php
 						$display_options = $this->get_display_options( 'section' );
 						$display_form = themeblvd_option_fields( 'tb_builder_sections['.$section_id.'][display]', $display_options, $display, false );
@@ -1944,13 +1946,14 @@ class Theme_Blvd_Layout_Builder {
 
 			<!-- SECTION ELEMENTS (start) -->
 
-			<div class="elements sortable <?php echo $section_id; if( ! $elements ) echo ' empty'; ?>">
+			<div class="elements sortable <?php echo esc_attr($section_id); if ( ! $elements ) echo ' empty'; ?>">
 				<?php
 				if ( $elements ) {
 					foreach ( $elements as $element_id => $element ) {
 						if ( $api->is_element( $element['type'] ) ) {
 
 							$label = __('Element Label', 'theme-blvd-layout-builder');
+
 							if ( isset( $element['label'] ) ) {
 								$label = $element['label'];
 							}
@@ -2013,7 +2016,7 @@ class Theme_Blvd_Layout_Builder {
 			$form[0] = str_replace('id="content"', 'id="option-content"', $form[0]); // Having anything with ID "content" will screw up the WP editor
 		}
 		?>
-		<div id="<?php echo $element_id; ?>" class="widget element-options" data-field-name="<?php echo $field_name; ?>">
+		<div id="<?php echo esc_attr($element_id); ?>" class="widget element-options" data-field-name="<?php echo esc_attr($field_name); ?>">
 
 			<div class="widget-name top-widget-name widget-name-closed">
 
@@ -2024,7 +2027,7 @@ class Theme_Blvd_Layout_Builder {
 				</a>
 
 				<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-					<a href="#" class="edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_background_form" data-title="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>">
+					<a href="#" class="edit-element-display tb-tooltip-link" data-target="<?php echo esc_attr($element_id); ?>_background_form" data-title="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>">
 						<i class="tb-icon-picture"></i>
 					</a>
 				<?php endif; ?>
@@ -2032,10 +2035,10 @@ class Theme_Blvd_Layout_Builder {
 				<div class="element-label dynamic-label" data-tooltip-text="<?php esc_attr_e('Click to Edit Label', 'theme-blvd-layout-builder'); ?>">
 					<?php $label = $element_label !== null ? $element_label : __('Element Label', 'theme-blvd-layout-builder'); ?>
 					<span class="label-text"><?php echo esc_html($label); ?></span>
-					<input type="text" class="label-input" name="tb_builder_elements[<?php echo $section_id; ?>][<?php echo $element_id; ?>][label]" value="<?php echo esc_attr($label); ?>" />
+					<input type="text" class="label-input" name="<?php echo esc_attr( "tb_builder_elements[$section_id][$element_id][label]" ); ?>'" value="<?php echo esc_attr($label); ?>" />
 				</div>
 
-				<h3><?php echo $elements[$element_type]['info']['name']; ?></h3>
+				<h3><?php echo esc_html( $elements[$element_type]['info']['name'] ); ?></h3>
 
 				<div class="clear"></div>
 
@@ -2053,9 +2056,9 @@ class Theme_Blvd_Layout_Builder {
 				</div>
 			<?php endif; ?>
 
-			<div class="widget-content hide element-<?php echo $element_type; ?>">
+			<div class="widget-content hide <?php echo sanitize_html_class("element-$element_type"); ?>">
 
-				<input type="hidden" class="element-type" name="tb_builder_elements[<?php echo $section_id; ?>][<?php echo $element_id; ?>][type]" value="<?php echo $element_type; ?>" />
+				<input type="hidden" class="element-type" name="<?php echo esc_attr( "tb_builder_elements[$section_id][$element_id][type]" ); ?>" value="<?php echo esc_attr($element_type); ?>" />
 
 				<!-- ELEMENT OPTIONS (start) -->
 
@@ -2080,8 +2083,8 @@ class Theme_Blvd_Layout_Builder {
 					<div class="columns-header clearfix">
 						<?php if ( $element_type == 'columns' ) : ?>
 							<span class="info">
-								<span class="col-count"><?php printf( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ), $col_count ); ?></span>
-								<span class="col-config"><?php echo $col_config; ?></span>
+								<span class="col-count"><?php printf( esc_html( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ) ), $col_count ); ?></span>
+								<span class="col-config"><?php echo esc_attr($col_config); ?></span>
 							</span>
 						<?php endif; ?>
 						<span class="action"><a href="#" class="edit-columns-config" data-showing="0" data-text-show="<?php esc_attr_e('Edit Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php esc_attr_e('Hide Setup', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Edit Setup', 'theme-blvd-layout-builder'); ?></a>
@@ -2157,7 +2160,7 @@ class Theme_Blvd_Layout_Builder {
 												<h4><?php esc_html_e('Elements', 'theme-blvd-layout-builder'); ?></h4>
 											<?php endif; ?>
 
-											<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" data-title="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>">
+											<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo esc_attr($element_id); ?>_col_<?php echo $i; ?>_background_form" data-title="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>">
 												<i class="tb-icon-picture"></i>
 											</a>
 
@@ -2170,7 +2173,7 @@ class Theme_Blvd_Layout_Builder {
 													<?php
 													foreach ( $elements as $block ) {
 														if ( $api->is_block( $block['info']['id'] ) ) {
-															echo '<option value="'.$block['info']['id'].'">'.$block['info']['name'].'</option>';
+															echo '<option value="'.esc_attr($block['info']['id']).'">'.esc_html($block['info']['name']).'</option>';
 														}
 													}
 													?>
@@ -2194,7 +2197,7 @@ class Theme_Blvd_Layout_Builder {
 									</div><!-- .column-heading (end) -->
 
 									<div class="element-display-options-wrap hide">
-										<div id="<?php echo $element_id; ?>_col_<?php echo $i; ?>_background_form" class="element-display-options">
+										<div id="<?php echo esc_attr($element_id); ?>_col_<?php echo $i; ?>_background_form" class="element-display-options">
 											<?php
 											$display_options = $this->get_display_options('column');
 											$display_form = themeblvd_option_fields( 'tb_builder_elements['.$section_id.']['.$element_id.'][columns][col_'.$i.'][display]', $display_options, $display_settings, false );
@@ -2212,11 +2215,13 @@ class Theme_Blvd_Layout_Builder {
 												if ( ! empty( $block['type'] ) && $api->is_block( $block['type'] ) ) {
 
 													$block_display = array();
+
 													if ( isset( $block['display'] ) ) {
 														$block_display = $block['display'];
 													}
 
 													$block_options = array();
+
 													if ( isset( $block['options'] ) ) {
 														$block_options = $block['options'];
 													}
@@ -2242,9 +2247,10 @@ class Theme_Blvd_Layout_Builder {
 				<?php endif; ?>
 
 				<div class="submitbox widget-footer clearfix">
-					<a href="#<?php echo $element_id; ?>" class="submitdelete delete-element" title="<?php esc_attr_e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
-					<a href="#<?php echo $element_id; ?>" class="duplicate-element tb-tooltip-link" data-tooltip-text="<?php esc_attr_e( 'Duplicate Element', 'theme-blvd-layout-builder' ); ?>"><i class="tb-icon-copy"></i></a>
+					<a href="#<?php echo esc_attr($element_id); ?>" class="submitdelete delete-element" title="<?php esc_attr_e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
+					<a href="#<?php echo esc_attr($element_id); ?>" class="duplicate-element tb-tooltip-link" data-tooltip-text="<?php esc_attr_e( 'Duplicate Element', 'theme-blvd-layout-builder' ); ?>"><i class="tb-icon-copy"></i></a>
 				</div><!-- .widget-footer (end) -->
+
 			</div><!-- .element-content (end) -->
 		</div>
 		<?php
@@ -2295,7 +2301,7 @@ class Theme_Blvd_Layout_Builder {
 			}
 		}
 		?>
-		<div id="<?php echo $block_id; ?>" class="widget block block-widget" data-element-id="<?php echo $element_id; ?>" data-field-name="<?php echo $field_name.'[options]'; ?>">
+		<div id="<?php echo esc_attr($block_id); ?>" class="widget block block-widget" data-element-id="<?php echo esc_attr($element_id); ?>" data-field-name="<?php echo esc_attr( $field_name.'[options]' ); ?>">
 
 			<div class="block-widget-name block-widget-name-closed clearfix">
 
@@ -2305,29 +2311,29 @@ class Theme_Blvd_Layout_Builder {
 					<i class="tb-icon-up-dir"></i>
 				</a>
 
-				<h3><?php echo $blocks[$block_type]['info']['name']; ?></h3>
+				<h3><?php echo esc_html( $blocks[$block_type]['info']['name'] ); ?></h3>
 
 			</div><!-- .block-name (end) -->
 
 			<div class="block-widget-content clearfix hide">
 
-				<a href="#<?php echo $block_id; ?>" class="delete-block" title="<?php esc_attr_e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
+				<a href="#<?php echo esc_attr($block_id); ?>" class="delete-block" title="<?php esc_attr_e( 'Are you sure you want to delete this element?', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
 
 				<nav class="block-nav">
 
 					<?php if ( $options ) : ?>
-						<a href="#" class="tb-block-options-link tb-tooltip-link" data-target="<?php echo $block_id; ?>_options_form" data-tooltip-text="<?php esc_attr_e('Edit Options', 'theme-blvd-layout-builder'); ?>" data-title="<?php echo $blocks[$block_type]['info']['name']; ?>">
+						<a href="#" class="tb-block-options-link tb-tooltip-link" data-target="<?php echo esc_attr($block_id); ?>_options_form" data-tooltip-text="<?php esc_attr_e('Edit Options', 'theme-blvd-layout-builder'); ?>" data-title="<?php echo esc_attr( $blocks[$block_type]['info']['name'] ); ?>">
 							<i class="tb-icon-cog"></i>
 						</a>
 					<?php endif; ?>
 
 					<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
-						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Edit Code', 'themeblvd'); ?>" data-title="<?php esc_attr_e('Edit Code', 'theme-blvd-layout-builder'); ?>" data-target="<?php echo $block_id; ?>">
+						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Edit Code', 'themeblvd'); ?>" data-title="<?php esc_attr_e('Edit Code', 'theme-blvd-layout-builder'); ?>" data-target="<?php echo esc_attr($block_id); ?>">
 							<i class="tb-icon-code"></i>
 						</a>
 					<?php endif; ?>
 
-					<a href="#" class="edit-block-display tb-tooltip-link" data-target="<?php echo $block_id; ?>_background_form" data-title="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>">
+					<a href="#" class="edit-block-display tb-tooltip-link" data-target="<?php echo esc_attr($block_id); ?>_background_form" data-title="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>">
 						<i class="tb-icon-picture"></i>
 					</a>
 
@@ -2348,9 +2354,9 @@ class Theme_Blvd_Layout_Builder {
 				</div>
 			</div>
 
-			<div class="block-options <?php echo 'block-'.$block_type; ?>">
-				<div id="<?php echo $block_id; ?>_options_form" class="block-form">
-					<input type="hidden" name="<?php echo $field_name; ?>[type]" value="<?php echo $block_type; ?>" />
+			<div class="block-options <?php echo sanitize_html_class("block-$block_type"); ?>">
+				<div id="<?php echo esc_attr($block_id); ?>_options_form" class="block-form">
+					<input type="hidden" name="<?php echo esc_attr($field_name); ?>[type]" value="<?php echo esc_attr($block_type); ?>" />
 					<?php if ( $block_form ) : ?>
 						<?php echo $block_form[0]; ?>
 					<?php endif; ?>
@@ -2388,7 +2394,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		$output .= '<div class="tb-fancy-select condensed">';
-		$output .= sprintf( '<select id="tb-template-%s" name="%s">', $type, $name );
+		$output .= sprintf( '<select id="tb-template-%s" name="%s">', esc_attr($type), esc_attr($name) );
 
 		if ( $start_text ) {
 			$output .= sprintf( '<option value="">- %s -</option>', esc_html($start_text) );
@@ -2401,7 +2407,7 @@ class Theme_Blvd_Layout_Builder {
 			}
 
 			foreach ( $custom_layouts as $custom_layout ) {
-				$output .= sprintf( '<option value="%s" %s>%s</option>', $custom_layout->post_name, selected( $custom_layout->post_name, $current, false ), $custom_layout->post_title );
+				$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr($custom_layout->post_name), selected( $custom_layout->post_name, $current, false ), esc_html($custom_layout->post_title) );
 			}
 
 			if ( $type == 'apply' ) {
@@ -2420,7 +2426,7 @@ class Theme_Blvd_Layout_Builder {
 				$output .= '<optgroup label="'.esc_attr__('Sample Layouts', 'theme-blvd-layout-builder').'">';
 
 				foreach ( $samples as $sample ) {
-					$output .= sprintf( '<option value="%s=>%s" %s>%s</option>', $post_id, $sample['id'], selected( $sample['id'], $current, false ), $sample['name'] );
+					$output .= sprintf( '<option value="%s=>%s" %s>%s</option>', esc_attr($post_id), esc_attr($sample['id']), selected( $sample['id'], $current, false ), esc_html($sample['name']) );
 				}
 
 				$output .= '</optgroup>';
