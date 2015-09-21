@@ -259,11 +259,12 @@ function themeblvd_builder_paginated_layout( $post_id, $sections ) {
  * Add external styles for Builder sections
  *
  * @since 2.0.0
- *
- * @param string $var Description
- * @return string $var Description
  */
 function themeblvd_builder_styles() {
+
+	if ( ! function_exists('themeblvd_config') ) {
+		return;
+	}
 
 	$layouts = array();
 
