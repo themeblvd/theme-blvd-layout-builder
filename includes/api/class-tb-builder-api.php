@@ -1460,7 +1460,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			unset( $this->core_elements['divider']['options']['sub_group_start'] );
+			unset( $this->core_elements['divider']['options']['sub_group_start_1'] );
 			unset( $this->core_elements['divider']['options']['type']['options']['thick-solid'] );
 			unset( $this->core_elements['divider']['options']['type']['options']['thick-dashed'] );
 			unset( $this->core_elements['divider']['options']['type']['options']['double-solid'] );
@@ -1468,7 +1468,15 @@ class Theme_Blvd_Builder_API {
 			unset( $this->core_elements['divider']['options']['type']['class'] );
 			unset( $this->core_elements['divider']['options']['color'] );
 			unset( $this->core_elements['divider']['options']['opacity'] );
-			unset( $this->core_elements['divider']['options']['sub_group_end'] );
+			unset( $this->core_elements['divider']['options']['sub_group_start_2'] );
+			unset( $this->core_elements['divider']['options']['insert'] );
+			unset( $this->core_elements['divider']['options']['icon'] );
+			unset( $this->core_elements['divider']['options']['text'] );
+			unset( $this->core_elements['divider']['options']['bold'] );
+			unset( $this->core_elements['divider']['options']['text_color'] );
+			unset( $this->core_elements['divider']['options']['text_size'] );
+			unset( $this->core_elements['divider']['options']['sub_group_end_2'] );
+			unset( $this->core_elements['divider']['options']['sub_group_end_1'] );
 			unset( $this->core_elements['divider']['options']['width'] );
 		}
 

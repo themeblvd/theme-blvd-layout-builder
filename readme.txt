@@ -58,6 +58,8 @@ This plugin works with the following themes only.
 
 = 2.0.9.3 - 10/01/2015 =
 
+* Fixed: Javascript errors in builder from incorrect divider element options (for framework 2.2-2.4 themes).
+
 = 2.0.9.2 - 09/21/2015 =
 
 * Improvements to overall security and sanitization.
