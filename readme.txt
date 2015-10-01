@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.0.9.2
+Stable Tag: 2.0.9.3
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -56,7 +56,9 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.0.9.2 - XX/XX/XXXX =
+= 2.0.9.3 - 10/01/2015 =
+
+= 2.0.9.2 - 09/21/2015 =
 
 * Improvements to overall security and sanitization.
 * Fixed: Import & Export buttons will only show if [Theme Blvd Importer plugin](https://wordpress.org/plugins/theme-blvd-importer) is installed.
