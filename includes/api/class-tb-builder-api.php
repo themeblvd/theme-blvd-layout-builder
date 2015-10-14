@@ -7733,7 +7733,7 @@ class Theme_Blvd_Builder_API {
 	 */
 	public function get_registered_blocks() {
 
-		$blocks = $this->registered_elements;
+		$blocks = $this->get_registered_elements();
 
 		$remove = apply_filters( 'themeblvd_remove_elem_for_blocks', array('columns', 'post_slider_popout', 'simple_slider_popout', 'jumbotron_slider') );
 

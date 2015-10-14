@@ -58,6 +58,8 @@ This plugin works with the following themes only.
 
 = 2.0.9.4 - XX/XX/XXXX =
 
+* Fixed: When custom elements are filtered in, make sure they appear for selection within the "Columns" element.
+
 = 2.0.9.3 - 10/01/2015 =
 
 * Fixed: Javascript errors in builder from incorrect divider element options (for framework 2.2-2.4 themes).
