@@ -1997,7 +1997,7 @@ class Theme_Blvd_Builder_API {
 				'class'		=> 'hide receiver'
 		    ),
 		    'content_bg_opacity' => array(
-				'id'		=> 'bg_opacity',
+				'id'		=> 'content_bg_opacity',
 				'name'		=> __('Content Background Color Opacity', 'theme-blvd-layout-builder'),
 				'desc'		=> __('Select the opacity of the background color. Selecting "100%" means that the background color is not transparent, at all.', 'theme-blvd-layout-builder'),
 				'std'		=> '1',
