@@ -58,6 +58,7 @@ This plugin works with the following themes only.
 
 = 2.0.9.4 - XX/XX/XXXX =
 
+* Improvement: Better RTL support for Layout Builder admin interface.
 * Fixed: When custom elements are filtered in, make sure they appear for selection within the "Columns" element.
 * Fixed: Hero unit content background color opacity option not working.
 
