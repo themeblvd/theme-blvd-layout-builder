@@ -56,7 +56,7 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.0.9.4 - XX/XX/XXXX =
+= 2.0.9.4 - 12/11/2015 =
 
 * Improvement: Better RTL support for Layout Builder admin interface.
 * Fixed: When custom elements are filtered in, make sure they appear for selection within the "Columns" element.
