@@ -288,7 +288,7 @@ class Theme_Blvd_Layout_Builder {
 	public function add_page() {
 
 		// Create admin page
-		$admin_page = add_object_page( $this->args['page_title'], $this->args['menu_title'], $this->args['cap'], $this->id, array( $this, 'page' ), $this->args['icon'], $this->args['priority'] );
+		$admin_page = add_menu_page( $this->args['page_title'], $this->args['menu_title'], $this->args['cap'], $this->id, array( $this, 'page' ), $this->args['icon'], $this->args['priority'] );
 
 		// Add scripts and styles
 		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
