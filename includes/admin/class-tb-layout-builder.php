@@ -2568,10 +2568,14 @@ class Theme_Blvd_Layout_Builder {
 			$options['bg_video'] = array(
 				'id'		=> 'bg_video',
 				'name'		=> __('Background Video', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder'),
+				'desc'		=> __('You can upload a web-video file (mp4, webm, ogv), or input a URL to a video page on YouTube or Vimeo. Your fallback image will display on mobile devices.', 'theme-blvd-layout-builder').'<br><br>'.__('Examples:', 'theme-blvd-layout-builder').'<br>https://vimeo.com/79048048<br>http://www.youtube.com/watch?v=5guMumPFBag',
 				'type'		=> 'background_video',
 				'class'		=> 'hide receiver receiver-video'
 			);
+
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.2', '<=' ) ) { // old description
+				$options['bg_video']['desc'] = __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder');
+			}
 
 			// Extended Background options (for section only)
 			if ( $type == 'section' ) {
