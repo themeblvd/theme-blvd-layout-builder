@@ -58,6 +58,7 @@ This plugin works with the following themes only.
 
 = 2.0.9.5 - XX/XX/2016 =
 
+* New: Added option to pull from pages to Post List element.
 * Improvement: Use `add_menu_page` instead of `add_object_page`, which was deprecated in WordPress 4.5.
 
 = 2.0.9.4 - 12/11/2015 =

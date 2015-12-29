@@ -4191,6 +4191,7 @@ class Theme_Blvd_Builder_API {
 				'options'	=> array(
 					'category' 	=> __( 'Category', 'theme-blvd-layout-builder' ),
 			        'tag' 		=> __( 'Tag', 'theme-blvd-layout-builder' ),
+					'pages' 	=> __( 'Pages', 'theme-blvd-layout-builder' ),
 			        'query' 	=> __( 'Custom Query', 'theme-blvd-layout-builder' )
 				),
 				'class' 	=> 'trigger'
@@ -4252,6 +4253,13 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'text',
 				'std'		=> '0',
 				'class' 	=> 'hide receiver receiver-category receiver-tag'
+			),
+			'pages' => array(
+			    'id' 		=> 'pages',
+			    'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
+			    'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
+			    'type'		=> 'text',
+			    'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
 				'id' 		=> 'query',
