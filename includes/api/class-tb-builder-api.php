@@ -1395,7 +1395,6 @@ class Theme_Blvd_Builder_API {
 					'none'	=> __( 'None', 'theme-blvd-layout-builder' ),
 					'icon'	=> __( 'Icon', 'theme-blvd-layout-builder' ),
 					'text'	=> __( 'Text', 'theme-blvd-layout-builder' )
-
 				),
 				'class'		=> 'trigger'
 			),
@@ -1456,8 +1455,24 @@ class Theme_Blvd_Builder_API {
 				'name'		=> __( 'Divider Width', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'If you\'d like to restrict the width of the divider enter an integer in pixels.<br>Ex: 100', 'theme-blvd-layout-builder' ),
 				'type'		=> 'text'
+			),
+			'align' => array(
+				'id' 		=> 'align',
+				'name'		=> __( 'Divider Alignment', 'theme-blvd-layout-builder' ),
+				'desc'		=> __( 'If you set a width in the previous option, here you can select how the divider aligns when it\'s less than 100% of the current area.', 'theme-blvd-layout-builder' ),
+				'std'		=> 'center',
+				'type'		=> 'select',
+				'options'		=> array(
+					'center'=> __( 'Center', 'theme-blvd-layout-builder' ),
+					'left'	=> __( 'Left', 'theme-blvd-layout-builder' ),
+					'right'	=> __( 'Right', 'theme-blvd-layout-builder' )
+				)
 			)
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			unset( $this->core_elements['divider']['options']['align'] );
+		}
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 			unset( $this->core_elements['divider']['options']['sub_group_start_1'] );
@@ -3553,7 +3568,7 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'pages',
 				'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
+				'type'		=> 'textarea',
 				'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
@@ -4258,7 +4273,7 @@ class Theme_Blvd_Builder_API {
 			    'id' 		=> 'pages',
 			    'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
 			    'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
-			    'type'		=> 'text',
+			    'type'		=> 'textarea',
 			    'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
@@ -4780,7 +4795,7 @@ class Theme_Blvd_Builder_API {
 				'id' 		=> 'pages',
 				'name'		=> __( 'Pages', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Enter a comma-separated list of page slugs.<br>Ex: page-1, page-2, page-3', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
+				'type'		=> 'textarea',
 				'class' 	=> 'hide receiver receiver-pages'
 			),
 			'query' => array(
