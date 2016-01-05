@@ -6898,7 +6898,18 @@ class Theme_Blvd_Builder_API {
 				'desc'		=> __( 'Configure the social media and contact icons for this person.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'social_media'
 			),
-			'icons_style' => array(
+			'text' => array(
+				'id' 		=> 'text',
+				'name' 		=> __( 'Content', 'theme-blvd-layout-builder'),
+				'desc'		=> __( 'Enter any content you\'d like displayed about this person.', 'theme-blvd-layout-builder'),
+				'type'		=> 'textarea',
+				'editor'	=> true,
+				'code'		=> 'html'
+		    )
+		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			$this->core_elements['team_member']['options']['icons_style'] = array(
 				'id' 		=> 'icons_style',
 				'name'		=> __( 'Social Media Icon Style', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select the style of social media icons.', 'theme-blvd-layout-builder' ),
@@ -6911,16 +6922,8 @@ class Theme_Blvd_Builder_API {
 					'light'	=> __('Flat Light', 'theme-blvd-layout-builder'),
 					'color'	=> __('Color', 'theme-blvd-layout-builder')
 				)
-			),
-			'text' => array(
-				'id' 		=> 'text',
-				'name' 		=> __( 'Content', 'theme-blvd-layout-builder'),
-				'desc'		=> __( 'Enter any content you\'d like displayed about this person.', 'theme-blvd-layout-builder'),
-				'type'		=> 'textarea',
-				'editor'	=> true,
-				'code'		=> 'html'
-		    )
-		);
+			);
+		}
 
 		/*--------------------------------------------*/
 		/* Testimonial
