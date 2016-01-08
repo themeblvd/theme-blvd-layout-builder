@@ -5182,6 +5182,12 @@ class Theme_Blvd_Builder_API {
 				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
+			'shade'	=> array(
+				'id'		=> 'shade',
+				'desc'		=> __( 'Shade entire images for overall text readability.', 'theme-blvd-layout-builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
 			'thumb_link' => array(
 				'id'		=> 'thumb_link',
 				'desc'		=> __( 'Apply hover effect to linked images.', 'theme-blvd-layout-builder'),
@@ -5211,6 +5217,10 @@ class Theme_Blvd_Builder_API {
 		    	'type'		=> 'subgroup_end'
 		    )
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			unset( $this->core_elements['post_slider']['options']['shade'] );
+		}
 
 		// For themes with framework prior to 2.5, we use a different set of options
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
@@ -5254,7 +5264,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 				'timeout' => array(
-				'id' 		=> 'timeout',
+					'id' 		=> 'timeout',
 					'name'		=> __( 'Speed', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the number of seconds you\'d like in between trasitions. You may use <em>0</em> to disable the slider from auto advancing.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -5359,7 +5369,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'source' => array(
-				'id' 		=> 'source',
+					'id' 		=> 'source',
 					'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like to pull posts to generate this slider.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -5372,21 +5382,21 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'trigger'
 				),
 				'category' => array(
-				'id' 		=> 'category',
+					'id' 		=> 'category',
 					'name'		=> __( 'Category', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a category slug to pull most recent posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-category'
 				),
 				'tag' => array(
-				'id' 		=> 'tag',
+					'id' 		=> 'tag',
 					'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter a tag to pull most recent posts from.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
 					'class' 	=> 'hide receiver receiver-tag'
 				),
 				'numberposts' => array(
-				'id' 		=> 'numberposts',
+					'id' 		=> 'numberposts',
 					'name'		=> __( 'Total Number of Posts', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter the maximum number of posts you\'d like to pull. You can use <em>-1</em> to show all posts from the selected criteria.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -5394,7 +5404,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'orderby' => array(
-				'id' 		=> 'orderby',
+					'id' 		=> 'orderby',
 					'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -5408,7 +5418,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'order' => array(
-				'id' 		=> 'order',
+					'id' 		=> 'order',
 					'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
@@ -5420,7 +5430,7 @@ class Theme_Blvd_Builder_API {
 					'class' 	=> 'hide receiver receiver-category receiver-tag'
 				),
 				'query' => array(
-				'id' 		=> 'query',
+					'id' 		=> 'query',
 					'name'		=> __( 'Custom Query', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
@@ -5430,7 +5440,7 @@ class Theme_Blvd_Builder_API {
 			    	'type'		=> 'subgroup_end'
 			    ),
 			    'mobile_fallback' => array(
-				'id' 		=> 'mobile_fallback',
+					'id' 		=> 'mobile_fallback',
 					'name'		=> __( 'How to display on mobile devices?', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select how you\'d like this slider to be displayed on mobile devices. Sometimes full, animated sliders can cause problems on mobile devices, and so you may find it\'s better to setup a fallback option.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'radio',
@@ -5704,6 +5714,12 @@ class Theme_Blvd_Builder_API {
 				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
+			'shade'	=> array(
+				'id'		=> 'shade',
+				'desc'		=> __( 'Shade entire images for overall text readability.', 'theme-blvd-layout-builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
 			'link' => array(
 				'id'		=> 'thumb_link',
 				'desc'		=> __( 'Apply hover effect to linked images.', 'theme-blvd-layout-builder'),
@@ -5784,6 +5800,10 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_end'
 			)
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			unset( $this->core_elements['post_slider_popout']['options']['shade'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Pricing Table
@@ -6382,13 +6402,19 @@ class Theme_Blvd_Builder_API {
 				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
+			'shade'	=> array(
+				'id'		=> 'shade',
+				'desc'		=> __( 'Shade entire images for caption readability', 'theme-blvd-layout-builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
 			'subgroup_start_2' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			),
 			'caption_bg'	=> array(
 				'id'		=> 'caption_bg',
-				'desc'		=> __( 'Shade caption with background color.', 'theme-blvd-layout-builder'),
+				'desc'		=> __( 'Apply background color to image captions.', 'theme-blvd-layout-builder'),
 				'std'		=> false,
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
@@ -6435,6 +6461,10 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_end'
 			)
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			unset( $this->core_elements['simple_slider']['options']['shade'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Simple Slider (Full Width)
@@ -6529,13 +6559,19 @@ class Theme_Blvd_Builder_API {
 				'std'		=> false,
 				'type'		=> 'checkbox'
 			),
+			'shade'	=> array(
+				'id'		=> 'shade',
+				'desc'		=> __( 'Shade entire images for caption readability.', 'theme-blvd-layout-builder'),
+				'std'		=> false,
+				'type'		=> 'checkbox'
+			),
 			'subgroup_start_2' => array(
 				'type'		=> 'subgroup_start',
 				'class'		=> 'show-hide'
 			),
 			'caption_bg'	=> array(
 				'id'		=> 'caption_bg',
-				'desc'		=> __( 'Shade caption with background color.', 'theme-blvd-layout-builder'),
+				'desc'		=> __( 'Apply background color to image captions.', 'theme-blvd-layout-builder'),
 				'std'		=> false,
 				'type'		=> 'checkbox',
 				'class'		=> 'trigger'
@@ -6633,6 +6669,10 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_end'
 			)
 		);
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
+			unset( $this->core_elements['simple_slider_popout']['options']['shade'] );
+		}
 
 		/*--------------------------------------------*/
 		/* Slider

@@ -60,6 +60,7 @@ This plugin works with the following themes only.
 
 * New: Added option to pull from pages to Post List element.
 * New: Added option to align divider left or right (for framework 2.6+ themes).
+* New: Added option to shade slider images for overlaid text readability; this applies to post slider and simple slider elements (for framework 2.6+ themes).
 * Improvement: Use `add_menu_page` instead of `add_object_page`, which was deprecated in WordPress 4.5.
 * Removed: No more icon style option on redesigned Team Member element (for framework 2.6+ themes).
 
