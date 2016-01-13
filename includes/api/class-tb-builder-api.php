@@ -3287,7 +3287,8 @@ class Theme_Blvd_Builder_API {
 					'2' 		=> __( '2 logos per slide', 'theme-blvd-layout-builder' ),
 			        '3' 		=> __( '3 logos per slide', 'theme-blvd-layout-builder' ),
 			        '4' 		=> __( '4 logos per slide', 'theme-blvd-layout-builder' ),
-			        '5' 		=> __( '5 logos per slide', 'theme-blvd-layout-builder' )
+			        '5' 		=> __( '5 logos per slide', 'theme-blvd-layout-builder' ),
+					'6' 		=> __( '6 logos per slide', 'theme-blvd-layout-builder' )
 				),
 				'class'		=> 'hide receiver receiver-slider'
 			),
@@ -3317,7 +3318,8 @@ class Theme_Blvd_Builder_API {
 					'2' 		=> __( '2 logos per row', 'theme-blvd-layout-builder' ),
 			        '3' 		=> __( '3 logos per row', 'theme-blvd-layout-builder' ),
 			        '4' 		=> __( '4 logos per row', 'theme-blvd-layout-builder' ),
-			        '5' 		=> __( '5 logos per row', 'theme-blvd-layout-builder' )
+			        '5' 		=> __( '5 logos per row', 'theme-blvd-layout-builder' ),
+					'6' 		=> __( '6 logos per row', 'theme-blvd-layout-builder' )
 				),
 				'class'		=> 'hide receiver receiver-grid'
 			),
