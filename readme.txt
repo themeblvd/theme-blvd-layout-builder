@@ -56,7 +56,7 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.0.9.5 - XX/XX/2016 =
+= 2.0.9.5 - 01/27/2016 =
 
 * New: Added option to pull from pages to Post List element.
 * New: Added option to align divider left or right (for framework 2.6+ themes).
