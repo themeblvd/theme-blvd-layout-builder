@@ -244,10 +244,16 @@ jQuery(document).ready(function($) {
 					type = $column.find('.block-type').val(),
 					$block = '';
 
+				if ( ! type ) {
+				    tbc_confirm(themeblvd.no_element, {'textOk':'Ok'});
+				    return false;
+				}
+
 				var data = {
 					action: 'themeblvd_add_block',
 					data: 'section_id='+section_id+'&element_id='+element_id+'&block_type='+type+'&col_num='+col_num
 				};
+
 	    		$.post(ajaxurl, data, function(response) {
 
 	    			// Split response
@@ -872,6 +878,11 @@ jQuery(document).ready(function($) {
 			section = $builder.find('.element-section:first-child').attr('id'),
 			$element = '';
 
+		if ( ! type ) {
+			tbc_confirm(themeblvd.no_element, {'textOk':'Ok'});
+			return false;
+		}
+
 		$.ajax({
 			type: "POST",
 			url: ajaxurl,
@@ -931,6 +942,7 @@ jQuery(document).ready(function($) {
 				}
 			}
 		});
+
 		return false;
 	});
 

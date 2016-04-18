@@ -263,6 +263,7 @@ class Theme_Blvd_Layout_Builder {
 			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'theme-blvd-layout-builder' ),
 			'delete_layout'			=> __( 'Are you sure you want to delete the template(s)?', 'theme-blvd-layout-builder' ),
 			'layout_created'		=> __( 'Layout created!', 'theme-blvd-layout-builder' ),
+			'no_element'			=> __( 'Oops! You forgot to select an element.', 'theme-blvd-layout-builder' ),
 			'no_layouts'			=> __( 'Oops! You didn\'t select any templates to delete.', 'theme-blvd-layout-builder' ),
 			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'theme-blvd-layout-builder' ),
 			'shift_up_error'		=> __( 'The section can\'t be shifted up any further.', 'theme-blvd-layout-builder' ),
@@ -1744,6 +1745,7 @@ class Theme_Blvd_Layout_Builder {
 
 			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
 				<select>
+					<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
 					<?php
 					foreach ( $elements as $element ) {
 						if ( $api->is_element( $element['info']['id'] ) ) {
@@ -2170,6 +2172,7 @@ class Theme_Blvd_Layout_Builder {
 
 											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
 												<select class="block-type">
+													<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
 													<?php
 													foreach ( $elements as $block ) {
 														if ( $api->is_block( $block['info']['id'] ) ) {

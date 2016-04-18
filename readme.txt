@@ -58,6 +58,8 @@ This plugin works with the following themes only.
 
 = 2.1.0 - XX/XX/2016 =
 
+Improvement: Display to the user where to select an element in the builder interface.
+
 = 2.0.9.5 - 01/27/2016 =
 
 * New: Added option to pull from pages to Post List element.

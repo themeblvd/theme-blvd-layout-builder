@@ -15,6 +15,10 @@
 #builder_blvd #optionsframework .section.tight {
 	padding: 15px;
 }
+#builder_blvd a:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
 
 /* =Primary Layout
 ----------------------------------------------- */
@@ -237,7 +241,6 @@
 #builder_blvd #optionsframework .edit-element-display {
 	color: #666666;
 	float: right;
-	margin-top: 7px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .edit-element-display {
 	float: left;
@@ -245,10 +248,13 @@
 #builder_blvd #optionsframework .edit-element-display:hover {
 	color: #000000;
 }
+#builder_blvd #optionsframework .top-widget-name .edit-element-display {
+	padding: 7px 0;
+}
 #builder_blvd #optionsframework .columns-config .edit-element-display {
 	float: none;
 	position: absolute;
-	top: -4px;
+	top: 2px;
 	right: 28px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .columns-config .edit-element-display {
@@ -849,6 +855,7 @@
 #builder_blvd .columns-config .column-heading .add-block.tb-tooltip-link {
 	color: #2ea2cc;
 	font-size: 16px;
+	outline: none;
 	position: absolute;
 	top: 5px;
 	right: 5px;
