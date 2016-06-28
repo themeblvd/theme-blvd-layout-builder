@@ -26,6 +26,7 @@ This plugin works with the following themes only.
 
 * [Jump Start](http://themeblvd.com/links/buy-jumpstart)
 * [Denali](http://themeblvd.com/links/buy-denali)
+* [Gnar](http://themeblvd.com/links/buy-gnar)
 
 **Theme Blvd Framework 2.2-2.4 Themes**
 
@@ -59,6 +60,7 @@ This plugin works with the following themes only.
 = 2.0.9.6 - XX/XX/2016 =
 
 * Improvement: Display to the user where to select an element in the builder interface.
+* Fixed: Include Google Maps API key, set from *Appearance > Theme Options > Configuration > Google Maps*, in layout builder (for framework 2.6.1+ themes).
 
 = 2.0.9.5 - 01/27/2016 =
 
