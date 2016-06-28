@@ -5239,7 +5239,7 @@ class Theme_Blvd_Builder_API {
 			    	'class'		=> 'show-hide-toggle'
 			    ),
 				'fx' => array(
-				'id' 		=> 'fx',
+					'id' 		=> 'fx',
 					'name'		=> __( 'Transition Effect', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select the effect you\'d like used to transition from one slide to the next.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'select',
