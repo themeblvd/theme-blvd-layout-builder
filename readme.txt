@@ -57,7 +57,7 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.0.9.6 - XX/XX/2016 =
+= 2.0.9.6 - 06/28/2016 =
 
 * Improvement: Display to the user where to select an element in the builder interface.
 * Fixed: Include Google Maps API key, set from *Appearance > Theme Options > Configuration > Google Maps*, in layout builder (for framework 2.6.1+ themes).
