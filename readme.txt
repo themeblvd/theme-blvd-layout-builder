@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.1.9.7 - XX/XX/XXXX =
 
+* Fixed: Minor RTL fixes in layout builder interface.
+
 = 2.0.9.6 - 06/28/2016 =
 
 * Improvement: Display to the user where to select an element in the builder interface.

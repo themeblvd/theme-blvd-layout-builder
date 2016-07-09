@@ -103,6 +103,7 @@
 }
 .wp-admin.rtl #builder_blvd #tb-edit-layout .manage-elements h2 {
 	float: right;
+	padding: 0 12px 0 0;
 }
 #builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select {
 	-webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
@@ -778,6 +779,10 @@
 }
 #tb-editor-builder #optionsframework .tb-sortable-option .item-handle.closed a.toggle {
 	right: 0;
+}
+.wp-admin.rtl #tb-editor-builder #optionsframework .tb-sortable-option .item-handle.closed a.toggle {
+	right: auto;
+	left: 0;
 }
 #tb-editor-builder #builder_blvd #builder .widget {
 	margin-bottom: 5px;
