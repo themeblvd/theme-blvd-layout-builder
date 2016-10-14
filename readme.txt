@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.0.9.7
+Stable Tag: 2.1.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -24,7 +24,7 @@ This plugin works with the following themes only.
 
 **Theme Blvd Framework 2.5+ Themes**
 
-* [Jump Start](http://themeblvd.com/links/buy-jumpstart)
+* [Jump Start](https://wpjumpstart.com)
 * [Denali](http://themeblvd.com/links/buy-denali)
 * [Gnar](http://themeblvd.com/links/buy-gnar)
 
@@ -57,7 +57,7 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.1.9.7 - XX/XX/XXXX =
+= 2.1.0 - XX/XX/XXXX =
 
 * Fixed: Minor RTL fixes in layout builder interface.
 
