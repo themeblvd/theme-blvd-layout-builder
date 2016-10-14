@@ -59,6 +59,7 @@ This plugin works with the following themes only.
 
 = 2.1.0 - XX/XX/XXXX =
 
+* New: Added "Clear Layout" button to builder on Edit Page screen.
 * Fixed: Minor RTL fixes in layout builder interface.
 
 = 2.0.9.6 - 06/28/2016 =

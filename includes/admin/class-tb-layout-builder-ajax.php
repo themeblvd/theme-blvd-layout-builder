@@ -22,6 +22,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		add_action( 'wp_ajax_themeblvd_add_template', array( $this, 'add_template' ) );
 		add_action( 'wp_ajax_themeblvd_apply_template', array( $this, 'apply_template' ) );
 		add_action( 'wp_ajax_themeblvd_save_template', array( $this, 'save_template' ) );
+		add_action( 'wp_ajax_themeblvd_clear_layout', array( $this, 'clear_layout' ) );
 		add_action( 'wp_ajax_themeblvd_add_section', array( $this, 'add_section' ) );
 		add_action( 'wp_ajax_themeblvd_add_element', array( $this, 'add_element' ) );
 		add_action( 'wp_ajax_themeblvd_add_block', array( $this, 'add_block' ) );
@@ -175,6 +176,36 @@ class Theme_Blvd_Layout_Builder_Ajax {
 
 		// Save layout
 		$this->admin_page->save_layout( $data['template_id'], $data );
+
+		die();
+	}
+
+	/**
+	 * Delete all current layout data.
+	 *
+	 * @since 2.1.0
+	 */
+	public function clear_layout() {
+
+		// Make sure Satan isn't lurking
+		check_ajax_referer( 'tb_save_layout', 'security' );
+
+		// ID of current page with layout
+		$post_id = $_POST['data'];
+
+		// Setup data so that save_layout() will think it
+		// came from the builder editing form, but will
+		// save emtpy layout because arrays are empty.
+		$data = array(
+			'tb_builder_sections' => array(),
+			'tb_builder_elements' => array()
+		);
+
+		// Clear layout
+		$this->admin_page->save_layout( $post_id, $data );
+
+		// Display back editing interface
+		$this->admin_page->edit_layout( $post_id );
 
 		die();
 	}

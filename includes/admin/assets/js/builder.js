@@ -467,7 +467,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Save current layout as new template
-	$wrap.find('#save-new-template').on('click', function(){
+	$wrap.find('#tb-save-new-template').on('click', function(){
 
 		var args = {
 			'confirm' 		: true,
@@ -516,6 +516,39 @@ jQuery(document).ready(function($) {
 
 				// Forgot name
 				tbc_confirm(themeblvd.no_name);
+
+			}
+		});
+
+		return false;
+	});
+
+	// Save current layout as new template
+	$wrap.find('#tb-clear-layout').on('click', function(){
+
+		var $select = $(this),
+			$overlay = $wrap.find('.ajax-overlay.full-overlay'),
+			post_id = $wrap.find('input[name="tb_post_id"]').val();
+
+		// Are they sure they want to delete the current
+		// layout's data?
+		tbc_confirm( themeblvd.clear_layout, {'confirm':true}, function(r){
+			if (r) {
+
+				$overlay.fadeIn(100);
+
+				var data = {
+					action: 'themeblvd_clear_layout',
+					security: $wrap.find('input[name="tb_nonce"]').val(),
+					data: post_id
+				};
+
+				$.post(ajaxurl, data, function(r) {
+					console.log(r);
+					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
+					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
+					$overlay.fadeOut(200);
+				});
 
 			}
 		});

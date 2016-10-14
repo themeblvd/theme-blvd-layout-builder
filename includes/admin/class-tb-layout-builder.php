@@ -262,6 +262,7 @@ class Theme_Blvd_Layout_Builder {
 	public function add_js_locals( $current ) {
 		$new = array(
 			'builder'				=> __( 'Builder', 'theme-blvd-layout-builder' ),
+			'clear_layout'			=> __( 'Are you sure you want to clear the current layout? This will permanently delete all sections and elements from this page\'s custom layout.', 'theme-blvd-layout-builder' ),
 			'column'				=> __( 'Column', 'theme-blvd-layout-builder' ),
 			'columns'				=> __( 'Columns', 'theme-blvd-layout-builder' ),
 			'edit_layout'			=> __( 'Edit Layout', 'theme-blvd-layout-builder' ),
@@ -1643,7 +1644,9 @@ class Theme_Blvd_Layout_Builder {
 							<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
 						</div>
 
-						<a href="#" id="save-new-template" class="button-secondary"><?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
+						<a href="#" id="tb-save-new-template" class="button-secondary"><?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
+
+						<a href="#" id="tb-clear-layout" class="button-secondary"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
 
 					</div><!-- .meta-box-nav (end) -->
 
