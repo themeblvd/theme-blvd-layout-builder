@@ -815,25 +815,39 @@
 }
 #tb-editor-builder .tb-builder-footer i {
 	position: absolute;
-	top: 6px;
-	left: 5px;
+	top: 1px;
+    left: -20px;
 }
 .wp-admin.rtl #tb-editor-builder .tb-builder-footer i {
-	left: inherit;
-	right: 5px;
+	left: initial;
+	right: -20px;
 }
 #tb-editor-builder .tb-builder-footer a {
 	text-decoration: none;
 }
 #tb-editor-builder .tb-builder-footer p {
+	float: left;
 	margin: 0;
 	padding: 0;
+	position: relative;
+	z-index: 3;
+}
+.wp-admin.rtl #tb-editor-builder .tb-builder-footer p {
+	float: right;
 }
 #tb-editor-builder #tb-clear-layout {
   float: right;
 }
 .wp-admin.rtl #tb-editor-builder #tb-clear-layout {
 	float: left;
+}
+#tb-editor-builder .tb-builder-footer .sync-overlay {
+	z-index: 2;
+}
+#tb-editor-builder .tb-builder-footer.sync-on #tb-clear-layout {
+	display: inline-block;
+	position: relative;
+	z-index: 1;
 }
 
 /* Legacy fixes (for those using old themes) */

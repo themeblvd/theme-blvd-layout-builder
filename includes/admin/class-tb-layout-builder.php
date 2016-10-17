@@ -1680,11 +1680,10 @@ class Theme_Blvd_Layout_Builder {
 
 					<!-- FOOTER (start) -->
 
-					<div class="tb-builder-footer submitbox">
-						<p>
-							<i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php esc_html_e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
-							<a href="#" id="tb-clear-layout" class="submitdelete" title="<?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
-						</p>
+					<div class="tb-builder-footer submitbox clearfix">
+						<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php esc_html_e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?></p>
+						<a href="#" id="tb-clear-layout" class="submitdelete" title="<?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
+						<div class="ajax-overlay sync-overlay"></div>
 					</div>
 
 					<!-- FOOTER (end) -->
