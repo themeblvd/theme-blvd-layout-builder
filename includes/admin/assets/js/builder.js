@@ -978,6 +978,28 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
+	// Element nav
+	$builder.on('click', '.element-options-nav a', function(){
+
+		var $link = $(this),
+			target = $link.data('target'),
+			$element = $link.closest('.widget');
+
+		$link.closest('ul').find('li').removeClass('active');
+		$link.closest('li').addClass('active');
+
+		if ( target == 'display' ) {
+			$element.find('.element-display-options-wrap').removeClass('hide')
+			$element.find('.element-options-wrap').addClass('hide');
+		} else {
+			$element.find('.element-options-wrap').removeClass('hide');
+			$element.find('.element-display-options-wrap').addClass('hide')
+		}
+
+		return false;
+
+	});
+
 	// Duplicate element
 	$builder.on('click', '.duplicate-element', function(){
 

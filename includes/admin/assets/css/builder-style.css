@@ -90,7 +90,7 @@
 /* Header */
 #builder_blvd #tb-edit-layout .manage-elements {
 	border-bottom: 1px solid #ddd;
-	margin: 10px 0 10px 0;
+	margin: 10px 0 20px 0;
 	padding-bottom: 10px;
 	position: relative;
 }
@@ -263,23 +263,66 @@
 	left: 28px;
 }
 
+/* Element Nav */
+#builder_blvd .element-options-nav {
+	background: #f9f9f9;
+	border-radius: 0;
+}
+#builder_blvd .element-options-nav ul {
+	margin: 0;
+}
+#builder_blvd .element-options-nav li {
+	border-right: 1px solid #dfdfdf;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+.wp-admin.rtl #builder_blvd .element-options-nav li {
+	float: right;
+}
+#builder_blvd .element-options-nav a {
+	color: #666666;
+	display: block;
+	font-size: 12px;
+	padding: 10px 16px;
+	position: relative;
+	text-decoration: none;
+}
+#builder_blvd .element-options-nav a:hover {
+	background-color: #f2f2f2;
+	color: #444444;
+}
+#builder_blvd .element-options-nav .active a {
+	background: #ffffff;
+	color: #444444;
+}
+#builder_blvd .element-options-nav .active a:before {
+	content: "";
+	background: #ffffff;
+	display: block;
+	position: absolute;
+	right: 0;
+	bottom: -1px;
+	left: 0;
+	height: 1px;
+}
+
 /* Element/Section Labels */
 #builder_blvd .section-label,
 #builder_blvd .element-label {
 	float: right;
-	margin: 6px 10px 0 0;
+	margin-top: 6px;
 	position: relative;
 }
 .wp-admin.rtl #builder_blvd .section-label,
 .wp-admin.rtl #builder_blvd .element-label {
 	float: left;
-	margin: 6px 0 0 10px;
 }
 #builder_blvd .section-label {
 	float: none;
 	position: absolute;
 	left: 38px;
-	bottom: 0;
+	bottom: 1px;
 }
 .wp-admin.rtl #builder_blvd .section-label {
 	left: initial;
@@ -307,6 +350,7 @@
 	left: 0;
 }
 #builder_blvd .section-label .label-input {
+	padding: 5px 8px;
 	right: initial;
 	left: 0;
 }
@@ -332,10 +376,14 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
+#builder_blvd .section-label .label-text {
+	font-size: 11px;
+	padding: 7px 10px;
+}
 
 /* Sections */
 #builder_blvd .element-section {
-	margin: 0 0 5px 0;
+	margin: 0 0 20px 0;
 	padding: 0;
 }
 #builder_blvd .element-section:last-child {
@@ -353,7 +401,7 @@
 	color: #555555;
 	display: block;
 	font-size: 15px;
-	padding: 5px;
+	padding: 7px 5px;
 	position: absolute;
 	bottom: -1px;
 	left: 0;
@@ -368,43 +416,34 @@
 }
 #builder_blvd .section-options {
 	position: absolute;
-	right: 7px;
-	bottom: 4px;
+	right: 1px;
+	bottom: 6px;
 }
 .wp-admin.rtl #builder_blvd .section-options {
 	right: initial;
-	left: 7px;
+	left: 1px;
 }
 #builder_blvd .section-options a {
+	float: right;
+}
+#builder_blvd .section-options .button {
+	margin-left: 8px;
+}
+.wp-admin.rtl #builder_blvd .section-options .button {
+	margin-left: 0;
+	margin-right: 8px;
+}
+#builder_blvd .section-options .tb-tooltip-link {
 	color: #666666;
 	font-size: 15px;
-	position: absolute;
-	bottom: 0;
+	margin-top: 5px;
 }
-#builder_blvd .section-options a:hover {
+#builder_blvd .section-options .tb-tooltip-link:hover {
 	color: #000000;
 }
-#builder_blvd .section-options a.shift-section-up {
-	right: 38px;
-}
-.wp-admin.rtl #builder_blvd .section-options a.shift-section-up {
-	right: initial;
-	left: 38px;
-}
-#builder_blvd .section-options a.shift-section-down {
-	right: 20px;
-}
-.wp-admin.rtl #builder_blvd .section-options a.shift-section-down {
-	right: initial;
-	left: 20px;
-}
-#builder_blvd .section-options a.edit-section-display {
-	right: 0;
-	bottom: 2px;
-}
-.wp-admin.rtl #builder_blvd .section-options a.edit-section-display {
-	right: initial;
-	left: 0;
+#builder_blvd .section-options .tb-tooltip-link i:before {
+	margin: 0 2px;
+	width: initial;
 }
 #builder_blvd .element-section .elements {
 	background: #f8f8f8;
@@ -775,7 +814,7 @@
 	padding: 5px;
 }
 #tb-editor-builder #builder_blvd .element-section {
-	margin: 0 0 10px 0;
+	margin: 0 0 15px 0;
 }
 #tb-editor-builder #builder_blvd .element-section:last-child {
 	margin-bottom: 0;
@@ -940,10 +979,11 @@
 }
 #builder_blvd .columns-header {
 	background-color: #fff;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #dddddd;
 	color: #888888;
-	font-size: 11px;
-	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 24px;
+	padding: 10px;
 }
 #builder_blvd .columns-header .info {
 	float: right;

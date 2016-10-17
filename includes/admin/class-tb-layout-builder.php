@@ -1629,13 +1629,6 @@ class Theme_Blvd_Layout_Builder {
 						<div class="ajax-overlay add-element"></div>
 						<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
 
-						<div class="icon-holder">
-							<span class="tb-loader ajax-loading">
-								<i class="tb-icon-spinner"></i>
-							</span>
-							<i class="tb-icon-commercial-building"></i>
-						</div>
-
 						<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); ?>">
 							<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $post->ID ); ?>
 						</div>
@@ -1922,8 +1915,8 @@ class Theme_Blvd_Layout_Builder {
 					</div>
 
 					<div class="section-options clearfix">
-						<a href="#" class="edit-section-display tb-tooltip-link" data-target="<?php echo esc_attr($section_id); ?>_background_form" data-title="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>">
-							<i class="tb-icon-picture"></i>
+						<a href="#" class="edit-section-display button button-secondary button-small" data-target="<?php echo esc_attr($section_id); ?>_background_form" data-title="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Section Display', 'theme-blvd-layout-builder'); ?>">
+							<?php esc_html_e('Edit Display', 'theme-blvd-layout-builder'); ?>
 						</a>
 						<a href="#" class="shift-section-down tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Shift Section Down', 'theme-blvd-layout-builder'); ?>">
 							<i class="tb-icon-circle-arrow-down"></i>
@@ -2033,15 +2026,9 @@ class Theme_Blvd_Layout_Builder {
 
 				<i class="tb-icon-sort"></i>
 
-				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text-1="<?php esc_attr_e('Show Element Options', 'theme-blvd-layout-builder'); ?>" data-tooltip-text-2="<?php esc_attr_e('Hide Element Options', 'theme-blvd-layout-builder'); ?>">
+				<a href="#" class="widget-name-arrow tb-tooltip-link" data-tooltip-toggle="1" data-tooltip-text="<?php esc_attr_e('Configure Element', 'theme-blvd-layout-builder'); ?>">
 					<i class="tb-icon-up-dir"></i>
 				</a>
-
-				<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-					<a href="#" class="edit-element-display tb-tooltip-link" data-target="<?php echo esc_attr($element_id); ?>_background_form" data-title="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Element Display', 'theme-blvd-layout-builder'); ?>">
-						<i class="tb-icon-picture"></i>
-					</a>
-				<?php endif; ?>
 
 				<div class="element-label dynamic-label" data-tooltip-text="<?php esc_attr_e('Click to Edit Label', 'theme-blvd-layout-builder'); ?>">
 					<?php $label = $element_label !== null ? $element_label : __('Element Label', 'theme-blvd-layout-builder'); ?>
@@ -2056,15 +2043,14 @@ class Theme_Blvd_Layout_Builder {
 			</div><!-- .element-name (end) -->
 
 			<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-				<div class="element-display-options-wrap hide">
-					<div id="<?php echo $element_id; ?>_background_form" class="element-display-options">
-						<?php
-						$display_options = $this->get_display_options( 'element', $element_type );
-						$display_form = themeblvd_option_fields( 'tb_builder_elements['.$section_id.']['.$element_id.'][display]', $display_options, $element_display, false );
-						echo $display_form[0];
-						?>
-					</div>
+
+				<div class="element-options-nav widget-content hide clearfix">
+					<ul>
+						<li class="active"><a href="#" title="<?php esc_attr_e('Options', 'theme-blvd-layout-builder'); ?>" data-target="options"><?php esc_html_e('Options', 'theme-blvd-layout-builder'); ?></a></li>
+						<li><a href="#" title="<?php esc_attr_e('Display', 'theme-blvd-layout-builder'); ?>" data-target="display"><?php esc_html_e('Display', 'theme-blvd-layout-builder'); ?></a></li>
+					</ul>
 				</div>
+
 			<?php endif; ?>
 
 			<div class="widget-content hide <?php echo sanitize_html_class("element-$element_type"); ?>">
@@ -2073,40 +2059,62 @@ class Theme_Blvd_Layout_Builder {
 
 				<!-- ELEMENT OPTIONS (start) -->
 
-				<?php if ( ($element_type == 'columns' || $element_type == 'jumbotron_slider') && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) :
+				<div class="element-options-wrap">
 
-					if ( $element_type == 'columns' ) {
+					<?php if ( ($element_type == 'columns' || $element_type == 'jumbotron_slider') && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) :
 
-						$col_count = 2; // Default
-						$col_config = '1/2 - 1/2'; // Default
+						if ( $element_type == 'columns' ) {
 
-						if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
-							$col_count = count( explode('-', $element_settings['setup'] ) );
-							$col_config = str_replace( '-', ' - ', $element_settings['setup'] );
+							$col_count = 2; // Default
+							$col_config = '1/2 - 1/2'; // Default
+
+							if ( $element_settings && ! empty( $element_settings['setup'] ) ) {
+								$col_count = count( explode('-', $element_settings['setup'] ) );
+								$col_config = str_replace( '-', ' - ', $element_settings['setup'] );
+							}
+
+						} else {
+
+							$col_count = 1; // Always only 1 column
+
 						}
+						?>
+						<div class="columns-header clearfix">
+							<?php if ( $element_type == 'columns' ) : ?>
+								<span class="info">
+									<span class="col-count"><?php printf( esc_html( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ) ), $col_count ); ?></span>
+									<span class="col-config"><?php echo esc_attr($col_config); ?></span>
+								</span>
+							<?php endif; ?>
+							<span class="action"><a href="#" class="button button-small edit-columns-config" data-showing="0" data-text-show="<?php esc_attr_e('Edit Column Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php esc_attr_e('Hide Columns Setup', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Edit Columns Setup', 'theme-blvd-layout-builder'); ?></a>
+						</div><!-- .columns-header (end) -->
+					<?php endif; ?>
 
-					} else {
+					<?php if ( $form ) : ?>
+						<?php echo $form[0]; ?>
+					<?php endif; ?>
 
-						$col_count = 1; // Always only 1 column
-
-					}
-					?>
-					<div class="columns-header clearfix">
-						<?php if ( $element_type == 'columns' ) : ?>
-							<span class="info">
-								<span class="col-count"><?php printf( esc_html( _n( '1 Column', '%s Columns', $col_count, 'theme-blvd-layout-builder' ) ), $col_count ); ?></span>
-								<span class="col-config"><?php echo esc_attr($col_config); ?></span>
-							</span>
-						<?php endif; ?>
-						<span class="action"><a href="#" class="edit-columns-config" data-showing="0" data-text-show="<?php esc_attr_e('Edit Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php esc_attr_e('Hide Setup', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Edit Setup', 'theme-blvd-layout-builder'); ?></a>
-					</div><!-- .columns-header (end) -->
-				<?php endif; ?>
-
-				<?php if ( $form ) : ?>
-					<?php echo $form[0]; ?>
-				<?php endif; ?>
+				</div><!-- .element-options-wrap (end) -->
 
 				<!-- ELEMENT OPTIONS (end) -->
+
+				<!-- DISPLAY OPTIONS (start) -->
+
+				<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+
+					<div class="element-display-options-wrap hide">
+						<div id="<?php echo $element_id; ?>_background_form" class="element-display-options">
+							<?php
+							$display_options = $this->get_display_options( 'element', $element_type );
+							$display_form = themeblvd_option_fields( 'tb_builder_elements['.$section_id.']['.$element_id.'][display]', $display_options, $element_display, false );
+							echo $display_form[0];
+							?>
+						</div>
+					</div><!-- .element-display-options-wrap (end) -->
+
+				<?php endif; ?>
+
+				<!-- DISPLAY OPTIONS (end) -->
 
 				<?php if ( ($element_type == 'columns' || $element_type == 'jumbotron_slider') && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
 
@@ -2171,11 +2179,11 @@ class Theme_Blvd_Layout_Builder {
 												<h4><?php esc_html_e('Elements', 'theme-blvd-layout-builder'); ?></h4>
 											<?php endif; ?>
 
-											<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo esc_attr($element_id); ?>_col_<?php echo $i; ?>_background_form" data-title="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Column Display', 'theme-blvd-layout-builder'); ?>">
+											<a href="#" class="tb-element-display-options edit-element-display tb-tooltip-link" data-target="<?php echo esc_attr($element_id); ?>_col_<?php echo $i; ?>_background_form" data-title="<?php esc_attr_e('Edit Column Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Edit Column Display', 'theme-blvd-layout-builder'); ?>">
 												<i class="tb-icon-picture"></i>
 											</a>
 
-											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Add Element', 'theme-blvd-layout-builder'); ?>" data-tooltip-position="top">
+											<a href="#" class="add-block tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Add Selected Element', 'theme-blvd-layout-builder'); ?>" data-tooltip-position="top">
 												<i class="tb-icon-plus-circled"></i>
 											</a>
 
@@ -2194,7 +2202,7 @@ class Theme_Blvd_Layout_Builder {
 												<span class="textbox"></span>
 											</div><!-- .tb-fancy-select (end) -->
 
-											<a href="#" class="add-block button-secondary" title="<?php esc_attr_e('Add Element', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Add Element', 'theme-blvd-layout-builder'); ?></a>
+											<a href="#" class="add-block button-secondary" title="<?php esc_attr_e('Add Selected Element', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Add Element', 'theme-blvd-layout-builder'); ?></a>
 
 										<?php else : ?>
 
