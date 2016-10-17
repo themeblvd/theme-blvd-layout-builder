@@ -1671,7 +1671,7 @@ class Theme_Blvd_Layout_Builder {
 					<!-- TEMPLATE SYNC (start) -->
 
 					<div id="tb-sync-layout" class="<?php echo $sync_hide; ?>">
-						<h3><i class="tb-icon-arrows-ccw"></i><?php esc_html_e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></h3>
+						<p class="sync-title"><i class="tb-icon-arrows-ccw"></i><?php esc_html_e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></p>
 						<p><?php printf( esc_html__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'theme-blvd-layout-builder'), $templates_link ); ?></p>
 						<p><?php printf( '<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', esc_html__('Unsync Layout', 'theme-blvd-layout-builder') ); ?></p>
 					</div><!-- #tb-sync-layout (end) -->

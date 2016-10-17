@@ -181,7 +181,7 @@
 	left: 3px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .widget-name .tb-icon-sort {
-	left: inherit;
+	left: initial;
 	right: 3px;
 }
 #builder_blvd #optionsframework .widget-name h3 {
@@ -259,7 +259,7 @@
 	right: 28px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .columns-config .edit-element-display {
-	right: inherit;
+	right: initial;
 	left: 28px;
 }
 
@@ -282,14 +282,14 @@
 	bottom: 0;
 }
 .wp-admin.rtl #builder_blvd .section-label {
-	left: inherit;
+	left: initial;
 	right: 38px;
 }
 #builder_blvd .section-label.legacy {
 	left: 0;
 }
 .wp-admin.rtl #builder_blvd .section-label.legacy {
-	left: inherit;
+	left: initial;
 	right: 0;
 }
 #builder_blvd .section-label .label-input,
@@ -303,15 +303,15 @@
 }
 .wp-admin.rtl #builder_blvd .section-label .label-input,
 .wp-admin.rtl #builder_blvd .element-label .label-input {
-	right: inherit;
+	right: initial;
 	left: 0;
 }
 #builder_blvd .section-label .label-input {
-	right: inherit;
+	right: initial;
 	left: 0;
 }
 .wp-admin.rtl #builder_blvd .section-label .label-input {
-	left: inherit;
+	left: initial;
 	right: 0;
 }
 #builder_blvd .section-label .label-text,
@@ -360,7 +360,7 @@
 }
 .wp-admin.rtl #builder_blvd .delete-section,
 .wp-admin.rtl #builder_blvd .locked-section {
-	left: inherit;
+	left: initial;
 	right: 0;
 }
 #builder_blvd .delete-section:hover {
@@ -372,7 +372,7 @@
 	bottom: 4px;
 }
 .wp-admin.rtl #builder_blvd .section-options {
-	right: inherit;
+	right: initial;
 	left: 7px;
 }
 #builder_blvd .section-options a {
@@ -388,14 +388,14 @@
 	right: 38px;
 }
 .wp-admin.rtl #builder_blvd .section-options a.shift-section-up {
-	right: inherit;
+	right: initial;
 	left: 38px;
 }
 #builder_blvd .section-options a.shift-section-down {
 	right: 20px;
 }
 .wp-admin.rtl #builder_blvd .section-options a.shift-section-down {
-	right: inherit;
+	right: initial;
 	left: 20px;
 }
 #builder_blvd .section-options a.edit-section-display {
@@ -403,7 +403,7 @@
 	bottom: 2px;
 }
 .wp-admin.rtl #builder_blvd .section-options a.edit-section-display {
-	right: inherit;
+	right: initial;
 	left: 0;
 }
 #builder_blvd .element-section .elements {
@@ -524,7 +524,7 @@
 	left: 0;
 }
 #tb-editor-builder #builder_blvd #optionsframework .metabox-holder {
-	max-width: inherit;
+	max-width: initial;
 	padding: 0;
 }
 #tb-editor-builder #builder_blvd .postbox {
@@ -558,7 +558,7 @@
 	top: 40px;
 }
 #tb-editor-builder #builder_blvd #optionsframework {
-	max-width: inherit;
+	max-width: initial;
 }
 #tb-editor-builder #builder_blvd #optionsframework #builder {
 	position: relative;
@@ -567,21 +567,25 @@
 
 /* Sync Layout */
 #tb-editor-builder #tb-sync-layout {
-	padding: 15px;
+	padding: 25px;
 }
-#tb-sync-layout h3 {
+#tb-editor-builder #tb-sync-layout .sync-title {
+	font-weight: bold;
 	margin: 0 0 10px 0;
 	padding: 0 0 0 19px;
 	position: relative;
 }
-#tb-sync-layout h3 i {
+.wp-admin.rtl #tb-editor-builder #tb-sync-layout .sync-title {
+	padding: 0 19px 0 0;
+}
+#tb-editor-builder #tb-sync-layout .sync-title i {
 	color: #57da23;
 	position: absolute;
-	top: 0;
+	top: 2px;
 	left: -3px;
 }
-.wp-admin.rtl #tb-sync-layout h3 i {
-	left: inherit;
+.wp-admin.rtl #tb-editor-builder #tb-sync-layout .sync-title i {
+	left: initial;
 	right: -3px;
 }
 #tb-editor-builder #tb-sync-layout p {
@@ -589,6 +593,7 @@
 	margin: 0 0 10px 0;
 }
 #tb-editor-builder #tb-sync-layout p:last-child {
+	margin-top: 20px;
 	margin-bottom: 0;
 }
 #tb-editor-builder .meta-box-nav .ajax-overlay.sync-overlay {
@@ -608,7 +613,7 @@
 	height: 22px;
 }
 .wp-admin.rtl #tb-editor-builder #builder_blvd .tb-loader {
-	left: inherit;
+	left: initial;
 	right: 3px;
 }
 #tb-editor-builder #builder_blvd .meta-box-nav .tb-loader {
@@ -890,7 +895,7 @@
 	height: 18px;
 }
 .wp-admin.rtl #builder_blvd .columns-config .column-heading .add-block.tb-tooltip-link {
-	right: inherit;
+	right: initial;
 	left: 5px;
 }
 #builder_blvd .columns-config .column-heading .add-block.tb-tooltip-link:hover {
@@ -925,7 +930,7 @@
 	right: 8px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .columns-config.columns-1 .edit-element-display {
-	right: inherit;
+	right: initial;
 	left: 8px;
 }
 
@@ -1081,7 +1086,7 @@
 	left: 2px;
 }
 .wp-admin.rtl #builder_blvd #optionsframework .column-blocks .block-widget-name .tb-icon-sort {
-	left: inherit;
+	left: initial;
 	right: 2px;
 }
 #builder_blvd .column-blocks .block-widget-name h3 {
@@ -1159,7 +1164,7 @@
 	left: 1px;
 }
 .wp-admin.rtl #builder_blvd #builder .block-nav a.edit-block-display i {
-	left: inherit;
+	left: initial;
 	right: 1px;
 }
 #builder_blvd .block-widget .delete-block {
@@ -1252,7 +1257,7 @@
 .wp-admin.rtl .themeblvd-modal #optionsframework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
 .wp-admin.rtl .themeblvd-modal #optionsframework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
 .wp-admin.rtl .themeblvd-modal #optionsframework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
-	right: inherit;
+	right: initial;
 	left: 0;
 }
 
@@ -1269,13 +1274,13 @@
 @media (max-width: 1120px) {
 	#builder_blvd #optionsframework .section .controls {
 		float: none;
-		min-width: inherit;
+		min-width: initial;
 		/* overflow: hidden; */
 		width: auto;
 	}
 	#builder_blvd #optionsframework .section .explain {
 		float: none;
-		max-width: inherit;
+		max-width: initial;
 		width: auto;
 	}
 }
