@@ -544,7 +544,6 @@ jQuery(document).ready(function($) {
 				};
 
 				$.post(ajaxurl, data, function(r) {
-					console.log(r);
 					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
 					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
 					$overlay.fadeOut(200);

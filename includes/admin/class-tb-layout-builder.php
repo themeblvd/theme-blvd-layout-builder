@@ -1646,8 +1646,6 @@ class Theme_Blvd_Layout_Builder {
 
 						<a href="#" id="tb-save-new-template" class="button-secondary"><?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
 
-						<a href="#" id="tb-clear-layout" class="button-secondary"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
-
 					</div><!-- .meta-box-nav (end) -->
 
 					<!-- HEADER (end) -->
@@ -1682,8 +1680,11 @@ class Theme_Blvd_Layout_Builder {
 
 					<!-- FOOTER (start) -->
 
-					<div class="tb-builder-footer">
-						<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php esc_html_e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
+					<div class="tb-builder-footer submitbox">
+						<p>
+							<i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php esc_html_e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?>
+							<a href="#" id="tb-clear-layout" class="submitdelete" title="<?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
+						</p>
 					</div>
 
 					<!-- FOOTER (end) -->

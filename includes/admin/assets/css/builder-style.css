@@ -688,12 +688,10 @@
 	float: right;
 	margin: 0 10px 0 0;
 }
-#tb-editor-builder #tb-clear-layout,
 #tb-editor-builder #tb-save-new-template {
 	float: right;
 	margin: 0 0 0 10px;
 }
-.wp-admin.rtl #tb-editor-builder #tb-clear-layout,
 .wp-admin.rtl #tb-editor-builder #tb-save-new-template {
 	float: left;
 	margin: 0 10px 0 0;
@@ -830,6 +828,12 @@
 #tb-editor-builder .tb-builder-footer p {
 	margin: 0;
 	padding: 0;
+}
+#tb-editor-builder #tb-clear-layout {
+  float: right;
+}
+.wp-admin.rtl #tb-editor-builder #tb-clear-layout {
+	float: left;
 }
 
 /* Legacy fixes (for those using old themes) */
