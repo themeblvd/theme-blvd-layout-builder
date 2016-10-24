@@ -978,8 +978,8 @@ class Theme_Blvd_Layout_Builder {
 			// Start template from scratch
 
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-				update_post_meta( $post_id, '_tb_builder_elements', array( 'primary' => array() ) );
-				update_post_meta( $post_id, '_tb_builder_sections', array( 'primary' => array() ) );
+				update_post_meta( $post_id, '_tb_builder_elements', array() );
+				update_post_meta( $post_id, '_tb_builder_sections', array() );
 			} else {
 				update_post_meta( $post_id, '_tb_builder_elements', array( 'featured' => array(), 'primary' => array(), 'featured_below' => array(), ) );
 			}
@@ -1881,9 +1881,7 @@ class Theme_Blvd_Layout_Builder {
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 
 				// Working with a template just created
-				$saved_elements = $saved_sections = array(
-					'primary' => array()
-				);
+				$saved_elements = $saved_sections = array();
 
 			} else {
 
@@ -1909,7 +1907,7 @@ class Theme_Blvd_Layout_Builder {
 		?>
 		<div class="manage-elements">
 
-			<div class="ajax-overlay add-element"></div>
+			<div class="ajax-overlay add-element<?php if ( ! $saved_sections && version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) echo ' show'; ?>"></div>
 
 			<h2><?php esc_html_e( 'Manage Elements', 'theme-blvd-layout-builder' ); ?></h2>
 
@@ -1931,7 +1929,7 @@ class Theme_Blvd_Layout_Builder {
 			<a href="#" id="add_new_element" class="button-secondary"><?php esc_html_e( 'Add Element', 'theme-blvd-layout-builder' ); ?></a>
 
 			<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-				<a href="#" id="add_new_section" class="button-secondary"><?php esc_html_e( 'Add Section', 'theme-blvd-layout-builder' ); ?></a>
+				<a href="#" class="tb-add-new-section button-secondary" title="<?php esc_attr_e('Add New Section', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Add Section', 'theme-blvd-layout-builder'); ?></a>
 			<?php endif; ?>
 
 			<span class="tb-loader ajax-loading">
@@ -1941,9 +1939,17 @@ class Theme_Blvd_Layout_Builder {
 			<div class="clear"></div>
 		</div><!-- .manage-elements (end) -->
 
+		<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+			<div class="tb-no-sections<?php if ($saved_sections) echo ' hide'; ?>">
+				<p><a href="#" class="tb-add-new-section button button-secondary button-hero"><?php esc_html_e('Add Section', 'theme-blvd-layout-builder'); ?></a></p>
+				<p class="note"><?php esc_html_e('Add a section to get started.', 'theme-blvd-layout-builder'); ?></p>
+			</div><!-- .no-section (end) -->
+		<?php endif; ?>
+
 		<div id="builder">
 			<?php
 			if ( is_array($saved_sections) && count($saved_sections) > 0 ) {
+
 				foreach ( $saved_sections as $section_id => $section ) {
 
 					$elements = array();
@@ -1954,6 +1960,7 @@ class Theme_Blvd_Layout_Builder {
 
 					$this->edit_section( $post_id, $section_id, $elements, $section );
 				}
+
 			}
 			?>
 		</div><!-- #builder (end) -->
@@ -2144,7 +2151,7 @@ class Theme_Blvd_Layout_Builder {
 
 			<!-- SECTION ELEMENTS (end) -->
 
-		</div><!-- .section (end) -->
+		</div>
 		<?php
 	}
 

@@ -38,6 +38,11 @@ jQuery(document).ready(function($) {
 				builder_blvd.columns( $(this).closest('.widget') );
 			});
 
+			// If editing a page, show/hide "Clear Layout" button
+			if ( ! $.trim( $builder.find('#builder').html() ) ) {
+				$builder.closest('#builder_blvd').find('#tb-clear-layout').hide();
+			}
+
 			// Setup section/element/block display options, which open in a modal
 			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 				$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').ThemeBlvdModal({
@@ -810,7 +815,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// Add new section
-	$builder.on('click', '#add_new_section', function(){
+	$builder.on('click', '.tb-add-new-section', function(){
 
 		var $button = $(this),
 			$overlay = $button.parent().find('.ajax-overlay'),
@@ -836,6 +841,12 @@ jQuery(document).ready(function($) {
 
 				// Insert HTML markup
 				$builder.find('#builder').append(response);
+
+				// If no sections existed, remove overlay on adding new
+				// elements and hide the default "Add Section" hero button.
+				$builder.closest('#builder_blvd').find('#tb-clear-layout').fadeIn('fast');
+				$builder.find('.manage-elements .ajax-overlay').fadeOut('fast');
+				$builder.find('.tb-no-sections').hide();
 
 				// Remove loading elements
 				$load.fadeOut('fast');
@@ -875,8 +886,17 @@ jQuery(document).ready(function($) {
 	    	if(r) {
 	        	// Fade out and delete section
 				$button.closest('.element-section').animate({height: 0, opacity: 0}, 500, function() {
-			        $(this).remove();
-			    });
+
+					$(this).remove();
+
+					// If no more sections, show the placeholder items.
+					if ( ! $.trim( $builder.find('#builder').html() ) ) {
+						$builder.closest('#builder_blvd').find('#tb-clear-layout').fadeOut('fast');
+						$builder.find('.manage-elements .ajax-overlay').fadeIn('fast');
+						$builder.find('.tb-no-sections').slideDown();
+					}
+
+				});
 	        }
 	    });
 		return false;
