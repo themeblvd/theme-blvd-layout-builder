@@ -260,6 +260,7 @@ class Theme_Blvd_Layout_Builder {
 	 * @since 1.1.1
 	 */
 	public function add_js_locals( $current ) {
+
 		$new = array(
 			'builder'				=> __( 'Builder', 'theme-blvd-layout-builder' ),
 			'clear_layout'			=> __( 'Are you sure you want to clear the current layout? This will permanently delete all sections and elements from this page\'s custom layout.', 'theme-blvd-layout-builder' ),
@@ -275,12 +276,17 @@ class Theme_Blvd_Layout_Builder {
 			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'theme-blvd-layout-builder' ),
 			'shift_up_error'		=> __( 'The section can\'t be shifted up any further.', 'theme-blvd-layout-builder' ),
 			'shift_down_error'		=> __( 'The section can\'t be shifted down any further.', 'theme-blvd-layout-builder' ),
-			'template_apply'		=> __( 'Are you sure you want to apply the selected starting point? Any work on the current layout for this page will be erased.', 'theme-blvd-layout-builder' ),
+			'template_apply'		=> __( 'Are you sure you want to merge the selected layout with your current layout?', 'theme-blvd-layout-builder' ),
 			'template_desc'			=> __( 'Enter a name for the new template.', 'theme-blvd-layout-builder' ),
 			'template_save'			=> __( 'Save as Template', 'theme-blvd-layout-builder' ),
 			'template_title'		=> __( 'Save Current Layout as Template', 'theme-blvd-layout-builder' ),
 			'template_updated'		=> __( 'The template has been saved.', 'theme-blvd-layout-builder'),
 		);
+
+		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+			$new['template_apply'] = __( 'Are you sure you want to apply the selected starting point? Any work on the current layout for this page will be erased.', 'theme-blvd-layout-builder' );
+		}
+
 		return array_merge($current, $new);
 	}
 
@@ -358,7 +364,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// Update template
 		if ( $template_id && isset( $_POST['action'] ) && $_POST['action'] == 'save_template' ) {
-			if ( wp_verify_nonce( $_POST['tb_nonce'], 'save_template' ) ) {
+			if ( wp_verify_nonce( $_POST['tb_nonce'], 'tb_save_layout' ) ) {
 				$this->save_layout( $template_id, $_POST );
 				$this->updated = __('The template has been saved.', 'theme-blvd-layout-builder');
 			}
@@ -677,7 +683,7 @@ class Theme_Blvd_Layout_Builder {
 		?>
 		<div id="tb-edit-layout">
 			<form id="edit_builder" method="post" action="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'tab' => 'edit', 'template' => $template_id), admin_url('admin.php') ) ); ?>">
-				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('save_template'); ?>" />
+				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
 				<input type="hidden" name="template_id" value="<?php echo esc_attr($template_id); ?>" />
 				<input type="hidden" name="action" value="save_template" />
 				<div id="poststuff" class="metabox-holder full-width has-right-sidebar">
@@ -685,9 +691,17 @@ class Theme_Blvd_Layout_Builder {
 					<!-- MAIN (start) -->
 
 					<div id="post-body">
-						<div id="post-body-content">
+
+						<div class="ajax-overlay full-overlay">
+							<span class="tb-loader ajax-loading">
+								<i class="tb-icon-spinner"></i>
+							</span>
+						</div>
+
+						<div id="post-body-content" class="ajax-mitt">
 							<?php $this->edit_layout( $template_id, true ); ?>
 						</div><!-- .post-body-content (end) -->
+
 					</div><!-- #post-body (end) -->
 
 					<!-- MAIN (end) -->
@@ -695,6 +709,7 @@ class Theme_Blvd_Layout_Builder {
 					<!-- SIDEBAR (start) -->
 
 					<div class="inner-sidebar">
+
 						<?php if ( TB_BUILDER_DEBUG ) : ?>
 							<div id="layout-publish" class="postbox postbox-publish">
 								<h3 class="hndle"><?php esc_html_e( 'DEBUG', 'theme-blvd-layout-builder' ); ?></h3>
@@ -708,6 +723,7 @@ class Theme_Blvd_Layout_Builder {
 								</div><!-- .submitbox (end) -->
 							</div><!-- .post-box (end) -->
 						<?php endif; ?>
+
 						<div id="layout-publish" class="postbox postbox-publish">
 							<h3 class="hndle"><?php esc_html_e( 'Publish', 'theme-blvd-layout-builder' ); ?> <?php echo esc_html($template->post_title); ?></h3>
 							<div class="submitbox">
@@ -725,6 +741,7 @@ class Theme_Blvd_Layout_Builder {
 								</div>
 							</div><!-- .submitbox (end) -->
 						</div><!-- .post-box (end) -->
+
 						<div id="layout-info" class="postbox postbox-layout-info closed">
 							<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
 							<h3 class="hndle"><?php esc_html_e('Template Information', 'theme-blvd-layout-builder' ); ?></h3>
@@ -758,6 +775,26 @@ class Theme_Blvd_Layout_Builder {
 								?>
 							</div><!-- .tb-widget-content (end) -->
 						</div><!-- .post-box (end) -->
+
+						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+							<div id="layout-merge" class="postbox postbox-layout-merge closed">
+								<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
+								<h3 class="hndle"><?php esc_html_e('Merge Layout', 'theme-blvd-layout-builder' ); ?></h3>
+								<div class="tb-widget-content hide">
+									<div id="section-post_title" class="section  section-text">
+									    <div class="option">
+									        <div class="controls">
+									            <?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $template_id ); ?>
+									        </div>
+											<div class="explain">
+												<?php esc_html_e('Select a template or sample layout to merge with the current template.', 'theme-blvd-layout-builder'); ?>
+											</div>
+											<div class="clear"></div>
+									    </div>
+									</div>
+								</div><!-- .tb-widget-content (end) -->
+							</div><!-- .post-box (end) -->
+						<?php endif; ?>
 
 						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) : // After framework 2.5, no more sidebar layouts in custom layouts ?>
 							<div id="layout-options" class="postbox postbox-sidebar-layout closed">
@@ -942,6 +979,7 @@ class Theme_Blvd_Layout_Builder {
 
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 				update_post_meta( $post_id, '_tb_builder_elements', array( 'primary' => array() ) );
+				update_post_meta( $post_id, '_tb_builder_sections', array( 'primary' => array() ) );
 			} else {
 				update_post_meta( $post_id, '_tb_builder_elements', array( 'featured' => array(), 'primary' => array(), 'featured_below' => array(), ) );
 			}
@@ -1313,6 +1351,128 @@ class Theme_Blvd_Layout_Builder {
 		return $clean;
 	}
 
+	/**
+	 * Merge a template or sample layout to an
+	 * existing layout. Only used in framework
+	 * 2.5+ themes.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param int $post_id ID of current post or page, being merged to
+	 * @param int|string $merge ID of current template or sample layout to merge
+	 */
+	public function merge( $post_id, $merge ) {
+
+		// Both layouts will have a section named "primary" -
+		// so we'll use this ID to replace that on the $merge
+		// data, to avoid conflicts.
+		$new_section_id = uniqid('section_');
+
+		if ( is_int( $merge ) ) { // template will use post ID integer
+
+			// Merge Template
+
+			if ( $meta = get_post_meta($merge) ) {
+				foreach ( $meta as $key => $val ) {
+
+					if ( $key == '_tb_builder_elements' || $key == '_tb_builder_sections' ) {
+
+						$new = array();
+
+						if ( ! $a = get_post_meta( $post_id, $key, true ) ) {
+							$a = array();
+						}
+
+						if ( ! $b = get_post_meta( $merge, $key, true ) ) {
+							$b = array();
+						}
+
+						foreach ( $b as $section_id => $data ) {
+
+							if ( $section_id == 'primary' ) {
+								$section_id = $new_section_id;
+							}
+
+							$new[$section_id] = $data;
+
+						}
+
+						update_post_meta( $post_id, $key, array_merge( $a, $new ) );
+
+					} else if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+						update_post_meta( $post_id, $key, get_post_meta( $merge, $key, true ) );
+
+					}
+
+				}
+
+			}
+
+		} else {
+
+			// Merge Sample Layout
+
+			$samples = themeblvd_get_sample_layouts();
+
+			$this->sample_uri = trailingslashit( $samples[$merge]['uri'] );
+			$this->sample_dir = $dir = trailingslashit( $samples[$merge]['dir'] );
+			$this->sample_asset_uri = trailingslashit( $samples[$merge]['assets'] );
+			$xml = $dir.'layout.xml';
+			$import = '';
+
+			if ( file_exists($xml) && function_exists('simplexml_load_file') ) {
+				$internal_errors = libxml_use_internal_errors(true);
+				$import = simplexml_load_file($xml);
+			}
+
+			if ( $import ) {
+				foreach( $import->data->meta as $meta ) {
+
+					$key = (string)$meta->key;
+					$value = (string)$meta->value;
+					$value = maybe_unserialize(base64_decode($value));
+
+					// Process images from meta data
+					$value = $this->sample_images( $value, $key );
+
+					if ( $key == '_tb_builder_elements' || $key == '_tb_builder_sections' ) {
+
+						$new = array();
+
+						if ( ! $a = get_post_meta( $post_id, $key, true ) ) {
+							$a = array();
+						}
+
+						if ( ! $b = $value ) {
+							$b = array();
+						}
+
+						foreach ( $b as $section_id => $data ) {
+
+							if ( $section_id == 'primary' ) {
+								$section_id = $new_section_id;
+							}
+
+							$new[$section_id] = $data;
+
+						}
+
+						update_post_meta( $post_id, $key, array_merge( $a, $new ) );
+
+					} else if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+						update_post_meta( $post_id, $key, $value );
+
+					}
+
+				}
+			}
+
+		}
+
+	}
+
 	/*--------------------------------------------*/
 	/* Sample Layout Helpers
 	/*--------------------------------------------*/
@@ -1629,11 +1789,19 @@ class Theme_Blvd_Layout_Builder {
 						<div class="ajax-overlay add-element"></div>
 						<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
 
-						<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); ?>">
+						<?php
+						if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+							$tooltip = esc_attr__('Select a layout to merge with this page\'s custom layout.', 'theme-blvd-layout-builder');
+						} else {
+							$tooltop = esc_attr__('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); // @deprecated
+						}
+						?>
+
+						<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php echo $tooltip; ?>">
 							<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $post->ID ); ?>
 						</div>
 
-						<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Select a template to sync this page\'s custom layout with.', 'theme-blvd-layout-builder'); ?>">
+						<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Select a template to sync with this page.', 'theme-blvd-layout-builder'); ?>">
 							<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
 						</div>
 
@@ -2408,9 +2576,17 @@ class Theme_Blvd_Layout_Builder {
 		$start_text = '';
 
 		if ( $type == 'apply' ) {
-			$start_text = __('Apply Starting Point', 'theme-blvd-layout-builder');
+
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+				$start_text = __('Merge Layout', 'theme-blvd-layout-builder');
+			} else { // @deprecated
+				$start_text = __('Apply Starting Point', 'theme-blvd-layout-builder');
+			}
+
 		} else if ( $type == 'sync' ) {
+
 			$start_text = __('Sync with Template', 'theme-blvd-layout-builder');
+
 		}
 
 		$output .= '<div class="tb-fancy-select condensed">';
@@ -2427,7 +2603,7 @@ class Theme_Blvd_Layout_Builder {
 			}
 
 			foreach ( $custom_layouts as $custom_layout ) {
-				$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr($custom_layout->post_name), selected( $custom_layout->post_name, $current, false ), esc_html($custom_layout->post_title) );
+				$output .= sprintf( '<option value="template=>%s=>%s" %s>%s</option>', esc_attr($post_id), esc_attr($custom_layout->post_name), selected( $custom_layout->post_name, $current, false ), esc_html($custom_layout->post_title) );
 			}
 
 			if ( $type == 'apply' ) {
@@ -2446,7 +2622,7 @@ class Theme_Blvd_Layout_Builder {
 				$output .= '<optgroup label="'.esc_attr__('Sample Layouts', 'theme-blvd-layout-builder').'">';
 
 				foreach ( $samples as $sample ) {
-					$output .= sprintf( '<option value="%s=>%s" %s>%s</option>', esc_attr($post_id), esc_attr($sample['id']), selected( $sample['id'], $current, false ), esc_html($sample['name']) );
+					$output .= sprintf( '<option value="sample=>%s=>%s" %s>%s</option>', esc_attr($post_id), esc_attr($sample['id']), selected( $sample['id'], $current, false ), esc_html($sample['name']) );
 				}
 
 				$output .= '</optgroup>';

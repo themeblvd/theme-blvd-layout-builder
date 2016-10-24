@@ -88,52 +88,41 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// Make sure Satan isn't lurking
 		check_ajax_referer( 'tb_save_layout', 'security' );
 
-		// Are we applying a sample layout?
-		if ( strpos($_POST['data'], '=>') !== false ) {
+		parse_str( $_POST['data'], $data );
 
-			// Save the sample layout's data to the current post
+		$info = explode( '=>', $_POST['info'] );
+		$type = $info[0];
+		$post_id = $info[1];
+		$merge = $info[2];
 
-			$data = explode( '=>', $_POST['data'] );
-			$post_id = $data[0];
-			$name = $data[1];
+		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 
-			$samples = themeblvd_get_sample_layouts();
+			if ( $type == 'template' ) {
+				$merge = intval( themeblvd_post_id_by_name( $merge, 'tb_layout' ) );
+			}
 
-			if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+			// Save current layout
+			$this->admin_page->save_layout( $post_id, $data );
 
-				$this->admin_page->sample_uri = trailingslashit($samples[$name]['uri']);
-				$this->admin_page->sample_dir = $dir = trailingslashit($samples[$name]['dir']);
-				$this->admin_page->sample_asset_uri = trailingslashit($samples[$name]['assets']);
-				$xml = $dir.'layout.xml';
-				$import = '';
+			// Merge data to layout just saved
+			$this->admin_page->merge( $post_id, $merge );
 
-				if ( file_exists($xml) && function_exists('simplexml_load_file') ) {
-					$internal_errors = libxml_use_internal_errors(true);
-					$import = simplexml_load_file($xml);
-				}
+		} else { // @deprecated
 
-				if ( $import ) {
-					foreach( $import->data->meta as $meta ) {
+			if ( $type == 'template' ) {
 
-						$key = (string)$meta->key;
-						$value = (string)$meta->value;
-						$value = maybe_unserialize(base64_decode($value));
+				// Set the post ID to the existing template in order to
+				// retrieve it's data when calling edit_layout()
+				$post_id = themeblvd_post_id_by_name( $merge, 'tb_layout' );
 
-						// Process images from meta data
-						$value = $this->admin_page->sample_images( $value, $key );
+			} else {
 
-						// Store to post meta of new template
-						update_post_meta( $post_id, $key, $value );
-
-					}
-				}
-
-			} else { // @deprecated
+				$samples = themeblvd_get_sample_layouts();
 
 				$elements = array(
-					'featured' 			=> $samples[$name]['featured'],
-					'primary' 			=> $samples[$name]['primary'],
-					'featured_below' 	=> $samples[$name]['featured_below']
+					'featured' 			=> $samples[$merge]['featured'],
+					'primary' 			=> $samples[$merge]['primary'],
+					'featured_below' 	=> $samples[$merge]['featured_below']
 				);
 
 				update_post_meta( $post_id, '_tb_builder_elements', $elements );
@@ -141,24 +130,19 @@ class Theme_Blvd_Layout_Builder_Ajax {
 				$settings = array();
 
 				if ( ! empty( $samples[$name] ) ) {
-					$settings = array( 'sidebar_layout' => $samples[$name]['sidebar_layout'] );
+					$settings = array( 'sidebar_layout' => $samples[$merge]['sidebar_layout'] );
 				}
 
 				update_post_meta( $post_id, 'settings', $settings );
 
 			}
 
-		} else {
-
-			// Set the post ID to the existing template in order to
-			// retrieve it's data when calling edit_layout()
-			$post_id = themeblvd_post_id_by_name( $_POST['data'], 'tb_layout' );
-
 		}
 
 		// Edit Layout
-		$this->admin_page->edit_layout($post_id);
+		$this->admin_page->edit_layout( $post_id );
 		die();
+
 	}
 
 	/**
@@ -169,7 +153,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	public function save_template() {
 
 		// Make sure Satan isn't lurking
-		check_ajax_referer( 'save_template', 'security' );
+		check_ajax_referer( 'tb_save_layout', 'security' );
 
 		// Handle form data
 		parse_str( $_POST['data'], $data );

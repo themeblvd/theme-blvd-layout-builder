@@ -437,8 +437,8 @@ jQuery(document).ready(function($) {
 	$wrap.on('change', '#tb-template-apply', function () {
 
 		var $select = $(this),
-			$overlay = $wrap.find('.ajax-overlay.full-overlay'),
-			template_id = $select.val();
+			info = $select.val(),
+			$overlay = $wrap.find('.ajax-overlay.full-overlay');
 
 		// Are they sure they want to delete current
 		// layout and apply template?
@@ -450,7 +450,8 @@ jQuery(document).ready(function($) {
 				var data = {
 					action: 'themeblvd_apply_template',
 					security: $wrap.find('input[name="tb_nonce"]').val(),
-					data: template_id
+					data: $select.closest('form').serialize(),
+					info: info
 				};
 
 				$.post(ajaxurl, data, function(r) {
@@ -730,6 +731,40 @@ jQuery(document).ready(function($) {
 		});
 
 		return false;
+	});
+
+	// Merge Tempalte
+	$edit_template.on('change', '#tb-template-apply', function () {
+
+		var $select = $(this),
+			info = $select.val(),
+			$overlay = $edit_template.find('.ajax-overlay.full-overlay');
+
+		// Are they sure they want to delete current
+		// layout and apply template?
+		tbc_confirm( themeblvd.template_apply, {'confirm':true}, function(r){
+			if (r) {
+
+				$overlay.fadeIn(100);
+
+				var data = {
+					action: 'themeblvd_apply_template',
+					security: $edit_template.find('input[name="tb_nonce"]').val(),
+					data: $select.closest('form').serialize(),
+					info: info
+				};
+
+				$.post(ajaxurl, data, function(r) {
+					$edit_template.find('#tb-edit-layout .ajax-mitt').html(r);
+					builder_blvd.edit( $edit_template.find('#tb-edit-layout') );
+					$overlay.fadeOut(200);
+				});
+
+			}
+		});
+
+		// Put the select menu back to first value (blank)
+		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
 	});
 
 	/*------------------------------------------------------------*/
