@@ -41,6 +41,8 @@ jQuery(document).ready(function($) {
 			// If editing a page, show/hide "Clear Layout" button
 			if ( ! $.trim( $builder.find('#builder').html() ) ) {
 				$builder.closest('#builder_blvd').find('#tb-clear-layout').hide();
+			} else {
+				$builder.closest('#builder_blvd').find('#tb-clear-layout').show();
 			}
 
 			// Setup section/element/block display options, which open in a modal
