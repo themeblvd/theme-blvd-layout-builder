@@ -1038,21 +1038,19 @@ class Theme_Blvd_Layout_Builder {
 		$element_id_list = array(); // For cleanup later on
 
 		// Layout Sections
-		if ( isset( $data['tb_builder_sections'] ) ) {
+		$sections = array();
 
-			$sections = array();
-
+		if ( isset( $data['tb_builder_sections'] ) && ! empty( $data['tb_builder_sections'] ) ) {
 			foreach ( $data['tb_builder_sections'] as $section_id => $section ) {
 				$sections[$section_id] = array(
 					'label'		=> wp_kses( $section['label'], array() ),
 					'display'	=> $this->clean( 'section', $section['display'] )
 				);
 			}
-
-			// Store meta to post
-			update_post_meta( $post_id, '_tb_builder_sections', $sections );
-
 		}
+
+		update_post_meta( $post_id, '_tb_builder_sections', $sections );
+
 
 		// Elements (by section)
 
