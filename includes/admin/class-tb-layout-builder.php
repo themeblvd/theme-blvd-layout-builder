@@ -1522,7 +1522,12 @@ class Theme_Blvd_Layout_Builder {
 						$css = get_post_meta( $post_id, $key, true );
 
 						if ( $value ) {
-							$css .= "\n\n" . $value;
+
+							if ( $css ) {
+								$css .= "\n\n";
+							}
+
+							$css .= $value;
 						}
 
 						update_post_meta( $post_id, $key, $css );
