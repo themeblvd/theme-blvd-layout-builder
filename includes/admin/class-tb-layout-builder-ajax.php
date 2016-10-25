@@ -33,6 +33,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		add_action( 'wp_ajax_themeblvd_layout_toggle', array( $this, 'layout_toggle' ) );
 		add_action( 'wp_ajax_themeblvd_dup_element', array( $this, 'dup_element' ) );
 		add_action( 'wp_ajax_themeblvd_dup_block', array( $this, 'dup_block' ) );
+		add_action( 'wp_ajax_themeblvd_get_meta', array( $this, 'get_meta' ) );
 
 	}
 
@@ -181,8 +182,9 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		// came from the builder editing form, but will
 		// save emtpy layout because arrays are empty.
 		$data = array(
-			'tb_builder_sections' => array(),
-			'tb_builder_elements' => array()
+			'tb_builder_sections'	=> array(),
+			'tb_builder_elements'	=> array(),
+			'_tb_builder_styles'	=> ''
 		);
 
 		// Clear layout
@@ -472,6 +474,21 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		echo $col_num.'[(=>)]';
 		$this->admin_page->edit_block( $section_id, $element_id, $block_type, $block_id, $col_num, $block_settings, $block_display );
 		die();
+	}
+
+	/**
+	 * Delete all current layout data.
+	 *
+	 * @since 2.1.0
+	 */
+	public function get_meta() {
+
+		check_ajax_referer( 'tb_save_layout', 'security' );
+
+		echo get_post_meta( $_POST['post_id'], $_POST['key'], true );
+
+		die();
+
 	}
 
 }

@@ -139,17 +139,33 @@ jQuery(document).ready(function($) {
     	// be toggled open and close.
     	hide_widget : function( id ) {
 
-    		$widget = $('#'+id);
+    		var $widget = $('#'+id);
 
     		// Don't apply to Publish box
-    		if( $widget.hasClass('postbox-publish') ) {
+    		if ( $widget.hasClass('postbox-publish') ) {
     			return;
     		}
 
     		$widget.find('.tb-widget-content').hide();
+
     	},
     	show_widget : function( id ) {
-    		$('#'+id+' .tb-widget-content').show();
+
+			var $widget = $('#'+id);
+
+			$widget.find('.tb-widget-content').show();
+
+			// Make sure code editor is setup
+			if ( $widget.hasClass('postbox-custom-styles') ) {
+
+				var $editor = $widget.find('textarea').data('CodeMirrorInstance');
+
+				if ( $editor ) {
+					$editor.refresh();
+				}
+
+			}
+
     	},
 
     	// Setup each columns element
@@ -462,9 +478,32 @@ jQuery(document).ready(function($) {
 				};
 
 				$.post(ajaxurl, data, function(r) {
+
 					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
 					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
-					$overlay.fadeOut(200);
+
+					data = {
+						action: 'themeblvd_get_meta',
+						security: $wrap.find('input[name="tb_nonce"]').val(),
+						key: '_tb_builder_styles',
+						post_id: $wrap.find('input[name="tb_post_id"]').val()
+					};
+
+					$.post(ajaxurl, data, function(r) {
+
+						var $textarea = $wrap.find('#tb-custom-styles-textarea');
+
+						$textarea.val(r);
+
+						if ( $textarea.data('CodeMirrorInstance') ) {
+							$textarea.data('CodeMirrorInstance').setValue(r);
+						}
+
+						// Finalize all.
+						$overlay.fadeOut(200);
+
+					});
+
 				});
 
 			}
@@ -553,6 +592,7 @@ jQuery(document).ready(function($) {
 
 				$.post(ajaxurl, data, function(r) {
 					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
+					$wrap.find('#tb-custom-styles-textarea').val('');
 					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
 					$overlay.fadeOut(200);
 				});
@@ -740,7 +780,7 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	// Merge Tempalte
+	// Merge Template
 	$edit_template.on('change', '#tb-template-apply', function () {
 
 		var $select = $(this),
@@ -762,9 +802,32 @@ jQuery(document).ready(function($) {
 				};
 
 				$.post(ajaxurl, data, function(r) {
+
 					$edit_template.find('#tb-edit-layout .ajax-mitt').html(r);
 					builder_blvd.edit( $edit_template.find('#tb-edit-layout') );
-					$overlay.fadeOut(200);
+
+					data = {
+						action: 'themeblvd_get_meta',
+						security: $edit_template.find('input[name="tb_nonce"]').val(),
+						key: '_tb_builder_styles',
+						post_id: $edit_template.find('input[name="template_id"]').val()
+					};
+
+					$.post(ajaxurl, data, function(r) {
+
+						var $textarea = $edit_template.find('#custom-styles textarea');
+
+						$textarea.val(r);
+
+						if ( $textarea.data('CodeMirrorInstance') ) {
+							$textarea.data('CodeMirrorInstance').setValue(r);
+						}
+
+						// Finalize all.
+						$overlay.fadeOut(200);
+
+					});
+
 				});
 
 			}

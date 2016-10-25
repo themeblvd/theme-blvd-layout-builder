@@ -73,9 +73,6 @@
 }
 
 /* Loader */
-#builder_blvd #post-body {
-	position: relative;
-}
 #builder_blvd #optionsframework .ajax-overlay {
 	background-color: #f1f1f1;
 	opacity: .8;
@@ -558,6 +555,19 @@
 #builder_blvd .postbox.hide .tb-widget-content {
 	display: none;
 }
+#builder_blvd .postbox-custom-styles {
+	margin-left: -140px;
+}
+#builder_blvd .postbox-custom-styles.closed {
+	margin-left: 0;
+}
+.wp-admin.rtl #builder_blvd .postbox-custom-styles {
+	margin-right: -140px;
+	margin-left: 0;
+}
+.wp-admin.rtl #builder_blvd .postbox-custom-styles.closed {
+	margin-right: 0;
+}
 
 /* =Editor Builder (for Edit Page screen)
 ----------------------------------------------- */
@@ -740,11 +750,13 @@
 	float: right;
 	margin: 0 10px 0 0;
 }
-#tb-editor-builder #tb-save-new-template {
+#tb-editor-builder #tb-save-new-template,
+#tb-editor-builder #tb-custom-styles {
 	float: right;
 	margin: 0 0 0 10px;
 }
-.wp-admin.rtl #tb-editor-builder #tb-save-new-template {
+.wp-admin.rtl #tb-editor-builder #tb-save-new-template,
+.wp-admin.rtl #tb-editor-builder #tb-custom-styles {
 	float: left;
 	margin: 0 10px 0 0;
 }

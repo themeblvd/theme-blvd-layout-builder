@@ -263,7 +263,7 @@ class Theme_Blvd_Layout_Builder {
 
 		$new = array(
 			'builder'				=> __( 'Builder', 'theme-blvd-layout-builder' ),
-			'clear_layout'			=> __( 'Are you sure you want to clear the current layout? This will permanently delete all sections and elements from this page\'s custom layout.', 'theme-blvd-layout-builder' ),
+			'clear_layout'			=> __( 'Are you sure you want to clear the current layout? This will permanently delete all sections, elements, and custom CSS from this page\'s custom layout.', 'theme-blvd-layout-builder' ),
 			'column'				=> __( 'Column', 'theme-blvd-layout-builder' ),
 			'columns'				=> __( 'Columns', 'theme-blvd-layout-builder' ),
 			'edit_layout'			=> __( 'Edit Layout', 'theme-blvd-layout-builder' ),
@@ -748,13 +748,13 @@ class Theme_Blvd_Layout_Builder {
 							<div class="tb-widget-content hide">
 								<?php
 								// Current settings
-								$info_settings = array(
+								$settings = array(
 									'post_title' 	=> $template->post_title,
 									'post_name'		=> $template->post_name
 								);
 
 								// Setup attribute options
-								$info_options = array(
+								$options = array(
 									array(
 										'name'		=> __('Template Name', 'theme-blvd-layout-builder' ),
 										'id' 		=> 'post_title',
@@ -770,7 +770,7 @@ class Theme_Blvd_Layout_Builder {
 								);
 
 								// Display form element
-								$form = themeblvd_option_fields( 'template_info', $info_options, $info_settings, false );
+								$form = themeblvd_option_fields( 'template_info', $options, $settings, false );
 								echo $form[0];
 								?>
 							</div><!-- .tb-widget-content (end) -->
@@ -792,6 +792,36 @@ class Theme_Blvd_Layout_Builder {
 											<div class="clear"></div>
 									    </div>
 									</div>
+								</div><!-- .tb-widget-content (end) -->
+							</div><!-- .post-box (end) -->
+						<?php endif; ?>
+
+						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
+							<div id="custom-styles" class="postbox postbox-custom-styles closed">
+								<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
+								<h3 class="hndle"><?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder' ); ?></h3>
+								<div class="tb-widget-content hide">
+									<?php
+									// Current settings
+									$settings = array(
+										'custom_styles'	=> get_post_meta($template_id, '_tb_builder_styles', true)
+									);
+
+									// Setup attribute options
+									$options = array(
+										array(
+											'name'		=> '',
+											'id' 		=> 'custom_styles',
+											'desc'		=> null,
+											'type' 		=> 'code',
+											'lang'		=> 'css'
+										)
+									);
+
+									// Display form element
+									$form = themeblvd_option_fields( 'template_info', $options, $settings, false );
+									echo $form[0];
+									?>
 								</div><!-- .tb-widget-content (end) -->
 							</div><!-- .post-box (end) -->
 						<?php endif; ?>
@@ -1051,7 +1081,6 @@ class Theme_Blvd_Layout_Builder {
 
 		update_post_meta( $post_id, '_tb_builder_sections', $sections );
 
-
 		// Elements (by section)
 
 		// Ensure that if any sections were left empty, we still save them as empty.
@@ -1208,6 +1237,17 @@ class Theme_Blvd_Layout_Builder {
 			wp_update_post( $post_atts );
 
 		}
+
+		// Custom Styles
+		$css = '';
+
+		if ( isset( $data['template_info']['custom_styles'] ) ) {
+			$css = $data['template_info']['custom_styles'];
+		} else if ( isset( $data['_tb_builder_styles'] ) ) {
+			$css = $data['_tb_builder_styles'];
+		}
+
+		update_post_meta( $post_id, '_tb_builder_styles', apply_filters('themeblvd_sanitize_editor', $css) );
 
 		// Store version numbers that this layout is being saved with
 		update_post_meta( $post_id, '_tb_builder_plugin_version_saved', TB_BUILDER_PLUGIN_VERSION );
@@ -1401,6 +1441,21 @@ class Theme_Blvd_Layout_Builder {
 
 						update_post_meta( $post_id, $key, get_post_meta( $merge, $key, true ) );
 
+					} else if ( $key == '_tb_builder_styles' ) {
+
+						$css = get_post_meta( $post_id, $key, true );
+
+						if ( $add = get_post_meta( $merge, $key, true ) ) {
+
+							if ( $css ) {
+								$css .= "\n\n";
+							}
+
+							$css .= $add;
+						}
+
+						update_post_meta( $post_id, $key, $css );
+
 					}
 
 				}
@@ -1461,6 +1516,16 @@ class Theme_Blvd_Layout_Builder {
 					} else if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
 
 						update_post_meta( $post_id, $key, $value );
+
+					} else if ( $key == '_tb_builder_styles' ) {
+
+						$css = get_post_meta( $post_id, $key, true );
+
+						if ( $value ) {
+							$css .= "\n\n" . $value;
+						}
+
+						update_post_meta( $post_id, $key, $css );
 
 					}
 
@@ -1782,7 +1847,7 @@ class Theme_Blvd_Layout_Builder {
 
 					<!-- HEADER (start) -->
 
-					<div class="meta-box-nav clearfix">
+					<div class="meta-box-nav textarea-wrap clearfix">
 
 						<div class="ajax-overlay add-element"></div>
 						<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
@@ -1803,7 +1868,15 @@ class Theme_Blvd_Layout_Builder {
 							<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
 						</div>
 
-						<a href="#" id="tb-save-new-template" class="button-secondary"><?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?></a>
+						<a href="#" id="tb-save-new-template" class="button-secondary">
+							<?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?>
+						</a>
+
+						<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
+							<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+						</a>
+
+						<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
 
 					</div><!-- .meta-box-nav (end) -->
 
