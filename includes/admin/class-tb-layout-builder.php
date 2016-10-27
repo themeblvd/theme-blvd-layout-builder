@@ -1401,16 +1401,17 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function merge( $post_id, $merge ) {
 
-		// Both layouts will have a section named "primary" -
-		// so we'll use this ID to replace that on the $merge
-		// data, to avoid conflicts.
-		$new_section_id = uniqid('section_');
+		// Keep track of new ID's between sections and element
+		// data. old => new
+		$ids = array();
 
 		if ( is_int( $merge ) ) { // template will use post ID integer
 
 			// Merge Template
 
 			if ( $meta = get_post_meta($merge) ) {
+
+				// First Loop: Everything except inner columns
 				foreach ( $meta as $key => $val ) {
 
 					if ( $key == '_tb_builder_elements' || $key == '_tb_builder_sections' ) {
@@ -1427,19 +1428,41 @@ class Theme_Blvd_Layout_Builder {
 
 						foreach ( $b as $section_id => $data ) {
 
-							if ( $section_id == 'primary' ) {
-								$section_id = $new_section_id;
+							// Unique section IDs
+							if ( isset( $ids[$section_id] ) ) {
+								$new_section_id = $ids[$section_id];
+							} else {
+								$new_section_id = uniqid('section_');
+								$ids[$section_id] = $new_section_id;
 							}
 
-							$new[$section_id] = $data;
+							if ( $key == '_tb_builder_elements' ) {
+
+								$new[$new_section_id] = array();
+
+								// Unique element IDs
+								foreach ( $data as $element_id => $element ) {
+
+									if ( isset( $ids[$element_id] ) ) {
+										$new_element_id = $ids[$element_id];
+									} else {
+										$new_element_id = uniqid('element_');
+										$ids[$element_id] = $new_element_id;
+									}
+
+									$new[$new_section_id][$new_element_id] = $element;
+
+								}
+
+							} else if ( $key == '_tb_builder_sections' ) {
+
+								$new[$new_section_id] = $data;
+
+							}
 
 						}
 
 						update_post_meta( $post_id, $key, array_merge( $a, $new ) );
-
-					} else if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
-
-						update_post_meta( $post_id, $key, get_post_meta( $merge, $key, true ) );
 
 					} else if ( $key == '_tb_builder_styles' ) {
 
@@ -1458,6 +1481,41 @@ class Theme_Blvd_Layout_Builder {
 
 					}
 
+				}
+
+				// Second Loop: Now, inner columns
+				foreach ( $meta as $key => $val ) {
+					if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+						$element_id = str_replace('_tb_builder_', '', $key);
+						$element_id = explode('_col_', $element_id);
+						$element_id = $element_id[0];
+
+						if ( isset( $ids[$element_id] ) ) {
+
+							$new_val = array();
+							$data = get_post_meta( $merge, $key, true );
+
+							if ( isset( $data['display'] ) ) {
+								$new_val['display'] = $data['display'];
+							}
+
+							$new_val['elements'] = array();
+
+							if ( isset( $data['elements'] ) ) {
+								foreach ( $data['elements'] as $block ) {
+									$block_id = uniqid('block_');
+									$new_val['elements'][$block_id] = $block;
+								}
+							}
+
+							$new_key = str_replace( $element_id, $ids[$element_id], $key );
+
+							update_post_meta( $post_id, $new_key, $new_val );
+
+						}
+
+					}
 				}
 
 			}
@@ -1480,7 +1538,9 @@ class Theme_Blvd_Layout_Builder {
 			}
 
 			if ( $import ) {
-				foreach( $import->data->meta as $meta ) {
+
+				// First Loop: Everything except inner columns
+				foreach ( $import->data->meta as $meta ) {
 
 					$key = (string)$meta->key;
 					$value = (string)$meta->value;
@@ -1503,19 +1563,41 @@ class Theme_Blvd_Layout_Builder {
 
 						foreach ( $b as $section_id => $data ) {
 
-							if ( $section_id == 'primary' ) {
-								$section_id = $new_section_id;
+							// Unique section IDs
+							if ( isset( $ids[$section_id] ) ) {
+								$new_section_id = $ids[$section_id];
+							} else {
+								$new_section_id = uniqid('section_');
+								$ids[$section_id] = $new_section_id;
 							}
 
-							$new[$section_id] = $data;
+							if ( $key == '_tb_builder_elements' ) {
+
+								$new[$new_section_id] = array();
+
+								// Unique element IDs
+								foreach ( $data as $element_id => $element ) {
+
+									if ( isset( $ids[$element_id] ) ) {
+										$new_element_id = $ids[$element_id];
+									} else {
+										$new_element_id = uniqid('element_');
+										$ids[$element_id] = $new_element_id;
+									}
+
+									$new[$new_section_id][$new_element_id] = $element;
+
+								}
+
+							} else if ( $key == '_tb_builder_sections' ) {
+
+								$new[$new_section_id] = $data;
+
+							}
 
 						}
 
 						update_post_meta( $post_id, $key, array_merge( $a, $new ) );
-
-					} else if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
-
-						update_post_meta( $post_id, $key, $value );
 
 					} else if ( $key == '_tb_builder_styles' ) {
 
@@ -1535,6 +1617,47 @@ class Theme_Blvd_Layout_Builder {
 					}
 
 				}
+
+				// Second Loop: Now, inner columns
+				foreach ( $import->data->meta as $meta ) {
+
+					$key = (string)$meta->key;
+
+					if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+						$data = (string)$meta->value;
+						$data = maybe_unserialize(base64_decode($data));
+
+						$element_id = str_replace('_tb_builder_', '', $key);
+						$element_id = explode('_col_', $element_id);
+						$element_id = $element_id[0];
+
+						if ( isset( $ids[$element_id] ) ) {
+
+							$new_val = array();
+
+							if ( isset( $data['display'] ) ) {
+								$new_val['display'] = $data['display'];
+							}
+
+							$new_val['elements'] = array();
+
+							if ( isset( $data['elements'] ) ) {
+								foreach ( $data['elements'] as $block ) {
+									$block_id = uniqid('block_');
+									$new_val['elements'][$block_id] = $block;
+								}
+							}
+
+							$new_key = str_replace( $element_id, $ids[$element_id], $key );
+
+							update_post_meta( $post_id, $new_key, $new_val );
+
+						}
+
+					}
+				}
+
 			}
 
 		}
@@ -1804,8 +1927,12 @@ class Theme_Blvd_Layout_Builder {
 
 		// Save template sync
 		if ( ! empty( $_POST['_tb_custom_layout'] ) ) {
-			$template = wp_kses( $_POST['_tb_custom_layout'], array() );
+
+			$template = explode('=>', $_POST['_tb_custom_layout']);
+			$template = wp_kses( $template[2], array() );
+
 			update_post_meta( $post_id, '_tb_custom_layout', $template );
+
 		}
 
 		// Save layout to post
@@ -2154,11 +2281,7 @@ class Theme_Blvd_Layout_Builder {
 
 				<?php else : ?>
 
-					<?php if ( $section_id == 'primary' ) : ?>
-						<span data-tooltip-text="<?php esc_attr_e('Section cannot be deleted', 'theme-blvd-layout-builder'); ?>" class="tb-tooltip-link locked-section"><i class="tb-icon-lock"></i></span>
-					<?php else : ?>
-						<a href="#" title="<?php esc_attr_e('Delete Section', 'theme-blvd-layout-builder'); ?>" data-confirm="<?php esc_attr_e('Are you sure you want to delete this section and its elements?', 'theme-blvd-layout-builder'); ?>" class="tb-tooltip-link delete-section"><i class="tb-icon-cancel-circled"></i></a>
-					<?php endif; ?>
+					<a href="#" title="<?php esc_attr_e('Delete Section', 'theme-blvd-layout-builder'); ?>" data-confirm="<?php esc_attr_e('Are you sure you want to delete this section and its elements?', 'theme-blvd-layout-builder'); ?>" class="tb-tooltip-link delete-section"><i class="tb-icon-cancel-circled"></i></a>
 
 					<div class="section-label dynamic-label">
 						<span class="label-text"><?php echo esc_html($label); ?></span>
@@ -2337,7 +2460,7 @@ class Theme_Blvd_Layout_Builder {
 									<span class="col-config"><?php echo esc_attr($col_config); ?></span>
 								</span>
 							<?php endif; ?>
-							<span class="action"><a href="#" class="button button-small edit-columns-config" data-showing="0" data-text-show="<?php esc_attr_e('Edit Column Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php esc_attr_e('Hide Columns Setup', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Edit Columns Setup', 'theme-blvd-layout-builder'); ?></a>
+							<span class="action"><a href="#" class="button button-small edit-columns-config" data-showing="0" data-text-show="<?php esc_attr_e('Edit Setup', 'theme-blvd-layout-builder'); ?>" data-text-hide="<?php esc_attr_e('Hide Setup', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Edit Setup', 'theme-blvd-layout-builder'); ?></a>
 						</div><!-- .columns-header (end) -->
 					<?php endif; ?>
 
