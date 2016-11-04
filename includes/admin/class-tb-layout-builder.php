@@ -106,6 +106,11 @@ class Theme_Blvd_Layout_Builder {
 			$this->importer_url = $import->get_url(); // URL of page where importer is
 		}
 
+		// Add compatibility for post revisions
+		add_filter( 'wp_save_post_revision_post_has_changed', array( $this, 'revision_post_has_changed' ), 10, 3 );
+		add_action( 'save_post', array( $this, 'revisions_save' ) );
+		add_action( 'wp_restore_post_revision', array( $this, 'revisions_restore' ), 10, 2 );
+
 	}
 
 	/*--------------------------------------------*/
@@ -1656,6 +1661,120 @@ class Theme_Blvd_Layout_Builder {
 						}
 
 					}
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Filters WordPress's check on whether a post has changed, to determine
+	 * if a post revision should be created.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param bool $post_has_changed Whether post should get a revision saved
+	 * @param WP_Post $last_revision The last revision post object
+	 * @param WP_Post $post Post object for post being saved
+	 */
+	function revision_post_has_changed( $post_has_changed, $last_revision, $post ) {
+
+		// Layout Builder data can only exist on pages.
+		if ( $post->post_type != 'page' ) {
+			return $post_has_changed;
+		}
+
+		$meta = get_post_meta( $post->ID );
+		$add = array();
+
+		if ( $meta && is_array( $meta ) ) {
+			foreach ( $meta as $key => $value ) {
+				if ( strpos( $key, '_tb_builder_element_' ) !== false ) {
+					$add[] = $key;
+				}
+			}
+		}
+
+		$check = array_merge( array( '_tb_builder_elements', '_tb_builder_sections', '_tb_builder_styles' ), $add );
+
+		foreach ( $check as $key ) {
+
+			$last = get_post_meta( $last_revision->ID, $key, true );
+			$current = get_post_meta( $post->ID, $key, true );
+
+			if ( $last != $current ) {
+				$post_has_changed = true;
+			}
+
+		}
+
+		return $post_has_changed;
+	}
+
+	/**
+	 * Save layout builder meta to revisions.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param int $post_id ID of current post being saved
+	 */
+	function revisions_save( $post_id ) {
+
+		if ( $parent_id = wp_is_post_revision( $post_id ) ) {
+
+			$meta = get_post_meta( $parent_id );
+			$check = array( '_tb_builder_elements', '_tb_builder_sections', '_tb_builder_styles' );
+
+			if ( $meta && is_array( $meta ) ) {
+
+				foreach ( $meta as $key => $value ) {
+
+					if ( in_array( $key, $check ) || strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+						$value = get_post_meta( $parent_id, $key, true );
+
+						if ( $value !== false ) {
+							add_metadata( 'post', $post_id, $key, $value );
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * Restore revision data.
+	 *
+	 * @since 2.1.0
+	 *
+	 * @param int $post_id ID of current post revision being applied to
+	 */
+	function revisions_restore( $post_id, $revision_id ) {
+
+		$meta = get_metadata( 'post', $revision_id );
+		$check = array( '_tb_builder_elements', '_tb_builder_sections', '_tb_builder_styles' );
+
+		if ( $meta && is_array( $meta ) ) {
+
+			foreach ( $meta as $key => $value ) {
+
+				if ( in_array( $key, $check ) || strpos( $key, '_tb_builder_element_' ) !== false ) {
+
+					$value = get_metadata( 'post', $revision_id, $key, true );
+
+					if ( $value !== false ) {
+						update_post_meta( $post_id, $key, $value );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
+
 				}
 
 			}
