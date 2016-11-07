@@ -7243,7 +7243,7 @@ class Theme_Blvd_Builder_API {
 
 				// Responsive Visibility
 				$this->core_elements[$id]['options']['visibility'] = array(
-				'id' 		=> 'visibility',
+					'id' 		=> 'visibility',
 					'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this element on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'multicheck',
@@ -7257,7 +7257,7 @@ class Theme_Blvd_Builder_API {
 
 				// CSS Classes
 				$this->core_elements[$id]['options']['classes'] = array(
-				'id' 		=> 'classes',
+					'id' 		=> 'classes',
 					'name'		=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
 					'desc'		=> __( 'Enter any CSS classes you\'d like attached to the element.', 'theme-blvd-layout-builder' ),
 					'type'		=> 'text',
