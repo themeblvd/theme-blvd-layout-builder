@@ -1,4 +1,5 @@
 === Theme Blvd Layout Builder ===
+
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
@@ -48,12 +49,6 @@ This plugin works with the following themes only.
 [vimeo https://vimeo.com/70256816]
 
 *Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
-
-== Screenshots ==
-
-1. Edit a page's custom layout.
-2. Manage templates page.
-3. Editing a template.
 
 == Changelog ==
 
