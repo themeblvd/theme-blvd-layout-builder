@@ -1,23 +1,17 @@
 ### Theme Blvd Layout Builder
 
-Author URI: http://www.themeblvd.com
-Contributors: themeblvd
-Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.1.0-RC1
-
-When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
-
-## Description
-
-**NOTE: This plugin requires Theme Blvd framework v2.2+**
+* Author URI: http://www.themeblvd.com
+* Contributors: themeblvd
+* Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
+* Stable Tag: 2.1.0-RC1
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 
 You can build these layouts directly into your WordPress pages through the standard Edit Page screen, or you can create templates that can be synced to multiple pages. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend the templates to standard posts and custom post types.
 
-[vimeo https://vimeo.com/70256816]
+Video: https://vimeo.com/70256816
 
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart), [Denali](http://themeblvd.com/links/buy-denali) and [Gnar](http://themeblvd.com/links/buy-gnar). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 # Theme Compatibility
 
@@ -38,17 +32,6 @@ This plugin works with the following themes only.
 * [Breakout](http://www.mojo-themes.com/item/breakout-premium-wordpress-theme/?r=themeblvd)
 * [Commodore](http://themeforest.net/item/commodore-responsive-wordpress-theme/111713?ref=themeblvd)
 * [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
-
-## Installation
-
-1. Upload `theme-blvd-layout-builder` folder to the `/wp-content/plugins/` directory
-2. Activate the plugin through the 'Plugins' menu in WordPress
-
-# Overview
-
-[vimeo https://vimeo.com/70256816]
-
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 ## Changelog
 

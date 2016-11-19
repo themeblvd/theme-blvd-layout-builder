@@ -16,7 +16,7 @@ You can build these layouts directly into your WordPress pages through the stand
 
 [vimeo https://vimeo.com/70256816]
 
-*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart) and [Denali](http://themeblvd.com/links/buy-denali). For all other themes, [see this video](https://vimeo.com/112649094).*
+*Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart), [Denali](http://themeblvd.com/links/buy-denali) and [Gnar](http://themeblvd.com/links/buy-gnar). For all other themes, [see this video](https://vimeo.com/112649094).*
 
 = Theme Compatibility =
 
