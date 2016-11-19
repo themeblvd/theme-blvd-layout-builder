@@ -13,7 +13,7 @@ Video: https://vimeo.com/70256816
 
 *Note: To get all features in the above video, you need to be using a theme with Theme Blvd Framework v2.5+, which currently only includes [Jump Start 2](http://themeblvd.com/links/buy-jumpstart), [Denali](http://themeblvd.com/links/buy-denali) and [Gnar](http://themeblvd.com/links/buy-gnar). For all other themes, [see this video](https://vimeo.com/112649094).*
 
-### Theme Compatibility
+## Theme Compatibility
 
 This plugin works with the following themes only.
 
@@ -33,7 +33,7 @@ This plugin works with the following themes only.
 * [Commodore](http://themeforest.net/item/commodore-responsive-wordpress-theme/111713?ref=themeblvd)
 * [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
-### Changelog
+## Changelog
 
 #### 2.1.0 - XX/XX/XXXX
 
