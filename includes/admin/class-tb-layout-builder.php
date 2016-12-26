@@ -2123,9 +2123,11 @@ class Theme_Blvd_Layout_Builder {
 							<?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?>
 						</a>
 
-						<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
-							<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
-						</a>
+						<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+							<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
+								<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+							</a>
+						<?php endif; ?>
 
 						<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
 
