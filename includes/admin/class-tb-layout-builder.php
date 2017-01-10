@@ -267,6 +267,7 @@ class Theme_Blvd_Layout_Builder {
 	public function add_js_locals( $current ) {
 
 		$new = array(
+			'apply'					=> __( 'Apply', 'theme-blvd-layout-builder' ),
 			'builder'				=> __( 'Builder', 'theme-blvd-layout-builder' ),
 			'clear_layout'			=> __( 'Are you sure you want to clear the current layout? This will permanently delete all sections, elements, and custom CSS from this page\'s custom layout.', 'theme-blvd-layout-builder' ),
 			'column'				=> __( 'Column', 'theme-blvd-layout-builder' ),

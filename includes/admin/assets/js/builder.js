@@ -48,6 +48,7 @@ jQuery(document).ready(function($) {
 			// Setup section/element/block display options, which open in a modal
 			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 				$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').ThemeBlvdModal({
+					button: themeblvd.apply,
 			        build: true,
 			        form: true,
 			        padding: false,
@@ -59,6 +60,7 @@ jQuery(document).ready(function($) {
 			// Setup content block options, which open in a modal
 			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 				$builder.find('.tb-block-options-link').ThemeBlvdModal({
+					button: themeblvd.apply,
 			        build: true,
 			        form: true,
 			        padding: false,
@@ -309,6 +311,7 @@ jQuery(document).ready(function($) {
 					// Setup content block options, which open in a modal
 					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 						$block.find('.tb-block-options-link').ThemeBlvdModal({
+							button: themeblvd.apply,
 					        build: true,
 					        form: true,
 					        padding: false,
@@ -320,6 +323,7 @@ jQuery(document).ready(function($) {
 					// Setup block display options, which open in a modal
 					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 						$element.find('.edit-block-display').ThemeBlvdModal({
+							button: themeblvd.apply,
 					        build: true,
 					        form: true,
 					        padding: false,
@@ -929,6 +933,7 @@ jQuery(document).ready(function($) {
 				// Bind popup for display options
 				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 					$section.find('.edit-section-display').ThemeBlvdModal({
+						button: themeblvd.apply,
 				        build: true,
 				        form: true,
 				        padding: false,
@@ -1085,6 +1090,7 @@ jQuery(document).ready(function($) {
 				// Setup element display options, which open in a modal
 				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 					$element.find('.edit-element-display').ThemeBlvdModal({
+						button: themeblvd.apply,
 				        build: true,
 				        form: true,
 				        padding: false,
@@ -1171,6 +1177,7 @@ jQuery(document).ready(function($) {
 				// Setup content block options, which open in a modal
 				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 					$new_element.find('.tb-block-options-link').ThemeBlvdModal({
+						button: themeblvd.apply,
 				        build: true,
 				        form: true,
 				        padding: false,
@@ -1182,6 +1189,7 @@ jQuery(document).ready(function($) {
 				// Setup element display options, which open in a modal
 				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 					$new_element.find('.edit-element-display, .edit-block-display').ThemeBlvdModal({
+						button: themeblvd.apply,
 				        build: true,
 				        form: true,
 				        padding: false,
@@ -1238,6 +1246,7 @@ jQuery(document).ready(function($) {
 
                 // And bind the modal window for the settings link
                 $new_block.find('.tb-block-options-link').ThemeBlvdModal({
+					button: themeblvd.apply,
                     build: true,
                     form: true,
                     padding: false,
@@ -1248,6 +1257,7 @@ jQuery(document).ready(function($) {
                 // Setup element display options, which open in a modal
 				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 					$new_block.find('.edit-block-display').ThemeBlvdModal({
+						button: themeblvd.apply,
 				        build: true,
 				        form: true,
 				        padding: false,
