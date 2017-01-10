@@ -405,7 +405,7 @@ function themeblvd_builder_elements( $layout_id, $location ) {
 function themeblvd_builder_legacy_config( $config ) {
 
 	// Layout setup, taking into account elements attached to post
-	if ( ( ! $config['builder'] || $config['builder'] == 'error' ) && is_page_template('template_builder.php') ) {
+	if ( ( ! $config['builder'] || $config['builder'] == 'error' ) && is_page_template( 'template_builder.php' ) && ! is_search() && ! is_archive() ) {
 
 		// Setup
 		$config['builder'] = true;
