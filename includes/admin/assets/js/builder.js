@@ -11,8 +11,10 @@ jQuery(document).ready(function($) {
 
 	var builder_blvd = {
 
-		// Bind anything that needs to be binded when the markup for
-		// a custom layout is updated.
+		/**
+		 * Bind anything that needs to be binded when the markup for
+		 * a custom layout is updated.
+		 */
 		edit : function ( $builder ) {
 
 			// Setup options for initially loaded options on the page
@@ -71,7 +73,9 @@ jQuery(document).ready(function($) {
 
 		},
 
-		// Setup sorting
+		/**
+		 * Setup sorting.
+		 */
 		sort_setup : function () {
 
 			var $sortable = $('#builder_blvd #tb-edit-layout .sortable'),
@@ -129,16 +133,20 @@ jQuery(document).ready(function($) {
 
 		},
 
-    	// Toggle sample layout previews
+    	/**
+		 * Toggle sample layout previews.
+		 */
     	sample_preview : function( $select ) {
     		var $parent = $select.closest('.controls');
     		$parent.find('.sample-layouts div').hide();
     		$parent.find('#sample-'+$select.val()).show();
     	},
 
-    	// These methods are passed into WP's postboxes.add_postbox_toggles
-    	// as the pbshow and bphide parameters. They allow the widgets to
-    	// be toggled open and close.
+    	/**
+		 * These methods are passed into WP's postboxes.add_postbox_toggles
+    	 * as the pbshow and bphide parameters. They allow the widgets to
+    	 * be toggled open and close.
+		 */
     	hide_widget : function( id ) {
 
     		var $widget = $('#'+id);
@@ -170,7 +178,9 @@ jQuery(document).ready(function($) {
 
     	},
 
-    	// Setup each columns element
+    	/**
+		 * Setup each columns element.
+		 */
     	columns : function ( $element ) {
 
     		// Sortable content blocks
@@ -231,6 +241,7 @@ jQuery(document).ready(function($) {
 					ui.item.themeblvd('options', 'editor');
 
 				}
+
 			});
 
 			// Show/Hide column setup options
@@ -515,6 +526,7 @@ jQuery(document).ready(function($) {
 
 		// Put the select menu back to first value (blank)
 		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+
 	});
 
 	// Save current layout as new template
