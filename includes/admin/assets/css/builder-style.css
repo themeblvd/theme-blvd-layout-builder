@@ -30,7 +30,8 @@
 #builder_blvd #optionsframework .full-width {
 	max-width: none;
 }
-#builder_blvd #optionsframework .updated {
+#builder_blvd #optionsframework .updated,
+#builder_blvd #optionsframework .notice {
 	max-width: none;
 	width: auto;
 }
@@ -94,8 +95,10 @@
 /* =Manage Layouts
 ----------------------------------------------- */
 
-#builder_blvd .themeblvd-updated {
+#builder_blvd .themeblvd-updated,
+#builder_blvd .notice {
 	margin-top: 10px;
+	margin-bottom: 0;
 }
 
 /* =Add Layout

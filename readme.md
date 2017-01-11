@@ -41,9 +41,10 @@ This plugin works with the following themes only.
 * New: Added "Clear Layout" button to builder on Edit Page screen.
 * New: Added “Custom CSS“ button to builder interface.
 * New: Basic post Revisions support.
-* Improvement: User Interface Improvements
+* UI Improvement:
 	* "Display Options" are now more clearly identified.
 	* When applying changes from options in a modal, the button is now "Apply" instead of "Save."
+	* Nag to save changes added when layout or template has been modified.
 	* Minor RTL fixes.
 
 #### 2.0.9.6 - 06/28/2016

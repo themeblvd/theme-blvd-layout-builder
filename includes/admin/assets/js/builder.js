@@ -6,10 +6,49 @@
 jQuery(document).ready(function($) {
 
 	/*------------------------------------------------------------*/
+	/* General Global Scope Variables
+	/*------------------------------------------------------------*/
+
+	var nag_inserted = false;
+
+	/*------------------------------------------------------------*/
 	/* Static Methods
 	/*------------------------------------------------------------*/
 
 	var builder_blvd = {
+
+		/**
+		 * Insert nag to the user. Currently only used when changes
+		 * have been made to the layout.
+		 */
+		nag: function() {
+
+			if ( nag_inserted ) {
+				return false;
+			}
+
+			var is_template	= $('body').hasClass('toplevel_page_themeblvd_builder') ? true : false,
+				msg = is_template ? themeblvd.nag_save_template : themeblvd.nag_save,
+				$nag = '<div id="tb-builder-notice" class="notice notice-warning is-dismissible" style="display:none"> \
+						<p> ' + msg + '</p> \
+						<button type="button" class="notice-dismiss"><span class="screen-reader-text">' + themeblvd.dismiss + '</span></button> \
+						</div>';
+
+			if ( is_template ) {
+
+				// Insert nag on Edit Template screen
+				$edit_template.find('.nav-tab-wrapper').after($nag).closest('#wpbody-content').find('#tb-builder-notice').fadeIn(500);
+
+			} else {
+
+				// Insert message on Edit Page screen
+				$('#lost-connection-notice').before($nag).closest('#wpbody-content').find('#tb-builder-notice').fadeIn(500);
+
+			}
+
+			nag_inserted = true;
+
+		},
 
 		/**
 		 * Bind anything that needs to be binded when the markup for
@@ -84,51 +123,53 @@ jQuery(document).ready(function($) {
 				data_field_name;
 
 			// Incase we're re-binding
-			$sortable.each(function(){
+			$sortable.each(function() {
+
 				var $el = $(this);
+
 				if ( $el.is(':ui-sortable') ) {
 					$el.sortable('destroy');
 				}
+
 			});
 
 			$sortable.sortable({
 				handle: '.top-widget-name',
-				connectWith: '.sortable'
-			}).on( 'sortremove'	, function(event, ui){
+				connectWith: '.sortable',
+				remove: function( event, ui ) {
 
-				// Cache the section's ID that the element is coming from
-				prev_section = $(this).closest('.element-section').attr('id');
+					// Cache the section's ID that the element is coming from
+					prev_section = $(this).closest('.element-section').attr('id');
 
-			}).on( 'sortreceive', function(event, ui) {
+				},
+				receive: function( event, ui ) {
 
-				// Add any needed empty classes
-				$builder.find('.sortable:not(:has(div))').addClass('empty');
-				$builder.find('.sortable:has(div)').removeClass('empty');
+					// Add any needed empty classes
+					$builder.find('.sortable:not(:has(div))').addClass('empty');
+					$builder.find('.sortable:has(div)').removeClass('empty');
 
-				// Update the name field for any options
-				// in this section.
-				new_section = $(this).closest('.element-section').attr('id');
+					// Update the name field for any options
+					// in this section.
+					new_section = $(this).closest('.element-section').attr('id');
 
-				// Standard form fields
-				ui.item.find('input, textarea, select, option').each(function(){
+					// Standard form fields
+					ui.item.find('input, textarea, select, option').each(function(){
 
-					var $field = $(this),
-						name = $field.attr('name');
+						var $field = $(this),
+							name = $field.attr('name');
 
-					if ( name ) {
-						$field.attr( 'name', name.replace(prev_section, new_section) );
-					}
-				});
+						if ( name ) {
+							$field.attr( 'name', name.replace(prev_section, new_section) );
+						}
+					});
 
-				// Sortable option types
-				ui.item.find('.tb-sortable-option').each(function(){
+				},
+				stop: function( event, ui ){
 
-					var $div = $(this),
-						name = $div.data('name');
+					// Layout changed.
+					builder_blvd.nag();
 
-					$div.data( 'name', name.replace(prev_section, new_section) );
-				});
-
+				}
 			});
 
 		},
@@ -240,6 +281,15 @@ jQuery(document).ready(function($) {
 					// Setup editor links
 					ui.item.themeblvd('options', 'editor');
 
+					// Layout changed.
+					builder_blvd.nag();
+
+				},
+				stop: function() {
+
+					// Layout changed.
+					builder_blvd.nag();
+
 				}
 
 			});
@@ -343,6 +393,9 @@ jQuery(document).ready(function($) {
 					    });
 					}
 
+					// Layout changed.
+					builder_blvd.nag();
+
 				});
 
 				return false;
@@ -368,6 +421,9 @@ jQuery(document).ready(function($) {
 				$header.find('.col-count').text(str);
 				$header.find('.col-config').text( config.replace(/-/g, ' - ') );
 				$element.find('.columns-config').removeClass('columns-1 columns-2 columns-3 columns-4 columns-5').addClass('columns-'+num);
+
+				// Layout changed.
+				builder_blvd.nag();
 
 			});
 
@@ -460,15 +516,24 @@ jQuery(document).ready(function($) {
 			$wrap.find('.sync-overlay').fadeOut(100);
 		}
 
+		// Layout changed.
+		builder_blvd.nag();
+
 	});
 
 	// Unsync layout from button
 	$wrap.find('#tb-template-unsync').on('click', function(){
+
 		$wrap.find('#tb-sync-layout').hide();
 		$wrap.find('#tb-edit-layout').show();
 		$wrap.find('.sync-overlay').fadeOut(100);
+
 		$select = $wrap.find('#tb-template-sync');
 		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+
+		// Layout changed.
+		builder_blvd.nag();
+
 	});
 
 	// Apply template
@@ -581,12 +646,14 @@ jQuery(document).ready(function($) {
 				tbc_confirm(themeblvd.no_name);
 
 			}
+
 		});
 
 		return false;
+
 	});
 
-	// Save current layout as new template
+	// Clear Layout
 	$wrap.find('#tb-clear-layout').on('click', function(){
 
 		var $select = $(this),
@@ -617,6 +684,7 @@ jQuery(document).ready(function($) {
 		});
 
 		return false;
+
 	});
 
 	/*------------------------------------------------------------*/
@@ -644,7 +712,7 @@ jQuery(document).ready(function($) {
 
 		if ( values ) {
 			tbc_confirm( themeblvd.delete_layout, {'confirm':true}, function(r) {
-		    	if(r) {
+		    	if (r) {
 		    		$form.off('submit.check').submit();
 		    	}
 		    });
@@ -658,7 +726,7 @@ jQuery(document).ready(function($) {
 	/* Page: Add Template
 	/*------------------------------------------------------------*/
 
-	$add_template = $('#add_layout');
+	var $add_template = $('#add_layout');
 
 	$add_template.themeblvd('init');
 	$add_template.themeblvd('options', 'setup');
@@ -744,18 +812,19 @@ jQuery(document).ready(function($) {
 		var href = this.href;
 
 		tbc_confirm( themeblvd.delete_layout, {'confirm':true}, function(r) {
-	    	if(r) {
+	    	if (r) {
 	    		location.href = href;
 	    	}
 	    });
 
 	    return false;
+
 	});
 
 	// Enable WP's post box toggles
 	// requires: wp_enqueue_script('postbox');
 	$edit_template.each(function(){
-		postboxes.add_postbox_toggles(pagenow, {
+		postboxes.add_postbox_toggles('nav-menus', { // using 'nav-menus' as the current page is a hack to get WP not to fire save_state() method, which triggers AJAX errors.
 			pbshow: builder_blvd.show_widget,
 			pbhide: builder_blvd.hide_widget
 		});
@@ -783,10 +852,21 @@ jQuery(document).ready(function($) {
 			success: function(r) {
 
 				$('body').animate({scrollTop: 0}, 50, function(){
+
+					// Add updated success message.
 					$edit_template.find('.nav-tab-wrapper').after('<div class="themeblvd-updated updated fade" style="display:none;"><p><strong>'+themeblvd.template_updated+'</strong></p></div>');
-					$edit_template.find('.themeblvd-updated').slideDown(100).delay(3000).animate({height: 0, opacity: 0}, 500, function() {
+
+					$edit_template.find('.themeblvd-updated').fadeIn(500).delay(3000).fadeOut(500, function() {
        					 $(this).remove();
     				});
+
+					// Reset layout changed nag.
+					nag_inserted = false;
+
+					$('#tb-builder-notice').fadeOut(500, function(){
+						$(this).remove();
+					});
+
 				});
 
 				$load.fadeOut(200);
@@ -794,6 +874,7 @@ jQuery(document).ready(function($) {
 		});
 
 		return false;
+
 	});
 
 	// Merge Template
@@ -851,13 +932,71 @@ jQuery(document).ready(function($) {
 
 		// Put the select menu back to first value (blank)
 		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+
 	});
 
 	/*------------------------------------------------------------*/
-	/* Layout Builder
+	/* Layout Builder (general)
 	/*------------------------------------------------------------*/
 
 	var $builder = $('#builder_blvd #tb-edit-layout');
+
+	// Setup nag.
+	$('#wpbody-content').on('click', '#tb-builder-notice .notice-dismiss', function() {
+
+		$(this).closest('#tb-builder-notice').fadeOut(300, function(){
+			$(this).remove();
+		});
+
+		return false;
+	});
+
+	// Watch for changes on any forms within builder.
+	$('#builder_blvd').on('change', ':input', function() {
+
+		if ( $(this).hasClass('tb-select-element') || $(this).hasClass('block-type') ) {
+			return;
+		}
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
+
+	$('#builder_blvd').on('mousedown', '.jquery-ui-slider-wrap', function() {
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
+
+	$('#builder_blvd').on('themeblvd-color-change', '.wp-picker-input-wrap > input', function(){
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
+
+	$('body').on('themeblvd-modal-close themeblvd-modal-insert', '.themeblvd-modal .button, .themeblvd-modal .button-link', function(){
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
+
+	$('#builder_blvd').on('sortstop', '.tb-sortable-option .item-container', function() {
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
+
+	$('#builder_blvd').on('mouseup', '.tb-sortable-option .add-item, .tb-sortable-option .delete-sortable-items', function() {
+
+		// Layout changed.
+		builder_blvd.nag();
+
+	});
 
 	// Options init
 	$builder.themeblvd('init');
@@ -888,6 +1027,7 @@ jQuery(document).ready(function($) {
 
 				$input.off('keydown.edit-label, focusout.edit-label').trigger('blur');
 				event.preventDefault();
+
 				return false;
 			}
 
@@ -953,8 +1093,13 @@ jQuery(document).ready(function($) {
 				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
 				    });
 				}
+
+				// Layout changed.
+				builder_blvd.nag();
+
 			}
 		});
+
 		return false;
 
 	});
@@ -965,7 +1110,7 @@ jQuery(document).ready(function($) {
 		var $button = $(this);
 
 		tbc_confirm($button.data('confirm'), {'confirm':true}, function(r){
-	    	if(r) {
+	    	if (r) {
 	        	// Fade out and delete section
 				$button.closest('.element-section').animate({height: 0, opacity: 0}, 500, function() {
 
@@ -978,10 +1123,15 @@ jQuery(document).ready(function($) {
 						$builder.find('.tb-no-sections').slideDown();
 					}
 
+					// Layout changed.
+					builder_blvd.nag();
+
 				});
 	        }
 	    });
+
 		return false;
+
 	});
 
 	// Shift sections up/down
@@ -1028,6 +1178,9 @@ jQuery(document).ready(function($) {
         window.setTimeout(function(){
             $section.removeClass('add');
         }, 500);
+
+		// Layout changed.
+		builder_blvd.nag();
 
 		return false;
 
@@ -1110,10 +1263,15 @@ jQuery(document).ready(function($) {
 				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
 				    });
 				}
+
+				// Layout changed.
+				builder_blvd.nag();
+
 			}
 		});
 
 		return false;
+
 	});
 
 	// Element nav
@@ -1210,9 +1368,14 @@ jQuery(document).ready(function($) {
 				    });
 				}
 
+				// Layout changed.
+				builder_blvd.nag();
+
             }
         });
+
 		return false;
+
 	});
 
 	// Duplicate block
@@ -1278,9 +1441,13 @@ jQuery(document).ready(function($) {
 				    });
 				}
 
+				// Layout changed.
+				builder_blvd.nag();
+
             }
         });
 		return false;
+
 	});
 
 	// Delete item by ID passed through link's href
@@ -1290,7 +1457,7 @@ jQuery(document).ready(function($) {
 			$section = $item.closest('.sortable');
 
 		tbc_confirm($(this).attr('title'), {'confirm':true}, function(r){
-	    	if(r) {
+	    	if (r) {
 
 	        	$item.addClass('delete fade-out');
 
@@ -1309,9 +1476,15 @@ jQuery(document).ready(function($) {
                		$('.themeblvd-tooltip').remove();
 
                 }, 750);
+
+				// Layout changed.
+				builder_blvd.nag();
+
 	        }
 	    });
+
 	    return false;
+
 	});
 
 	// Delete item by ID passed through link's href
@@ -1321,7 +1494,7 @@ jQuery(document).ready(function($) {
 			$section = $item.closest('.column-blocks');
 
 		tbc_confirm($(this).attr('title'), {'confirm':true}, function(r){
-	    	if(r) {
+	    	if (r) {
 
 	        	$item.addClass('delete fade-out');
 
@@ -1340,9 +1513,15 @@ jQuery(document).ready(function($) {
                		$('.themeblvd-tooltip').remove();
 
                 }, 750);
+
+				// Layout changed.
+				builder_blvd.nag();
+
 	        }
 	    });
+
 	    return false;
+
 	});
 
 	// Bind check for paginated elements
@@ -1368,6 +1547,8 @@ jQuery(document).ready(function($) {
 			$el.removeClass('current');
 
 			return false;
+
 		}
 	});
+
 });

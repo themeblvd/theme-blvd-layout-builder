@@ -278,9 +278,12 @@ class Theme_Blvd_Layout_Builder {
 			'delete_text'			=> __( 'Delete', 'theme-blvd-layout-builder' ),
 			'delete_block'			=> __( 'Are you sure you want to delete the content block?', 'theme-blvd-layout-builder' ),
 			'delete_layout'			=> __( 'Are you sure you want to delete the template(s)?', 'theme-blvd-layout-builder' ),
+			'dismiss'				=> __( 'Dismiss this notice.', 'theme-blvd-layout-builder' ),
 			'layout_created'		=> __( 'Layout created!', 'theme-blvd-layout-builder' ),
 			'no_element'			=> __( 'Oops! You forgot to select an element.', 'theme-blvd-layout-builder' ),
 			'no_layouts'			=> __( 'Oops! You didn\'t select any templates to delete.', 'theme-blvd-layout-builder' ),
+			'nag_save'				=> __( 'Changes to your custom layout have been made. Update the page to save the changes.' ),
+			'nag_save_template'		=> __( 'Changes to your template have been made. Update the template to save the changes.' ),
 			'save_switch_layout'	=> __( 'Would you like to save the current layout before switching?', 'theme-blvd-layout-builder' ),
 			'shift_up_error'		=> __( 'The section can\'t be shifted up any further.', 'theme-blvd-layout-builder' ),
 			'shift_down_error'		=> __( 'The section can\'t be shifted down any further.', 'theme-blvd-layout-builder' ),
@@ -2239,7 +2242,7 @@ class Theme_Blvd_Layout_Builder {
 			<h2><?php esc_html_e( 'Manage Elements', 'theme-blvd-layout-builder' ); ?></h2>
 
 			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
-				<select>
+				<select class="tb-select-element">
 					<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
 					<?php
 					foreach ( $elements as $element ) {
