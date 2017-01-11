@@ -2717,7 +2717,7 @@ class Theme_Blvd_Layout_Builder {
 
 									</div><!-- .column-heading (end) -->
 
-									<div class="element-display-options-wrap hide">
+									<div class="column-display-options-wrap hide">
 										<div id="<?php echo esc_attr($element_id); ?>_col_<?php echo $i; ?>_background_form" class="element-display-options">
 											<?php
 											$display_options = $this->get_display_options('column');
@@ -2865,7 +2865,7 @@ class Theme_Blvd_Layout_Builder {
 				</nav><!--.block-nav (end) -->
 			</div><!-- .block-widget-content (end) -->
 
-			<div class="element-display-options-wrap hide">
+			<div class="block-display-options-wrap hide">
 				<div id="<?php echo $block_id; ?>_background_form" class="element-display-options">
 					<?php
 					$display = $this->get_display_options( 'block', $block_type );

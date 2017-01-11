@@ -1274,7 +1274,7 @@ jQuery(document).ready(function($) {
 
 	});
 
-	// Element nav
+	// Element nav, to toggel between options and display options.
 	$builder.on('click', '.element-options-nav a', function(){
 
 		var $link = $(this),
