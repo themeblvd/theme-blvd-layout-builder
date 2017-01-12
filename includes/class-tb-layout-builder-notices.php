@@ -70,6 +70,10 @@ class Theme_Blvd_Layout_Builder_Notices {
 			$this->stop = true;
 		}
 
+		if ( version_compare( $v, '2.5.0', '>=' ) && version_compare( $v, '2.6.3', '<' ) ) {
+			$this->error[] = 'update-theme';
+		}
+
 		if ( version_compare( $v, '2.5.0', '>=' ) ) {
 
 			$options = get_option( themeblvd_get_option_name() );
@@ -111,7 +115,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 					echo '<p><strong>Theme Blvd Layout Builder</strong>: '.esc_html( $this->get_message($error) ).'</p>';
 
 					// Theme specifics
-					if ( in_array($error, array('framework-2-2', 'framework-2-5') ) ) {
+					if ( in_array($error, array('framework-2-2', 'framework-2-5', 'update-theme') ) ) {
 						echo '<p>';
 						printf( esc_html__('You\'re currently using %s v%s. See %s.', 'theme-blvd-layout-builder'), $theme->get('Name'), $theme->get('Version'), $changelog );
 						echo '</p>';
@@ -187,7 +191,8 @@ class Theme_Blvd_Layout_Builder_Notices {
 		$messages = array(
 			'framework' 		=> __('You are not using a theme with the Theme Blvd Framework, and so this plugin will not do anything.', 'theme-blvd-layout-builder'),
 			'framework-2-2' 	=> __('You are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything. Check to see if there is an updated version of your theme.', 'theme-blvd-layout-builder'),
-			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'theme-blvd-layout-builder')
+			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'theme-blvd-layout-builder'),
+			'update-theme'		=> __('It looks like you don\'t have the latest version of your theme installed. For best results with this version of the layout builder, you should update to the latest version.', 'theme-blvd-layout-builder')
 		);
 
 		if ( isset( $messages[$type] ) ) {
