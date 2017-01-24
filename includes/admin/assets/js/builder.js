@@ -653,6 +653,9 @@ jQuery(document).ready(function($) {
 
 	});
 
+	// Custom CSS
+	$wrap.find('.meta-box-nav').themeblvd('options', 'code-editor');
+
 	// Clear Layout
 	$wrap.find('#tb-clear-layout').on('click', function(){
 
