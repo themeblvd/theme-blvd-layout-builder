@@ -57,7 +57,7 @@ class Theme_Blvd_Export_Layout extends Theme_Blvd_Export {
 		$meta = get_post_meta($layout_id);
 
 		// Run export
-		include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/export-layout.php' );
+		include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/export-layout.php' );
 
 	}
 

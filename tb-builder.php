@@ -40,9 +40,9 @@ function themeblvd_builder_init() {
 	global $_themeblvd_layout_builder;
 
 	// Include general items
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-data.php' );
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/class-tb-layout-builder-notices.php' );
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/general.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/inc/class-tb-layout-builder-data.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/inc/class-tb-layout-builder-notices.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/inc/general.php' );
 
 	// Error handling
 	$notices = Theme_Blvd_Layout_Builder_Notices::get_instance();
@@ -53,7 +53,7 @@ function themeblvd_builder_init() {
 	}
 
 	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-		include_once( TB_BUILDER_PLUGIN_DIR . '/includes/legacy.php' ); // @deprecated functions used by older themes
+		include_once( TB_BUILDER_PLUGIN_DIR . '/inc/legacy.php' ); // @deprecated functions used by older themes
 	}
 
 	// DEBUG/DEV Mode
@@ -142,8 +142,8 @@ function themeblvd_builder_init() {
 			// Setup exporting capabilities
 			if ( class_exists('Theme_Blvd_Export') ) { // Theme Blvd framework 2.5+ and Theme Blvd Import plugin
 
-				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-export-layout.php' );
-				include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-import-layout.php' );
+				include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-export-layout.php' );
+				include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-import-layout.php' );
 
 				$args = array(
 					'filename'	=> 'template-{name}.xml', // string {name} will be dynamically replaced with each export
@@ -153,9 +153,9 @@ function themeblvd_builder_init() {
 				$_themeblvd_export_layout = new Theme_Blvd_Export_Layout( 'layout', $args ); // Extends class Theme_Blvd_Export
 			}
 
-			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/builder-samples.php' );
-			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-ajax.php' );
-			include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/builder-samples.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder-ajax.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder.php' );
 
 			// Setup Builder interface
 			$_themeblvd_layout_builder = new Theme_Blvd_Layout_Builder();
@@ -175,13 +175,13 @@ function themeblvd_builder_api_init() {
 
 	// Include screen options class (not currently
 	// used in API, but could potentially be later on)
-	// include_once( TB_BUILDER_PLUGIN_DIR . '/includes/admin/class-tb-layout-builder-screen.php' );
+	// include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder-screen.php' );
 
 	// Instantiate single object for Builder "Screen Options" tab.
 	// Theme_Blvd_Layout_Builder_Screen::get_instance();
 
 	// Include Theme_Blvd_Builder_API class.
-	include_once( TB_BUILDER_PLUGIN_DIR . '/includes/api/class-tb-builder-api.php' );
+	include_once( TB_BUILDER_PLUGIN_DIR . '/inc/api/class-tb-builder-api.php' );
 
 	// Instantiate single object for Builder API.
 	// Helper functions are located within theme

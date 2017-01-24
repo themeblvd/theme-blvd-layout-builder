@@ -536,7 +536,7 @@ function themeblvd_builder_legacy_samples( $layouts ) {
 	}
 
 	// Path to images used in sample layouts on frontend.
-	$imgpath = TB_BUILDER_PLUGIN_URI . '/includes/admin/sample/legacy';
+	$imgpath = TB_BUILDER_PLUGIN_URI . '/inc/admin/sample/legacy';
 
 	/*--------------------------------------------*/
 	/* (1) Business Homepage #1
