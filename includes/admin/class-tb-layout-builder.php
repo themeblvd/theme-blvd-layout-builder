@@ -332,7 +332,7 @@ class Theme_Blvd_Layout_Builder {
 		$active = 'manage';
 
 		if ( ! empty( $_GET['tab'] ) && in_array( $_GET['tab'], array('manage', 'add', 'edit') ) ) {
-			$active = $_GET['tab'];
+			$active = esc_attr( $_GET['tab'] );
 		}
 
 		// Template ID to edit (if necessary)
@@ -381,7 +381,7 @@ class Theme_Blvd_Layout_Builder {
 			}
 		}
 		?>
-		<div id="builder_blvd" class="primary">
+		<div id="builder_blvd" class="primary <?php echo $active; ?>">
 			<div id="optionsframework" class="wrap">
 
 				<div class="admin-module-header">

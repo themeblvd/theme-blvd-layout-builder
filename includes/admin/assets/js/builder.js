@@ -942,7 +942,8 @@ jQuery(document).ready(function($) {
 	/* Layout Builder (general)
 	/*------------------------------------------------------------*/
 
-	var $builder = $('#builder_blvd #tb-edit-layout');
+	var $builder_wrap = $('#builder_blvd'),
+		$builder = $builder_wrap.find('#tb-edit-layout');
 
 	// Setup nag.
 	$('#wpbody-content').on('click', '#tb-builder-notice .notice-dismiss', function() {
@@ -952,10 +953,15 @@ jQuery(document).ready(function($) {
 		});
 
 		return false;
+
 	});
 
 	// Watch for changes on any forms within builder.
-	$('#builder_blvd').on('change', ':input', function() {
+	$builder_wrap.on('change', ':input', function() {
+
+		if ( $builder_wrap.hasClass('manage') || $builder_wrap.hasClass('add') ) {
+			return;
+		}
 
 		if ( $(this).hasClass('tb-select-element') || $(this).hasClass('block-type') ) {
 			return;
@@ -966,14 +972,14 @@ jQuery(document).ready(function($) {
 
 	});
 
-	$('#builder_blvd').on('mousedown', '.jquery-ui-slider-wrap', function() {
+	$builder_wrap.on('mousedown', '.jquery-ui-slider-wrap', function() {
 
 		// Layout changed.
 		builder_blvd.nag();
 
 	});
 
-	$('#builder_blvd').on('themeblvd-color-change', '.wp-picker-input-wrap > input', function(){
+	$builder_wrap.on('themeblvd-color-change', '.wp-picker-input-wrap > input', function(){
 
 		// Layout changed.
 		builder_blvd.nag();
@@ -987,14 +993,14 @@ jQuery(document).ready(function($) {
 
 	});
 
-	$('#builder_blvd').on('sortstop', '.tb-sortable-option .item-container', function() {
+	$builder_wrap.on('sortstop', '.tb-sortable-option .item-container', function() {
 
 		// Layout changed.
 		builder_blvd.nag();
 
 	});
 
-	$('#builder_blvd').on('mouseup', '.tb-sortable-option .add-item, .tb-sortable-option .delete-sortable-items', function() {
+	$builder_wrap.on('mouseup', '.tb-sortable-option .add-item, .tb-sortable-option .delete-sortable-items', function() {
 
 		// Layout changed.
 		builder_blvd.nag();
