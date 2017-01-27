@@ -57,7 +57,7 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.1.0 - 01/27/2016 =
+= 2.1.0 - 01/27/2017 =
 
 * New: Layout Merging - Templates and sample layouts are now merged to the end of the current layout or template.
 * New: Added "Clear Layout" button to builder on Edit Page screen.
