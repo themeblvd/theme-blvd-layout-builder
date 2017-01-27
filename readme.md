@@ -35,13 +35,13 @@ This plugin works with the following themes only.
 
 ## Changelog
 
-#### 2.1.0 - XX/XX/XXXX
+#### 2.1.0 - 01/27/2016
 
-* New: Layout Merging - Templates are now merged to the end of the current layout or template.
+* New: Layout Merging - Templates and sample layouts are now merged to the end of the current layout or template.
 * New: Added "Clear Layout" button to builder on Edit Page screen.
 * New: Added “Custom CSS“ button to builder interface.
-* New: Basic post Revisions support.
-* UI Improvement:
+* New: Basic Post Revisions support.
+* UX Improvements:
 	* "Display Options" are now more clearly identified.
 	* When applying changes from options in a modal, the button is now "Apply" instead of "Save."
 	* Nag to save changes added when layout or template has been modified.
