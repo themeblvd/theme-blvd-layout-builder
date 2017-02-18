@@ -2090,12 +2090,23 @@ class Theme_Blvd_Layout_Builder {
 		$sync_hide = 'hide';
 
 		if ( $sync_id ) {
+
 			$sync_post_id = themeblvd_post_id_by_name( $sync_id, 'tb_layout' );
 			$edit_hide = 'hide';
 			$sync_hide = '';
+
 		}
+
+		$page_template = get_post_meta( $post->ID, '_wp_page_template', true );
+
+		if ( ! $page_template && isset( $_GET['trid'] ) ) {
+
+			$page_template = get_post_meta( $_GET['trid'], '_wp_page_template', true );
+
+		}
+
 		?>
-		<div id="tb-editor-builder" class="<?php if(get_post_meta($post->ID, '_wp_page_template', true) == 'template_builder.php') echo 'template-active'; ?>">
+		<div id="tb-editor-builder" class="<?php if ( $page_template === 'template_builder.php' ) { echo 'template-active'; } ?>">
 			<div id="builder_blvd">
 				<div id="optionsframework" class="tb-options-js">
 

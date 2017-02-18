@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.1.1 - 02/18/2017 =
 
+* Fixed: Layout Builder interface not appearing on initial page load when translating a custom layout page with [WPML](http://themeblvd.com/links/wpml).
+
 = 2.1.0 - 01/27/2017 =
 
 * New: Layout Merging - Templates and sample layouts are now merged to the end of the current layout or template.
