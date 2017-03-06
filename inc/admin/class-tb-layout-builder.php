@@ -212,16 +212,12 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Google Maps
-		$gmaps = 'https://maps.googleapis.com/maps/api/js';
-
-		if ( $gmap_key = themeblvd_get_option('gmap_api_key') ) {
-			$gmaps = add_query_arg('key', $gmap_key, $gmaps);
+		if ( $gmap_key = themeblvd_get_option( 'gmap_api_key' ) ) {
+			wp_enqueue_script( 'themeblvd_gmap', esc_url( add_query_arg( 'key', $gmap_key, 'https://maps.googleapis.com/maps/api/js' ) ), array(), null );
 		}
 
-		wp_enqueue_script( 'themeblvd_gmap', esc_url($gmaps), array(), null );
-
 		// Theme Blvd scripts
-		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 			wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
 		}
 

@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.1.2 - 03/06/2017 =
 
+* Improvement: Google Maps API key is now required from `Appearance > Theme Options > Configuration > Google Maps` for Maps element to function in builder interface. This eliminates JavaScript console errors on domains that have never connected to Google Maps API before June 22, 2016, when no Google Maps API key has been setup from theme options.
+
 = 2.1.1 - 02/18/2017 =
 
 * Fixed: Layout Builder interface not appearing on initial page load when translating a custom layout page with [WPML](http://themeblvd.com/links/wpml).
