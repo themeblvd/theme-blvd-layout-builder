@@ -224,7 +224,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 	 */
 	public function add_block() {
 		parse_str( $_POST['data'], $data );
-		$block_id = uniqid( 'block_'.rand() );
+		$block_id = uniqid( 'block_' . rand() );
 		echo $block_id.'[(=>)]';
 		$this->admin_page->edit_block( $data['section_id'], $data['element_id'], $data['block_type'], $block_id, $data['col_num'] );
 		die();
@@ -338,7 +338,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		parse_str( $_POST['data'], $data );
 
 		// New element ID
-		$new_element_id = uniqid( 'element_'.rand() );
+		$new_element_id = uniqid( 'element_' . rand() );
 
 		// There will only be on element in the array,
 		// so this loop will have only a single pass.
@@ -400,7 +400,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 						}
 
 						// Move current block to new key, representing a new unique ID
-						$new_block_id = uniqid( 'block_'.rand() );
+						$new_block_id = uniqid( 'block_' . rand() );
 						$blocks[$new_block_id] = $blocks[$block_id];
 						unset($blocks[$block_id]);
 
@@ -430,7 +430,7 @@ class Theme_Blvd_Layout_Builder_Ajax {
 		parse_str( $_POST['data'], $data );
 
 		// New block ID
-		$block_id = uniqid( 'block_'.rand() );
+		$block_id = uniqid( 'block_' . rand() );
 
 		// Start the crazy traverse to collect all of the variables
 		// we need to pass into edit_block(). Note that each foreach

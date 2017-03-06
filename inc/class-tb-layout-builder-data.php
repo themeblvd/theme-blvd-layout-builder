@@ -580,7 +580,7 @@ class Theme_Blvd_Layout_Builder_Data {
 
 								$col['elements'] = array();
 
-								$block_id = uniqid( 'block_'.rand() );
+								$block_id = uniqid( 'block_' . rand() );
 								$col['elements'][$block_id] = array();
 
 								switch ( $options['col_'.$i]['type'] ) {
@@ -842,7 +842,7 @@ class Theme_Blvd_Layout_Builder_Data {
 
 							for ( $i = 1; $i <= intval($old['setup']['num']); $i++ ) {
 
-								$tab_id = uniqid('item_');
+								$tab_id = uniqid( 'item_' . rand() );
 
 								$options['tabs'][$tab_id] = array(
 									'title'			=> $old['setup']['names']['tab_'.$i],

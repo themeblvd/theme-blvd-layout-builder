@@ -1439,7 +1439,7 @@ class Theme_Blvd_Layout_Builder {
 							if ( isset( $ids[$section_id] ) ) {
 								$new_section_id = $ids[$section_id];
 							} else {
-								$new_section_id = uniqid('section_');
+								$new_section_id = uniqid( 'section_' . rand() );
 								$ids[$section_id] = $new_section_id;
 							}
 
@@ -1453,7 +1453,7 @@ class Theme_Blvd_Layout_Builder {
 									if ( isset( $ids[$element_id] ) ) {
 										$new_element_id = $ids[$element_id];
 									} else {
-										$new_element_id = uniqid('element_');
+										$new_element_id = uniqid( 'element_' .rand() );
 										$ids[$element_id] = $new_element_id;
 									}
 
@@ -1511,7 +1511,7 @@ class Theme_Blvd_Layout_Builder {
 
 							if ( isset( $data['elements'] ) ) {
 								foreach ( $data['elements'] as $block ) {
-									$block_id = uniqid('block_');
+									$block_id = uniqid( 'block_' . rand() );
 									$new_val['elements'][$block_id] = $block;
 								}
 							}
@@ -1574,7 +1574,7 @@ class Theme_Blvd_Layout_Builder {
 							if ( isset( $ids[$section_id] ) ) {
 								$new_section_id = $ids[$section_id];
 							} else {
-								$new_section_id = uniqid('section_');
+								$new_section_id = uniqid( 'section_' . rand() );
 								$ids[$section_id] = $new_section_id;
 							}
 
@@ -1588,7 +1588,7 @@ class Theme_Blvd_Layout_Builder {
 									if ( isset( $ids[$element_id] ) ) {
 										$new_element_id = $ids[$element_id];
 									} else {
-										$new_element_id = uniqid('element_');
+										$new_element_id = uniqid( 'element_' . rand() );
 										$ids[$element_id] = $new_element_id;
 									}
 
@@ -1651,7 +1651,7 @@ class Theme_Blvd_Layout_Builder {
 
 							if ( isset( $data['elements'] ) ) {
 								foreach ( $data['elements'] as $block ) {
-									$block_id = uniqid('block_');
+									$block_id = uniqid( 'block_' . rand() );
 									$new_val['elements'][$block_id] = $block;
 								}
 							}
@@ -2365,7 +2365,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// If no section ID, it means we're starting a new section.
 		if ( ! $section_id ) {
-			$section_id = uniqid('section_');
+			$section_id = uniqid( 'section_' . rand() );
 		}
 
 		// Label
@@ -2510,7 +2510,7 @@ class Theme_Blvd_Layout_Builder {
 
 		// If no element ID, it means we're starting a new element.
 		if ( ! $element_id ) {
-			$element_id = uniqid( 'element_'.rand() );
+			$element_id = uniqid( 'element_' . rand() );
 		}
 
 		$api = Theme_Blvd_Builder_API::get_instance();
