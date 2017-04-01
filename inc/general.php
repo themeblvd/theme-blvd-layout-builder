@@ -453,12 +453,13 @@ function themeblvd_builder_styles() {
 			}
 
 		}
-	}
 
-	// Custom CSS
-	if ( $custom = get_post_meta( $post_id, '_tb_builder_styles', true ) ) {
-		$print .= "\n/* Layout Custom CSS */\n";
-		$print .= $custom;
+		// Custom CSS
+		if ( $custom = get_post_meta( $post_id, '_tb_builder_styles', true ) ) {
+			$print .= "\n/* Layout Custom CSS */\n";
+			$print .= $custom;
+		}
+
 	}
 
 	// Sanitize
