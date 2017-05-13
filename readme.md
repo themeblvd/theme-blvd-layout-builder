@@ -35,7 +35,7 @@ This plugin works with the following themes only.
 
 ## Changelog
 
-#### 2.1.3 - XX/XX/2017
+#### 2.1.3 - 05/13/2017
 
 * Fixed: Elements with nested sortable options - like Tabs, Toggles, Google Maps, etc - not saving properly after initially being dragged from one section to another.
 * Fixed: "Custom CSS" option for custom layout or template not outputting when site is using footer template sync.
