@@ -144,24 +144,37 @@ jQuery(document).ready(function($) {
 				},
 				receive: function( event, ui ) {
 
-					// Add any needed empty classes
+					// Add any needed empty classes.
 					$builder.find('.sortable:not(:has(div))').addClass('empty');
 					$builder.find('.sortable:has(div)').removeClass('empty');
 
-					// Update the name field for any options
-					// in this section.
+					// Update the name field for any options in this section.
+
 					new_section = $(this).closest('.element-section').attr('id');
 
-					// Standard form fields
 					ui.item.find('input, textarea, select, option').each(function(){
 
-						var $field = $(this),
-							name = $field.attr('name');
+						var field = $(this),
+							name = field.attr('name');
 
 						if ( name ) {
-							$field.attr( 'name', name.replace(prev_section, new_section) );
+							field.attr('name', name.replace(prev_section, new_section) );
 						}
 					});
+
+					ui.item.find('.tb-sortable-option').each(function(){
+						var $el = $(this);
+						data_field_name = $el.data('name');
+						data_field_name = data_field_name.replace(prev_section, new_section);
+						$el.data('name', data_field_name);
+					});
+
+					data_field_name = ui.item.data('field-name');
+					data_field_name = data_field_name.replace(prev_section, new_section);
+					ui.item.data('field-name', data_field_name);
+
+					// Re-bind sortable option type
+					ui.item.themeblvd('options', 'sortable');
 
 				},
 				stop: function( event, ui ){

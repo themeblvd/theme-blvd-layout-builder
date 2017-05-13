@@ -35,6 +35,11 @@ This plugin works with the following themes only.
 
 ## Changelog
 
+#### 2.1.3 - XX/XX/2017
+
+* Fixed: Elements with nested sortable options - like Tabs, Toggles, Google Maps, etc - not saving properly after initially being dragged from one section to another.
+* Fixed: "Custom CSS" option for custom layout or template not outputting when site is using footer template sync.
+
 #### 2.1.2 - 03/06/2017
 
 * Improvement: Google Maps API key is now required from `Appearance > Theme Options > Configuration > Google Maps` for Maps element to function in builder interface. This eliminates JavaScript console errors on website domains that have never connected to Google Maps API before June 22, 2016, when no Google Maps API key has been setup from theme options.
