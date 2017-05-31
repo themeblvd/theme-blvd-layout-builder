@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.1.4 - 05/31/2017 =
 
+* Fixed: Minor PHP warnings on some server configurations.
+
 = 2.1.3 - 05/13/2017 =
 
 * Fixed: Elements with nested sortable options - like Tabs, Toggles, Google Maps, etc - not saving properly after initially being dragged from one section to another.

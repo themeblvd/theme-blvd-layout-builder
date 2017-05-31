@@ -1267,9 +1267,9 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param string $type The type of element, or "section" or "column"
-	 * @param array $settings Settings that we're sanitizing
-	 * @param bool $display If type of element, force to do sanitization on that elment's display options
+	 * @param string $type The type of element - "section" or "column".
+	 * @param array $settings Settings that we're sanitizing.
+	 * @param bool $display If type of element, force to do sanitization on that elment's display options.
 	 */
 	public function clean( $type, $settings, $display = false ) {
 
@@ -1365,24 +1365,32 @@ class Theme_Blvd_Layout_Builder {
 			// we can apply that for saving the slider option.
 			if ( $option['type'] == 'slider' ) {
 
-				$crop = 'full';
+				if ( is_array( $settings[$option_id] ) ) {
 
-				if ( ! empty( $settings[$option_id.'_crop'] ) ) {
-					$crop = wp_kses( $settings[$option_id.'_crop'], array() );
+					$crop = 'full';
+
+					if ( ! empty( $settings[$option_id.'_crop'] ) ) {
+						$crop = wp_kses( $settings[$option_id.'_crop'], array() );
+					}
+
+					$settings[$option_id]['crop'] = $crop;
+
 				}
-
-				$settings[$option_id]['crop'] = $crop;
-
 			}
 
 			// For button option type, set checkbox to false if it wasn't
 			// sent in the $_POST
 			if ( $option['type'] == 'button' ) {
-				if ( ! isset( $settings[$option_id]['include_bg'] ) ) {
-					$settings[$option_id]['include_bg'] = '0';
-				}
-				if ( ! isset( $settings[$option_id]['include_border'] ) ) {
-					$settings[$option_id]['include_border'] = '0';
+
+				if ( is_array( $settings[$option_id] ) ) {
+
+					if ( ! isset( $settings[$option_id]['include_bg'] ) ) {
+						$settings[$option_id]['include_bg'] = '0';
+					}
+
+					if ( ! isset( $settings[$option_id]['include_border'] ) ) {
+						$settings[$option_id]['include_border'] = '0';
+					}
 				}
 			}
 
