@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.1.5 - 07/11/2017 =
 
+* Fixed: Minor background PHP notices when adding new page, with no layout data.
+
 = 2.1.4 - 05/31/2017 =
 
 * Fixed: Minor PHP warnings on some server configurations.

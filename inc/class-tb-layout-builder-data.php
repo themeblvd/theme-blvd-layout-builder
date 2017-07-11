@@ -92,39 +92,50 @@ class Theme_Blvd_Layout_Builder_Data {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param int $id ID of current layout to check
+	 * @param int $id ID of current layout to check.
 	 */
 	public function __construct( $id ) {
 
-		// Post ID for custom layout, tb_layout post type
+		/**
+		 * Post ID for custom layout, tb_layout post type,
+		 * or WP post ID if editing layout directly into.
+		 */
 		$this->id = $id;
 
-		// Plugin version which layout was created with
-		$created = get_post_meta( $this->id, '_tb_builder_plugin_version_created', true );
+		/**
+		 * Plugin version which layout was created with.
+		 */
+		if ( $created = get_post_meta( $this->id, '_tb_builder_plugin_version_created', true ) ) {
 
-		if ( $created ) {
 			$this->created = $created;
+
 		}
 
-		// Plugin version which layout was last saved with
-		$saved = get_post_meta( $this->id, '_tb_builder_plugin_version_saved', true );
+		/**
+		 * Plugin version which layout was last saved with.
+		 */
+		if ( $saved = get_post_meta( $this->id, '_tb_builder_plugin_version_saved', true ) ) {
 
-		if ( $saved ) {
 			$this->saved = $saved;
+
 		}
 
-		// Theme Framework version which layout was created with
-		$theme_created = get_post_meta( $this->id, '_tb_builder_framework_version_created', true );
+		/**
+		 * Theme Framework version which layout was created with.
+		 */
+		if ( $theme_created = get_post_meta( $this->id, '_tb_builder_framework_version_created', true ) ) {
 
-		if ( $theme_created ) {
 			$this->theme_created = $theme_created;
+
 		}
 
-		// Theme Framework version which layout was last saved with
-		$theme_saved = get_post_meta( $this->id, '_tb_builder_framework_version_saved', true );
+		/**
+		 * Theme Framework version which layout was last saved with.
+		 */
+		if ( $theme_saved = get_post_meta( $this->id, '_tb_builder_framework_version_saved', true ) ) {
 
-		if ( $theme_saved ) {
 			$this->theme_saved = $theme_saved;
+
 		}
 	}
 
@@ -140,6 +151,17 @@ class Theme_Blvd_Layout_Builder_Data {
 	 * @param string $type What to verify
 	 */
 	public function verify( $type ) {
+
+		/**
+		 * If there's no elements (old or new) attached to
+		 * this post ID, no need to proceed.
+		 */
+		if ( ! get_post_meta( $this->id, 'elements', true ) && ! get_post_meta( $this->id, '_tb_builder_elements', true ) ) {
+
+			return;
+
+		}
+
 		switch ( $type ) {
 			case 'elements' :
 				$this->verify_elements();
