@@ -91,12 +91,12 @@ This plugin works with the following themes only.
 	* Nag to save changes added when layout or template has been modified.
 	* Minor RTL fixes.
 
-= 2.0.9.6 - 06/28/2016 =
+= 2.0.15 - 06/28/2016 =
 
 * Improvement: Display to the user where to select an element in the builder interface.
 * Fixed: Include Google Maps API key, set from *Appearance > Theme Options > Configuration > Google Maps*, in layout builder (for framework 2.6.1+ themes).
 
-= 2.0.9.5 - 01/27/2016 =
+= 2.0.14 - 01/27/2016 =
 
 * New: Added option to pull from pages to Post List element.
 * New: Added option to align divider left or right (for framework 2.6+ themes).
@@ -105,22 +105,22 @@ This plugin works with the following themes only.
 * Improvement: Use `add_menu_page` instead of `add_object_page`, which was deprecated in WordPress 4.5.
 * Removed: No more icon style option on redesigned Team Member element (for framework 2.6+ themes).
 
-= 2.0.9.4 - 12/11/2015 =
+= 2.0.13 - 12/11/2015 =
 
 * Improvement: Better RTL support for Layout Builder admin interface.
 * Fixed: When custom elements are filtered in, make sure they appear for selection within the "Columns" element.
 * Fixed: Hero unit content background color opacity option not working.
 
-= 2.0.9.3 - 10/01/2015 =
+= 2.0.12 - 10/01/2015 =
 
 * Fixed: Javascript errors in builder from incorrect divider element options (for framework 2.2-2.4 themes).
 
-= 2.0.9.2 - 09/21/2015 =
+= 2.0.11 - 09/21/2015 =
 
 * Improvements to overall security and sanitization.
 * Fixed: Import & Export buttons will only show if [Theme Blvd Importer plugin](https://wordpress.org/plugins/theme-blvd-importer) is installed.
 
-= 2.0.9.1 - 09/14/2015 =
+= 2.0.10 - 09/14/2015 =
 
 * Fixed: Hero Unit Slider element shouldn't be available to be inserted within a Columns element (for framework 2.5+ themes).
 * Fixed: Negative horizontal margin overflow when using "popout" element in section with custom left/right padding set to `0px` (for framework 2.5+ themes).
