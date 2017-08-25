@@ -3121,65 +3121,65 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_video']['desc'] = __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder');
 			}
 
+			$options['subgroup_start_3'] = array(
+				'type'		=> 'subgroup_start',
+				'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
+			);
+
+			$options['apply_bg_shade'] = array(
+				'id'		=> 'apply_bg_shade',
+				'name'		=> null,
+				'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
+				'std'		=> 0,
+				'type'		=> 'checkbox',
+				'class'		=> 'trigger'
+			);
+
+			$options['bg_shade_color'] = array(
+				'id'		=> 'bg_shade_color',
+				'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
+				'std'		=> '#000000',
+				'type'		=> 'color',
+				'class'		=> 'hide receiver'
+			);
+
+			$options['bg_shade_opacity'] = array(
+				'id'		=> 'bg_shade_opacity',
+				'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
+				'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
+				'std'		=> '0.5',
+				'type'		=> 'select',
+				'options'	=> array(
+					'0.05'	=> '5%',
+					'0.1'	=> '10%',
+					'0.15'	=> '15%',
+					'0.2'	=> '20%',
+					'0.25'	=> '25%',
+					'0.3'	=> '30%',
+					'0.35'	=> '35%',
+					'0.4'	=> '40%',
+					'0.45'	=> '45%',
+					'0.5'	=> '50%',
+					'0.55'	=> '55%',
+					'0.6'	=> '60%',
+					'0.65'	=> '65%',
+					'0.7'	=> '70%',
+					'0.75'	=> '75%',
+					'0.8'	=> '80%',
+					'0.85'	=> '85%',
+					'0.9'	=> '90%',
+					'0.95'	=> '95%'
+				),
+				'class'		=> 'hide receiver'
+			);
+
+			$options['subgroup_end_3'] = array(
+				'type'		=> 'subgroup_end'
+			);
+
 			// Extended Background options (for section only)
 			if ( $type == 'section' ) {
-
-				$options['subgroup_start_3'] = array(
-					'type'		=> 'subgroup_start',
-					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
-				);
-
-				$options['apply_bg_shade'] = array(
-					'id'		=> 'apply_bg_shade',
-					'name'		=> null,
-					'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
-					'std'		=> 0,
-					'type'		=> 'checkbox',
-					'class'		=> 'trigger'
-				);
-
-				$options['bg_shade_color'] = array(
-					'id'		=> 'bg_shade_color',
-					'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
-					'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
-					'std'		=> '#000000',
-					'type'		=> 'color',
-					'class'		=> 'hide receiver'
-				);
-
-				$options['bg_shade_opacity'] = array(
-					'id'		=> 'bg_shade_opacity',
-					'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
-					'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
-					'std'		=> '0.5',
-					'type'		=> 'select',
-					'options'	=> array(
-						'0.05'	=> '5%',
-						'0.1'	=> '10%',
-						'0.15'	=> '15%',
-						'0.2'	=> '20%',
-						'0.25'	=> '25%',
-						'0.3'	=> '30%',
-						'0.35'	=> '35%',
-						'0.4'	=> '40%',
-						'0.45'	=> '45%',
-						'0.5'	=> '50%',
-						'0.55'	=> '55%',
-						'0.6'	=> '60%',
-						'0.65'	=> '65%',
-						'0.7'	=> '70%',
-						'0.75'	=> '75%',
-						'0.8'	=> '80%',
-						'0.85'	=> '85%',
-						'0.9'	=> '90%',
-						'0.95'	=> '95%'
-					),
-					'class'		=> 'hide receiver'
-				);
-
-				$options['subgroup_end_3'] = array(
-					'type'		=> 'subgroup_end'
-				);
 
 				$options['subgroup_start_4'] = array(
 					'type'		=> 'subgroup_start',

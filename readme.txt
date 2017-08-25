@@ -57,7 +57,9 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.1.6 - 08/25/2017 =
+= 2.1.6 - XX/XX/XXXX =
+
+* Improvement: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
 
 = 2.1.5 - 07/11/2017 =
 
