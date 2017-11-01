@@ -61,6 +61,7 @@ This plugin works with the following themes only.
 
 * Improvement: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
 * Fixed: Minor UI fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.
+* Removed: Image element no longer has the checkbox, "Add frame around the image."
 
 = 2.1.5 - 07/11/2017 =
 
