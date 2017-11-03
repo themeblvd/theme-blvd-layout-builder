@@ -5878,12 +5878,6 @@ class Theme_Blvd_Builder_API {
 				'name'		=> __( 'Progress Bars', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
 				'type'		=> 'bars'
-			),
-			'striped' => array(
-				'id' 		=> 'striped',
-				'name'		=> null,
-				'desc'		=> __( 'Display striped effect over progress bars.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'checkbox'
 			)
 		);
 
