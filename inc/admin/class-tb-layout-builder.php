@@ -3723,7 +3723,7 @@ class Theme_Blvd_Layout_Builder {
 			$page = get_current_screen();
 
 			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
-				add_action( 'in_admin_header', array( $this, 'display_editor' ) );
+				add_action( 'admin_notices', array( $this, 'display_editor' ), 100 );
 			}
 		}
 	}

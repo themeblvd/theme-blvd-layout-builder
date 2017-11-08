@@ -37,6 +37,8 @@ This plugin works with the following themes only.
 
 #### 2.1.6 - 11/08/2017
 
+* Improvement: Add layout builder's hidden `wp_editor()` instance later on the Edit Page screen, for better third-party plugin compatibility.
+
 #### 2.1.5 - 07/11/2017
 
 * Fixed: Minor background PHP notices when adding new page, with no layout data.
