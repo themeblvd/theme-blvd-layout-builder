@@ -173,28 +173,19 @@ class Theme_Blvd_Layout_Builder {
 
 		$suffix = SCRIPT_DEBUG || TB_BUILDER_DEBUG ? '' : '.min';
 
-		if ( function_exists( 'themeblvd_admin_assets' ) ) {
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/css/admin-style{$suffix}.css" ), null, TB_FRAMEWORK_VERSION );
+		wp_enqueue_style( 'themeblvd_options', esc_url( TB_FRAMEWORK_URI . "/admin/options/css/admin-style{$suffix}.css" ), null, TB_FRAMEWORK_VERSION );
 
-			themeblvd_admin_assets( 'styles' ); // Framework 2.7+.
-
-		} else {
-
-			wp_enqueue_style( 'wp-color-picker' );
-			wp_enqueue_style( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/css/admin-style{$suffix}.css" ), null, TB_FRAMEWORK_VERSION );
-			wp_enqueue_style( 'themeblvd_options', esc_url( TB_FRAMEWORK_URI . "/admin/options/css/admin-style{$suffix}.css" ), null, TB_FRAMEWORK_VERSION );
-
-		}
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
 			wp_enqueue_style( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' ) );
 		}
 
 		wp_enqueue_style( 'theme-blvd-layout-builder', esc_url( TB_BUILDER_PLUGIN_URI . "/inc/admin/assets/css/builder-style{$suffix}.css" ), null, TB_BUILDER_PLUGIN_VERSION );
 
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 			wp_enqueue_style( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css' ), null, '4.0' );
 			wp_enqueue_style( 'codemirror-theme', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/themeblvd.min.css' ), null, '4.0' );
-			wp_enqueue_style( 'fontawesome', esc_url( TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css' ), null, TB_FRAMEWORK_VERSION );
 		}
 	}
 
@@ -209,80 +200,58 @@ class Theme_Blvd_Layout_Builder {
 
 		$suffix = SCRIPT_DEBUG || TB_BUILDER_DEBUG ? '' : '.min';
 
-		// Include Google Maps API.
-		if ( $gmap_key = themeblvd_get_option( 'gmap_api_key' ) ) {
-
-			$handle = 'themeblvd-gmap';
-
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-				$handle = 'themeblvd_gmap';
-			}
-
-			wp_enqueue_script( $handle, esc_url( add_query_arg( 'key', $gmap_key, 'https://maps.googleapis.com/maps/api/js' ) ), array(), null );
-
-		}
-
-		// Include WordPress's post box toggles.
+		// WP-packaged scripts
+		wp_enqueue_script( 'jquery-ui-core');
+		wp_enqueue_script( 'jquery-ui-sortable' );
+		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'postbox' );
+		wp_enqueue_script( 'wp-color-picker' );
 
-		// Include theme framework admin scripts.
-		if ( function_exists( 'themeblvd_admin_assets' ) ) {
-
-			themeblvd_admin_assets( 'scripts' ); // Framework 2.7+.
-
-		} else {
-
-			wp_enqueue_script( 'jquery-ui-core');
-
-			wp_enqueue_script( 'jquery-ui-sortable' );
-
-			wp_enqueue_script( 'jquery-ui-slider' );
-
-			wp_enqueue_script( 'wp-color-picker' );
-
+		if ( function_exists( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
-
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-				wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
-			}
-
-			wp_enqueue_script( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/shared{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
-
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
-				wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
-			}
-
 		}
 
-		// Include layout builder script.
+		// Google Maps
+		if ( $gmap_key = themeblvd_get_option( 'gmap_api_key' ) ) {
+			wp_enqueue_script( 'themeblvd_gmap', esc_url( add_query_arg( 'key', $gmap_key, 'https://maps.googleapis.com/maps/api/js' ) ), array(), null );
+		}
+
+		// Theme Blvd scripts
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+			wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
+		}
+
+		wp_enqueue_script( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/shared{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
+			wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
+		}
+
+		// Builder script
 		wp_enqueue_script( 'theme-blvd-layout-builder', esc_url( TB_BUILDER_PLUGIN_URI . "/inc/admin/assets/js/builder{$suffix}.js" ), array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
-		// Include code editor script with syntax highlighting.
+		// Code editor and FontAwesome
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
 			wp_enqueue_script( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js' ), null, '4.0' );
 			wp_enqueue_script( 'codemirror-modes', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js' ), null, '4.0' );
+			wp_enqueue_style( 'fontawesome', esc_url( TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css' ), null, TB_FRAMEWORK_VERSION );
 		}
 
 		// Add JS locals when needed.
 		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
 
-			/*
-			 * Edit Page Screen: This is a fallback for prior to
-			 * framework v2.3 where framework metabox scripts were
-			 * not localized by default.
-			 */
+			// Edit Page Screen: This is a fallback for prior to
+			// framework v2.3 where framework metabox scripts were
+			// not localized by default.
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
 				wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
 			}
+
 		} else {
 
-			/*
-			 * Localize script for actual builder page; not needed
-			 * for framework 2.7+
-			 */
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-				wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
-			}
+			// Localize script for actual Builder page.
+			wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+
 		}
 
 	}
@@ -409,7 +378,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 		?>
 		<div id="builder_blvd" class="primary <?php echo $active; ?>">
-			<div id="optionsframework" class="tb-options-wrap wrap">
+			<div id="optionsframework" class="wrap">
 
 				<div class="admin-module-header">
 			    	<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
@@ -677,10 +646,11 @@ class Theme_Blvd_Layout_Builder {
 				?>
 				<div class="metabox-holder">
 					<div class="postbox">
+						<h3><?php esc_html_e( 'New Template', 'theme-blvd-layout-builder' ); ?></h3>
 						<div class="inner-group">
 							<?php echo $form[0]; ?>
 						</div><!-- .group (end) -->
-						<div id="optionsframework-submit" class="options-page-footer">
+						<div id="optionsframework-submit">
 							<?php if ( $import ) : ?>
 								<a href="<?php echo esc_url($this->importer_url); ?>" class="tb-tooltip-link button-secondary button-import-layout" title="<?php esc_attr_e('Import template from XML file.', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Import Template', 'theme-blvd-layout-builder'); ?></a>
 							<?php endif; ?>
@@ -2051,6 +2021,12 @@ class Theme_Blvd_Layout_Builder {
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
+					// Prior to WP 3.5 or Theme Blvd framework v2.3
+					if ( ! function_exists( 'wp_enqueue_media' ) || ! function_exists( 'themeblvd_media_uploader' ) ) {
+						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
+						add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+					}
+
 				}
 			}
 		}
@@ -2136,7 +2112,7 @@ class Theme_Blvd_Layout_Builder {
 		?>
 		<div id="tb-editor-builder" class="<?php if ( $page_template === 'template_builder.php' ) { echo 'template-active'; } ?>">
 			<div id="builder_blvd">
-				<div id="optionsframework" class="tb-options-wrap tb-options-js">
+				<div id="optionsframework" class="tb-options-js">
 
 					<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
 					<input type="hidden" name="tb_post_id" value="<?php echo esc_attr($post->ID); ?>" />
@@ -2280,16 +2256,20 @@ class Theme_Blvd_Layout_Builder {
 
 			<h2><?php esc_html_e( 'Manage Elements', 'theme-blvd-layout-builder' ); ?></h2>
 
-			<select class="tb-select-element tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
-				<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
-				<?php
-				foreach ( $elements as $element ) {
-					if ( $api->is_element( $element['info']['id'] ) ) {
-						echo '<option value="'.esc_attr($element['info']['id']).'">'.esc_attr($element['info']['name']).'</option>';
+			<div class="tb-fancy-select tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
+				<select class="tb-select-element">
+					<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
+					<?php
+					foreach ( $elements as $element ) {
+						if ( $api->is_element( $element['info']['id'] ) ) {
+							echo '<option value="'.esc_attr($element['info']['id']).'">'.esc_attr($element['info']['name']).'</option>';
+						}
 					}
-				}
-				?>
-			</select>
+					?>
+				</select>
+				<span class="trigger"></span>
+				<span class="textbox"></span>
+			</div><!-- .tb-fancy-select (end) -->
 
 			<a href="#" id="add_new_element" class="button-secondary"><?php esc_html_e( 'Add Element', 'theme-blvd-layout-builder' ); ?></a>
 
@@ -2723,16 +2703,20 @@ class Theme_Blvd_Layout_Builder {
 												<i class="tb-icon-plus-circled"></i>
 											</a>
 
-											<select class="block-type tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
-												<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
-												<?php
-												foreach ( $elements as $block ) {
-													if ( $api->is_block( $block['info']['id'] ) ) {
-														echo '<option value="'.esc_attr($block['info']['id']).'">'.esc_html($block['info']['name']).'</option>';
+											<div class="tb-fancy-select condensed tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Type of Element to Add', 'theme-blvd-layout-builder'); ?>">
+												<select class="block-type">
+													<option value="">- <?php esc_html_e( 'Select Element', 'theme-blvd-layout-builder' ); ?> -</option>
+													<?php
+													foreach ( $elements as $block ) {
+														if ( $api->is_block( $block['info']['id'] ) ) {
+															echo '<option value="'.esc_attr($block['info']['id']).'">'.esc_html($block['info']['name']).'</option>';
+														}
 													}
-												}
-												?>
-											</select>
+													?>
+												</select>
+												<span class="trigger"></span>
+												<span class="textbox"></span>
+											</div><!-- .tb-fancy-select (end) -->
 
 											<a href="#" class="add-block button-secondary" title="<?php esc_attr_e('Add Selected Element', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Add Element', 'theme-blvd-layout-builder'); ?></a>
 
@@ -2953,6 +2937,7 @@ class Theme_Blvd_Layout_Builder {
 
 		}
 
+		$output .= '<div class="tb-fancy-select condensed">';
 		$output .= sprintf( '<select id="tb-template-%s" name="%s">', esc_attr($type), esc_attr($name) );
 
 		if ( $start_text ) {
@@ -2993,6 +2978,9 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		$output .= '</select>';
+		$output .= '<span class="trigger"></span>';
+		$output .= '<span class="textbox"></span>';
+		$output .= '</div><!-- .tb-fancy-select (end) -->';
 
 		return $output;
 	}
@@ -3133,65 +3121,65 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_video']['desc'] = __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your fallback image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder');
 			}
 
-			$options['subgroup_start_3'] = array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
-			);
-
-			$options['apply_bg_shade'] = array(
-				'id'		=> 'apply_bg_shade',
-				'name'		=> null,
-				'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
-				'std'		=> 0,
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			);
-
-			$options['bg_shade_color'] = array(
-				'id'		=> 'bg_shade_color',
-				'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
-				'std'		=> '#000000',
-				'type'		=> 'color',
-				'class'		=> 'hide receiver'
-			);
-
-			$options['bg_shade_opacity'] = array(
-				'id'		=> 'bg_shade_opacity',
-				'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
-				'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
-				'std'		=> '0.5',
-				'type'		=> 'select',
-				'options'	=> array(
-					'0.05'	=> '5%',
-					'0.1'	=> '10%',
-					'0.15'	=> '15%',
-					'0.2'	=> '20%',
-					'0.25'	=> '25%',
-					'0.3'	=> '30%',
-					'0.35'	=> '35%',
-					'0.4'	=> '40%',
-					'0.45'	=> '45%',
-					'0.5'	=> '50%',
-					'0.55'	=> '55%',
-					'0.6'	=> '60%',
-					'0.65'	=> '65%',
-					'0.7'	=> '70%',
-					'0.75'	=> '75%',
-					'0.8'	=> '80%',
-					'0.85'	=> '85%',
-					'0.9'	=> '90%',
-					'0.95'	=> '95%'
-				),
-				'class'		=> 'hide receiver'
-			);
-
-			$options['subgroup_end_3'] = array(
-				'type'		=> 'subgroup_end'
-			);
-
 			// Extended Background options (for section only)
 			if ( $type == 'section' ) {
+
+				$options['subgroup_start_3'] = array(
+					'type'		=> 'subgroup_start',
+					'class'		=> 'show-hide hide receiver receiver-image receiver-slideshow receiver-video'
+				);
+
+				$options['apply_bg_shade'] = array(
+					'id'		=> 'apply_bg_shade',
+					'name'		=> null,
+					'desc'		=> __('Shade background with transparent color.', 'theme-blvd-layout-builder'),
+					'std'		=> 0,
+					'type'		=> 'checkbox',
+					'class'		=> 'trigger'
+				);
+
+				$options['bg_shade_color'] = array(
+					'id'		=> 'bg_shade_color',
+					'name'		=> __('Shade Color', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select the color you want overlaid on your background.', 'theme-blvd-layout-builder'),
+					'std'		=> '#000000',
+					'type'		=> 'color',
+					'class'		=> 'hide receiver'
+				);
+
+				$options['bg_shade_opacity'] = array(
+					'id'		=> 'bg_shade_opacity',
+					'name'		=> __('Shade Opacity', 'theme-blvd-layout-builder'),
+					'desc'		=> __('Select the opacity of the shade color overlaid on your background.', 'theme-blvd-layout-builder'),
+					'std'		=> '0.5',
+					'type'		=> 'select',
+					'options'	=> array(
+						'0.05'	=> '5%',
+						'0.1'	=> '10%',
+						'0.15'	=> '15%',
+						'0.2'	=> '20%',
+						'0.25'	=> '25%',
+						'0.3'	=> '30%',
+						'0.35'	=> '35%',
+						'0.4'	=> '40%',
+						'0.45'	=> '45%',
+						'0.5'	=> '50%',
+						'0.55'	=> '55%',
+						'0.6'	=> '60%',
+						'0.65'	=> '65%',
+						'0.7'	=> '70%',
+						'0.75'	=> '75%',
+						'0.8'	=> '80%',
+						'0.85'	=> '85%',
+						'0.9'	=> '90%',
+						'0.95'	=> '95%'
+					),
+					'class'		=> 'hide receiver'
+				);
+
+				$options['subgroup_end_3'] = array(
+					'type'		=> 'subgroup_end'
+				);
 
 				$options['subgroup_start_4'] = array(
 					'type'		=> 'subgroup_start',

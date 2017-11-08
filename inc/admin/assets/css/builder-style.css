@@ -35,27 +35,6 @@
 	max-width: none;
 	width: auto;
 }
-#tb-builder-notice p {
-	margin: 10px 0;
-	padding: 0;
-}
-
-/* Page Footer */
-.options-page-footer {
-	padding: 10px;
-}
-.options-page-footer input {
-	float: right;
-}
-.wp-admin.rtl .options-page-footer input {
-	float: left;
-}
-.options-page-footer .button-import-layout {
-	float: left;
-}
-.wp-admin.rtl .options-page-footer .button-import-layout {
-	float: right;
-}
 
 /* =General Classes
 ----------------------------------------------- */
@@ -148,14 +127,29 @@
 	float: right;
 	padding: 0 12px 0 0;
 }
-#builder_blvd #tb-edit-layout .manage-elements .tb-select-element {
+#builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select {
+	-webkit-box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
+	box-shadow: inset 0 1px 0 #fff,0 1px 0 rgba(0,0,0,.08);
 	float: left;
 	margin: 0 10px 0 20px;
-	height: 29px;
+	height: 27px;
 }
-.wp-admin.rtl #builder_blvd #tb-edit-layout .manage-elements .tb-select-element {
+.wp-admin.rtl #builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select {
 	float: right;
 	margin: 0 20px 0 10px;
+}
+#builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select select {
+	height: 27px;
+}
+#builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select .trigger {
+	background-position: 0 -2px;
+	height: 26px;
+}
+#builder_blvd #tb-edit-layout .manage-elements .tb-fancy-select .textbox {
+	border-color: #cccccc;
+	font-size: 12px;
+	height: 27px;
+	line-height: 27px;
 }
 #builder_blvd #tb-edit-layout .manage-elements .button-secondary {
 	background-position: 0 -3px;
@@ -563,14 +557,6 @@
 }
 #builder_blvd .postbox.hide .tb-widget-content {
 	display: none;
-}
-#builder_blvd .postbox .tb-widget-content .controls,
-#builder_blvd .postbox .tb-widget-content .explain {
-	float: none;
-	margin: 0;
-	max-width: none;
-	min-width: 0;
-	width: auto;
 }
 #builder_blvd .postbox-custom-styles {
 	margin-left: -140px;
@@ -1308,30 +1294,30 @@
 }
 
 /* Align toggles on sortable items */
-.themeblvd-modal .tb-options-wrap .full-width .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-bars .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-locations .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
+.themeblvd-modal #optionsframework .full-width .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-bars .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-locations .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #optionsframework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
 	right: 0;
 }
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .full-width .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-bars .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-locations .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
+.wp-admin.rtl .themeblvd-modal #optionsframework .full-width .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-bars .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-locations .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #optionsframework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
 	right: initial;
 	left: 0;
 }
