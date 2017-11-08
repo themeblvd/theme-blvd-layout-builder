@@ -3,13 +3,21 @@
  * This is an extension of what was already started in the
  * options-custom.js file.
  */
-jQuery(document).ready(function($) {
+jQuery( document ).ready( function( $ ) {
 
 	/*------------------------------------------------------------*/
-	/* General Global Scope Variables
+	/* General Variables
 	/*------------------------------------------------------------*/
 
 	var nag_inserted = false;
+
+	var l10n = {};
+
+	if ( 'undefined' !== typeof themeblvdL10n ) {
+		l10n = themeblvdL10n;
+	} else if ( 'undefined' !== typeof themeblvd ) {
+		l10n = themeblvd;
+	}
 
 	/*------------------------------------------------------------*/
 	/* Static Methods
@@ -28,10 +36,10 @@ jQuery(document).ready(function($) {
 			}
 
 			var is_template	= $('body').hasClass('toplevel_page_themeblvd_builder') ? true : false,
-				msg = is_template ? themeblvd.nag_save_template : themeblvd.nag_save,
+				msg = is_template ? l10n.nag_save_template : l10n.nag_save,
 				$nag = '<div id="tb-builder-notice" class="notice notice-warning is-dismissible" style="display:none"> \
 						<p> ' + msg + '</p> \
-						<button type="button" class="notice-dismiss"><span class="screen-reader-text">' + themeblvd.dismiss + '</span></button> \
+						<button type="button" class="notice-dismiss"><span class="screen-reader-text">' + l10n.dismiss + '</span></button> \
 						</div>';
 
 			if ( is_template ) {
@@ -87,28 +95,24 @@ jQuery(document).ready(function($) {
 			}
 
 			// Setup section/element/block display options, which open in a modal
-			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-				$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').ThemeBlvdModal({
-					button: themeblvd.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
-			    });
-			}
+			$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').themeblvd( 'modal', null, {
+				button: l10n.apply,
+		        build: true,
+		        form: true,
+		        padding: false,
+		        size: 'medium',
+		        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
+		    } );
 
 			// Setup content block options, which open in a modal
-			if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-				$builder.find('.tb-block-options-link').ThemeBlvdModal({
-					button: themeblvd.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        on_load: builder_blvd.content_block_options_load
-			    });
-			}
+			$builder.find('.tb-block-options-link').themeblvd( 'modal', null, {
+				button: l10n.apply,
+		        build: true,
+		        form: true,
+		        padding: false,
+		        size: 'medium',
+		        onLoad: builder_blvd.content_block_options_load
+		    } );
 
 		},
 
@@ -344,7 +348,7 @@ jQuery(document).ready(function($) {
 					$block = '';
 
 				if ( ! type ) {
-				    tbc_confirm(themeblvd.no_element, {'textOk':'Ok'});
+				    tbc_confirm(l10n.no_element, {'textOk':'Ok'});
 				    return false;
 				}
 
@@ -383,28 +387,24 @@ jQuery(document).ready(function($) {
 					$block.themeblvd('options', 'sortable');
 
 					// Setup content block options, which open in a modal
-					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-						$block.find('.tb-block-options-link').ThemeBlvdModal({
-							button: themeblvd.apply,
-					        build: true,
-					        form: true,
-					        padding: false,
-					        size: 'medium',
-					        on_load: builder_blvd.content_block_options_load
-					    });
-					}
+					$block.find( '.tb-block-options-link' ).themeblvd( 'modal', null, {
+						button: l10n.apply,
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        onLoad: builder_blvd.content_block_options_load
+				    } );
 
 					// Setup block display options, which open in a modal
-					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-						$element.find('.edit-block-display').ThemeBlvdModal({
-							button: themeblvd.apply,
-					        build: true,
-					        form: true,
-					        padding: false,
-					        size: 'medium',
-					        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
-					    });
-					}
+					$element.find('.edit-block-display').themeblvd( 'modal', null, {
+						button: l10n.apply,
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
+				    } );
 
 					// Layout changed.
 					builder_blvd.nag();
@@ -426,9 +426,9 @@ jQuery(document).ready(function($) {
 					str = '';
 
 				if ( num == 1 ) {
-					str = num+' '+themeblvd.column;
+					str = num + ' ' + l10n.column;
 				} else {
-					str = num+' '+themeblvd.columns;
+					str = num + ' ' + l10n.columns;
 				}
 
 				$header.find('.col-count').text(str);
@@ -442,28 +442,26 @@ jQuery(document).ready(function($) {
 
     	},
 
-    	// Used for the on_load() callback when
+    	// Used for the onLoad() callback when
     	// linking to options in modal
-    	content_block_options_load : function( modal ) {
-
-    		var self = this;
+    	content_block_options_load : function( self ) {
 
     		// General framework options setup
-    		self.$modal_window.themeblvd('options', 'bind');
-    		self.$modal_window.themeblvd('options', 'setup');
-			self.$modal_window.themeblvd('options', 'media-uploader');
-			self.$modal_window.themeblvd('options', 'editor');
-			self.$modal_window.themeblvd('options', 'code-editor');
-			self.$modal_window.themeblvd('options', 'column-widths');
-			self.$modal_window.themeblvd('options', 'sortable');
+    		self.$modalWindow.themeblvd('options', 'bind');
+    		self.$modalWindow.themeblvd('options', 'setup');
+			self.$modalWindow.themeblvd('options', 'media-uploader');
+			self.$modalWindow.themeblvd('options', 'editor');
+			self.$modalWindow.themeblvd('options', 'code-editor');
+			self.$modalWindow.themeblvd('options', 'column-widths');
+			self.$modalWindow.themeblvd('options', 'sortable');
 
 			// Custom actions for "Display" options of elements
-			var $display = self.$modal_window.find('.element-display-options'),
+			var $display = self.$modalWindow.find('.element-display-options'),
 				bg = $display.find('#section-bg_type select').val(),
 				padding = $display.find('#section-apply_padding input').is(':checked');
 
 			// Bind check for paginated elements
-			self.$modal_window.on('change', '.tb-query-check .of-input', function(){
+			self.$modalWindow.on('change', '.tb-query-check .of-input', function(){
 
 				var $el = $(this),
 					has_paginated = false;
@@ -479,7 +477,7 @@ jQuery(document).ready(function($) {
 					});
 
 					if ( has_paginated ) {
-						tbc_confirm(themeblvd.primary_query, {'textOk':'Ok'});
+						tbc_confirm(l10n.primary_query, {'textOk':'Ok'});
 					}
 
 					$el.removeClass('current');
@@ -541,8 +539,7 @@ jQuery(document).ready(function($) {
 		$wrap.find('#tb-edit-layout').show();
 		$wrap.find('.sync-overlay').fadeOut(100);
 
-		$select = $wrap.find('#tb-template-sync');
-		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+		$wrap.find('#tb-template-sync').val('');
 
 		// Layout changed.
 		builder_blvd.nag();
@@ -558,7 +555,7 @@ jQuery(document).ready(function($) {
 
 		// Are they sure they want to delete current
 		// layout and apply template?
-		tbc_confirm( themeblvd.template_apply, {'confirm':true}, function(r){
+		tbc_confirm(l10n.template_apply, {'confirm':true}, function(r){
 			if (r) {
 
 				$overlay.fadeIn(100);
@@ -603,7 +600,7 @@ jQuery(document).ready(function($) {
 		});
 
 		// Put the select menu back to first value (blank)
-		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+		$select.val('');
 
 	});
 
@@ -613,12 +610,12 @@ jQuery(document).ready(function($) {
 		var args = {
 			'confirm' 		: true,
 			'input' 		: true,
-			'input_desc' 	: themeblvd.template_desc,
-			'textOk' 		: themeblvd.template_save,
-			'class' 		: 'text-center'
+			'input_desc' 	: l10n.template_desc,
+			'textOk' 		: l10n.template_save,
+			'className'		: 'text-center'
 		};
 
-		tbc_confirm('<h3>'+themeblvd.template_title+'</h3>', args, function(name) {
+		tbc_confirm( '<h3>' + l10n.template_title + '</h3>', args, function( name ) {
 
 			if (name) {
 
@@ -656,7 +653,7 @@ jQuery(document).ready(function($) {
 			} else if ( name === '' ) {
 
 				// Forgot name
-				tbc_confirm(themeblvd.no_name);
+				tbc_confirm(l10n.no_name);
 
 			}
 
@@ -678,7 +675,7 @@ jQuery(document).ready(function($) {
 
 		// Are they sure they want to delete the current
 		// layout's data?
-		tbc_confirm( themeblvd.clear_layout, {'confirm':true}, function(r){
+		tbc_confirm(l10n.clear_layout, {'confirm':true}, function(r){
 			if (r) {
 
 				$overlay.fadeIn(100);
@@ -727,13 +724,13 @@ jQuery(document).ready(function($) {
 		});
 
 		if ( values ) {
-			tbc_confirm( themeblvd.delete_layout, {'confirm':true}, function(r) {
+			tbc_confirm(l10n.delete_layout, {'confirm':true}, function(r) {
 		    	if (r) {
 		    		$form.off('submit.check').submit();
 		    	}
 		    });
 		} else {
-			tbc_confirm( themeblvd.no_layouts );
+			tbc_confirm(l10n.no_layouts );
 		}
 
 	});
@@ -761,7 +758,7 @@ jQuery(document).ready(function($) {
 
 		// Tell user they forgot a name
 		if( ! $(this).find('#section-name .of-input').val() ) {
-			tbc_confirm(themeblvd.no_name, {'textOk':'Ok'});
+			tbc_confirm(l10n.no_name, {'textOk':'Ok'});
 		    e.preventDefault();
 		    return false;
 		}
@@ -827,7 +824,7 @@ jQuery(document).ready(function($) {
 
 		var href = this.href;
 
-		tbc_confirm( themeblvd.delete_layout, {'confirm':true}, function(r) {
+		tbc_confirm(l10n.delete_layout, {'confirm':true}, function(r) {
 	    	if (r) {
 	    		location.href = href;
 	    	}
@@ -870,7 +867,7 @@ jQuery(document).ready(function($) {
 				$('body').animate({scrollTop: 0}, 50, function(){
 
 					// Add updated success message.
-					$edit_template.find('.nav-tab-wrapper').after('<div class="themeblvd-updated updated fade" style="display:none;"><p><strong>'+themeblvd.template_updated+'</strong></p></div>');
+					$edit_template.find('.nav-tab-wrapper').after('<div class="themeblvd-updated updated fade" style="display:none;"><p><strong>' + l10n.template_updated + '</strong></p></div>');
 
 					$edit_template.find('.themeblvd-updated').fadeIn(500).delay(3000).fadeOut(500, function() {
        					 $(this).remove();
@@ -902,7 +899,7 @@ jQuery(document).ready(function($) {
 
 		// Are they sure they want to delete current
 		// layout and apply template?
-		tbc_confirm( themeblvd.template_apply, {'confirm':true}, function(r){
+		tbc_confirm(l10n.template_apply, {'confirm':true}, function(r){
 			if (r) {
 
 				$overlay.fadeIn(100);
@@ -947,7 +944,7 @@ jQuery(document).ready(function($) {
 		});
 
 		// Put the select menu back to first value (blank)
-		$select.val('').closest('.tb-fancy-select').find('.textbox').text( $select.find('option[value=""]').text() );
+		$select.val('');
 
 	});
 
@@ -1105,16 +1102,14 @@ jQuery(document).ready(function($) {
 				$section.find('.sortable').addClass('empty');;
 
 				// Bind popup for display options
-				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-					$section.find('.edit-section-display').ThemeBlvdModal({
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
-				    });
-				}
+				$section.find('.edit-section-display').themeblvd( 'modal', null, {
+					button: l10n.apply,
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
+			    } );
 
 				// Layout changed.
 				builder_blvd.nag();
@@ -1173,7 +1168,7 @@ jQuery(document).ready(function($) {
 			$next_section = $section.prev('.element-section');
 
 			if ( $section.is('.element-section:first-child') ) {
-				tbc_confirm(themeblvd.shift_up_error, {'textOk':'Ok'});
+				tbc_confirm(l10n.shift_up_error, {'textOk':'Ok'});
 			} else {
 				$section.slideUp(200, function() {
 			        $next_section.before( $section );
@@ -1186,7 +1181,7 @@ jQuery(document).ready(function($) {
 			$next_section = $section.next('.element-section');
 
 			if ( $section.is('.element-section:last-child') ) {
-				tbc_confirm(themeblvd.shift_down_error, {'textOk':'Ok'});
+				tbc_confirm(l10n.shift_down_error, {'textOk':'Ok'});
 			} else {
 				$section.slideUp(200, function() {
 			        $next_section.after( $section );
@@ -1223,7 +1218,7 @@ jQuery(document).ready(function($) {
 			$element = '';
 
 		if ( ! type ) {
-			tbc_confirm(themeblvd.no_element, {'textOk':'Ok'});
+			tbc_confirm(l10n.no_element, {'textOk':'Ok'});
 			return false;
 		}
 
@@ -1275,16 +1270,14 @@ jQuery(document).ready(function($) {
 				overlay.fadeOut('fast');
 
 				// Setup element display options, which open in a modal
-				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-					$element.find('.edit-element-display').ThemeBlvdModal({
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
-				    });
-				}
+				$element.find('.edit-element-display').themeblvd( 'modal', null, {
+					button: l10n.apply,
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
+			    } );
 
 				// Layout changed.
 				builder_blvd.nag();
@@ -1367,28 +1360,24 @@ jQuery(document).ready(function($) {
 				}
 
 				// Setup content block options, which open in a modal
-				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-					$new_element.find('.tb-block-options-link').ThemeBlvdModal({
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builder_blvd.content_block_options_load
-				    });
-				}
+				$new_element.find('.tb-block-options-link').themeblvd( 'modal', null, {
+					button: l10n.apply,
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        onLoad: builder_blvd.content_block_options_load
+			    } );
 
 				// Setup element display options, which open in a modal
-				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-					$new_element.find('.edit-element-display, .edit-block-display').ThemeBlvdModal({
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builder_blvd.content_block_options_load // We're going to piggy back this
-				    });
-				}
+				$new_element.find('.edit-element-display, .edit-block-display').themeblvd( 'modal', null, {
+					button: l10n.apply,
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
+			    } );
 
 				// Layout changed.
 				builder_blvd.nag();
@@ -1442,26 +1431,24 @@ jQuery(document).ready(function($) {
                 $new_block.themeblvd('options', 'sortable');
 
                 // And bind the modal window for the settings link
-                $new_block.find('.tb-block-options-link').ThemeBlvdModal({
-					button: themeblvd.apply,
+                $new_block.find('.tb-block-options-link').themeblvd( 'modal', null, {
+					button: l10n.apply,
                     build: true,
                     form: true,
                     padding: false,
                     size: 'medium',
-                    on_load: builder_blvd.content_block_options_load
-                });
+                    onLoad: builder_blvd.content_block_options_load
+                } );
 
                 // Setup element display options, which open in a modal
-				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
-					$new_block.find('.edit-block-display').ThemeBlvdModal({
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builder_blvd.content_block_options_load
-				    });
-				}
+				$new_block.find('.edit-block-display').themeblvd( 'modal', null, {
+					button: l10n.apply,
+			        build: true,
+			        form: true,
+			        padding: false,
+			        size: 'medium',
+			        onLoad: builder_blvd.content_block_options_load
+			    } );
 
 				// Layout changed.
 				builder_blvd.nag();
@@ -1563,7 +1550,7 @@ jQuery(document).ready(function($) {
 			});
 
 			if ( has_paginated ) {
-				tbc_confirm(themeblvd.primary_query, {'textOk':'Ok'});
+				tbc_confirm(l10n.primary_query, {'textOk':'Ok'});
 			}
 
 			$el.removeClass('current');

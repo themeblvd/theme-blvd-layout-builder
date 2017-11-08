@@ -2654,12 +2654,6 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'upload',
 				'advanced'	=> true
 			),
-			'frame' => array(
-				'id' 		=> 'frame',
-				'name'		=> null,
-				'desc'		=> __( 'Add frame around the image.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'checkbox'
-			),
 			'subgroup_start' => array(
 				'type' 		=> 'subgroup_start',
 				'class'		=> 'show-hide-toggle desc-toggle'
@@ -5884,12 +5878,6 @@ class Theme_Blvd_Builder_API {
 				'name'		=> __( 'Progress Bars', 'theme-blvd-layout-builder' ),
 				'desc'		=> null,
 				'type'		=> 'bars'
-			),
-			'striped' => array(
-				'id' 		=> 'striped',
-				'name'		=> null,
-				'desc'		=> __( 'Display striped effect over progress bars.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'checkbox'
 			)
 		);
 

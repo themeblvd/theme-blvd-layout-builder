@@ -3,7 +3,7 @@
 * Author URI: http://www.themeblvd.com
 * Contributors: themeblvd
 * Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-* Stable Tag: 2.1.5
+* Stable Tag: 2.1.7
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 
@@ -34,6 +34,13 @@ This plugin works with the following themes only.
 * [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
 ## Changelog
+
+#### 2.1.7 - XX/XX/XXX
+
+* Improvement: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
+* Fixed: Minor UI fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.
+* Removed: Image element no longer has the checkbox, "Add frame around the image."
+* Removed: No more "striped" option for progress bars (for framework 2.5+ themes).
 
 #### 2.1.6 - 11/08/2017
 
