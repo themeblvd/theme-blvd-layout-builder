@@ -662,6 +662,12 @@
 	z-index: 4;
 }
 
+/* Header */
+#tb-editor-builder #tb-template-apply,
+#tb-editor-builder #tb-template-sync {
+	width: 190px;
+}
+
 /* Sync Layout */
 #tb-editor-builder #tb-sync-layout {
 	padding: 25px;
