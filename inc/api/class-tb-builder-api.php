@@ -7665,7 +7665,13 @@ class Theme_Blvd_Builder_API {
 		}
 
 		// Hook in display function on frontend
-		add_action( 'themeblvd_'.$args['id'], $args['callback'], 10, 3 ); // Should pass only 2 params passed into callback, leaving as 3 here for backwards compat ($location no longer relevant)
+		$action = 'themeblvd_element_' . $args['id'];
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			$action = 'themeblvd_' . $args['id'];
+		}
+
+		add_action( $action, $args['callback'], 10, 3 ); // Should pass only 2 params passed into callback, leaving as 3 here for backwards compat ($location no longer relevant)
 
 	}
 
