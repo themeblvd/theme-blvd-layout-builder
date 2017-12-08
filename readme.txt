@@ -63,7 +63,8 @@ This plugin works with the following themes only.
 
 * New: Added support for inline rich-text editing (for framework 2.7+ themes).
 * New: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
-* Fixed: Minor UI fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.
+* Improvement: A default browser alert, "Changes you made may not be saved," is triggered when changes have been made to a custom layout, and the user navigates away from the page; the previous nag at the top of the screen was removed.
+* Fixed: Minor UX fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.
 * Removed: Image element no longer has the checkbox, "Add frame around the image" (for framework 2.7+ themes).
 * Removed: No more "striped" option for progress bars (for framework 2.7+ themes).
 
@@ -97,7 +98,7 @@ This plugin works with the following themes only.
 
 * New: Layout Merging - Templates and sample layouts are now merged to the end of the current layout or template.
 * New: Added "Clear Layout" button to builder on Edit Page screen.
-* New: Added “Custom CSS“ button to builder interface.
+* New: Added "Custom CSS" button to builder interface.
 * New: Basic Post Revisions support.
 * UX Improvements:
 	* "Display Options" are now more clearly identified.

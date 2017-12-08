@@ -35,24 +35,9 @@ jQuery( document ).ready( function( $ ) {
 				return false;
 			}
 
-			var is_template	= $('body').hasClass('toplevel_page_themeblvd_builder') ? true : false,
-				msg = is_template ? l10n.nag_save_template : l10n.nag_save,
-				$nag = '<div id="tb-builder-notice" class="notice notice-warning is-dismissible" style="display:none"> \
-						<p> ' + msg + '</p> \
-						<button type="button" class="notice-dismiss"><span class="screen-reader-text">' + l10n.dismiss + '</span></button> \
-						</div>';
-
-			if ( is_template ) {
-
-				// Insert nag on Edit Template screen
-				$edit_template.find('.nav-tab-wrapper').after($nag).closest('#wpbody-content').find('#tb-builder-notice').fadeIn(500);
-
-			} else {
-
-				// Insert message on Edit Page screen
-				$('#lost-connection-notice').before($nag).closest('#wpbody-content').find('#tb-builder-notice').fadeIn(500);
-
-			}
+			window.onbeforeunload = function() {
+				return true;
+			};
 
 			nag_inserted = true;
 
