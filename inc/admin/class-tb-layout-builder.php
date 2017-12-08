@@ -58,10 +58,6 @@ class Theme_Blvd_Layout_Builder {
 		// Admin <body> classes
 		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
 
-		// Add Editor into page, which Builder can use for editing
-		// content of elements.
-		add_action( 'current_screen', array( $this, 'add_editor' ) );
-
 		// Add icon browser into page, which Builder can use for
 		// inserting icons.
 		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
@@ -3721,27 +3717,6 @@ class Theme_Blvd_Layout_Builder {
 	/*--------------------------------------------*/
 	/* Hidden Modals
 	/*--------------------------------------------*/
-
-	/**
-	 * Hook in hidden editor modal.
-	 *
-	 * @since 2.0.0
-	 */
-	public function add_editor() {
-
-		// Requires Framework 2.5+
-		if ( function_exists( 'themeblvd_editor' ) ) {
-
-			$page = get_current_screen();
-
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
-				add_action( 'in_admin_header', array( $this, 'display_editor' ) );
-			}
-		}
-	}
-	public function display_editor() {
-		themeblvd_editor();
-	}
 
 	/**
 	 * Hook in hidden icon browser modal(s).

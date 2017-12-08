@@ -183,6 +183,8 @@ jQuery( document ).ready( function( $ ) {
 				},
 				stop: function( event, ui ){
 
+					ui.item.themeblvd('options', 'editor');
+
 					// Layout changed.
 					builder_blvd.nag();
 
@@ -295,14 +297,8 @@ jQuery( document ).ready( function( $ ) {
 					data_field_name = data_field_name.replace('col_'+prev_col_num, 'col_'+new_col_num);
 					ui.item.data('field-name', data_field_name);
 
-					// Setup editor links
-					ui.item.themeblvd('options', 'editor');
-
-					// Layout changed.
-					builder_blvd.nag();
-
 				},
-				stop: function() {
+				stop: function( event, ui ) {
 
 					// Layout changed.
 					builder_blvd.nag();
