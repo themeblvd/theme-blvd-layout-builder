@@ -477,6 +477,11 @@ jQuery( document ).ready( function( $ ) {
 	var $wrap = $('#tb-editor-builder'),
 		$template = $('#page_template'); // WP <select> for page template
 
+	// Cancel any unsaved changes warning, if saving changes.
+	$( '#post' ).on( 'submit', function() {
+		window.onbeforeunload = false;
+	} );
+
 	// Show or hide the Builder, depending on if the
 	// user selects the "Custom Layout" page template.
 	$template.on('change', function(){
