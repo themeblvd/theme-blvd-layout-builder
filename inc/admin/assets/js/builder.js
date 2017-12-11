@@ -832,6 +832,8 @@ jQuery( document ).ready( function( $ ) {
 	// Update template (ajax)
 	$edit_template.find('.ajax-save-template').on('click', function(){
 
+		window.onbeforeunload = false;
+
 		var $form = $(this).closest('form'),
 			$load = $edit_template.find('#publishing-action .ajax-loading'),
 			nonce = $form.find('input[name="tb_nonce"]').val(),
