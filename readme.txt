@@ -63,7 +63,8 @@ This plugin works with the following themes only.
 
 * New: Added support for inline rich-text editing (for framework 2.7+ themes).
 * New: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
-* Improvement: A default browser alert, "Changes you made may not be saved," is triggered when changes have been made to a custom layout, and the user navigates away from the page; the previous nag at the top of the screen was removed.
+* Improvement: A default browser unsaved changes warning is triggered when changes have been made to a custom layout, and the user navigates away from the page; the previous custom nag at the top of the screen was removed.
+* Improvement: HTML element now uses WordPress's implementation of codeMirror editor, introduced in WordPress 4.9.
 * Fixed: Minor UX fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.
 * Removed: Image element no longer has the checkbox, "Add frame around the image" (for framework 2.7+ themes).
 * Removed: No more "striped" option for progress bars (for framework 2.7+ themes).

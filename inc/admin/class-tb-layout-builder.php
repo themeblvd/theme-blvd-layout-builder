@@ -188,8 +188,6 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_style( 'theme-blvd-layout-builder', esc_url( TB_BUILDER_PLUGIN_URI . "/inc/admin/assets/css/builder-style{$suffix}.css" ), null, TB_BUILDER_PLUGIN_VERSION );
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-			wp_enqueue_style( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css' ), null, '4.0' );
-			wp_enqueue_style( 'codemirror-theme', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/themeblvd.min.css' ), null, '4.0' );
 			wp_enqueue_style( 'fontawesome', esc_url( TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css' ), null, TB_FRAMEWORK_VERSION );
 		}
 	}
@@ -222,9 +220,9 @@ class Theme_Blvd_Layout_Builder {
 		wp_enqueue_script( 'postbox' );
 
 		// Include theme framework admin scripts.
-		if ( function_exists( 'themeblvd_admin_assets' ) ) {
+		if ( function_exists( 'themeblvd_admin_assets' ) ) { // Framework 2.7+.
 
-			themeblvd_admin_assets( 'scripts' ); // Framework 2.7+.
+			themeblvd_admin_assets( 'scripts' );
 
 		} else {
 
@@ -238,25 +236,30 @@ class Theme_Blvd_Layout_Builder {
 
 			wp_enqueue_media();
 
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-				wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
-			}
-
 			wp_enqueue_script( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/shared{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
 
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
-				wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
-			}
+			wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
 
 		}
 
 		// Include layout builder script.
 		wp_enqueue_script( 'theme-blvd-layout-builder', esc_url( TB_BUILDER_PLUGIN_URI . "/inc/admin/assets/js/builder{$suffix}.js" ), array('jquery'), TB_BUILDER_PLUGIN_VERSION );
 
-		// Include code editor script with syntax highlighting.
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
-			wp_enqueue_script( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js' ), null, '4.0' );
-			wp_enqueue_script( 'codemirror-modes', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js' ), null, '4.0' );
+		// Include code editor.
+		if ( function_exists( 'wp_enqueue_code_editor' ) && version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '>=' ) ) {
+
+			$settings = wp_enqueue_code_editor( array(
+				'type' => 'text/html',
+			));
+
+			wp_add_inline_script(
+		        'theme-blvd-layout-builder',
+		        sprintf(
+		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "html", %s ); } );',
+					wp_json_encode( $settings )
+		        )
+			);
+
 		}
 
 		// Add JS locals when needed.
