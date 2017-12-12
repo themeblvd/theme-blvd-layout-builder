@@ -462,7 +462,33 @@ jQuery( document ).ready( function( $ ) {
 					return false;
 				}
 			});
-    	}
+    	},
+
+		// Save all code editor data to textareas.
+		save_code_editors : function() {
+
+			if ( 'undefined' === typeof window.themeblvd ) {
+				return;
+			}
+
+			if ( 'undefined' === typeof window.themeblvd.options ) {
+				return;
+			}
+
+			var optionsAdmin = window.themeblvd.options,
+				editorID     = null,
+				editor       = null;
+
+			if ( optionsAdmin.codeEditors ) {
+
+				for ( editorID in optionsAdmin.codeEditors ) {
+
+					optionsAdmin.codeEditors[ editorID ].codemirror.save();
+
+				}
+			}
+
+		}
 
 	};
 
@@ -832,25 +858,11 @@ jQuery( document ).ready( function( $ ) {
 		window.onbeforeunload = null;
 
 		// Save any codemirror instances to the form.
-		if ( 'undefined' !== typeof window.themeblvd ) {
+		builder_blvd.save_code_editors();
 
-			if ( 'undefined' !== typeof window.themeblvd.options ) {
-
-				var optionsAdmin = window.themeblvd.options,
-					editorID     = null,
-					editor       = null;
-
-				if ( optionsAdmin.codeEditors ) {
-
-					for ( editorID in optionsAdmin.codeEditors ) {
-
-						editor = optionsAdmin.codeEditors[ editorID ].codemirror;
-
-						editor.save();
-
-					}
-				}
-			}
+		// Save any wp editors.
+		if ( 'undefined' !== typeof tinymce ) {
+			tinymce.triggerSave();
 		}
 
 		// Submit the form data and save.
@@ -913,20 +925,19 @@ jQuery( document ).ready( function( $ ) {
 				$overlay.fadeIn(100);
 
 				// Save any codemirror instances to the form.
-				var editorID = 'tb-custom-styles-textarea',
-					editor   = null;
+				builder_blvd.save_code_editors();
+
+				// Get the editor instance for the custom styles.
+				var cssEditorID = 'tb-custom-styles-textarea',
+					cssEditor  = null;
 
 				if ( 'undefined' !== typeof window.themeblvd ) {
 
 					if ( 'undefined' !== typeof window.themeblvd.options ) {
 
-						var optionsAdmin = window.themeblvd.options;
+						if ( 'undefined' !== typeof window.themeblvd.options.codeEditors[ cssEditorID ] ) {
 
-						if ( 'undefined' !== typeof optionsAdmin.codeEditors[ editorID ] ) {
-
-							editor = optionsAdmin.codeEditors[ editorID ].codemirror;
-
-							editor.save();
+							cssEditor = window.themeblvd.options.codeEditors[ cssEditorID ].codemirror;
 
 						}
 					}
@@ -954,8 +965,8 @@ jQuery( document ).ready( function( $ ) {
 
 					$.post(ajaxurl, data, function(response) {
 
-						if ( editor ) {
-							editor.setValue( response );
+						if ( cssEditor ) {
+							cssEditor.setValue( response );
 						}
 
 						$overlay.fadeOut(200);
