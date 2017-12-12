@@ -206,18 +206,14 @@ jQuery( document ).ready( function( $ ) {
     	},
     	show_widget : function( id ) {
 
-			var $widget = $('#'+id);
+			var $widget = $( '#' + id );
 
-			$widget.find('.tb-widget-content').show();
+			$widget.find( '.tb-widget-content' ).show();
 
 			// Make sure code editor is setup
-			if ( $widget.hasClass('postbox-custom-styles') ) {
+			if ( $widget.hasClass( 'postbox-custom-styles' ) ) {
 
-				var $editor = $widget.find('textarea').data('CodeMirrorInstance');
-
-				if ( $editor ) {
-					$editor.refresh();
-				}
+				$widget.themeblvd( 'options', 'code-editor' );
 
 			}
 
@@ -479,7 +475,7 @@ jQuery( document ).ready( function( $ ) {
 
 	// Cancel any unsaved changes warning, if saving changes.
 	$( '#post' ).on( 'submit', function() {
-		window.onbeforeunload = false;
+		window.onbeforeunload = null;
 	} );
 
 	// Show or hide the Builder, depending on if the
@@ -832,8 +828,32 @@ jQuery( document ).ready( function( $ ) {
 	// Update template (ajax)
 	$edit_template.find('.ajax-save-template').on('click', function(){
 
-		window.onbeforeunload = false;
+		// Reset unsaved changes nag.
+		window.onbeforeunload = null;
 
+		// Save any codemirror instances to the form.
+		if ( 'undefined' !== typeof window.themeblvd ) {
+
+			if ( 'undefined' !== typeof window.themeblvd.options ) {
+
+				var optionsAdmin = window.themeblvd.options,
+					editorID     = null,
+					editor       = null;
+
+				if ( optionsAdmin.codeEditors ) {
+
+					for ( editorID in optionsAdmin.codeEditors ) {
+
+						editor = optionsAdmin.codeEditors[ editorID ].codemirror;
+
+						editor.save();
+
+					}
+				}
+			}
+		}
+
+		// Submit the form data and save.
 		var $form = $(this).closest('form'),
 			$load = $edit_template.find('#publishing-action .ajax-loading'),
 			nonce = $form.find('input[name="tb_nonce"]').val(),
@@ -892,6 +912,26 @@ jQuery( document ).ready( function( $ ) {
 
 				$overlay.fadeIn(100);
 
+				// Save any codemirror instances to the form.
+				var editorID = 'tb-custom-styles-textarea',
+					editor   = null;
+
+				if ( 'undefined' !== typeof window.themeblvd ) {
+
+					if ( 'undefined' !== typeof window.themeblvd.options ) {
+
+						var optionsAdmin = window.themeblvd.options;
+
+						if ( 'undefined' !== typeof optionsAdmin.codeEditors[ editorID ] ) {
+
+							editor = optionsAdmin.codeEditors[ editorID ].codemirror;
+
+							editor.save();
+
+						}
+					}
+				}
+
 				var data = {
 					action: 'themeblvd_apply_template',
 					security: $edit_template.find('input[name="tb_nonce"]').val(),
@@ -899,11 +939,12 @@ jQuery( document ).ready( function( $ ) {
 					info: info
 				};
 
-				$.post(ajaxurl, data, function(r) {
+				$.post(ajaxurl, data, function(response) {
 
-					$edit_template.find('#tb-edit-layout .ajax-mitt').html(r);
+					$edit_template.find('#tb-edit-layout .ajax-mitt').html(response);
 					builder_blvd.edit( $edit_template.find('#tb-edit-layout') );
 
+					// Handle the custom styles.
 					data = {
 						action: 'themeblvd_get_meta',
 						security: $edit_template.find('input[name="tb_nonce"]').val(),
@@ -911,17 +952,12 @@ jQuery( document ).ready( function( $ ) {
 						post_id: $edit_template.find('input[name="template_id"]').val()
 					};
 
-					$.post(ajaxurl, data, function(r) {
+					$.post(ajaxurl, data, function(response) {
 
-						var $textarea = $edit_template.find('#custom-styles textarea');
-
-						$textarea.val(r);
-
-						if ( $textarea.data('CodeMirrorInstance') ) {
-							$textarea.data('CodeMirrorInstance').setValue(r);
+						if ( editor ) {
+							editor.setValue( response );
 						}
 
-						// Finalize all.
 						$overlay.fadeOut(200);
 
 					});

@@ -249,6 +249,18 @@ class Theme_Blvd_Layout_Builder {
 		if ( function_exists( 'wp_enqueue_code_editor' ) && version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '>=' ) ) {
 
 			$settings = wp_enqueue_code_editor( array(
+				'type' => 'text/css',
+			));
+
+			wp_add_inline_script(
+		        'theme-blvd-layout-builder',
+		        sprintf(
+		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "css", %s ); } );',
+					wp_json_encode( $settings )
+		        )
+			);
+
+			$settings = wp_enqueue_code_editor( array(
 				'type' => 'text/html',
 			));
 
@@ -850,7 +862,8 @@ class Theme_Blvd_Layout_Builder {
 											'id' 		=> 'custom_styles',
 											'desc'		=> null,
 											'type' 		=> 'code',
-											'lang'		=> 'css'
+											'lang'		=> 'css',
+											'editor_id' => 'tb-custom-styles-textarea', // HTML ID to match custom styles input on Edit Page screen.
 										)
 									);
 
@@ -2524,7 +2537,7 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param $post_id string ID of template, or ID of post with layout
+	 * @param string $post_id ID of template, or ID of post with layout
 	 * @param string $section_id ID of section this element is in
 	 * @param string $element_type type of element
 	 * @param string $element_id ID for individual slide
@@ -2548,7 +2561,19 @@ class Theme_Blvd_Layout_Builder {
 		$form = array();
 
 		if ( ! empty( $elements[$element_type]['options'] ) ) {
+
+			// Give unique HTML IDs to any code editor options.
+			foreach ( $elements[ $element_type ]['options'] as $option_id => $option ) {
+
+				if ( ! empty( $option['type'] ) && 'code' === $option['type'] && empty( $option['editor_id'] ) ) {
+
+					$elements[ $element_type ]['options'][ $option_id ]['editor_id'] = uniqid( 'tb-code-editor-' );
+
+				}
+			}
+
 			$form = themeblvd_option_fields( $field_name, $elements[$element_type]['options'], $element_settings, false );
+
 		}
 
 		if ( ! empty( $form[0] ) ) {

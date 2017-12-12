@@ -574,6 +574,7 @@
 }
 #builder_blvd .postbox-custom-styles {
 	margin-left: -140px;
+	z-index: 1;
 }
 #builder_blvd .postbox-custom-styles.closed {
 	margin-left: 0;
