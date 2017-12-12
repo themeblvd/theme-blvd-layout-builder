@@ -775,18 +775,24 @@
 	margin: 0 10px 0 0;
 }
 #tb-editor-builder #tb-save-new-template,
-#tb-editor-builder #tb-custom-styles {
+#tb-editor-builder #tb-custom-styles-link {
 	float: right;
 	margin: 0 0 0 10px;
 }
 .wp-admin.rtl #tb-editor-builder #tb-save-new-template,
-.wp-admin.rtl #tb-editor-builder #tb-custom-styles {
+.wp-admin.rtl #tb-editor-builder #tb-custom-styles-link {
 	float: left;
 	margin: 0 10px 0 0;
 }
 #tb-editor-builder .meta-box-nav .ajax-overlay {
 	background: #f5f5f5;
 	z-index: 6;
+}
+#tb-editor-builder .meta-box-nav .modal-content {
+	display: none;
+}
+#tb-custom-styles_build .themeblvd-modal {
+	max-height: 514px;
 }
 
 /* Manage Elements */
@@ -1288,6 +1294,9 @@
 }
 .themeblvd-modal #optionsframework .jquery-ui-slider {
 	margin: 10px 12px;
+}
+.themeblvd-modal-on .CodeMirror-lint-tooltip {
+	z-index: 60000;
 }
 
 /* Fix for fancy selects from WP admin styling */

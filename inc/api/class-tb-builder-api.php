@@ -2257,9 +2257,9 @@ class Theme_Blvd_Builder_API {
 		$this->core_elements['html']['options'] = array(
 			'html' => array(
 				'id' 		=> 'html',
-				'type'		=> 'code', // changed to "textarea" type when used in Columns element, from edit_block() of builder
+				'desc'      => __( 'Enter your HTML code in the editor above.', 'theme-blvd-layout-builder' ),
+				'type'		=> 'code',
 				'lang'		=> 'html',
-				'class'		=> 'block-hide tight' // "tight" CSS class will remove margin from bottom of option so it looks nicer alone w/ no description or following options
 		    )
 		);
 

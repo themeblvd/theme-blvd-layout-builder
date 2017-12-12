@@ -672,7 +672,15 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	// Custom CSS
-	$wrap.find('.meta-box-nav').themeblvd('options', 'code-editor');
+	$( '#tb-custom-styles-link' ).themeblvd( 'modal', null, {
+		button: l10n.apply,
+		form: true,
+		padding: false,
+		size: 'medium',
+		onSave: function( modal ) {
+			builder_blvd.save_code_editors();
+		}
+	} );
 
 	// Clear Layout
 	$wrap.find('#tb-clear-layout').on('click', function(){

@@ -1103,8 +1103,8 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 2.0.0
 	 *
-	 * @param $post_id string ID of template, or ID of post with layout
-	 * @param $data array All data passed from form to be saved
+	 * @param string $post_id ID of template, or ID of post with layout
+	 * @param array $data All data passed from form to be saved
 	 */
 	public function save_layout( $post_id, $data ) {
 
@@ -2181,12 +2181,14 @@ class Theme_Blvd_Layout_Builder {
 						</a>
 
 						<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-							<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
+							<a href="#" id="tb-custom-styles-link" class="button-secondary" data-target="tb-custom-styles" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>">
 								<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
 							</a>
 						<?php endif; ?>
 
-						<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
+						<div id="tb-custom-styles" class="modal-content section-code">
+							<textarea id="tb-custom-styles-textarea" data-code-lang="css" name="_tb_builder_styles"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
+						</div>
 
 					</div><!-- .meta-box-nav (end) -->
 
@@ -2854,27 +2856,31 @@ class Theme_Blvd_Layout_Builder {
 		// Options form
 		$block_form = array();
 
-		if ( $block_type == 'html' ) {
-			$blocks[$block_type]['options']['html']['type'] = 'textarea';
-		}
-
 		if ( ! empty( $blocks[$block_type]['options'] ) ) {
+
+			// Give unique HTML IDs to any code editor options.
+			foreach ( $blocks[ $block_type ]['options'] as $option_id => $option ) {
+
+				if ( ! empty( $option['type'] ) && 'code' === $option['type'] && empty( $option['editor_id'] ) ) {
+
+					$blocks[ $block_type ]['options'][ $option_id ]['editor_id'] = uniqid( 'tb-code-editor-' );
+
+				}
+			}
+
 			$block_form = themeblvd_option_fields( $field_name.'[options]', $blocks[$block_type]['options'], $block_settings, false );
+
 		}
 
 		if ( ! empty( $block_form[0] ) ) {
 			$block_form[0] = str_replace('id="content"', 'id="option-content"', $block_form[0]); // Having anything with ID "content" will screw up the WP editor
 		}
 
-		// Whether to show options icon link
+		// Whether to show options icon link.
 		$options = false;
 
-		if ( count( $blocks[$block_type]['options'] ) >= 2 ) {
+		if ( count( $blocks[$block_type]['options'] ) >= 1 ) {
 			$options = true;
-		} else if ( count( $blocks[$block_type]['options'] ) == 1 ) {
-			if ( ! isset( $blocks[$block_type]['options']['content'] ) && ! isset( $blocks[$block_type]['options']['html'] ) ) {
-				$options = true;
-			}
 		}
 		?>
 		<div id="<?php echo esc_attr($block_id); ?>" class="widget block block-widget" data-element-id="<?php echo esc_attr($element_id); ?>" data-field-name="<?php echo esc_attr( $field_name.'[options]' ); ?>">
@@ -2900,12 +2906,6 @@ class Theme_Blvd_Layout_Builder {
 					<?php if ( $options ) : ?>
 						<a href="#" class="tb-block-options-link tb-tooltip-link" data-target="<?php echo esc_attr($block_id); ?>_options_form" data-tooltip-text="<?php esc_attr_e('Edit Options', 'theme-blvd-layout-builder'); ?>" data-title="<?php echo esc_attr( $blocks[$block_type]['info']['name'] ); ?>">
 							<i class="tb-icon-cog"></i>
-						</a>
-					<?php endif; ?>
-
-					<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
-						<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Edit Code', 'themeblvd'); ?>" data-title="<?php esc_attr_e('Edit Code', 'theme-blvd-layout-builder'); ?>" data-target="<?php echo esc_attr($block_id); ?>">
-							<i class="tb-icon-code"></i>
 						</a>
 					<?php endif; ?>
 
