@@ -2289,7 +2289,7 @@ class Theme_Blvd_Builder_API {
 			'icon' => array(
 				'id' 		=> 'icon',
 				'name'		=> __( 'Icon', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'This can be any FontAwesome vector icon ID.', 'theme-blvd-layout-builder' ),
+				'desc'		=> sprintf( __( 'Enter a FontAwesome 5 icon name like %s or the full CSS class instance like %s.', 'theme-blvd-layout-builder' ), '<code>bolt</code>', '<code>fas fa-bolt</code>' ),
 				'type'		=> 'text',
 				'icon'		=> 'vector'
 			),
@@ -5904,7 +5904,7 @@ class Theme_Blvd_Builder_API {
 			'button_icon_before' => array(
 				'id' 		=> 'button_icon_before',
 				'name'		=> __( 'Icon Before Button Text (optional)', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Icon before text of button. This can be any FontAwesome vector icon ID.', 'theme-blvd-layout-builder' ),
+				'desc'		=> sprintf( __( 'Icon before text of button. Enter a FontAwesome 5 icon name like %s or the full CSS class instance like %s.', 'theme-blvd-layout-builder' ), '<code>bolt</code>', '<code>fas fa-bolt</code>' ),
 				'type'		=> 'text',
 				'icon'		=> 'vector',
 				'class'		=> 'hide receiver'
@@ -5912,7 +5912,7 @@ class Theme_Blvd_Builder_API {
 			'button_icon_after' => array(
 				'id' 		=> 'button_icon_after',
 				'name'		=> __( 'Icon After Button Text (optional)', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Icon after text of button. This can be any FontAwesome vector icon ID.', 'theme-blvd-layout-builder' ),
+				'desc'		=> sprintf( __( 'Icon after text of button. Enter a FontAwesome 5 icon name like %s or the full CSS class instance like %s.', 'theme-blvd-layout-builder' ), '<code>bolt</code>', '<code>fas fa-bolt</code>' ),
 				'type'		=> 'text',
 				'icon'		=> 'vector',
 				'class'		=> 'hide receiver'

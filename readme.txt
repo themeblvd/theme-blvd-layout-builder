@@ -63,6 +63,7 @@ This plugin works with the following themes only.
 
 * New: Added support for inline rich-text editing (for framework 2.7+ themes).
 * New: Added "Shade background with transparent color" option when configuring display options for individual columns of the Columns element (for framework 2.7+ themes).
+* New: Added search functionality to icon browser in layout builder (for framework 2.7+ themes).
 * Improvement: A default browser unsaved changes warning is triggered when changes have been made to a custom layout, and the user navigates away from the page; the previous custom nag at the top of the screen was removed.
 * Improvement: HTML element now uses WordPress's implementation of codeMirror editor, introduced in WordPress 4.9.
 * Fixed: Minor UX fixes to accommodate Theme Blvd framework 2.7 (current cycle) and 2.4.8 (deprecated cycle) updates.

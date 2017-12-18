@@ -222,6 +222,21 @@ class Theme_Blvd_Layout_Builder {
 		// Include theme framework admin scripts.
 		if ( function_exists( 'themeblvd_admin_assets' ) ) { // Framework 2.7+.
 
+			$file = themeblvd_get_icon_js_file();
+
+			wp_enqueue_script(
+				$file['handle'],
+				esc_url( $file['url'] ),
+				array(),
+				esc_attr( $file['version'] )
+			);
+
+			wp_localize_script(
+				$file['handle'],
+				'themeblvdIconSearchData',
+				themeblvd_get_icon_search_data()
+			);
+
 			themeblvd_admin_assets( 'scripts' );
 
 		} else {
