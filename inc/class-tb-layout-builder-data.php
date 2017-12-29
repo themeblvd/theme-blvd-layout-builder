@@ -180,25 +180,27 @@ class Theme_Blvd_Layout_Builder_Data {
 	 */
 	public function verify_elements() {
 
-		/**
-		 * In v2.0 of the Builder, elements are now saved to meta key
-		 * "_tb_builder_elements" and not "elements". Also, create section data.
+		/*
+		 * In v2.0 of the Builder, elements are now saved to
+		 * meta key "_tb_builder_elements" and not "elements".
 		 */
 		$this->transfer_element_meta();
 
-		/**
-		 * Add section data
+		/*
+		 * In v2.0 of builder and v2.5 of framework, section
+		 * data now exists.
 		 */
 		$this->add_section_data();
 
-		/**
-		 * In v2.0 of the Builder, we added display options
-		 * to elements to control the background of each element.
+		/*
+		 * In v2.0 of the builder and 2.5 of framework, display
+		 * options to elements to control the background of each
+		 * element.
 		 */
 		$this->display_options();
 
-		/**
-		 * Update element options that changed in plugin 2.0
+		/*
+		 * Update element options that changed in builder 2.0
 		 * paired with theme 2.5.
 		 *
 		 * (1) Columns
@@ -211,7 +213,7 @@ class Theme_Blvd_Layout_Builder_Data {
 		 */
 		$this->update_options();
 
-		/**
+		/*
 		 * Element conversions for when plugin 2.0 is
 		 * paired with theme 2.5. The following elements
 		 * being converted no longer exist.
@@ -223,6 +225,15 @@ class Theme_Blvd_Layout_Builder_Data {
 		 * (5) Paginated List Slider => Post Slider
 		 */
 		$this->convert_elements();
+
+		/**
+		 * Convert full width sliders to standard sliders
+		 * with popout enabled.
+		 *
+		 * This is for themes using framework 2.5+, that
+		 * are updating to framework 2.7+.
+		 */
+		$this->remove_popout_sliders();
 
 		/**
 		 * Extend
@@ -899,21 +910,28 @@ class Theme_Blvd_Layout_Builder_Data {
 	 */
 	public function convert_elements() {
 
-		// If the theme does not contain framework version 2.5+,
-		// altering the data will mess things up.
+		/*
+		 * If the theme does not contain framework version 2.5+,
+		 * altering the data will mess things up.
+		 */
 		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
 			return;
 		}
 
-		// If layout is saved after 2.0 of the plugin and v2.5
-		// of the theme framework, we're good to go.
+		/*
+		 * If layout is saved after 2.0 of the plugin and v2.5
+		 * of the theme framework, we're good to go.
+		 */
 		if ( version_compare( $this->saved, '2.0.0', '>=' ) && version_compare( $this->theme_saved, '2.5.0', '>=' ) ) {
 			return;
 		}
 
 		$new = array();
 
-		if ( $sections = get_post_meta( $this->id, '_tb_builder_elements', true ) ) {
+		$sections = get_post_meta( $this->id, '_tb_builder_elements', true );
+
+		if ( $sections ) {
+
 			foreach ( $sections as $section_id => $elements ) {
 
 				$new[$section_id] = array();
@@ -1087,10 +1105,114 @@ class Theme_Blvd_Layout_Builder_Data {
 			}
 		}
 
-		// Update elements
+		// Update elements.
 		update_post_meta( $this->id, '_tb_builder_elements', $new );
 
 		// Allow layout to be finalized at the end of all checks.
 		$this->ran = true;
+
+	}
+
+	/**
+	 * Convert full width sliders to standard sliders
+	 * with popout enabled.
+	 *
+	 * This is for themes using framework 2.5+, that
+	 * are updating to framework 2.7+.
+	 *
+	 * @since 2.2.0
+	 */
+	public function remove_popout_sliders() {
+
+		/*
+		 * If the theme does not contain framework version
+		 * 2.5+, this doesn't apply.
+		 */
+		if ( version_compare( $this->theme_version, '2.5.0', '<' ) ) {
+			return;
+		}
+
+		/*
+		 * If layout is saved after 2.2 of the plugin and v2.7
+		 * of the theme framework, we're good to go.
+		 */
+		if ( version_compare( $this->saved, '2.2.0', '>=' ) && version_compare( $this->theme_saved, '2.7.0', '>=' ) ) {
+			return;
+		}
+
+		$new = array();
+
+		$sections = get_post_meta( $this->id, '_tb_builder_elements', true );
+
+		if ( $sections ) {
+
+			foreach ( $sections as $section_id => $elements ) {
+
+				$new[ $section_id ] = array();
+
+				foreach ( $elements as $element_id => $element ) {
+
+					/*
+					 * Convert Simple Slider (Full Width) to
+					 * Simple Slider.
+					 *
+					 * And convert Post Slider (Full Width) to
+					 * Post Slider.
+					 */
+					if ( 'simple_slider_popout' === $element['type'] || 'post_slider_popout' === $element['type'] ) {
+
+						if ( 'post_slider_popout' === $element['type'] ) {
+
+							$element['type'] = 'post_slider';
+
+						} else {
+
+							$element['type'] = 'simple_slider';
+
+						}
+
+						if ( isset( $element['options']['cover'] ) ) {
+
+							unset( $element['options']['cover'] );
+
+						}
+
+						if ( isset( $element['options']['position'] ) ) {
+
+							unset( $element['options']['position'] );
+
+						}
+
+						if ( isset( $element['options']['height_desktop'] ) ) {
+
+							unset( $element['options']['height_desktop'] );
+
+						}
+
+						if ( isset( $element['options']['height_tablet'] ) ) {
+
+							unset( $element['options']['height_tablet'] );
+
+						}
+
+						if ( isset( $element['options']['height_mobile'] ) ) {
+
+							unset( $element['options']['height_mobile'] );
+
+						}
+					}
+
+					$new[ $section_id ][ $element_id ] = $element;
+
+				}
+			}
+		}
+
+		// Update elements.
+		update_post_meta( $this->id, '_tb_builder_elements', $new );
+
+		// Allow layout to be finalized at the end of all checks.
+		$this->ran = true;
+
 	}
 }

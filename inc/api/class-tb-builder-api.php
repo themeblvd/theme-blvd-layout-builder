@@ -216,12 +216,10 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'partners';
 			$this->registered_elements[] = 'post_showcase';
 			$this->registered_elements[] = 'post_slider';
-			$this->registered_elements[] = 'post_slider_popout';
 			$this->registered_elements[] = 'pricing_table';
 			$this->registered_elements[] = 'progress_bars';
 			$this->registered_elements[] = 'quote';
 			$this->registered_elements[] = 'simple_slider';
-			$this->registered_elements[] = 'simple_slider_popout';
 			$this->registered_elements[] = 'team_member';
 			$this->registered_elements[] = 'testimonial';
 			$this->registered_elements[] = 'testimonial_slider';
@@ -1204,7 +1202,7 @@ class Theme_Blvd_Builder_API {
 
 		// Support
 		$this->core_elements['featured_image']['support'] = array(
-			'popout'		=> false,
+			'popout'		=> true,
 			'padding'		=> true
 		);
 
@@ -4752,7 +4750,7 @@ class Theme_Blvd_Builder_API {
 
 		// Support
 		$this->core_elements['post_slider']['support'] = array(
-			'popout'		=> false,
+			'popout'		=> true,
 			'padding'		=> true
 		);
 
@@ -5018,10 +5016,6 @@ class Theme_Blvd_Builder_API {
 		    )
 		);
 
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
-			unset( $this->core_elements['post_slider']['options']['shade'] );
-		}
-
 		// For themes with framework prior to 2.5, we use a different set of options
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 
@@ -5258,351 +5252,6 @@ class Theme_Blvd_Builder_API {
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && ! defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
 				unset( $this->core_elements['post_slider'] );
 			}
-		}
-
-		/*--------------------------------------------*/
-		/* Post Slider (Full Width)
-		/*--------------------------------------------*/
-
-		$this->core_elements['post_slider_popout'] = array();
-
-		// Information
-		$this->core_elements['post_slider_popout']['info'] = array(
-			'name'		=> __( 'Post Slider (Full Width)', 'theme-blvd-layout-builder' ),
-			'id'		=> 'post_slider_popout',
-			'hook'		=> 'themeblvd_post_slider_popout',
-			'shortcode'	=> '[post_slider]',
-			'desc'		=> __( 'Bootstrap carousel slider generated from group of posts', 'theme-blvd-layout-builder' )
-		);
-
-		// Support
-		$this->core_elements['post_slider_popout']['support'] = array(
-			'popout'		=> 'force',
-			'padding'		=> true
-		);
-
-		// Options
-		$this->core_elements['post_slider_popout']['options'] = array(
-			'style' => array(
-				'name' 		=> __( 'Display Style', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Select one of the preset style for how the post slider displays. When referring to "included elements" it\'s referring to post titles, meta, excerpts, and buttons configured in the following options.', 'theme-blvd-layout-builder' ),
-				'id' 		=> 'style',
-				'std' 		=> 'style-1',
-				'type' 		=> 'radio',
-				'options'	=> apply_filters('themeblvd_post_slider_styles', array(
-					'style-1'	=> __('<strong>Style #1:</strong> Display included elements open and center on each slide.', 'theme-blvd-layout-builder'),
-					'style-2'	=> __('<strong>Style #2:</strong> Display included elements in a shaded content area positioned to the side of each slide.', 'theme-blvd-layout-builder'),
-					'style-3'	=> __('<strong>Style #3:</strong> An open, more magazine-style post slider.', 'theme-blvd-layout-builder')
-				))
-			),
-			'subgroup_start_1' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide-toggle'
-		    ),
-			'source' => array(
-				'id' 		=> 'source',
-				'name'		=> __( 'Where to pull posts from?', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select how you\'d like to pull posts.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'select',
-				'std'		=> 'category',
-				'options'	=> array(
-					'category' 	=> __( 'Category', 'theme-blvd-layout-builder' ),
-			        'tag' 		=> __( 'Tag', 'theme-blvd-layout-builder' ),
-			        'query' 	=> __( 'Custom Query', 'theme-blvd-layout-builder' )
-				),
-				'class' 	=> 'trigger'
-			),
-			'categories' => array(
-				'id' 		=> 'categories',
-				'name'		=> __( 'Categories', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select the categories you\'d like to pull posts from. Note that selecting "All Categories" will override any other selections.', 'theme-blvd-layout-builder' ),
-				'std'		=> array( 'all' => 1 ),
-				'type'		=> 'multicheck',
-				'options'	=> $categories_multicheck,
-				'class' 	=> 'hide receiver receiver-category select-categories'
-			),
-			'tag' => array(
-				'id' 		=> 'tag',
-				'name'		=> __( 'Tag', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter a single tag, or a comma separated list of tags, to pull posts from.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
-				'class' 	=> 'hide receiver receiver-tag'
-			),
-			'posts_per_page' => array(
-				'id' 		=> 'posts_per_page',
-				'name'		=> __( 'Number of Posts', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter in the maximum number of posts you\'d like to show. If your post list is paginated, this will be the number of posts per page, and if not, it will be the total number of posts. You can enter <em>-1</em> if you don\'t want there to be a limit.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
-				'std'		=> '6',
-				'class' 	=> 'hide receiver receiver-category receiver-tag'
-			),
-			'orderby' => array(
-				'id' 		=> 'orderby',
-				'name'		=> __( 'Order By', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select what attribute you\'d like the posts ordered by.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'select',
-				'std'		=> 'date',
-				'options'	=> array(
-			        'date' 			=> __( 'Publish Date', 'theme-blvd-layout-builder' ),
-			        'title' 		=> __( 'Post Title', 'theme-blvd-layout-builder' ),
-			        'comment_count' => __( 'Number of Comments', 'theme-blvd-layout-builder' ),
-			        'rand' 			=> __( 'Random', 'theme-blvd-layout-builder' )
-				),
-				'class' 	=> 'hide receiver receiver-category receiver-tag'
-			),
-			'order' => array(
-				'id' 		=> 'order',
-				'name'		=> __( 'Order', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select the order in which you\'d like the posts displayed based on the previous orderby parameter.<br><br><em>Note that a traditional WordPress setup would have posts ordered by <strong>Publish Date</strong> and be ordered <strong>Descending</strong>.</em>', 'theme-blvd-layout-builder' ),
-				'type'		=> 'select',
-				'std'		=> 'DESC',
-				'options'	=> array(
-			        'DESC' 	=> __( 'Descending (highest to lowest)', 'theme-blvd-layout-builder' ),
-			        'ASC' 	=> __( 'Ascending (lowest to highest)', 'theme-blvd-layout-builder' )
-				),
-				'class' 	=> 'hide receiver receiver-category receiver-tag'
-			),
-			'offset' => array(
-				'id' 		=> 'offset',
-				'name'		=> __( 'Offset', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter the number of posts you\'d like to offset the query by. In most cases, you will just leave this at <em>0</em>.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
-				'std'		=> '0',
-				'class' 	=> 'hide receiver receiver-category receiver-tag'
-			),
-			'query' => array(
-				'id' 		=> 'query',
-				'name'		=> __( 'Custom Query String', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter in a <a href="http://codex.wordpress.org/Class_Reference/WP_Query#Parameters">custom query string</a>. This will override any other query-related options.<br><br>Ex: tag=cooking<br>Ex: post_type=XYZ&numberposts=10', 'theme-blvd-layout-builder' ),
-				'type'		=> 'text',
-				'std'		=> '',
-				'class' 	=> 'hide receiver receiver-query'
-			),
-			'subgroup_end_1' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-		    'crop' => array(
-				'name' 		=> __( 'Image Crop Size', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'theme-blvd-layout-builder' ),
-				'id' 		=> 'crop',
-				'std' 		=> 'full',
-				'type' 		=> 'select',
-				'select'	=> 'crop'
-			),
-			'subgroup_start_2' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'show-hide-toggle'
-		    ),
-			'slide_link' => array(
-				'name' 		=> __( 'Link Handling', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Select how the user ineracts with each slide and where they\'re directed to.', 'theme-blvd-layout-builder' ),
-				'id' 		=> 'slide_link',
-				'std' 		=> 'button',
-				'type' 		=> 'select',
-				'options'	=> array(
-					'none'			=> __('No linking', 'theme-blvd-layout-builder'),
-					'image_post'	=> __('Images link to posts', 'theme-blvd-layout-builder'),
-					'image_link'	=> __('Images link to each post\'s featured image link setting', 'theme-blvd-layout-builder'),
-					'button'		=> __('Slides have buttons linking to posts', 'theme-blvd-layout-builder'),
-				),
-				'class' => 'trigger'
-			),
-			'subgroup_start_3' => array(
-		    	'type'		=> 'subgroup_start',
-		    	'class'		=> 'hide receiver receiver-button show-hide-toggle'
-		    ),
-			'button_color' => array(
-				'id' 		=> 'button_color',
-				'name'		=> __( 'Button Color', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select what color you\'d like to use for this button.', 'theme-blvd-layout-builder' ),
-				'std'		=> 'custom',
-				'type'		=> 'select',
-				'class'		=> 'trigger',
-				'options'	=> themeblvd_colors()
-			),
-			'button_custom' => array(
-				'id' 		=> 'button_custom',
-				'name'		=> __( 'Custom Button Color', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Configure a custom style for the button.', 'theme-blvd-layout-builder' ),
-				'std'		=> array(
-					'bg' 				=> '',
-					'bg_hover'			=> '#ffffff',
-					'border' 			=> '#ffffff',
-					'text'				=> '#ffffff',
-					'text_hover'		=> '#333333',
-					'include_bg'		=> 0,
-					'include_border'	=> 1
-				),
-				'type'		=> 'button',
-				'class'		=> 'hide receiver receiver-custom'
-			),
-			'subgroup_end_3' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-			'button_text' => array(
-				'id' 		=> 'button_text',
-				'name'		=> __( 'Button Text', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Enter the text for the button.', 'theme-blvd-layout-builder' ),
-				'std'		=> 'View Post',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver receiver-button'
-			),
-			'button_size' => array(
-				'id' 		=> 'button_size',
-				'name'		=> __( 'Button Size', 'theme-blvd-layout-builder' ),
-				'desc'		=> __( 'Select the size you\'d like used for this button.', 'theme-blvd-layout-builder' ),
-				'type'		=> 'select',
-				'std'		=> 'default',
-				'options'	=> array(
-					'mini' 		=> __( 'Mini', 'theme-blvd-layout-builder' ),
-					'small' 	=> __( 'Small', 'theme-blvd-layout-builder' ),
-					'default' 	=> __( 'Normal', 'theme-blvd-layout-builder' ),
-					'large' 	=> __( 'Large', 'theme-blvd-layout-builder' ),
-					'x-large' 	=> __( 'X-Large', 'theme-blvd-layout-builder' ),
-					'xx-large' 	=> __( 'XX-Large', 'theme-blvd-layout-builder' ),
-					'xxx-large' => __( 'XXX-Large', 'theme-blvd-layout-builder' )
-				),
-				'class'		=> 'hide receiver receiver-button'
-			),
-		    'interval' => array(
-				'id'		=> 'interval',
-				'name' 		=> __( 'Speed', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'theme-blvd-layout-builder' ),
-				'std'		=> '5',
-				'type'		=> 'text'
-		    ),
-			'interval' => array(
-				'id'		=> 'interval',
-				'name' 		=> __( 'Speed', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'theme-blvd-layout-builder' ),
-				'std'		=> '5',
-				'type'		=> 'text'
-		    ),
-			'pause' => array(
-				'id'		=> 'pause',
-				'desc' 		=> __( 'Pause slider on hover.', 'theme-blvd-layout-builder' ),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'wrap' => array(
-				'id'		=> 'wrap',
-				'desc'		=> __( 'Cycle continuously without hard stops.', 'theme-blvd-layout-builder' ),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_standard' => array(
-				'id'		=> 'nav_standard',
-				'desc'		=> __( 'Show standard navigation indicator dots.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_arrows' => array(
-				'id'		=> 'nav_arrows',
-				'desc'		=> __( 'Show standard navigation arrows.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_thumbs' => array(
-				'id'		=> 'nav_thumbs',
-				'desc'		=> __( 'Show thumbnail navigation.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'dark_text'	=> array(
-				'id'		=> 'dark_text',
-				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'shade'	=> array(
-				'id'		=> 'shade',
-				'desc'		=> __( 'Shade entire images for overall text readability.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'link' => array(
-				'id'		=> 'thumb_link',
-				'desc'		=> __( 'Apply hover effect to linked images.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox',
-				'class'		=> 'hide receiver receiver-image_post receiver-image_link'
-			),
-			'title'	=> array(
-				'id'		=> 'title',
-				'desc'		=> __( 'Display title for each post.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'meta'	=> array(
-				'id'		=> 'meta',
-				'desc'		=> __( 'Display meta info for each post.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'excerpts'	=> array(
-				'id'		=> 'excerpts',
-				'desc'		=> __( 'Display excerpt for each post.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'subgroup_end_2' => array(
-		    	'type'		=> 'subgroup_end'
-		    ),
-		    'subgroup_start_4' => array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
-			),
-			'cover'	=> array(
-				'id'		=> 'cover',
-				'desc'		=> __( 'Stretch images full-width of outer container. &mdash; <em>Note: When this is NOT checked, images display and scale down with their natural image dimension ratio. Also, if you\'re using a theme design that is not displayed in a stretch layout, this option, will not be as pronounced.</em>', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'position' => array(
-				'id'		=> 'position',
-				'name' 		=> __( 'Vertical Alignment', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'As the browser window changes, your slider images will be stretched, and thus will not always be fully visable. Here, you can select how you want the images aligned in the current slider area.', 'theme-blvd-layout-builder' ),
-				'std'		=> 'center center',
-				'type'		=> 'select',
-				'options'	=> array(
-					'center top' 	=> __('Align to the top', 'theme-blvd-layout-builder'),
-					'center center' => __('Align to the middle', 'theme-blvd-layout-builder'),
-					'center bottom' => __('Align to the bottom', 'theme-blvd-layout-builder'),
-				),
-				'class'		=> 'hide receiver'
-		    ),
-			'height_desktop' => array(
-				'id'		=> 'height_desktop',
-				'name' 		=> __( 'Desktop Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '400',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-		    'height_tablet' => array(
-				'id'		=> 'height_tablet',
-				'name' 		=> __( 'Tablet Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '300',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-		    'height_mobile' => array(
-				'id'		=> 'height_mobile',
-				'name' 		=> __( 'Mobile Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '200',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-			'subgroup_end_4' => array(
-				'type'		=> 'subgroup_end'
-			)
-		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
-			unset( $this->core_elements['post_slider_popout']['options']['shade'] );
 		}
 
 		/*--------------------------------------------*/
@@ -6118,7 +5767,7 @@ class Theme_Blvd_Builder_API {
 
 		// Support
 		$this->core_elements['simple_slider']['support'] = array(
-			'popout'		=> false,
+			'popout'		=> true,
 			'padding'		=> true
 		);
 
@@ -6253,218 +5902,6 @@ class Theme_Blvd_Builder_API {
 				'type'		=> 'subgroup_end'
 			)
 		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
-			unset( $this->core_elements['simple_slider']['options']['shade'] );
-		}
-
-		/*--------------------------------------------*/
-		/* Simple Slider (Full Width)
-		/*--------------------------------------------*/
-
-		$this->core_elements['simple_slider_popout'] = array();
-
-		// Information
-		$this->core_elements['simple_slider_popout']['info'] = array(
-			'name'		=> __( 'Simple Slider (Full Width)', 'theme-blvd-layout-builder' ),
-			'id'		=> 'simple_slider_popout',
-			'hook'		=> 'themeblvd_simple_slider_popout',
-			'shortcode'	=> false,
-			'desc'		=> __( 'Simple slider, constructed within the Layout Builder.', 'theme-blvd-layout-builder' )
-		);
-
-		// Support
-		$this->core_elements['simple_slider_popout']['support'] = array(
-			'popout'		=> 'force', // Will be checked, and not allow user to uncheck
-			'padding'		=> true
-		);
-
-		// Options
-		$this->core_elements['simple_slider_popout']['options'] = array(
-			'subgroup_start_1' => array(
-				'type'		=> 'subgroup_start'
-			),
-			'images' => array(
-				'id' 		=> 'images',
-				'name'		=> null,
-				'desc'		=> null,
-				'type'		=> 'slider'
-			),
-			'images_crop' => array(
-				'name' 		=> __( 'Image Crop Size', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Select the crop size to be used for the images. Remember that the slider will be scaled proportionally to fit within its container.', 'theme-blvd-layout-builder' ),
-				'id' 		=> 'images_crop',
-				'std' 		=> 'slider-x-large',
-				'type' 		=> 'select',
-				'select'	=> 'crop'
-				// 'class'		=> 'match-trigger' // Will send the value of this to hidden crop sizes with class "match" within each slide
-			),
-			'subgroup_end_1' => array(
-				'type'		=> 'subgroup_end',
-			),
-			'interval' => array(
-				'id'		=> 'interval',
-				'name' 		=> __( 'Speed', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Seconds in between slider transitions. You can use 0 for the slider to not auto rotate.', 'theme-blvd-layout-builder' ),
-				'std'		=> '5',
-				'type'		=> 'text'
-		    ),
-			'pause' => array(
-				'id'		=> 'pause',
-				'desc' 		=> __( 'Pause slider on hover.', 'theme-blvd-layout-builder' ),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'wrap' => array(
-				'id'		=> 'wrap',
-				'desc'		=> __( 'Cycle continuously without hard stops.', 'theme-blvd-layout-builder' ),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_standard' => array(
-				'id'		=> 'nav_standard',
-				'desc'		=> __( 'Show standard navigation indicator dots.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_arrows' => array(
-				'id'		=> 'nav_arrows',
-				'desc'		=> __( 'Show standard navigation arrows.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'nav_thumbs' => array(
-				'id'		=> 'nav_thumbs',
-				'desc'		=> __( 'Show thumbnail navigation.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'link' => array(
-				'id'		=> 'thumb_link',
-				'desc'		=> __( 'Apply hover effect to linked images.', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox'
-			),
-			'dark_text'	=> array(
-				'id'		=> 'dark_text',
-				'desc'		=> __( 'Use dark navigation elements and dark text for any titles and descriptions.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'shade'	=> array(
-				'id'		=> 'shade',
-				'desc'		=> __( 'Shade entire images for caption readability.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox'
-			),
-			'subgroup_start_2' => array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
-			),
-			'caption_bg'	=> array(
-				'id'		=> 'caption_bg',
-				'desc'		=> __( 'Apply background color to image captions.', 'theme-blvd-layout-builder'),
-				'std'		=> false,
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'caption_bg_color' => array(
-				'id'		=> 'caption_bg_color',
-				'name'		=> __( 'Caption Background Color', 'theme-blvd-layout-builder'),
-				'desc'		=> __( 'Select the background color to show behind the text of the captions of the slider.', 'theme-blvd-layout-builder'),
-				'std'		=> '#000000',
-				'type'		=> 'color',
-				'class'		=> 'hide receiver'
-			),
-			'caption_bg_opacity' => array(
-				'id'		=> 'caption_bg_opacity',
-				'name'		=> __( 'Caption Background Color Opacity', 'theme-blvd-layout-builder'),
-				'desc'		=> __( 'And for that background color you\'ve selected, set the opacity of how that shows through to the images of the slider.', 'theme-blvd-layout-builder'),
-				'std'		=> '0.5',
-				'type'		=> 'select',
-				'options'	=> array(
-					'0.05'	=> '5%',
-					'0.1'	=> '10%',
-					'0.15'	=> '15%',
-					'0.2'	=> '20%',
-					'0.25'	=> '25%',
-					'0.3'	=> '30%',
-					'0.35'	=> '35%',
-					'0.4'	=> '40%',
-					'0.45'	=> '45%',
-					'0.5'	=> '50%',
-					'0.55'	=> '55%',
-					'0.6'	=> '60%',
-					'0.65'	=> '65%',
-					'0.7'	=> '70%',
-					'0.75'	=> '75%',
-					'0.8'	=> '80%',
-					'0.85'	=> '85%',
-					'0.9'	=> '90%',
-					'0.95'	=> '95%',
-					'1'		=> '100%'
-				),
-				'class'		=> 'hide receiver'
-			),
-			'subgroup_end_2' => array(
-				'type'		=> 'subgroup_end'
-			),
-			'subgroup_start_3' => array(
-				'type'		=> 'subgroup_start',
-				'class'		=> 'show-hide'
-			),
-			'cover'	=> array(
-				'id'		=> 'cover',
-				'desc'		=> __( 'Stretch images full-width of outer container. &mdash; <em>Note: When this is NOT checked, images display and scale down with their natural image dimension ratio. Also, if you\'re using a theme design that is not displayed in a stretch layout, this option, will not be as pronounced.</em>', 'theme-blvd-layout-builder'),
-				'std'		=> true,
-				'type'		=> 'checkbox',
-				'class'		=> 'trigger'
-			),
-			'position' => array(
-				'id'		=> 'position',
-				'name' 		=> __( 'Vertical Alignment', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'As the browser window changes, your slider images will be stretched, and thus will not always be fully visable. Here, you can select how you want the images aligned in the current slider area.', 'theme-blvd-layout-builder' ),
-				'std'		=> 'center center',
-				'type'		=> 'select',
-				'options'	=> array(
-					'center top' 	=> __('Align to the top', 'theme-blvd-layout-builder'),
-					'center center' => __('Align to the middle', 'theme-blvd-layout-builder'),
-					'center bottom' => __('Align to the bottom', 'theme-blvd-layout-builder'),
-				),
-				'class'		=> 'hide receiver'
-		    ),
-			'height_desktop' => array(
-				'id'		=> 'height_desktop',
-				'name' 		=> __( 'Desktop Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the standard desktop viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '400',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-		    'height_tablet' => array(
-				'id'		=> 'height_tablet',
-				'name' 		=> __( 'Tablet Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the tablet viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '300',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-		    'height_mobile' => array(
-				'id'		=> 'height_mobile',
-				'name' 		=> __( 'Mobile Height', 'theme-blvd-layout-builder' ),
-				'desc' 		=> __( 'Slider height (in pixels) when displayed at the mobile viewport range.', 'theme-blvd-layout-builder' ),
-				'std'		=> '200',
-				'type'		=> 'text',
-				'class'		=> 'hide receiver'
-		    ),
-			'subgroup_end_3' => array(
-				'type'		=> 'subgroup_end'
-			)
-		);
-
-		if ( version_compare( TB_FRAMEWORK_VERSION, '2.6.0', '<' ) ) {
-			unset( $this->core_elements['simple_slider_popout']['options']['shade'] );
-		}
 
 		/*--------------------------------------------*/
 		/* Slider
@@ -7599,7 +7036,7 @@ class Theme_Blvd_Builder_API {
 
 		$blocks = $this->get_registered_elements();
 
-		$remove = apply_filters( 'themeblvd_remove_elem_for_blocks', array('columns', 'post_slider_popout', 'simple_slider_popout', 'jumbotron_slider') );
+		$remove = apply_filters( 'themeblvd_remove_elem_for_blocks', array( 'columns', 'jumbotron_slider' ) );
 
 		if ( $remove ) {
 			foreach ( $remove as $elem ) {
