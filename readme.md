@@ -35,7 +35,7 @@ This plugin works with the following themes only.
 
 ## Changelog
 
-#### 2.2.0 - XX/XX/XXX
+#### 2.2.0 - 01/16/2018
 
 ** For those using framework 2.5+ themes, this plugin update requires you to update your theme to the current available version containing at least framework 2.7.**
 
