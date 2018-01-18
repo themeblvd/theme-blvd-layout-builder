@@ -8,7 +8,7 @@ When using a Theme Blvd theme, this plugin gives you slick interface to build cu
 
 == Description ==
 
-**NOTE: This plugin requires Theme Blvd framework v2.2+**
+**NOTE: This plugin requires a supported theme with the Theme Blvd Framework.+**
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 

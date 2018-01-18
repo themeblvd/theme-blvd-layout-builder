@@ -5,6 +5,8 @@
 * Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
 * Stable Tag: 2.2.1
 
+**NOTE: This plugin requires a supported theme with the Theme Blvd Framework.+**
+
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 
 You can build these layouts directly into your WordPress pages through the standard Edit Page screen, or you can create templates that can be synced to multiple pages. Additionally, you can use [this plugin](http://wordpress.org/extend/plugins/theme-blvd-layouts-to-posts/) to extend the templates to standard posts and custom post types.
