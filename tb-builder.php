@@ -2,7 +2,7 @@
 /*
 Plugin Name: Theme Blvd Layout Builder
 Description: When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
-Version: 2.2.2
+Version: 2.0.0
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: GPL2
@@ -50,6 +50,15 @@ function themeblvd_builder_init() {
 	if ( $notices->do_stop() ) {
 		// Stop plugin from running
 		return;
+	}
+
+	// Add plugin upgrade notices.
+	if ( is_admin() ) {
+
+		include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder-upgrade-notice.php' );
+
+		$upgrade = Theme_Blvd_Layout_Builder_Upgrade_Notice::get_instance();
+
 	}
 
 	if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
@@ -133,7 +142,7 @@ function themeblvd_builder_init() {
 	}
 
 	// Admin Layout Builder
-	if ( is_admin() ){
+	if ( is_admin() ) {
 
 		// Check to make sure admin interface isn't set to be
 		// hidden and for the appropriate user capability

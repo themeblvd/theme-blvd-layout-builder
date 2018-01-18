@@ -35,7 +35,8 @@ This plugin works with the following themes only.
 
 ## Changelog
 
-#### 2.2.2 - 01/18/2018
+#### 2.2.2 - 01/19/2018
+* New: On the Plugins admin screen, before updating this plugin, there will now be a notification if your installed theme version is not currently compatible. This way, you can be prepared if updating this plugin will require you to update your Theme Blvd theme, as well.
 
 #### 2.2.1 - 01/18/2018
 * Fixed: "Notice: Undefined variable: tooltip" (for framework 2.4 themes).
@@ -237,3 +238,8 @@ This plugin works with the following themes only.
 
 #### 1.0.0 - 09/07/12
 * This is the first release.
+
+## Upgrade Notice
+
+#### 2.2.2
+If you're using the Jump Start, Gnar or Denali theme, you must update it to the latest version to be compatible with this layout builder update.
