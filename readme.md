@@ -3,7 +3,7 @@
 * Author URI: http://www.themeblvd.com
 * Contributors: themeblvd
 * Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-* Stable Tag: 2.2.0
+* Stable Tag: 2.2.1
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts with the framework's core elements.
 
@@ -17,13 +17,13 @@ Video: https://vimeo.com/70256816
 
 This plugin works with the following themes only.
 
-**Theme Blvd Framework 2.5+ Themes**
+**Theme Blvd Framework 2.7+ Themes**
 
 * [Jump Start](https://wpjumpstart.com)
 * [Denali](http://themeblvd.com/links/buy-denali)
 * [Gnar](http://themeblvd.com/links/buy-gnar)
 
-**Theme Blvd Framework 2.2-2.4 Themes**
+**Theme Blvd Framework 2.4 Themes**
 
 * [Akita](http://themeforest.net/item/akita-responsive-wordpress-theme/1530025?ref=themeblvd)
 * [Alyeska](http://themeforest.net/item/alyeska-responsive-wordpress-theme/164366?ref=themeblvd)
@@ -34,6 +34,8 @@ This plugin works with the following themes only.
 * [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
 ## Changelog
+
+#### 2.2.1 - 01/18/2018
 
 #### 2.2.0 - 01/16/2018
 
