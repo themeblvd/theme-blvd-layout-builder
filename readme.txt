@@ -59,6 +59,8 @@ This plugin works with the following themes only.
 
 = 2.2.1 - 01/18/2018 =
 
+* Fixed: "Notice: Undefined variable: tooltip" (for framework 2.4 themes).
+
 = 2.2.0 - 01/16/2018 =
 
 ** For those using framework 2.5+ themes, this plugin update requires you to update your theme to the current available version containing at least framework 2.7.**

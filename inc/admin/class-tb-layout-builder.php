@@ -2188,7 +2188,7 @@ class Theme_Blvd_Layout_Builder {
 						if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
 							$tooltip = esc_attr__('Select a layout to merge with this page\'s custom layout.', 'theme-blvd-layout-builder');
 						} else {
-							$tooltop = esc_attr__('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); // @deprecated
+							$tooltip = esc_attr__('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); // @deprecated
 						}
 						?>
 
