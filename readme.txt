@@ -266,4 +266,4 @@ This plugin works with the following themes only.
 == Upgrade Notice ==
 
 = 2.2.2 =
-Compatible Themes: Jump Start 2.2+, Denali 1.2+, Gnar 1.1+, Akita 2.1.17+, Alyeska 3.1.17+, The Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
+Compatible Themes: Jump Start 2.2+, Denali 1.2+, Gnar 1.1+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
