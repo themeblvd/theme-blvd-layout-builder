@@ -58,6 +58,7 @@ This plugin works with the following themes only.
 == Changelog ==
 
 = 2.2.3 - XX/XX/2018 =
+* Fixed: Make sure icon browser search data doesn't get printed in the source code more than once.
 
 = 2.2.2 - 01/19/2018 =
 * New: On the Plugins admin screen, before updating this plugin, there will now be a notification if your installed theme version is not currently compatible. This way, you can be prepared if updating this plugin will require you to update your Theme Blvd theme, as well.
@@ -267,5 +268,5 @@ This plugin works with the following themes only.
 
 == Upgrade Notice ==
 
-= 2.2.2 =
+= 2.2.3 =
 Compatible Themes: Jump Start 2.2+, Denali 1.2+, Gnar 1.1+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
