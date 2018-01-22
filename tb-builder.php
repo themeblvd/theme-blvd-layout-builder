@@ -117,7 +117,7 @@ function themeblvd_builder_init() {
 	// Template Footer Sync
 	if ( themeblvd_supports( 'display', 'footer_sync' ) ) {
 
-		$link = sprintf('<a href="%s">%s</a>', esc_url( add_query_arg( array('page' => 'themeblvd_builder'), admin_url('admin.php') ) ), __('Templates', 'theme-blvd-layout-builder'));
+		$link = sprintf( '<a href="%s" target="_blank">%s</a>', esc_url( add_query_arg( array( 'page' => 'themeblvd_builder' ), admin_url( 'admin.php' ) ) ), __( 'Templates', 'theme-blvd-layout-builder' ) );
 
 		$option = array( // This option won't actually get displayed, but registered for sanitization process
 			'name' 		=> null,
