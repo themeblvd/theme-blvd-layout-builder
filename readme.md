@@ -38,6 +38,7 @@ This plugin works with the following themes only.
 ## Changelog
 
 #### 2.2.4 - 01/25/2018
+* Fixed: Not being able to clear a synced template, from the Edit Page screen.
 
 #### 2.2.3 - 01/23/2018
 * Fixed: Visual editor options not saving, when used within the Columns element (for framework 2.7+ themes).

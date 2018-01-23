@@ -2112,6 +2112,10 @@ class Theme_Blvd_Layout_Builder {
 
 			update_post_meta( $post_id, '_tb_custom_layout', $template );
 
+		} else {
+
+			update_post_meta( $post_id, '_tb_custom_layout', false );
+
 		}
 
 		// Save layout to post
