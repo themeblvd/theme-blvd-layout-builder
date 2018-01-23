@@ -96,7 +96,8 @@ jQuery( document ).ready( function( $ ) {
 		        form: true,
 		        padding: false,
 		        size: 'medium',
-		        onLoad: builder_blvd.content_block_options_load
+		        onLoad: builder_blvd.content_block_options_load,
+				onSave: builder_blvd.content_block_options_save
 		    } );
 
 		},
@@ -370,7 +371,8 @@ jQuery( document ).ready( function( $ ) {
 				        form: true,
 				        padding: false,
 				        size: 'medium',
-				        onLoad: builder_blvd.content_block_options_load
+				        onLoad: builder_blvd.content_block_options_load,
+						onSave: builder_blvd.content_block_options_save
 				    } );
 
 					// Setup block display options, which open in a modal
@@ -463,6 +465,27 @@ jQuery( document ).ready( function( $ ) {
 				}
 			});
     	},
+
+		// Make sure any content editors save from block
+		// options modal.
+		content_block_options_save : function( self ) {
+
+			if ( 'undefined' != typeof tinymce ) {
+
+				self.$modalWindow.find( '.tb-editor-input' ).each( function() {
+
+					var editorID = $( this ).attr( 'id' ),
+						editor   = tinymce.get( editorID );
+
+					if ( editor ) {
+						content = editor.save();
+					}
+
+				} );
+
+			}
+
+		},
 
 		// Save all code editor data to textareas.
 		save_code_editors : function() {
@@ -1409,7 +1432,8 @@ jQuery( document ).ready( function( $ ) {
 			        form: true,
 			        padding: false,
 			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load
+			        onLoad: builder_blvd.content_block_options_load,
+					onSave: builder_blvd.content_block_options_save
 			    } );
 
 				// Setup element display options, which open in a modal
@@ -1480,7 +1504,8 @@ jQuery( document ).ready( function( $ ) {
                     form: true,
                     padding: false,
                     size: 'medium',
-                    onLoad: builder_blvd.content_block_options_load
+                    onLoad: builder_blvd.content_block_options_load,
+					onSave: builder_blvd.content_block_options_save
                 } );
 
                 // Setup element display options, which open in a modal

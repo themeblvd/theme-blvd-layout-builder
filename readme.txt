@@ -57,7 +57,8 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.2.3 - XX/XX/2018 =
+= 2.2.3 - 01/23/2018 =
+* Fixed: Visual editor options not saving, when used within the Columns element.
 * Fixed: Make sure icon browser search data doesn't get printed in the source code more than once.
 
 = 2.2.2 - 01/19/2018 =
