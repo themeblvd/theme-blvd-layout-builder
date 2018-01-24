@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.2.4
+Stable Tag: 2.2.5
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -57,8 +57,10 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
+= 2.2.5 - 01/25/2018 =
+
 = 2.2.4 - 01/24/2018 =
-* Fixed: Much better compatibility for framework 2.5-2.6 themes.
+* Fixed: Much better backwards compatibility for framework 2.5-2.6 themes.
 * Fixed: Not being able to clear a synced template, from the Edit Page screen.
 
 = 2.2.3 - 01/23/2018 =

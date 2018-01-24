@@ -3,7 +3,7 @@
 * Author URI: http://www.themeblvd.com
 * Contributors: themeblvd
 * Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-* Stable Tag: 2.2.1
+* Stable Tag: 2.2.5
 
 **NOTE: This plugin requires a supported theme with the Theme Blvd Framework.+**
 
@@ -36,6 +36,8 @@ This plugin works with the following themes only.
 * [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
 ## Changelog
+
+#### 2.2.5 - 01/25/2018
 
 #### 2.2.4 - 01/24/2018
 * Fixed: Much better compatibility for framework 2.5-2.6 themes.
@@ -251,5 +253,5 @@ This plugin works with the following themes only.
 
 ## Upgrade Notice
 
-#### 2.2.4
+#### 2.2.5
 Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
