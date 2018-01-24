@@ -58,6 +58,14 @@ class Theme_Blvd_Layout_Builder {
 		// Admin <body> classes
 		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
 
+		// Add Editor into page, which Builder can use for editing
+		// content of elements.
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+				add_action( 'current_screen', array( $this, 'add_editor' ) );
+			}
+		}
+
 		// Add icon browser into page, which Builder can use for
 		// inserting icons.
 		add_action( 'current_screen', array( $this, 'add_icon_browser' ) );
@@ -188,7 +196,22 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
+			
 			wp_enqueue_style( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' ) );
+		
+		}
+
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
+			
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			
+				wp_enqueue_style( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css' ), null, '4.0' );
+			
+				wp_enqueue_style( 'codemirror-theme', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/themeblvd.min.css' ), null, '4.0' );
+			
+				wp_enqueue_style( 'fontawesome', esc_url( TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css' ), null, TB_FRAMEWORK_VERSION );
+
+			}
 		}
 
 		wp_enqueue_style( 'theme-blvd-layout-builder', esc_url( TB_BUILDER_PLUGIN_URI . "/inc/admin/assets/css/builder-style{$suffix}.css" ), null, TB_BUILDER_PLUGIN_VERSION );
@@ -252,8 +275,29 @@ class Theme_Blvd_Layout_Builder {
 
 			wp_enqueue_script( 'themeblvd_admin', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/shared{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
 
-			wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
 
+				wp_enqueue_script( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/js/colorpicker.min.js' ), array('jquery') );
+
+			}
+
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+				
+				$gmap_key = themeblvd_get_option( 'gmap_api_key' );
+
+				if ( $gmap_key ) {
+					
+					wp_enqueue_script( 'themeblvd_gmap', esc_url( add_query_arg( 'key', $gmap_key, 'https://maps.googleapis.com/maps/api/js' ) ), array(), null );
+				
+				}
+
+				wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
+			
+				wp_enqueue_script( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js' ), null, '4.0' );
+				
+				wp_enqueue_script( 'codemirror-modes', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js' ), null, '4.0' );
+
+			}
 		}
 
 		// Include layout builder script.
@@ -344,6 +388,7 @@ class Theme_Blvd_Layout_Builder {
 			'template_save'			=> __( 'Save as Template', 'theme-blvd-layout-builder' ),
 			'template_title'		=> __( 'Save Current Layout as Template', 'theme-blvd-layout-builder' ),
 			'template_updated'		=> __( 'The template has been saved.', 'theme-blvd-layout-builder'),
+			'framework_version'     => TB_FRAMEWORK_VERSION,
 		);
 
 		if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '<') ) {
@@ -2199,14 +2244,28 @@ class Theme_Blvd_Layout_Builder {
 						</a>
 
 						<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-							<a href="#" id="tb-custom-styles-link" class="button-secondary" data-target="tb-custom-styles" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>">
-								<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
-							</a>
-						<?php endif; ?>
+						
+							<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '>=' ) ) : ?>
+							
+								<a href="#" id="tb-custom-styles-link" class="button-secondary" data-target="tb-custom-styles" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" >
+									<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+								</a>
 
-						<div id="tb-custom-styles" class="modal-content section-code">
-							<textarea id="tb-custom-styles-textarea" data-code-lang="css" name="_tb_builder_styles"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
-						</div>
+								<div id="tb-custom-styles" class="modal-content section-code">
+									<textarea id="tb-custom-styles-textarea" data-code-lang="css" name="_tb_builder_styles"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
+								</div>
+							
+							<?php else : ?>
+
+								<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
+									<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+								</a>
+
+								<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
+							
+							<?php endif; ?>
+						
+						<?php endif; ?>
 
 					</div><!-- .meta-box-nav (end) -->
 
@@ -2927,6 +2986,14 @@ class Theme_Blvd_Layout_Builder {
 						</a>
 					<?php endif; ?>
 
+					<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) : // Framework 2.5-2.6 ?>
+						<?php if ( isset( $blocks[$block_type]['options']['html'] ) ) : ?>
+							<a href="#" class="tb-textarea-code-link tb-block-code-link tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Edit Code', 'themeblvd'); ?>" data-title="<?php esc_attr_e('Edit Code', 'theme-blvd-layout-builder'); ?>" data-target="<?php echo esc_attr($block_id); ?>">
+								<i class="tb-icon-code"></i>
+							</a>
+						<?php endif; ?>
+					<?php endif; ?>
+
 					<a href="#" class="edit-block-display tb-tooltip-link" data-target="<?php echo esc_attr($block_id); ?>_background_form" data-title="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>" data-tooltip-text="<?php esc_attr_e('Edit Display', 'theme-blvd-layout-builder'); ?>">
 						<i class="tb-icon-picture"></i>
 					</a>
@@ -3171,8 +3238,14 @@ class Theme_Blvd_Layout_Builder {
 				'class'		=> 'hide receiver receiver-video'
 			);
 
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.2', '<=' ) ) { // old description
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+
+				$options['bg_video']['desc'] = __('You can upload a web-video file (mp4, webm, ogv), or input a URL to a video page on YouTube or Vimeo. Your fallback image will display on mobile devices.', 'theme-blvd-layout-builder').'<br><br>'.__('Examples:', 'theme-blvd-layout-builder').'<br>https://vimeo.com/79048048<br>http://www.youtube.com/watch?v=5guMumPFBag';
+
+			} elseif ( version_compare( TB_FRAMEWORK_VERSION, '2.5.2', '<=' ) ) {
+				
 				$options['bg_video']['desc'] = __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your placeholder image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder');
+			
 			}
 
 			$options['subgroup_start_3'] = array(
@@ -3763,6 +3836,27 @@ class Theme_Blvd_Layout_Builder {
 	/*--------------------------------------------*/
 	/* Hidden Modals
 	/*--------------------------------------------*/
+
+	/**
+	 * Hook in hidden editor modal.
+	 *
+	 * @since 2.0.0
+	 */
+	public function add_editor() {
+
+		// Requires Framework 2.5+
+		if ( function_exists( 'themeblvd_editor' ) ) {
+
+			$page = get_current_screen();
+
+			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+				add_action( 'admin_notices', array( $this, 'display_editor' ), 100 );
+			}
+		}
+	}
+	public function display_editor() {
+		themeblvd_editor();
+	}
 
 	/**
 	 * Hook in hidden icon browser modal(s).

@@ -70,9 +70,11 @@ class Theme_Blvd_Layout_Builder_Notices {
 			$this->stop = true;
 		}
 
+		/*
 		if ( version_compare( $v, '2.5.0', '>=' ) && version_compare( $v, '2.7.0', '<' ) ) {
 			$this->error[] = 'update-theme';
 		}
+		*/
 
 		if ( version_compare( $v, '2.4.8', '<' ) ) {
 			$this->error[] = 'update-theme';

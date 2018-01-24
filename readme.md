@@ -37,7 +37,8 @@ This plugin works with the following themes only.
 
 ## Changelog
 
-#### 2.2.4 - 01/25/2018
+#### 2.2.4 - 01/24/2018
+* Fixed: Much better compatibility for framework 2.5-2.6 themes.
 * Fixed: Not being able to clear a synced template, from the Edit Page screen.
 
 #### 2.2.3 - 01/23/2018
@@ -250,5 +251,5 @@ This plugin works with the following themes only.
 
 ## Upgrade Notice
 
-#### 2.2.2
-If you're using the Jump Start, Gnar or Denali theme, you must update it to the latest version to be compatible with this layout builder update.
+#### 2.2.4
+Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+

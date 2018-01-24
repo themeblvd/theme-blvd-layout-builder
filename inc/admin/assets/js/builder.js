@@ -19,17 +19,85 @@ jQuery( document ).ready( function( $ ) {
 		l10n = themeblvd;
 	}
 
+	var themeBlvdVersion = l10n.framework_version;
+
 	/*------------------------------------------------------------*/
 	/* Static Methods
 	/*------------------------------------------------------------*/
 
-	var builder_blvd = {
+	var builderBlvd = {
+
+		/**
+		 * Compares two software version numbers (e.g. "1.7.1" or "1.2b").
+		 *
+		 * This function was born in http://stackoverflow.com/a/6832721.
+		 *
+		 * @param   {string} v1                      The first version to be compared.
+		 * @param   {string} v2                      The second version to be compared.
+		 * @param   {object} options                 Optional flags that affect comparison behavior.
+		 * @param   {bool}   options.lexicographical True. Compares each part of the version strings lexicographically instead of naturally; this allows suffixes such as "b" or "dev" but will cause "1.10" to be considered smaller than "1.2".
+		 * @param   {bool}   options.zeroExtend      True. Changes the result if one version string has less parts than the other. In this case the shorter string will be padded with "zero" parts instead of being considered smaller.
+		 * @returns {number|NaN} :
+		 *    1. 0 if the versions are equal</li>
+		 *    2. a negative integer iff v1 < v2</li>
+		 *    3. a positive integer iff v1 > v2</li>
+		 *    4. NaN if either version string is in the wrong format</li>
+		 *
+		 * @copyright by Jon Papaioannou (["john", "papaioannou"].join(".") + "@gmail.com")
+		 */
+		versionCompare : function( v1, v2, options ) {
+
+			var lexicographical = options && options.lexicographical,
+				zeroExtend      = options && options.zeroExtend,
+				v1parts         = v1.split( '.' ),
+				v2parts         = v2.split( '.' );
+
+			function isValidPart( x ) {
+				return ( lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/ ).test( x );
+			}
+
+			if ( ! v1parts.every(isValidPart) || ! v2parts.every( isValidPart ) ) {
+				return NaN;
+			}
+
+			if ( zeroExtend ) {
+				while ( v1parts.length < v2parts.length ) v1parts.push( "0" );
+				while ( v2parts.length < v1parts.length ) v2parts.push( "0" );
+			}
+
+			if ( ! lexicographical ) {
+				v1parts = v1parts.map( Number );
+				v2parts = v2parts.map( Number );
+			}
+
+			for ( var i = 0; i < v1parts.length; ++i ) {
+
+				if (v2parts.length == i) {
+					return 1;
+				}
+
+				if (v1parts[ i ] == v2parts[ i ]) {
+					continue;
+				} else if ( v1parts[ i ] > v2parts[ i ] ) {
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+
+			if ( v1parts.length != v2parts.length ) {
+				return -1;
+			}
+
+			return 0;
+
+		},
 
 		/**
 		 * Insert nag to the user. Currently only used when changes
 		 * have been made to the layout.
 		 */
-		nag: function() {
+		nag : function() {
 
 			if ( nag_inserted ) {
 				return false;
@@ -65,11 +133,11 @@ jQuery( document ).ready( function( $ ) {
 			$builder.find('.sortable:has(div)').removeClass('empty');
 
 			// Setup sorting w/jQuery UI
-			builder_blvd.sort_setup();
+			builderBlvd.sort_setup();
 
 			// Setup column & hero slider elements
 			$builder.find('.element-columns, .element-jumbotron_slider').each(function(){
-				builder_blvd.columns( $(this).closest('.widget') );
+				builderBlvd.columns( $(this).closest('.widget') );
 			});
 
 			// If editing a page, show/hide "Clear Layout" button
@@ -79,26 +147,54 @@ jQuery( document ).ready( function( $ ) {
 				$builder.closest('#builder_blvd').find('#tb-clear-layout').show();
 			}
 
-			// Setup section/element/block display options, which open in a modal
-			$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').themeblvd( 'modal', null, {
-				button: l10n.apply,
-		        build: true,
-		        form: true,
-		        padding: false,
-		        size: 'medium',
-		        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
-		    } );
+			if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
 
-			// Setup content block options, which open in a modal
-			$builder.find('.tb-block-options-link').themeblvd( 'modal', null, {
-				button: l10n.apply,
-		        build: true,
-		        form: true,
-		        padding: false,
-		        size: 'medium',
-		        onLoad: builder_blvd.content_block_options_load,
-				onSave: builder_blvd.content_block_options_save
-		    } );
+				// Framework 2.5-2.6
+
+				$builder.find( '.edit-section-display, .edit-element-display, .edit-block-display' ).ThemeBlvdModal( {
+					button: themeblvd.apply,
+					build: true,
+					form: true,
+					padding: false,
+					size: 'medium',
+					on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+				} );
+
+				$builder.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+					button: themeblvd.apply,
+					build: true,
+					form: true,
+					padding: false,
+					size: 'medium',
+					on_load: builderBlvd.content_block_options_load
+				} );
+
+			} else {
+
+				// Framework 2.7+
+
+				// Setup section/element/block display options, which open in a modal
+				$builder.find('.edit-section-display, .edit-element-display, .edit-block-display').themeblvd( 'modal', null, {
+					button: l10n.apply,
+					build: true,
+					form: true,
+					padding: false,
+					size: 'medium',
+					onLoad: builderBlvd.content_block_options_load // We're going to piggy back this
+				} );
+
+				// Setup content block options, which open in a modal
+				$builder.find('.tb-block-options-link').themeblvd( 'modal', null, {
+					button: l10n.apply,
+					build: true,
+					form: true,
+					padding: false,
+					size: 'medium',
+					onLoad: builderBlvd.content_block_options_load,
+					onSave: builderBlvd.content_block_options_save
+				} );
+
+			}
 
 		},
 
@@ -172,7 +268,7 @@ jQuery( document ).ready( function( $ ) {
 					ui.item.themeblvd('options', 'editor');
 
 					// Layout changed.
-					builder_blvd.nag();
+					builderBlvd.nag();
 
 				}
 			});
@@ -283,7 +379,7 @@ jQuery( document ).ready( function( $ ) {
 				stop: function( event, ui ) {
 
 					// Layout changed.
-					builder_blvd.nag();
+					builderBlvd.nag();
 
 				}
 
@@ -364,29 +460,59 @@ jQuery( document ).ready( function( $ ) {
 					$block.themeblvd('options', 'column-widths');
 					$block.themeblvd('options', 'sortable');
 
-					// Setup content block options, which open in a modal
-					$block.find( '.tb-block-options-link' ).themeblvd( 'modal', null, {
-						button: l10n.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        onLoad: builder_blvd.content_block_options_load,
-						onSave: builder_blvd.content_block_options_save
-				    } );
+					if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
 
-					// Setup block display options, which open in a modal
-					$element.find('.edit-block-display').themeblvd( 'modal', null, {
-						button: l10n.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
-				    } );
+						// Framework 2.5-2.6
+
+						// Setup content block options, which open in a modal
+						$block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load
+						} );
+
+						// Setup block display options, which open in a modal
+						$element.find( '.edit-block-display' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+						} );
+
+					} else {
+
+						// Framework 2.7+
+
+						// Setup content block options, which open in a modal
+						$block.find( '.tb-block-options-link' ).themeblvd( 'modal', null, {
+							button: l10n.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							onLoad: builderBlvd.content_block_options_load,
+							onSave: builderBlvd.content_block_options_save
+						} );
+
+						// Setup block display options, which open in a modal
+						$element.find('.edit-block-display').themeblvd( 'modal', null, {
+							button: l10n.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							onLoad: builderBlvd.content_block_options_load // We're going to piggy back this
+						} );
+
+					}
 
 					// Layout changed.
-					builder_blvd.nag();
+					builderBlvd.nag();
 
 				});
 
@@ -415,7 +541,7 @@ jQuery( document ).ready( function( $ ) {
 				$element.find('.columns-config').removeClass('columns-1 columns-2 columns-3 columns-4 columns-5').addClass('columns-'+num);
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
 			});
 
@@ -425,22 +551,34 @@ jQuery( document ).ready( function( $ ) {
     	// linking to options in modal
     	content_block_options_load : function( self ) {
 
+    		if ( ! self ) {
+    			var self = this; // Framework 2.5-2.6
+    		}
+
+    		var $modalWindow = self.$modalWindow;
+
+			if ( ! $modalWindow ) {
+
+				$modalWindow = self.$modal_window; // Framework 2.5-2.6
+
+			}
+
     		// General framework options setup
-    		self.$modalWindow.themeblvd('options', 'bind');
-    		self.$modalWindow.themeblvd('options', 'setup');
-			self.$modalWindow.themeblvd('options', 'media-uploader');
-			self.$modalWindow.themeblvd('options', 'editor');
-			self.$modalWindow.themeblvd('options', 'code-editor');
-			self.$modalWindow.themeblvd('options', 'column-widths');
-			self.$modalWindow.themeblvd('options', 'sortable');
+    		$modalWindow.themeblvd('options', 'bind');
+    		$modalWindow.themeblvd('options', 'setup');
+			$modalWindow.themeblvd('options', 'media-uploader');
+			$modalWindow.themeblvd('options', 'editor');
+			$modalWindow.themeblvd('options', 'code-editor');
+			$modalWindow.themeblvd('options', 'column-widths');
+			$modalWindow.themeblvd('options', 'sortable');
 
 			// Custom actions for "Display" options of elements
-			var $display = self.$modalWindow.find('.element-display-options'),
+			var $display = $modalWindow.find('.element-display-options'),
 				bg = $display.find('#section-bg_type select').val(),
 				padding = $display.find('#section-apply_padding input').is(':checked');
 
 			// Bind check for paginated elements
-			self.$modalWindow.on('change', '.tb-query-check .of-input', function(){
+			$modalWindow.on('change', '.tb-query-check .of-input', function(){
 
 				var $el = $(this),
 					has_paginated = false;
@@ -559,7 +697,7 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
@@ -573,7 +711,7 @@ jQuery( document ).ready( function( $ ) {
 		$wrap.find('#tb-template-sync').val('');
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
@@ -601,7 +739,7 @@ jQuery( document ).ready( function( $ ) {
 				$.post(ajaxurl, data, function(r) {
 
 					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
-					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
+					builderBlvd.edit( $wrap.find('#tb-edit-layout') );
 
 					data = {
 						action: 'themeblvd_get_meta',
@@ -695,15 +833,27 @@ jQuery( document ).ready( function( $ ) {
 	});
 
 	// Custom CSS
-	$( '#tb-custom-styles-link' ).themeblvd( 'modal', null, {
-		button: l10n.apply,
-		form: true,
-		padding: false,
-		size: 'medium',
-		onSave: function( modal ) {
-			builder_blvd.save_code_editors();
-		}
-	} );
+	if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
+
+		// Framework 2.5-2.6
+
+		$wrap.find( '.meta-box-nav' ).themeblvd( 'options', 'code-editor' );
+
+	} else {
+
+		// Framework 2.7+
+
+		$( '#tb-custom-styles-link' ).themeblvd( 'modal', null, {
+			button: l10n.apply,
+			form: true,
+			padding: false,
+			size: 'medium',
+			onSave: function( modal ) {
+				builderBlvd.save_code_editors();
+			}
+		} );
+
+	}
 
 	// Clear Layout
 	$wrap.find('#tb-clear-layout').on('click', function(){
@@ -728,7 +878,7 @@ jQuery( document ).ready( function( $ ) {
 				$.post(ajaxurl, data, function(r) {
 					$wrap.find('#tb-edit-layout .ajax-mitt').html(r);
 					$wrap.find('#tb-custom-styles-textarea').val('');
-					builder_blvd.edit( $wrap.find('#tb-edit-layout') );
+					builderBlvd.edit( $wrap.find('#tb-edit-layout') );
 					$overlay.fadeOut(200);
 				});
 
@@ -785,11 +935,11 @@ jQuery( document ).ready( function( $ ) {
 	$add_template.themeblvd('options', 'bind');
 
 	$add_template.find('.builder-samples #sample, .builder_samples #sample').each( function(){
-		builder_blvd.sample_preview( $(this) );
+		builderBlvd.sample_preview( $(this) );
 	});
 
 	$add_template.find('.builder-samples #sample, .builder_samples #sample').on('change', function(){
-		builder_blvd.sample_preview( $(this) );
+		builderBlvd.sample_preview( $(this) );
 	});
 
 	// Validate new template submission
@@ -877,8 +1027,8 @@ jQuery( document ).ready( function( $ ) {
 	// requires: wp_enqueue_script('postbox');
 	$edit_template.each(function(){
 		postboxes.add_postbox_toggles('nav-menus', { // using 'nav-menus' as the current page is a hack to get WP not to fire save_state() method, which triggers AJAX errors.
-			pbshow: builder_blvd.show_widget,
-			pbhide: builder_blvd.hide_widget
+			pbshow: builderBlvd.show_widget,
+			pbhide: builderBlvd.hide_widget
 		});
 	});
 
@@ -889,7 +1039,7 @@ jQuery( document ).ready( function( $ ) {
 		window.onbeforeunload = null;
 
 		// Save any codemirror instances to the form.
-		builder_blvd.save_code_editors();
+		builderBlvd.save_code_editors();
 
 		// Save any wp editors.
 		if ( 'undefined' !== typeof tinymce ) {
@@ -956,7 +1106,7 @@ jQuery( document ).ready( function( $ ) {
 				$overlay.fadeIn(100);
 
 				// Save any codemirror instances to the form.
-				builder_blvd.save_code_editors();
+				builderBlvd.save_code_editors();
 
 				// Get the editor instance for the custom styles.
 				var cssEditorID = 'tb-custom-styles-textarea',
@@ -984,7 +1134,8 @@ jQuery( document ).ready( function( $ ) {
 				$.post(ajaxurl, data, function(response) {
 
 					$edit_template.find('#tb-edit-layout .ajax-mitt').html(response);
-					builder_blvd.edit( $edit_template.find('#tb-edit-layout') );
+
+					builderBlvd.edit( $edit_template.find('#tb-edit-layout') );
 
 					// Handle the custom styles.
 					data = {
@@ -996,8 +1147,20 @@ jQuery( document ).ready( function( $ ) {
 
 					$.post(ajaxurl, data, function(response) {
 
-						if ( cssEditor ) {
-							cssEditor.setValue( response );
+						if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
+
+							var $textarea = $edit_template.find( '#custom-styles textarea' );
+
+							$textarea.val( response );
+
+							if ( $textarea.data( 'CodeMirrorInstance' ) ) {
+								$textarea.data( 'CodeMirrorInstance' ).setValue( response );
+							}
+						} else {
+
+							if ( cssEditor ) {
+								cssEditor.setValue( response );
+							}
 						}
 
 						$overlay.fadeOut(200);
@@ -1044,42 +1207,42 @@ jQuery( document ).ready( function( $ ) {
 		}
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
 	$builder_wrap.on('mousedown', '.jquery-ui-slider-wrap', function() {
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
 	$builder_wrap.on('themeblvd-color-change', '.wp-picker-input-wrap > input', function(){
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
 	$('body').on('themeblvd-modal-close themeblvd-modal-insert', '.themeblvd-modal .button, .themeblvd-modal .button-link', function(){
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
 	$builder_wrap.on('sortstop', '.tb-sortable-option .item-container', function() {
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
 	$builder_wrap.on('mouseup', '.tb-sortable-option .add-item, .tb-sortable-option .delete-sortable-items', function() {
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 	});
 
@@ -1088,7 +1251,7 @@ jQuery( document ).ready( function( $ ) {
 	$builder.themeblvd('options', 'bind');
 
 	// Initial builder loaded on page
-	builder_blvd.edit( $builder );
+	builderBlvd.edit( $builder );
 
 	// Section and Element Labels
 	$builder.on('click', '.dynamic-label .label-text', function(){
@@ -1162,23 +1325,42 @@ jQuery( document ).ready( function( $ ) {
 				$section = $builder.find('#'+section_id);
 
 				// Re-setup sorting across all sections w/jQuery UI
-				builder_blvd.sort_setup(); // will destroy previous instant and re-bind
+				builderBlvd.sort_setup(); // will destroy previous instant and re-bind
 
 				// Will be empty initially
 				$section.find('.sortable').addClass('empty');;
 
-				// Bind popup for display options
-				$section.find('.edit-section-display').themeblvd( 'modal', null, {
-					button: l10n.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
-			    } );
+				if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
+
+					// Framework 2.5-2.6
+
+					$section.find( '.edit-section-display' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+				    } );
+
+				} else {
+
+					// Framework 2.7+
+
+					// Bind popup for display options
+					$section.find('.edit-section-display').themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load // We're going to piggy back this
+					} );
+
+				}
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
 			}
 		});
@@ -1207,7 +1389,7 @@ jQuery( document ).ready( function( $ ) {
 					}
 
 					// Layout changed.
-					builder_blvd.nag();
+					builderBlvd.nag();
 
 				});
 	        }
@@ -1263,7 +1445,7 @@ jQuery( document ).ready( function( $ ) {
         }, 500);
 
 		// Layout changed.
-		builder_blvd.nag();
+		builderBlvd.nag();
 
 		return false;
 
@@ -1328,25 +1510,45 @@ jQuery( document ).ready( function( $ ) {
 				$element.themeblvd('options', 'sortable');
 
 				if ( $element.find('.widget-content').hasClass('element-columns') || $element.find('.widget-content').hasClass('element-jumbotron_slider') ) {
-					builder_blvd.columns( $element );
+					builderBlvd.columns( $element );
 				}
 
 				$element.fadeIn();
 				load.fadeOut('fast');
 				overlay.fadeOut('fast');
 
-				// Setup element display options, which open in a modal
-				$element.find('.edit-element-display').themeblvd( 'modal', null, {
-					button: l10n.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
-			    } );
+				if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
+
+					// Framework 2.5-2.6
+
+					// Setup element display options, which open in a modal
+					$element.find( '.edit-element-display' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+				        build: true,
+				        form: true,
+				        padding: false,
+				        size: 'medium',
+				        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+				    });
+
+				} else {
+
+					// Framework 2.7+
+
+					// Setup element display options, which open in a modal
+					$element.find( '.edit-element-display').themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load // We're going to piggy back this
+					} );
+
+				}
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
 			}
 		});
@@ -1422,32 +1624,62 @@ jQuery( document ).ready( function( $ ) {
 				$new_element.themeblvd('options', 'sortable');
 
                 if ( $new_element.find('.widget-content').hasClass('element-columns') || $new_element.find('.widget-content').hasClass('element-jumbotron_slider') ) {
-					builder_blvd.columns( $new_element );
+					builderBlvd.columns( $new_element );
 				}
 
-				// Setup content block options, which open in a modal
-				$new_element.find('.tb-block-options-link').themeblvd( 'modal', null, {
-					button: l10n.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load,
-					onSave: builder_blvd.content_block_options_save
-			    } );
+				if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
 
-				// Setup element display options, which open in a modal
-				$new_element.find('.edit-element-display, .edit-block-display').themeblvd( 'modal', null, {
-					button: l10n.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load // We're going to piggy back this
-			    } );
+					// Framework 2.5-2.6
+
+					// Setup content block options, which open in a modal
+					$new_element.find('.tb-block-options-link').ThemeBlvdModal({
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load
+					} );
+
+					// Setup element display options, which open in a modal
+					$new_element.find('.edit-element-display, .edit-block-display').ThemeBlvdModal({
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+					} );
+
+				} else {
+
+					// Framework 2.7+
+
+					// Setup content block options, which open in a modal
+					$new_element.find( '.tb-block-options-link' ).themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load,
+						onSave: builderBlvd.content_block_options_save
+					} );
+
+					// Setup element display options, which open in a modal
+					$new_element.find( '.edit-element-display, .edit-block-display' ).themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load // We're going to piggy back this
+				    } );
+
+				}
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
             }
         });
@@ -1497,29 +1729,55 @@ jQuery( document ).ready( function( $ ) {
                 $new_block.themeblvd('options', 'code-editor');
                 $new_block.themeblvd('options', 'sortable');
 
-                // And bind the modal window for the settings link
-                $new_block.find('.tb-block-options-link').themeblvd( 'modal', null, {
-					button: l10n.apply,
-                    build: true,
-                    form: true,
-                    padding: false,
-                    size: 'medium',
-                    onLoad: builder_blvd.content_block_options_load,
-					onSave: builder_blvd.content_block_options_save
-                } );
+                if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
 
-                // Setup element display options, which open in a modal
-				$new_block.find('.edit-block-display').themeblvd( 'modal', null, {
-					button: l10n.apply,
-			        build: true,
-			        form: true,
-			        padding: false,
-			        size: 'medium',
-			        onLoad: builder_blvd.content_block_options_load
-			    } );
+					// And bind the modal window for the settings link
+					$new_block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load
+					} );
+
+					// Setup element display options, which open in a modal
+					$new_block.find( '.edit-block-display' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load
+					} );
+
+				} else {
+
+					// And bind the modal window for the settings link
+					$new_block.find( '.tb-block-options-link' ).themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load,
+						onSave: builderBlvd.content_block_options_save
+					} );
+
+					// Setup element display options, which open in a modal
+					$new_block.find( '.edit-block-display' ).themeblvd( 'modal', null, {
+						button: l10n.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						onLoad: builderBlvd.content_block_options_load
+					} );
+
+				}
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
             }
         });
@@ -1555,7 +1813,7 @@ jQuery( document ).ready( function( $ ) {
                 }, 750);
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
 	        }
 	    });
@@ -1592,7 +1850,7 @@ jQuery( document ).ready( function( $ ) {
                 }, 750);
 
 				// Layout changed.
-				builder_blvd.nag();
+				builderBlvd.nag();
 
 	        }
 	    });

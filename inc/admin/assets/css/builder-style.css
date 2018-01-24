@@ -775,12 +775,14 @@
 	margin: 0 10px 0 0;
 }
 #tb-editor-builder #tb-save-new-template,
-#tb-editor-builder #tb-custom-styles-link {
+#tb-editor-builder #tb-custom-styles-link,
+#tb-editor-builder #tb-custom-styles {
 	float: right;
 	margin: 0 0 0 10px;
 }
 .wp-admin.rtl #tb-editor-builder #tb-save-new-template,
-.wp-admin.rtl #tb-editor-builder #tb-custom-styles-link {
+.wp-admin.rtl #tb-editor-builder #tb-custom-styles-link,
+.wp-admin.rtl #tb-editor-builder #tb-custom-styles {
 	float: left;
 	margin: 0 10px 0 0;
 }
@@ -1334,7 +1336,18 @@
 .themeblvd-modal .tb-options-wrap .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
 .themeblvd-modal .tb-options-wrap .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
 .themeblvd-modal .tb-options-wrap .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
-.themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
+.themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .full-width .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-bars .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-locations .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
+.themeblvd-modal #option-framework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
 	right: 0;
 }
 .wp-admin.rtl .themeblvd-modal .tb-options-wrap .full-width .tb-sortable-option .item-handle.closed a.toggle,
@@ -1347,7 +1360,18 @@
 .wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
 .wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
 .wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
-.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
+.wp-admin.rtl .themeblvd-modal .tb-options-wrap .section-toggles .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .full-width .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-bars .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-buttons .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-datasets .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-locations .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-price_cols .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-sectors .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-tabs .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-testimonials .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-text_blocks .tb-sortable-option .item-handle.closed a.toggle,
+.wp-admin.rtl .themeblvd-modal #options-framework .section-toggles .tb-sortable-option .item-handle.closed a.toggle {
 	right: initial;
 	left: 0;
 }
