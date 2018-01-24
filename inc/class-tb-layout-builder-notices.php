@@ -201,7 +201,7 @@ class Theme_Blvd_Layout_Builder_Notices {
 			'framework' 		=> __('You are not using a theme with the Theme Blvd Framework, and so this plugin will not do anything.', 'theme-blvd-layout-builder'),
 			'framework-2-2' 	=> __('You are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything. Check to see if there is an updated version of your theme.', 'theme-blvd-layout-builder'),
 			'old-homepage'		=> __('It appears you are using an old method of applying a custom layout to your website\'s homepage. Follow these steps to get up-to-date:<ol><li>Create a static page and apply a custom layout to it.</li><li>Go to <em>Settings > Reading > Frontpage displays</em>, and select this page as your static frontpage.</li></ol>', 'theme-blvd-layout-builder'),
-			'update-theme'		=> __('It looks like you don\'t have the latest compatible version of your theme installed. For best results with this version of the layout builder, you should update to the latest version.', 'theme-blvd-layout-builder')
+			'update-theme'		=> __('It looks like you don\'t have the latest compatible version of your theme installed. For best results with this version of the layout builder, you should update to the latest version of your theme.', 'theme-blvd-layout-builder')
 		);
 
 		if ( isset( $messages[$type] ) ) {

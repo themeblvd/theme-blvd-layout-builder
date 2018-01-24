@@ -58,6 +58,7 @@ This plugin works with the following themes only.
 == Changelog ==
 
 = 2.2.5 - 01/25/2018 =
+* Improvement: Adjusted wording of some admin notices to hopefully be more clear.
 * Fixed: Issues with adding and removing elements and other JavaScript-related errors with framework 2.4 themes, which resulted from the previous update.
 
 = 2.2.4 - 01/24/2018 =
