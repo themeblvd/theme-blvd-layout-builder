@@ -151,23 +151,27 @@ jQuery( document ).ready( function( $ ) {
 
 				// Framework 2.5-2.6
 
-				$builder.find( '.edit-section-display, .edit-element-display, .edit-block-display' ).ThemeBlvdModal( {
-					button: themeblvd.apply,
-					build: true,
-					form: true,
-					padding: false,
-					size: 'medium',
-					on_load: builderBlvd.content_block_options_load // We're going to piggy back this
-				} );
+				if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 
-				$builder.find( '.tb-block-options-link' ).ThemeBlvdModal( {
-					button: themeblvd.apply,
-					build: true,
-					form: true,
-					padding: false,
-					size: 'medium',
-					on_load: builderBlvd.content_block_options_load
-				} );
+					$builder.find( '.edit-section-display, .edit-element-display, .edit-block-display' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+					} );
+
+					$builder.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+						button: themeblvd.apply,
+						build: true,
+						form: true,
+						padding: false,
+						size: 'medium',
+						on_load: builderBlvd.content_block_options_load
+					} );
+
+				}
 
 			} else {
 
@@ -464,25 +468,29 @@ jQuery( document ).ready( function( $ ) {
 
 						// Framework 2.5-2.6
 
-						// Setup content block options, which open in a modal
-						$block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
-							button: themeblvd.apply,
-							build: true,
-							form: true,
-							padding: false,
-							size: 'medium',
-							on_load: builderBlvd.content_block_options_load
-						} );
+						if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 
-						// Setup block display options, which open in a modal
-						$element.find( '.edit-block-display' ).ThemeBlvdModal( {
-							button: themeblvd.apply,
-							build: true,
-							form: true,
-							padding: false,
-							size: 'medium',
-							on_load: builderBlvd.content_block_options_load // We're going to piggy back this
-						} );
+							// Setup content block options, which open in a modal
+							$block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+								button: themeblvd.apply,
+								build: true,
+								form: true,
+								padding: false,
+								size: 'medium',
+								on_load: builderBlvd.content_block_options_load
+							} );
+
+							// Setup block display options, which open in a modal
+							$element.find( '.edit-block-display' ).ThemeBlvdModal( {
+								button: themeblvd.apply,
+								build: true,
+								form: true,
+								padding: false,
+								size: 'medium',
+								on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+							} );
+
+						}
 
 					} else {
 
@@ -1334,14 +1342,18 @@ jQuery( document ).ready( function( $ ) {
 
 					// Framework 2.5-2.6
 
-					$section.find( '.edit-section-display' ).ThemeBlvdModal( {
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
-				    } );
+					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+
+						$section.find( '.edit-section-display' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+					        build: true,
+					        form: true,
+					        padding: false,
+					        size: 'medium',
+					        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+					    } );
+
+					}
 
 				} else {
 
@@ -1521,15 +1533,19 @@ jQuery( document ).ready( function( $ ) {
 
 					// Framework 2.5-2.6
 
-					// Setup element display options, which open in a modal
-					$element.find( '.edit-element-display' ).ThemeBlvdModal( {
-						button: themeblvd.apply,
-				        build: true,
-				        form: true,
-				        padding: false,
-				        size: 'medium',
-				        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
-				    });
+					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
+
+						// Setup element display options, which open in a modal
+						$element.find( '.edit-element-display' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+					        build: true,
+					        form: true,
+					        padding: false,
+					        size: 'medium',
+					        on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+					    });
+
+					}
 
 				} else {
 
@@ -1631,25 +1647,29 @@ jQuery( document ).ready( function( $ ) {
 
 					// Framework 2.5-2.6
 
-					// Setup content block options, which open in a modal
-					$new_element.find('.tb-block-options-link').ThemeBlvdModal({
-						button: themeblvd.apply,
-						build: true,
-						form: true,
-						padding: false,
-						size: 'medium',
-						on_load: builderBlvd.content_block_options_load
-					} );
+					if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 
-					// Setup element display options, which open in a modal
-					$new_element.find('.edit-element-display, .edit-block-display').ThemeBlvdModal({
-						button: themeblvd.apply,
-						build: true,
-						form: true,
-						padding: false,
-						size: 'medium',
-						on_load: builderBlvd.content_block_options_load // We're going to piggy back this
-					} );
+						// Setup content block options, which open in a modal
+						$new_element.find('.tb-block-options-link').ThemeBlvdModal({
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load
+						} );
+
+						// Setup element display options, which open in a modal
+						$new_element.find('.edit-element-display, .edit-block-display').ThemeBlvdModal({
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load // We're going to piggy back this
+						} );
+
+					}
 
 				} else {
 
@@ -1731,25 +1751,29 @@ jQuery( document ).ready( function( $ ) {
 
                 if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
 
-					// And bind the modal window for the settings link
-					$new_block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
-						button: themeblvd.apply,
-						build: true,
-						form: true,
-						padding: false,
-						size: 'medium',
-						on_load: builderBlvd.content_block_options_load
-					} );
+                	if ( $.isFunction( $.fn.ThemeBlvdModal ) ) {
 
-					// Setup element display options, which open in a modal
-					$new_block.find( '.edit-block-display' ).ThemeBlvdModal( {
-						button: themeblvd.apply,
-						build: true,
-						form: true,
-						padding: false,
-						size: 'medium',
-						on_load: builderBlvd.content_block_options_load
-					} );
+						// And bind the modal window for the settings link
+						$new_block.find( '.tb-block-options-link' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load
+						} );
+
+						// Setup element display options, which open in a modal
+						$new_block.find( '.edit-block-display' ).ThemeBlvdModal( {
+							button: themeblvd.apply,
+							build: true,
+							form: true,
+							padding: false,
+							size: 'medium',
+							on_load: builderBlvd.content_block_options_load
+						} );
+
+					}
 
 				} else {
 
