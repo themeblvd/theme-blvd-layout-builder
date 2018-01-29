@@ -528,8 +528,10 @@ jQuery( document ).ready( function( $ ) {
     		});
 
 			// Adjust column header, and how many columns are displayed to the user
-			$element.find('.column-width-input').off('themeblvd_update_columns'); // Avoid duplicates
-			$element.find('.column-width-input').on('themeblvd_update_columns', function() {
+			// Note: `themeblvd_update_columns` used in framework 2.5-2.6 and
+			// `themeblvd-update-columns` used in framework 2.7+
+			$element.find('.column-width-input').off('themeblvd_update_columns themeblvd-update-columns'); // Avoid duplicates
+			$element.find('.column-width-input').on('themeblvd_update_columns themeblvd-update-columns', function() {
 
 				var $input = $(this),
 					$header = $input.closest('.element-options').find('.columns-header'),

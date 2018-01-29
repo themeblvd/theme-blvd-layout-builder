@@ -58,13 +58,14 @@ This plugin works with the following themes only.
 == Changelog ==
 
 = 2.2.6 - 01/29/2018 =
+* Fixed: Number of columns not changing with selection, when working with the Columns element in layout builder (for framework 2.7+ themes).
 
 = 2.2.5 - 01/25/2018 =
 * Improvement: Adjusted wording of some admin notices to hopefully be more clear.
-* Fixed: Issues with adding and removing elements and other JavaScript-related errors with framework 2.4 themes, which resulted from the previous update.
+* Fixed: Issues with adding and removing elements and other JavaScript-related errors, which resulted from the previous update (for framework 2.4 themes).
 
 = 2.2.4 - 01/24/2018 =
-* Fixed: Much better backwards compatibility for framework 2.5-2.6 themes.
+* Fixed: Much better backwards compatibility (for framework 2.5-2.6 themes).
 * Fixed: Not being able to clear a synced template, from the Edit Page screen.
 
 = 2.2.3 - 01/23/2018 =
