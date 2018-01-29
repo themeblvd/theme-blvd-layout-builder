@@ -38,6 +38,7 @@ This plugin works with the following themes only.
 ## Changelog
 
 #### 2.2.6 - 01/29/2018
+* Fixed: Number of columns not changing with selection, when working with the Columns element in layout builder (for framework 2.7+ themes).
 
 #### 2.2.5 - 01/25/2018
 * Improvement: Adjusted wording of some admin notices to hopefully be more clear.
