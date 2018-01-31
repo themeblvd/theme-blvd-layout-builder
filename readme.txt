@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.2.6
+Stable Tag: 2.2.7
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
@@ -56,6 +56,8 @@ This plugin works with the following themes only.
 3. Editing a template.
 
 == Changelog ==
+
+= 2.2.7 - XX/XX/2018 =
 
 = 2.2.6 - 01/29/2018 =
 * Fixed: Number of columns not changing with selection, when working with the Columns element in layout builder (for framework 2.7+ themes).
@@ -280,5 +282,5 @@ This plugin works with the following themes only.
 
 == Upgrade Notice ==
 
-= 2.2.6 =
+= 2.2.7 =
 Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
