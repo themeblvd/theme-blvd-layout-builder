@@ -229,7 +229,7 @@ class Theme_Blvd_Builder_API {
 		}
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			
+
 			// Elements @deprecated as of framework 2.5, but being
 			// added for old theme compat
 
@@ -237,15 +237,15 @@ class Theme_Blvd_Builder_API {
 			$this->registered_elements[] = 'post_grid_slider';
 			$this->registered_elements[] = 'post_list_paginated';
 			$this->registered_elements[] = 'post_list_slider';
-		
+
 		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-			
+
 			// Elements @deprecated as of framework 2.7, but being
 			// added for old theme compat
 
 			$this->registered_elements[] = 'post_slider_popout';
 			$this->registered_elements[] = 'simple_slider_popout';
-		
+
 		}
 
 		// Revolution Slider
@@ -1201,7 +1201,7 @@ class Theme_Blvd_Builder_API {
 				unset( $this->core_elements['content']['options']['source']['options']['widget_area'] );
 				unset( $this->core_elements['content']['options']['widget_area'] );
 			}
-		
+
 		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
 
 			$this->core_elements['content']['options']['content']['type'] = 'textarea';
@@ -4224,7 +4224,7 @@ class Theme_Blvd_Builder_API {
 				'name' 		=> __( 'Read More Text', 'theme-blvd-layout-builder' ),
 				'desc' 		=> __( 'Enter the text you\'d like to use to lead the reader to the full post.', 'theme-blvd-layout-builder' ),
 				'id' 		=> 'more_text',
-				'std' 		=> 'Read More <i class="fa fa-long-arrow-right"></i>',
+				'std' 		=> 'Read More',
 				'type' 		=> 'text',
 				'class'		=> 'hide receiver receiver-text receiver-button'
 			),
@@ -5308,7 +5308,7 @@ class Theme_Blvd_Builder_API {
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) && ! defined( 'TB_SLIDERS_PLUGIN_VERSION' ) ) {
 				unset( $this->core_elements['post_slider'] );
 			}
-		
+
 		} else if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
 
 			$this->core_elements['post_slider']['support']['popout'] = false;
@@ -5978,7 +5978,7 @@ class Theme_Blvd_Builder_API {
 		);
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			
+
 			$this->core_elements['slogan']['options'] = array(
 				'slogan' => array(
 					'id' 		=> 'slogan',
