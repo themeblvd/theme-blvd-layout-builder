@@ -6897,6 +6897,12 @@ class Theme_Blvd_Builder_API {
 			)
 		);
 
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			$this->core_elements['testimonial']['options']['text']['type'] = 'textarea';
+			$this->core_elements['testimonial']['options']['text']['editor'] = true;
+			$this->core_elements['testimonial']['options']['text']['code'] = 'html';
+		}
+
 		/*--------------------------------------------*/
 		/* Testimonial Slider
 		/*--------------------------------------------*/

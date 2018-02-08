@@ -38,6 +38,7 @@ This plugin works with the following themes only.
 ## Changelog
 
 #### 2.2.7 - XX/XX/2018
+* Fixed: Testimonial text not saving with Testimonial element (for framework 2.5-2.6 themes).
 * Removed: Deleted the `.fa` icon from default "Read More" text of Post List (for framework 2.5+ themes).
 
 #### 2.2.6 - 01/29/2018
