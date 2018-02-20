@@ -3,7 +3,8 @@
 * Author URI: http://www.themeblvd.com
 * Contributors: themeblvd
 * Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-* Stable Tag: 2.2.5
+* Stable Tag: 2.2.7
+* Tested up to: 4.9
 
 **NOTE: This plugin requires a supported theme with the Theme Blvd Framework.+**
 
