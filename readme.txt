@@ -2,8 +2,8 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.2.7
-Tested up to: 4.9
+Stable Tag: 2.3.0
+Tested up to: 5.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
 
