@@ -311,13 +311,6 @@ jQuery( document ).ready( function( $ ) {
 
 			$widget.find( '.tb-widget-content' ).show();
 
-			// Make sure code editor is setup
-			if ( $widget.hasClass( 'postbox-custom-styles' ) ) {
-
-				$widget.themeblvd( 'options', 'code-editor' );
-
-			}
-
     	},
 
     	/**
@@ -664,11 +657,12 @@ jQuery( document ).ready( function( $ ) {
 	};
 
 	/*------------------------------------------------------------*/
-	/* Editor Builder -- Used on the Edit Page screen
+	/* Editor Builder -- Originally used for classic editor's
+	/* Edit Page screen, but has since been expanded.
 	/*------------------------------------------------------------*/
 
-	var $wrap = $('#tb-editor-builder'),
-		$template = $('#page_template'); // WP <select> for page template
+	var $wrap     = $( '#tb-editor-builder' ),
+		$template = $( '#page_template' ); // WP <select> for page template
 
 	// Cancel any unsaved changes warning, if saving changes.
 	$( '#post' ).on( 'submit', function() {
@@ -725,7 +719,7 @@ jQuery( document ).ready( function( $ ) {
 
 	});
 
-	// Apply template
+	// Apply/Merge template
 	$wrap.on('change', '#tb-template-apply', function () {
 
 		var $select = $(this),
@@ -1058,7 +1052,7 @@ jQuery( document ).ready( function( $ ) {
 
 		// Submit the form data and save.
 		var $form = $(this).closest('form'),
-			$load = $edit_template.find('#publishing-action .ajax-loading'),
+			$load = $form.find('.spinner'),
 			nonce = $form.find('input[name="tb_nonce"]').val(),
 			data = $form.serialize();
 
@@ -1071,119 +1065,40 @@ jQuery( document ).ready( function( $ ) {
 				data: data
 			},
 			beforeSend: function() {
-				$load.fadeIn(200);
+				$load.css( 'visibility', 'visible' );
 			},
 			success: function(r) {
 
-				$('body').animate({scrollTop: 0}, 50, function(){
+				var message = '';
 
-					// Add updated success message.
-					$edit_template.find('.nav-tab-wrapper').after('<div class="themeblvd-updated updated fade" style="display:none;"><p><strong>' + l10n.template_updated + '</strong></p></div>');
+				if ( 'layout' == $form.find( 'input[name="context"]' ).val() ) {
+					message = l10n.layout_updated;
+				} else {
+					message = l10n.template_updated;
+				}
 
-					$edit_template.find('.themeblvd-updated').fadeIn(500).delay(3000).fadeOut(500, function() {
-       					 $(this).remove();
-    				});
+				// Add updated success message.
+				$edit_template.find('.meta-box-nav').before('<div class="themeblvd-updated updated" style="display:none;"><p><strong>' + message + '</strong></p><button type="button" class="notice-dismiss"></button></div>');
 
-					// Reset layout changed nag.
-					nag_inserted = false;
-
-					$('#tb-builder-notice').fadeOut(500, function(){
+				$edit_template.find('.themeblvd-updated').fadeIn(500).find('.notice-dismiss').on( 'click', function() {
+					$(this).closest('.themeblvd-updated').fadeOut( 500, function() {
 						$(this).remove();
 					});
-
 				});
 
-				$load.fadeOut(200);
+				// Reset layout changed nag.
+				nag_inserted = false;
+
+				$('#tb-builder-notice').fadeOut(500, function(){
+					$(this).remove();
+				});
+
+
+				$load.css( 'visibility', 'hidden' );
 			}
 		});
 
 		return false;
-
-	});
-
-	// Merge Template
-	$edit_template.on('change', '#tb-template-apply', function () {
-
-		var $select = $(this),
-			info = $select.val(),
-			$overlay = $edit_template.find('.ajax-overlay.full-overlay');
-
-		// Are they sure they want to delete current
-		// layout and apply template?
-		tbc_confirm(l10n.template_apply, {'confirm':true}, function(r){
-			if (r) {
-
-				$overlay.fadeIn(100);
-
-				// Save any codemirror instances to the form.
-				builderBlvd.save_code_editors();
-
-				// Get the editor instance for the custom styles.
-				var cssEditorID = 'tb-custom-styles-textarea',
-					cssEditor  = null;
-
-				if ( 'undefined' !== typeof window.themeblvd ) {
-
-					if ( 'undefined' !== typeof window.themeblvd.options ) {
-
-						if ( 'undefined' !== typeof window.themeblvd.options.codeEditors[ cssEditorID ] ) {
-
-							cssEditor = window.themeblvd.options.codeEditors[ cssEditorID ].codemirror;
-
-						}
-					}
-				}
-
-				var data = {
-					action: 'themeblvd_apply_template',
-					security: $edit_template.find('input[name="tb_nonce"]').val(),
-					data: $select.closest('form').serialize(),
-					info: info
-				};
-
-				$.post(ajaxurl, data, function(response) {
-
-					$edit_template.find('#tb-edit-layout .ajax-mitt').html(response);
-
-					builderBlvd.edit( $edit_template.find('#tb-edit-layout') );
-
-					// Handle the custom styles.
-					data = {
-						action: 'themeblvd_get_meta',
-						security: $edit_template.find('input[name="tb_nonce"]').val(),
-						key: '_tb_builder_styles',
-						post_id: $edit_template.find('input[name="template_id"]').val()
-					};
-
-					$.post(ajaxurl, data, function(response) {
-
-						if ( builderBlvd.versionCompare( themeBlvdVersion, '2.7.0' ) < 0 ) {
-
-							var $textarea = $edit_template.find( '#custom-styles textarea' );
-
-							$textarea.val( response );
-
-							if ( $textarea.data( 'CodeMirrorInstance' ) ) {
-								$textarea.data( 'CodeMirrorInstance' ).setValue( response );
-							}
-						} else {
-
-							if ( cssEditor ) {
-								cssEditor.setValue( response );
-							}
-						}
-
-						$overlay.fadeOut(200);
-
-					});
-
-				});
-
-			}
-		});
-
-		// Put the select menu back to first value (blank)
-		$select.val('');
 
 	});
 
