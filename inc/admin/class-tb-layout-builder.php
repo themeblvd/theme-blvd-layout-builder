@@ -55,7 +55,10 @@ class Theme_Blvd_Layout_Builder {
 		// Add <title> to edit layout screen.
 		add_filter( 'admin_title', array( $this, 'admin_title' ) );
 
-		// Manage Custom Layouts via Edit Page screen
+		// Add "Edit Layout" links to page table rows.
+		add_filter( 'page_row_actions', array( $this, 'page_row_actions' ), 20, 2 );
+
+		// Manage Custom Layouts via Edit Page screen (classic editor)
 		add_action( 'current_screen', array( $this, 'builder_init' ) );
 
 		// Filter on javascript locals specifically for Builder onto
@@ -1213,8 +1216,10 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Make parent menu item Pages is active when
 	 * editing layout.
+	 *
+	 * @since 2.3.0
 	 */
-	function parent_file( $parent_file ) {
+	public function parent_file( $parent_file ) {
 
 		$screen = get_current_screen();
 
@@ -1233,8 +1238,10 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * And make it so "All Pages" is active when
 	 * editing layout.
+	 *
+	 * @since 2.3.0
 	 */
-	function submenu_file( $submenu_file ) {
+	public function submenu_file( $submenu_file ) {
 
 		$screen = get_current_screen();
 
@@ -1254,8 +1261,10 @@ class Theme_Blvd_Layout_Builder {
 	 * Not quite sure why WordPress leaves it blank
 	 * for our edit layout screen; so we're filtering
 	 * it in.
+	 *
+	 * @since 2.3.0
 	 */
-	function admin_title( $admin_title ) {
+	public function admin_title( $admin_title ) {
 
 		$screen = get_current_screen();
 
@@ -1266,6 +1275,45 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		return $admin_title;
+
+	}
+	/**
+	 * Add an "Edit Layout" link to the pages table for each
+	 * page with a custom layout applied.
+	 *
+	 * With the separation of WordPress 5's editor and the
+	 * layout builder, this will make it quicker to access
+	 * the layout builder.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  array   $actions Action links.
+	 * @param  WP_Post $post    Post object.
+	 * @return array   $actions Maybe modified action links.
+	 */
+	public function page_row_actions( $actions, $post ) {
+
+		if ( 'template_builder.php' == basename( get_page_template( $post->ID ) ) ) {
+
+			$new_action = array(
+				'edit-layout' => sprintf(
+					'<a href="%1$s" aria-label="%2$s">%2$s</a>',
+					esc_url( admin_url( 'admin.php?page=tb-edit-layout&page_id=' . $post->ID ) ),
+					__( 'Edit Layout', 'theme-blvd-layout-builder' )
+				)
+			);
+
+			$offset = array_search( 'edit', array_keys( $actions ), true );
+
+			$actions = array_merge(
+				array_slice( $actions, 0, $offset + 1 ),
+				$new_action,
+				array_slice( $actions, $offset + 1 )
+			);
+
+		}
+
+		return $actions;
 
 	}
 
@@ -4081,7 +4129,7 @@ class Theme_Blvd_Layout_Builder {
 
 		$page = get_current_screen();
 
-		if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+		if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
 
 			$classes = explode( " ", $classes );
 
@@ -4116,7 +4164,7 @@ class Theme_Blvd_Layout_Builder {
 
 			$page = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
 				add_action( 'admin_notices', array( $this, 'display_editor' ), 100 );
 			}
 		}
@@ -4137,7 +4185,7 @@ class Theme_Blvd_Layout_Builder {
 
 			$page = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
+			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( $page->base == 'post' && $page->id == 'page' ) ) {
 				add_action( 'in_admin_header', array( $this, 'display_icon_browser' ) );
 			}
 		}
@@ -4158,7 +4206,7 @@ class Theme_Blvd_Layout_Builder {
 
 			$page = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
+			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
 				add_action( 'in_admin_header', 'themeblvd_post_browser' );
 			}
 		}
@@ -4176,7 +4224,7 @@ class Theme_Blvd_Layout_Builder {
 
 			$page = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
 				add_action( 'in_admin_header', 'themeblvd_texture_browser' );
 			}
 		}
