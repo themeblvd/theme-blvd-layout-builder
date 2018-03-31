@@ -268,9 +268,20 @@ class Theme_Blvd_Layout_Builder {
 
 			$icon_file = themeblvd_get_icon_js_file();
 
-			wp_enqueue_script( $icon_file );
+			if ( is_array( $icon_file['url'] ) ) {
 
+				for ( $i = 1; $i <= count( $icon_file['url'] ); $i++ ) {
 
+					$handle = $i > 1 ? $icon_file['handle'] . '-' . $i : $icon_file['handle'];
+
+					wp_enqueue_script( $handle );
+
+				}
+			} else {
+
+				wp_enqueue_script( $icon_file['handle'] );
+
+			}
 		} else {
 
 			wp_enqueue_script( 'jquery-ui-core');
