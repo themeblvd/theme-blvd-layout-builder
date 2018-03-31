@@ -456,7 +456,7 @@ class Theme_Blvd_Layout_Builder {
 			array( $this, 'page' )
 		);
 
-		// admin.php?page=tb-edit-layout&page_id=123
+		// admin.php?page=tb-edit-layout&post_type=page&post_id=123
 
 		add_action( 'admin_print_styles-' . $layouts_page, array( $this, 'load_styles' ) );
 
@@ -477,7 +477,7 @@ class Theme_Blvd_Layout_Builder {
 		// Set active tab ID.
 		$active = 'manage';
 
-		if ( ! empty( $_GET['page_id'] ) ) {
+		if ( ! empty( $_GET['post_id'] ) ) {
 
 			$active = 'edit';
 
@@ -493,7 +493,7 @@ class Theme_Blvd_Layout_Builder {
 		$template_id = '';
 
 		if ( $is_page ) {
-			$template_id = $_GET['page_id'];
+			$template_id = $_GET['post_id'];
 		} else if ( $active == 'edit' && ! empty( $_GET['template'] ) ) {
 			$template_id = $_GET['template'];
 		}
@@ -1225,20 +1225,26 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/**
-	 * Make parent menu item Pages is active when
-	 * editing layout.
+	 * Make parent menu item "Pages" active when editing
+	 * a layout.
 	 *
 	 * @since 2.3.0
 	 */
 	public function parent_file( $parent_file ) {
 
-		$screen = get_current_screen();
-
-		if ( 'admin_page_tb-edit-layout' == $screen->base ) {
+		if ( $this->is_layout_editor() ) {
 
 			$GLOBALS['plugin_page'] = null; // A hack to make WP think it's not a plugin page.
 
-			$parent_file = 'edit.php?post_type=page';
+			$post_type = 'page';
+
+			if ( ! empty( $_REQUEST['post_type'] ) ) {
+
+				$post_type = $_REQUEST['post_type'];
+
+			}
+
+			$parent_file = 'edit.php?post_type=' . $post_type;
 
 		}
 
@@ -1254,11 +1260,17 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function submenu_file( $submenu_file ) {
 
-		$screen = get_current_screen();
+		if ( $this->is_layout_editor() ) {
 
-		if ( 'admin_page_tb-edit-layout' == $screen->base ) {
+			$post_type = 'page';
 
-			$submenu_file = 'edit.php?post_type=page';
+			if ( ! empty( $_REQUEST['post_type'] ) ) {
+
+				$post_type = $_REQUEST['post_type'];
+
+			}
+
+			$submenu_file = 'edit.php?post_type=' . $post_type;
 
 		}
 
@@ -1277,9 +1289,7 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function admin_title( $admin_title ) {
 
-		$screen = get_current_screen();
-
-		if ( 'admin_page_tb-edit-layout' == $screen->base ) {
+		if ( $this->is_layout_editor() ) {
 
 			$admin_title = __( 'Edit Layout', 'theme-blvd-layout-builder' ) . $admin_title;
 
@@ -1288,6 +1298,7 @@ class Theme_Blvd_Layout_Builder {
 		return $admin_title;
 
 	}
+
 	/**
 	 * Add an "Edit Layout" link to the pages table for each
 	 * page with a custom layout applied.
@@ -1304,12 +1315,12 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function page_row_actions( $actions, $post ) {
 
-		if ( 'template_builder.php' == basename( get_page_template( $post->ID ) ) ) {
+		if ( 'template_builder.php' == basename( get_page_template( $post->ID ) ) ) { // @TODO Get working with posts.
 
 			$new_action = array(
 				'edit-layout' => sprintf(
 					'<a href="%1$s" aria-label="%2$s">%2$s</a>',
-					esc_url( admin_url( 'admin.php?page=tb-edit-layout&page_id=' . $post->ID ) ),
+					esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&post_id=' . $post->ID ) ),
 					__( 'Edit Layout', 'theme-blvd-layout-builder' )
 				)
 			);
@@ -2435,24 +2446,18 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function builder_init() {
 
-		global $pagenow;
-		global $typenow;
+		if ( $this->is_classic_editor() ) {
 
-		$post_types = apply_filters( 'themeblvd_editor_builder_post_types', array('page') );
+			add_action( 'save_post', array( $this, 'save_post' ) );
 
-		if ( $post_types ) {
-			foreach ( $post_types as $post_type ) {
-				if ( ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) && $typenow == $post_type ) {
+			add_action( 'edit_form_after_title', array( $this, 'builder' ) );
 
-					add_action( 'save_post', array( $this, 'save_post' ) );
-					add_action( 'edit_form_after_title', array( $this, 'builder' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 
-					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
-					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
-				}
-			}
 		}
+
 	}
 
 	/**
@@ -4138,9 +4143,9 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function body_class( $classes ) {
 
-		$page = get_current_screen();
+		$screen = get_current_screen();
 
-		if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
+		if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 
 			$classes = explode( " ", $classes );
 
@@ -4160,6 +4165,146 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/*--------------------------------------------*/
+	/* Helpers
+	/*--------------------------------------------*/
+
+	/**
+	 * Check if the current post type is supported by the
+	 * layout builder.
+	 *
+	 * @TODO Re-check this function as Gutenberg is merged
+	 * into WordPress 5.0; can we pull all post type new
+	 * editor supports?
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  string $type Post type.
+	 * @return bool         Whether the post type is supported.
+	 */
+	public function is_supported_post_type( $type = null ) {
+
+		if ( ! $type ) {
+
+			$screen = get_current_screen();
+
+			$type = $screen->post_type;
+
+		}
+
+		/**
+		 * Filters the post types that builder interface
+		 * appears on.
+		 *
+		 * @since 2.3.0
+		 */
+		$types = apply_filters(
+			'themeblvd_editor_builder_post_types',
+			array( 'post', 'page' ) // @TODO Exend to any post types Gutenberg supports?
+		);
+
+		if ( in_array( $type, $types ) ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is the classic editor.
+	 *
+	 * The new WordPress editor seems to fire all of the
+	 * old action hooks; so this check helps to eliminate
+	 * outputting unnecessary stuff into the new editor
+	 * interface.
+	 *
+	 * @TODO Re-check this function as Gutenberg is merged
+	 * into WordPress 5.0. It will probably need to be changed.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the classic edior.
+	 */
+	public function is_classic_editor( $screen = null ) {
+
+		if ( isset( $_REQUEST['classic-editor'] ) ) {
+
+			if ( ! $screen ) {
+
+				$screen = get_current_screen();
+
+			}
+
+			if ( 'post' == $screen->base && 'page' == $screen->id ) {
+
+				if ( $this->is_supported_post_type( $screen->post_type ) ) {
+
+					return true;
+
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is he layout editor interface.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the layout editor.
+	 */
+	public function is_layout_editor( $screen = null ) {
+
+		if ( ! $screen ) {
+
+			$screen = get_current_screen();
+
+		}
+
+		if ( 'admin_page_tb-edit-layout' == $screen->base ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is he template editor interface.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the template editor.
+	 */
+	public function is_template_editor( $screen = null ) {
+
+		if ( ! $screen ) {
+
+			$screen = get_current_screen();
+
+		}
+
+		if ( 'toplevel_page_' . $this->id == $screen->base ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/*--------------------------------------------*/
 	/* Hidden Modals
 	/*--------------------------------------------*/
 
@@ -4173,9 +4318,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_editor' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'admin_notices', array( $this, 'display_editor' ), 100 );
 			}
 		}
@@ -4194,9 +4339,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_icon_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( $page->base == 'post' && $page->id == 'page' ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', array( $this, 'display_icon_browser' ) );
 			}
 		}
@@ -4215,9 +4360,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_post_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', 'themeblvd_post_browser' );
 			}
 		}
@@ -4233,9 +4378,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_texture_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( 'admin_page_tb-edit-layout' == $page->base || 'toplevel_page_' . $this->id == $page->base || ( 'post' == $page->base && 'page' == $page->id ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', 'themeblvd_texture_browser' );
 			}
 		}
