@@ -196,19 +196,19 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '<' ) ) {
-			
+
 			wp_enqueue_style( 'color-picker', esc_url( TB_FRAMEWORK_URI . '/admin/options/css/colorpicker.min.css' ) );
-		
+
 		}
 
 		if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) {
-			
+
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-			
+
 				wp_enqueue_style( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.css' ), null, '4.0' );
-			
+
 				wp_enqueue_style( 'codemirror-theme', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/themeblvd.min.css' ), null, '4.0' );
-			
+
 				wp_enqueue_style( 'fontawesome', esc_url( TB_FRAMEWORK_URI . '/assets/plugins/fontawesome/css/font-awesome.min.css' ), null, TB_FRAMEWORK_VERSION );
 
 			}
@@ -258,7 +258,20 @@ class Theme_Blvd_Layout_Builder {
 
 			$icon_file = themeblvd_get_icon_js_file();
 
-			wp_enqueue_script( $icon_file );
+			if ( is_array( $icon_file['url'] ) ) {
+
+				for ( $i = 1; $i <= count( $icon_file['url'] ); $i++ ) {
+
+					$handle = $i > 1 ? $icon_file['handle'] . '-' . $i : $icon_file['handle'];
+
+					wp_enqueue_script( $handle );
+
+				}
+			} else {
+
+				wp_enqueue_script( $icon_file['handle'] );
+
+			}
 
 
 		} else {
@@ -282,19 +295,19 @@ class Theme_Blvd_Layout_Builder {
 			}
 
 			if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
-				
+
 				$gmap_key = themeblvd_get_option( 'gmap_api_key' );
 
 				if ( $gmap_key ) {
-					
+
 					wp_enqueue_script( 'themeblvd_gmap', esc_url( add_query_arg( 'key', $gmap_key, 'https://maps.googleapis.com/maps/api/js' ) ), array(), null );
-				
+
 				}
 
 				wp_enqueue_script( 'themeblvd_modal', esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/modal{$suffix}.js" ), array('jquery'), TB_FRAMEWORK_VERSION );
-			
+
 				wp_enqueue_script( 'codemirror', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/codemirror.min.js' ), null, '4.0' );
-				
+
 				wp_enqueue_script( 'codemirror-modes', esc_url( TB_FRAMEWORK_URI . '/admin/assets/plugins/codemirror/modes.min.js' ), null, '4.0' );
 
 			}
@@ -2244,9 +2257,9 @@ class Theme_Blvd_Layout_Builder {
 						</a>
 
 						<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
-						
+
 							<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '>=' ) ) : ?>
-							
+
 								<a href="#" id="tb-custom-styles-link" class="button-secondary" data-target="tb-custom-styles" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" >
 									<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
 								</a>
@@ -2254,7 +2267,7 @@ class Theme_Blvd_Layout_Builder {
 								<div id="tb-custom-styles" class="modal-content section-code">
 									<textarea id="tb-custom-styles-textarea" data-code-lang="css" name="_tb_builder_styles"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
 								</div>
-							
+
 							<?php else : ?>
 
 								<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
@@ -2262,9 +2275,9 @@ class Theme_Blvd_Layout_Builder {
 								</a>
 
 								<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($post->ID, '_tb_builder_styles', true); ?></textarea>
-							
+
 							<?php endif; ?>
-						
+
 						<?php endif; ?>
 
 					</div><!-- .meta-box-nav (end) -->
@@ -3243,9 +3256,9 @@ class Theme_Blvd_Layout_Builder {
 				$options['bg_video']['desc'] = __('You can upload a web-video file (mp4, webm, ogv), or input a URL to a video page on YouTube or Vimeo. Your fallback image will display on mobile devices.', 'theme-blvd-layout-builder').'<br><br>'.__('Examples:', 'theme-blvd-layout-builder').'<br>https://vimeo.com/79048048<br>http://www.youtube.com/watch?v=5guMumPFBag';
 
 			} elseif ( version_compare( TB_FRAMEWORK_VERSION, '2.5.2', '<=' ) ) {
-				
+
 				$options['bg_video']['desc'] = __('Setup a background video. For best results, make sure to use all three fields. The <em>.webm</em> file will display in Google Chrome, while the <em>.mp4</em> will display in most other modnern browsers. Your placeholder image will display on mobile and in browsers that don\'t support HTML5 video.', 'theme-blvd-layout-builder');
-			
+
 			}
 
 			$options['subgroup_start_3'] = array(
