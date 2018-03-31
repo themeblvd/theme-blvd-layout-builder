@@ -887,7 +887,12 @@ class Theme_Blvd_Layout_Builder {
 
 				<h1 class="wp-heading-inline"><?php echo esc_html( $template->post_title ); ?></h1>
 
-				<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Edit Page', 'theme-blvd-layout-builder' ); ?></a>
+				<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="page-title-action">
+					<?php
+					$labels = get_post_type_labels( get_post_type_object( $_REQUEST['post_type'] ) );
+					echo $labels->edit_item;
+					?>
+				</a>
 
 				<hr class="wp-header-end">
 
@@ -1086,8 +1091,13 @@ class Theme_Blvd_Layout_Builder {
 											<span class="value"><?php echo esc_html( $author ); ?></span>
 										</li>
 										<li>
-											<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="button-secondary"><?php esc_html_e('Edit Page', 'theme-blvd-layout-builder'); ?></a>
-											<a href="<?php echo esc_url( get_permalink( $template_id ) ); ?>" target="_blank" class="button-secondary"><?php esc_html_e('View Page', 'theme-blvd-layout-builder'); ?></a>
+											<?php $labels = get_post_type_labels( get_post_type_object( $_REQUEST['post_type'] ) ); ?>
+											<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="button-secondary">
+												<?php echo $labels->edit_item; ?>
+											</a>
+											<a href="<?php echo esc_url( get_permalink( $template_id ) ); ?>" target="_blank" class="button-secondary">
+												<?php echo $labels->view_item; ?>
+											</a>
 										</li>
 									</ul>
 
