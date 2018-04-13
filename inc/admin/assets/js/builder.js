@@ -1078,6 +1078,8 @@ jQuery( document ).ready( function( $ ) {
 				}
 
 				// Add updated success message.
+				$edit_template.find('.themeblvd-updated').remove(); // Remove previous, if exists.
+
 				$edit_template.find('.meta-box-nav').before('<div class="themeblvd-updated updated" style="display:none;"><p><strong>' + message + '</strong></p><button type="button" class="notice-dismiss"></button></div>');
 
 				$edit_template.find('.themeblvd-updated').fadeIn(500).find('.notice-dismiss').on( 'click', function() {
