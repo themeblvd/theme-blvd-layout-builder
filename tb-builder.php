@@ -5,24 +5,7 @@ Description: When using a Theme Blvd theme, this plugin gives you slick interfac
 Version: 2.3.0
 Author: Theme Blvd
 Author URI: http://themeblvd.com
-License: GPL2
-
-    Copyright 2015  Theme Blvd
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License version 2,
-    as published by the Free Software Foundation.
-
-    You may NOT assume that you can use any other version of the GPL.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    The license for this software can likely be found here:
-    http://www.gnu.org/licenses/gpl-2.0.html
-
+License: MIT
 */
 
 define( 'TB_BUILDER_PLUGIN_VERSION', '2.3.0' );

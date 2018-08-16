@@ -1,0 +1,10 @@
+{
+  "name": "theme-blvd-layout-builder",
+  "version": "2.2.8",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themeblvd/theme-blvd-layout-builder.git"
+  },
+  "author": "Jason Bobich",
+  "license": "MIT"
+}
