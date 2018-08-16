@@ -21,6 +21,7 @@ function themeblvd_builder_init() {
 
 	global $_themeblvd_export_layouts;
 	global $_themeblvd_layout_builder;
+	global $_themeblvd_layout_builder_editor;
 
 	// Include general items
 	include_once( TB_BUILDER_PLUGIN_DIR . '/inc/class-tb-layout-builder-data.php' );
@@ -147,10 +148,14 @@ function themeblvd_builder_init() {
 
 			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/builder-samples.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder-ajax.php' );
+			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder-editor.php' );
 			include_once( TB_BUILDER_PLUGIN_DIR . '/inc/admin/class-tb-layout-builder.php' );
 
 			// Setup Builder interface
 			$_themeblvd_layout_builder = new Theme_Blvd_Layout_Builder();
+
+			// WordPress 5+ Editor Integration
+			$_themeblvd_layout_builder_editor = new Theme_Blvd_Layout_Builder_Editor();
 
 		}
 	}

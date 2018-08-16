@@ -896,6 +896,14 @@ class Theme_Blvd_Layout_Builder {
 
 				<hr class="wp-header-end">
 
+				<?php if (  ! empty ( $_GET['referer'] ) && 'editor' === $_GET['referer'] ) : ?>
+					<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>">
+						<?php if ( ! is_rtl() ) echo '&larr; '; ?>
+						<?php _e( 'Return to editor', 'theme-blvd-layout-builder' ); ?>
+						<?php if ( is_rtl() ) echo ' &rarr;'; ?>
+					</a>
+				<?php endif; ?>
+
 			<?php endif; ?>
 
 			<form id="tb-editor-builder" method="post" action="">
