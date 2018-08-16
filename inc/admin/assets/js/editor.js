@@ -110,6 +110,13 @@ var addFilter = _wp2.default.hooks.addFilter;
 var uniqueName = 'theme-blvd-layout-builder/layout-editor';
 
 var layoutEditor = function layoutEditor(menuItems) {
+  var url = new URL(window.location.href);
+  var postId = url.searchParams.get('post');
+
+  if (!postId) {
+    return menuItems;
+  }
+
   return [].concat(_toConsumableArray(menuItems), [React.createElement(
     MenuItem,
     {
@@ -117,7 +124,7 @@ var layoutEditor = function layoutEditor(menuItems) {
       icon: false,
       isSelected: false,
       onClick: function onClick() {
-        window.location.href = _l10n2.default.editLink;
+        window.location.href = _l10n2.default.editLink + '&post_id=' + postId;
       }
     },
     _l10n2.default.edit
