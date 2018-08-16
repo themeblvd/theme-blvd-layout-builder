@@ -1,10 +1,23 @@
 {
   "name": "theme-blvd-layout-builder",
   "version": "2.2.8",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/themeblvd/theme-blvd-layout-builder.git"
   },
   "author": "Jason Bobich",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "unminified-webpack-plugin": "^2.0.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  }
 }
