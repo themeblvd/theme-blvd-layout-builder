@@ -802,6 +802,8 @@ jQuery(document).ready(function($) {
             encodeURIComponent(name) +
             '&' +
             form_data +
+            '&_tb_builder_styles=' +
+            $('#tb-custom-styles-textarea').val() +
             '&post_id=' +
             $wrap.find('input[name="tb_post_id"]').val()
         };

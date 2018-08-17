@@ -60,6 +60,7 @@ This plugin works with the following themes only.
 
 = 2.3.0 - XX/XX/XXXX =
 * New: Added WordPress 5 compatibility.
+* Fixed: When saving a custom layout as a template, the "Custom CSS" option was not getting saved with the new template.
 
 = 2.2.7 - 02/08/2018 =
 * Fixed: Testimonial text not saving with Testimonial element (for framework 2.5-2.6 themes).
