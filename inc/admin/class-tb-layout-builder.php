@@ -1333,25 +1333,21 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function page_row_actions( $actions, $post ) {
 
-		if ( 'template_builder.php' == basename( get_page_template( $post->ID ) ) ) { // @TODO Get working with posts.
+		$new_action = array(
+			'edit-layout' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%2$s</a>',
+				esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&post_id=' . $post->ID . '&referer=view-all' ) ),
+				__( 'Custom Layout', 'theme-blvd-layout-builder' )
+			)
+		);
 
-			$new_action = array(
-				'edit-layout' => sprintf(
-					'<a href="%1$s" aria-label="%2$s">%2$s</a>',
-					esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&post_id=' . $post->ID ) ),
-					__( 'Edit Layout', 'theme-blvd-layout-builder' )
-				)
-			);
+		$offset = array_search( 'edit', array_keys( $actions ), true );
 
-			$offset = array_search( 'edit', array_keys( $actions ), true );
-
-			$actions = array_merge(
-				array_slice( $actions, 0, $offset + 1 ),
-				$new_action,
-				array_slice( $actions, $offset + 1 )
-			);
-
-		}
+		$actions = array_merge(
+			array_slice( $actions, 0, $offset + 1 ),
+			$new_action,
+			array_slice( $actions, $offset + 1 )
+		);
 
 		return $actions;
 
