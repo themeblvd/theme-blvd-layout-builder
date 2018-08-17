@@ -58,6 +58,9 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
+= 2.3.0 - XX/XX/XXXX =
+* New: Added WordPress 5 compatibility.
+
 = 2.2.7 - 02/08/2018 =
 * Fixed: Testimonial text not saving with Testimonial element (for framework 2.5-2.6 themes).
 * Removed: Deleted the `.fa` icon from default "Read More" text of Post List (for framework 2.5+ themes).
