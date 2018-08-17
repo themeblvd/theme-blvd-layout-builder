@@ -121,7 +121,7 @@ var layoutEditor = function layoutEditor(menuItems) {
     MenuItem,
     {
       key: uniqueName,
-      icon: false,
+      icon: 'external',
       isSelected: false,
       onClick: function onClick() {
         window.location.href = _l10n2.default.editLink + '&post_id=' + postId;

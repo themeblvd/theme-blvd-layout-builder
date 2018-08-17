@@ -18,7 +18,7 @@ const layoutEditor = menuItems => {
     ...menuItems,
     <MenuItem
       key={uniqueName}
-      icon={false}
+      icon={'external'}
       isSelected={false}
       onClick={() => {
         window.location.href = `${l10n.editLink}&post_id=${postId}`;
