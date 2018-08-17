@@ -1688,6 +1688,11 @@ class Theme_Blvd_Layout_Builder {
 			}
 		}
 
+		// Apply "Custom Layout" page template when saving layout.
+		if ( 'page' === get_post_type( $post_id ) ) {
+			update_post_meta( $post_id, '_wp_page_template', 'template_builder.php' );
+		}
+
 		// Template Info
 		if ( isset( $data['template_info'] ) && get_post_type($post_id) == 'tb_layout' ) {
 
