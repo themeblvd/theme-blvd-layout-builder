@@ -1,2 +1,4 @@
 node_modules
 .DS_Store
+inc/admin/assets/js/editor.js
+inc/admin/assets/js/editor.min.js

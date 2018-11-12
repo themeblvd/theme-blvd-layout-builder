@@ -43,9 +43,9 @@ class Theme_Blvd_Layout_Builder_Editor {
 			'theme-blvd-layout-builder-editor',
 			'themeblvdLayoutBuilderEditorL10n',
 			array(
-				'edit'     => __( 'Custom Layout', 'theme-blvd-layout-builder' ),
-				'editLink' => 'http://google.com',
-				'editLink' => esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&referer=editor' ) ),
+				'editText'     => __( 'Edit Custom Layout', 'theme-blvd-layout-builder' ),
+				'editLink'     => esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&referer=editor' ) ),
+				'redirectText' => __( 'Redirecting...', 'theme-blvd-layout-builder' ),
 			)
 		);
 
