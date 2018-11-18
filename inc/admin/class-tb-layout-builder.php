@@ -48,7 +48,17 @@ class Theme_Blvd_Layout_Builder {
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'themeblvd_builder_update', array( $this, 'notice' ) );
 
-		// Manage Custom Layouts via Edit Page screen
+		// Make Pages > All pages active when editing layout.
+		add_filter( 'parent_file', array( $this, 'parent_file' ) );
+		add_filter( 'submenu_file', array( $this, 'submenu_file' ) );
+
+		// Add <title> to edit layout screen.
+		add_filter( 'admin_title', array( $this, 'admin_title' ) );
+
+		// Add "Edit Layout" links to page table rows.
+		add_filter( 'page_row_actions', array( $this, 'page_row_actions' ), 20, 2 );
+
+		// Manage Custom Layouts via Edit Page screen (classic editor)
 		add_action( 'current_screen', array( $this, 'builder_init' ) );
 
 		// Filter on javascript locals specifically for Builder onto
@@ -223,9 +233,9 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 */
-	public function load_scripts() {
+	 public function load_scripts() {
 
-		global $pagenow;
+ 		global $pagenow;
 
 		$suffix = '.min';
 
@@ -272,8 +282,6 @@ class Theme_Blvd_Layout_Builder {
 				wp_enqueue_script( $icon_file['handle'] );
 
 			}
-
-
 		} else {
 
 			wp_enqueue_script( 'jquery-ui-core');
@@ -324,50 +332,50 @@ class Theme_Blvd_Layout_Builder {
 			));
 
 			wp_add_inline_script(
-		        'theme-blvd-layout-builder',
-		        sprintf(
-		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "css", %s ); } );',
+				'theme-blvd-layout-builder',
+				sprintf(
+					'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "css", %s ); } );',
 					wp_json_encode( $settings )
-		        )
-			);
+				)
+		);
 
-			$settings = wp_enqueue_code_editor( array(
-				'type' => 'text/html',
-			));
+		$settings = wp_enqueue_code_editor( array(
+			'type' => 'text/html',
+		));
 
-			wp_add_inline_script(
-		        'theme-blvd-layout-builder',
-		        sprintf(
-		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "html", %s ); } );',
-					wp_json_encode( $settings )
-		        )
-			);
-
-		}
-
-		// Add JS locals when needed.
-		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
-
-			/*
-			 * Edit Page Screen: This is a fallback for prior to
-			 * framework v2.3 where framework metabox scripts were
-			 * not localized by default.
-			 */
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
-				wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
-			}
-		} else {
-
-			/*
-			 * Localize script for actual builder page; not needed
-			 * for framework 2.7+
-			 */
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-				wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
-			}
-		}
+		wp_add_inline_script(
+			'theme-blvd-layout-builder',
+			sprintf(
+				'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "html", %s ); } );',
+				wp_json_encode( $settings )
+			)
+		);
 
 	}
+
+	// Add JS locals when needed.
+	if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
+
+		/*
+		 * Edit Page Screen: This is a fallback for prior to
+		 * framework v2.3 where framework metabox scripts were
+		 * not localized by default.
+		 */
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
+			wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+	} else {
+
+		/*
+		 * Localize script for actual builder page; not needed
+		 * for framework 2.7+
+		 */
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+	}
+
+ 	}
 
 	/**
 	 * Add javascript locals for Builder onto framework js
@@ -401,6 +409,7 @@ class Theme_Blvd_Layout_Builder {
 			'template_save'			=> __( 'Save as Template', 'theme-blvd-layout-builder' ),
 			'template_title'		=> __( 'Save Current Layout as Template', 'theme-blvd-layout-builder' ),
 			'template_updated'		=> __( 'The template has been saved.', 'theme-blvd-layout-builder'),
+			'layout_updated'		=> __( 'The custom layout has been saved.', 'theme-blvd-layout-builder'),
 			'framework_version'     => TB_FRAMEWORK_VERSION,
 		);
 
@@ -422,12 +431,36 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function add_page() {
 
-		// Create admin page
-		$admin_page = add_menu_page( $this->args['page_title'], $this->args['menu_title'], $this->args['cap'], $this->id, array( $this, 'page' ), $this->args['icon'], $this->args['priority'] );
+		// Create templates admin page
+		$templates_page = add_menu_page(
+			$this->args['page_title'],
+			$this->args['menu_title'],
+			$this->args['cap'],
+			$this->id,
+			array( $this, 'page' ),
+			$this->args['icon'],
+			$this->args['priority']
+		);
 
-		// Add scripts and styles
-		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
-		add_action( 'admin_print_scripts-'.$admin_page, array( $this, 'load_scripts' ) );
+		add_action( 'admin_print_styles-' . $templates_page, array( $this, 'load_styles' ) );
+
+		add_action( 'admin_print_scripts-' . $templates_page, array( $this, 'load_scripts' ) );
+
+		// Add edit layout page.
+		$layouts_page = add_submenu_page(
+			null, // Will not appear on WP admin nav.
+			__( 'Edit Layout', 'theme-blvd-layout-builder' ),
+			__( 'Edit Layout', 'theme-blvd-layout-builder' ),
+			$this->args['cap'],
+			'tb-edit-layout',
+			array( $this, 'page' )
+		);
+
+		// admin.php?page=tb-edit-layout&post_type=page&post_id=123
+
+		add_action( 'admin_print_styles-' . $layouts_page, array( $this, 'load_styles' ) );
+
+		add_action( 'admin_print_scripts-' . $layouts_page, array( $this, 'load_scripts' ) );
 
 	}
 
@@ -438,22 +471,35 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function page() {
 
+		// Are we editing the layout of a page, opposed to a template?
+		$is_post = false;
+
 		// Set active tab ID.
 		$active = 'manage';
 
-		if ( ! empty( $_GET['tab'] ) && in_array( $_GET['tab'], array('manage', 'add', 'edit') ) ) {
+		if ( ! empty( $_GET['post_id'] ) ) {
+
+			$active = 'edit';
+
+			$is_post = true;
+
+		}
+
+		if ( ! $is_post && ! empty( $_GET['tab'] ) && in_array( $_GET['tab'], array('manage', 'add', 'edit') ) ) {
 			$active = esc_attr( $_GET['tab'] );
 		}
 
 		// Template ID to edit (if necessary)
 		$template_id = '';
 
-		if ( $active == 'edit' && ! empty( $_GET['template'] ) ) {
+		if ( $is_post ) {
+			$template_id = $_GET['post_id'];
+		} else if ( $active == 'edit' && ! empty( $_GET['template'] ) ) {
 			$template_id = $_GET['template'];
 		}
 
 		// Delete template
-		if ( ! empty( $_GET['delete'] ) ) {
+		if ( ! $is_post && ! empty( $_GET['delete'] ) ) {
 			if ( wp_verify_nonce( $_GET['security'], 'delete_template' ) ) {
 				wp_delete_post( $_GET['delete'], true );
 				$this->error = __('The template has been deleted.', 'theme-blvd-layout-builder');
@@ -461,7 +507,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Delete multiple templates
-		if ( isset( $_POST['action'] ) && $_POST['action'] == 'trash' ) {
+		if ( ! $is_post && isset( $_POST['action'] ) && $_POST['action'] == 'trash' ) {
 			if ( wp_verify_nonce( $_POST['tb_nonce'], 'delete_template' ) ) {
 
 				if ( $_POST['posts'] ) {
@@ -476,7 +522,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Save new template
-		if ( ! empty( $_POST['new_template'] ) ) {
+		if ( ! $is_post && ! empty( $_POST['new_template'] ) ) {
 			if ( wp_verify_nonce( $_POST['tb_nonce'], 'new_template' ) ) {
 				$template_id = $this->new_template( $_POST['new_template'] );
 				$this->updated = __('New template created.', 'theme-blvd-layout-builder');
@@ -495,22 +541,24 @@ class Theme_Blvd_Layout_Builder {
 			<div id="optionsframework" class="tb-options-wrap wrap">
 
 				<div class="admin-module-header">
-			    	<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
-			    </div>
+					<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
+				</div>
 
-			    <h2 class="nav-tab-wrapper">
-			        <a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?></a>
-			        <a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Add Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Add Template', 'theme-blvd-layout-builder' ); ?></a>
-			        <?php if ( $active == 'edit' ) : ?>
-			       		<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?></span>
-			       	<?php endif; ?>
-			    </h2>
+				<?php if ( ! $is_post ) : ?>
+				<h2 class="nav-tab-wrapper">
+					<a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?></a>
+					<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Add Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Add Template', 'theme-blvd-layout-builder' ); ?></a>
+					<?php if ( $active == 'edit' ) : ?>
+						<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?></span>
+					<?php endif; ?>
+				</h2>
+				<?php endif; ?>
 
-			    <?php
-			    // Display notices
-			    do_action('themeblvd_builder_update');
+				<?php
+				// Display notices
+				do_action('themeblvd_builder_update');
 
-			    // Display correct admin page
+				// Display correct admin page
 				switch( $active ) {
 
 					case 'manage' :
@@ -522,15 +570,15 @@ class Theme_Blvd_Layout_Builder {
 						break;
 
 					case 'edit' :
-						$this->page_edit( $template_id );
+						$this->page_edit( $template_id, $is_post );
 						break;
 
 				}
 				?>
 
 				<div class="admin-module-footer">
-			    	<?php do_action( 'themeblvd_admin_module_footer', 'builder' ); ?>
-			    </div><!-- .admin-module-footer (end) -->
+					<?php do_action( 'themeblvd_admin_module_footer', 'builder' ); ?>
+				</div><!-- .admin-module-footer (end) -->
 
 			</div><!-- #optionsframework (end) -->
 		</div><!-- #builder_blvd (end) -->
@@ -546,8 +594,8 @@ class Theme_Blvd_Layout_Builder {
 		$templates = get_posts( array( 'post_type' => 'tb_layout', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
 		?>
 		<div id="manage_layouts" class="metabox-holder">
-	    	<form id="manage_builder" action="<?php echo admin_url('admin.php?page='.$this->id); ?>" method="post">
-	    		<?php echo '<input type="hidden" name="tb_nonce" value="'.wp_create_nonce( 'delete_template' ).'" />'; ?>
+			<form id="manage_builder" action="<?php echo admin_url('admin.php?page='.$this->id); ?>" method="post">
+				<?php echo '<input type="hidden" name="tb_nonce" value="'.wp_create_nonce( 'delete_template' ).'" />'; ?>
 				<div class="tablenav top clearfix">
 					<div class="alignleft actions">
 						<select name="action">
@@ -771,7 +819,7 @@ class Theme_Blvd_Layout_Builder {
 							<span class="tb-loader ajax-loading">
 								<i class="tb-icon-spinner"></i>
 							</span>
-				            <div class="clear"></div>
+							<div class="clear"></div>
 						</div>
 					</div><!-- .postbox (end) -->
 				</div><!-- .metabox-holder (end) -->
@@ -785,10 +833,10 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 2.0.0
 	 */
-	public function page_edit( $template_id ) {
+	public function page_edit( $template_id, $is_post = false ) {
 
 		if ( ! $template_id ) {
-			$this->notice( __('No Template ID given to edit.', 'theme-blvd-layout-builder'), 'error', false );
+			$this->notice( __('No template or layout ID given to edit.', 'theme-blvd-layout-builder'), 'error', false );
 			return;
 		}
 
@@ -800,27 +848,207 @@ class Theme_Blvd_Layout_Builder {
 
 		// Get post object for template
 		$template = get_post( $template_id );
+
+		if ( $is_post ) {
+			$class = 'page-layout-editor';
+		} else {
+			$class = 'template-editor';
+		}
+
+		// Link to "Templates" section of WP Admin
+		$templates_link = sprintf(
+			'<a href="%s" target="_blank">%s</a>',
+			esc_url( add_query_arg( array('page' => $this->id), admin_url('admin.php') ) ),
+			esc_html__( 'Templates', 'theme-blvd-layout-builder' )
+		);
+
+		// ID of template to sync with (optional)
+		$sync_id = 0;
+
+		if ( $is_post ) {
+			$sync_id = get_post_meta( $template->ID, '_tb_custom_layout', true );
+		}
+
+		// Classes to show or hide the sections.
+		$sync_post_id = 0;
+		$edit_hide = '';
+		$sync_hide = 'hide';
+
+		if ( $is_post && $sync_id ) {
+			$sync_post_id = themeblvd_post_id_by_name( $sync_id, 'tb_layout' );
+			$edit_hide = 'hide';
+			$sync_hide = '';
+		}
+
 		?>
-		<div id="tb-edit-layout">
-			<form id="edit_builder" method="post" action="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'tab' => 'edit', 'template' => $template_id), admin_url('admin.php') ) ); ?>">
-				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>" />
-				<input type="hidden" name="template_id" value="<?php echo esc_attr($template_id); ?>" />
-				<input type="hidden" name="action" value="save_template" />
+		<div id="tb-edit-layout" class="<?php echo $class; ?>">
+
+			<?php if ( $is_post ) : ?>
+
+				<h1 class="wp-heading-inline"><?php echo esc_html( $template->post_title ); ?></h1>
+
+				<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="page-title-action">
+					<?php
+					$labels = get_post_type_labels( get_post_type_object( $_REQUEST['post_type'] ) );
+					echo $labels->edit_item;
+					?>
+				</a>
+
+				<hr class="wp-header-end">
+
+				<?php if (  ! empty ( $_GET['referer'] ) && 'editor' === $_GET['referer'] ) : ?>
+					<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>">
+						<?php if ( ! is_rtl() ) echo '&larr; '; ?>
+						<?php _e( 'Return to editor', 'theme-blvd-layout-builder' ); ?>
+						<?php if ( is_rtl() ) echo ' &rarr;'; ?>
+					</a>
+				<?php endif; ?>
+
+			<?php endif; ?>
+
+			<form id="tb-editor-builder" method="post" action="">
+
+				<input type="hidden" name="tb_nonce" value="<?php echo wp_create_nonce('tb_save_layout'); ?>">
+
+				<input type="hidden" name="template_id" value="<?php echo esc_attr($template_id); ?>">
+
+				<input type="hidden" name="tb_post_id" value="<?php echo esc_attr($template_id); ?>">
+
+				<input type="hidden" name="action" value="save_template">
+
+				<?php if ( $is_post ) : ?>
+					<input type="hidden" name="context" value="layout" />
+				<?php else : ?>
+					<input type="hidden" name="context" value="template" />
+				<?php endif; ?>
+
+
 				<div id="poststuff" class="metabox-holder full-width has-right-sidebar">
 
 					<!-- MAIN (start) -->
 
 					<div id="post-body">
 
-						<div class="ajax-overlay full-overlay">
-							<span class="tb-loader ajax-loading">
-								<i class="tb-icon-spinner"></i>
-							</span>
-						</div>
+						<div id="post-body-content" class="stand-alone-builder-wrap">
 
-						<div id="post-body-content" class="ajax-mitt">
-							<?php $this->edit_layout( $template_id, true ); ?>
-						</div><!-- .post-body-content (end) -->
+							<!-- HEADER (start) -->
+
+							<div class="meta-box-nav textarea-wrap clearfix">
+
+								<div class="ajax-overlay add-element"></div>
+								<div class="ajax-overlay sync-overlay <?php echo $sync_hide; ?>"></div>
+
+								<?php
+								if ( $is_post ) {
+
+									if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+										$tooltip = esc_attr__('Select a layout to merge with this page\'s custom layout.', 'theme-blvd-layout-builder');
+									} else {
+										$tooltip = esc_attr__('Select a starting point for this page\'s custom layout.', 'theme-blvd-layout-builder'); // @deprecated
+									}
+								} else {
+
+									if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) {
+										$tooltip = esc_attr__('Select a layout to merge with this template.', 'theme-blvd-layout-builder');
+									} else {
+										$tooltip = esc_attr__('Select a starting point for this template.', 'theme-blvd-layout-builder'); // @deprecated
+									}
+								}
+								?>
+
+								<div class="select-layout apply tb-tooltip-link" data-tooltip-text="<?php echo $tooltip; ?>">
+									<?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $template_id ); ?>
+								</div>
+
+								<?php if ( $is_post ) : ?>
+
+									<div class="select-layout sync tb-tooltip-link" data-tooltip-text="<?php esc_attr_e('Select a template to sync with this page.', 'theme-blvd-layout-builder'); ?>">
+										<?php echo $this->layout_select( $sync_id, 'sync', '_tb_custom_layout' ); ?>
+									</div>
+
+									<a href="#" id="tb-save-new-template" class="button-secondary">
+										<?php esc_html_e('Save as Template', 'theme-blvd-layout-builder'); ?>
+									</a>
+
+								<?php endif; ?>
+
+								<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.5.0', '>=' ) ) : ?>
+
+									<?php if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '>=' ) ) : ?>
+
+										<a href="#" id="tb-custom-styles-link" class="button-secondary" data-target="tb-custom-styles" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" >
+											<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+										</a>
+
+										<div id="tb-custom-styles" class="modal-content section-code">
+											<textarea id="tb-custom-styles-textarea" data-code-lang="css" name="_tb_builder_styles"><?php echo get_post_meta($template_id, '_tb_builder_styles', true); ?></textarea>
+										</div>
+
+									<?php else : ?>
+
+										<a href="#" id="tb-custom-styles" class="button-secondary tb-textarea-code-link" data-target="tb-custom-styles-textarea" data-title="<?php esc_attr_e('Custom CSS', 'theme-blvd-layout-builder'); ?>" data-code_lang="css">
+											<?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder'); ?>
+										</a>
+
+										<textarea id="tb-custom-styles-textarea" name="_tb_builder_styles" class="of-input hide"><?php echo get_post_meta($template_id, '_tb_builder_styles', true); ?></textarea>
+
+									<?php endif; ?>
+
+								<?php endif; ?>
+
+							</div><!-- .meta-box-nav (end) -->
+
+							<!-- HEADER (end) -->
+
+							<!-- EDIT LAYOUT (start) -->
+
+							<div id="tb-edit-layout">
+
+								<div class="ajax-overlay full-overlay">
+									<span class="tb-loader ajax-loading">
+										<i class="tb-icon-spinner"></i>
+									</span>
+								</div>
+
+								<div id="" class="ajax-mitt">
+									<?php $this->edit_layout( $template_id, true ); ?>
+								</div><!-- .post-body-content (end) -->
+
+							</div><!-- #tb-edit-layout -->
+
+							<!-- EDIT LAYOUT (end) -->
+
+							<?php if ( $is_post ) : ?>
+
+								<!-- TEMPLATE SYNC (start) -->
+
+								<div id="tb-sync-layout" class="<?php echo $sync_hide; ?>">
+									<p class="sync-title"><i class="tb-icon-arrows-ccw"></i><?php esc_html_e('Synced with Template:', 'theme-blvd-layout-builder'); ?> <span class="title"><?php echo get_the_title($sync_post_id); ?></span></p>
+									<p><?php printf( esc_html__('This page\'s layout is currently synced with the template selected above, which can only be edited from the %s page.', 'theme-blvd-layout-builder'), $templates_link ); ?></p>
+									<p><?php printf( '<a href="#" id="tb-template-unsync" class="button-secondary unsync">%s</a>', esc_html__('Unsync Layout', 'theme-blvd-layout-builder') ); ?></p>
+								</div><!-- #tb-sync-layout (end) -->
+
+								<!-- TEMPLATE SYNC (end) -->
+
+							<?php endif; ?>
+
+							<!-- FOOTER (start) -->
+
+							<div class="tb-builder-footer submitbox clearfix">
+
+								<p><i class="tb-icon-logo-stroke wp-ui-text-highlight"></i> Layout Builder by <a href="http://www.themeblvd.com" target="_blank">Theme Blvd</a> &#8212; <?php esc_html_e('Version', 'theme-blvd-layout-builder'); ?>: <?php echo TB_BUILDER_PLUGIN_VERSION; ?></p>
+
+								<?php if ( $is_post ) : ?>
+									<a href="#" id="tb-clear-layout" class="submitdelete" title="<?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?>"><?php esc_html_e('Clear Layout', 'theme-blvd-layout-builder'); ?></a>
+								<?php endif; ?>
+
+								<div class="ajax-overlay sync-overlay"></div>
+
+							</div><!-- .tb-builder-footer -->
+
+							<!-- FOOTER (end) -->
+
+						</div><!-- #post-body-content -->
 
 					</div><!-- #post-body (end) -->
 
@@ -830,112 +1058,84 @@ class Theme_Blvd_Layout_Builder {
 
 					<div class="inner-sidebar">
 
-						<?php if ( TB_BUILDER_DEBUG ) : ?>
-							<div id="layout-publish" class="postbox postbox-publish">
-								<h3 class="hndle"><?php esc_html_e( 'DEBUG', 'theme-blvd-layout-builder' ); ?></h3>
-								<div class="submitbox">
-									<div id="major-publishing-actions">
-										<div id="publishing-action">
-											<input class="button-primary" value="<?php esc_attr_e( 'Update Template (non-ajax)', 'theme-blvd-layout-builder' ); ?>" type="submit" />
-										</div>
-										<div class="clear"></div>
-									</div>
-								</div><!-- .submitbox (end) -->
-							</div><!-- .post-box (end) -->
-						<?php endif; ?>
+						<div id="layout-info" class="postbox postbox-layout-info">
 
-						<div id="layout-publish" class="postbox postbox-publish">
-							<h3 class="hndle"><?php esc_html_e( 'Publish', 'theme-blvd-layout-builder' ); ?> <?php echo esc_html($template->post_title); ?></h3>
-							<div class="submitbox">
-								<div id="major-publishing-actions">
-									<div id="delete-action">
-										<a class="submitdelete delete-layout" href="<?php echo esc_url( add_query_arg( array('page' => $this->id, 'delete' => $template_id, 'security' => wp_create_nonce('delete_template')), admin_url('admin.php') ) ); ?>"><?php esc_html_e( 'Delete', 'theme-blvd-layout-builder' ); ?></a>
-									</div>
-									<div id="publishing-action">
-										<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?></a>
-										<span class="tb-loader ajax-loading">
-											<i class="tb-icon-spinner"></i>
-										</span>
-									</div>
-									<div class="clear"></div>
-								</div>
-							</div><!-- .submitbox (end) -->
-						</div><!-- .post-box (end) -->
+							<!-- <div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div> -->
 
-						<div id="layout-info" class="postbox postbox-layout-info closed">
-							<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
-							<h3 class="hndle"><?php esc_html_e('Template Information', 'theme-blvd-layout-builder' ); ?></h3>
-							<div class="tb-widget-content hide">
-								<?php
-								// Current settings
-								$settings = array(
-									'post_title' 	=> $template->post_title,
-									'post_name'		=> $template->post_name
-								);
+							<?php if ( $is_post ) : ?>
 
-								// Setup attribute options
-								$options = array(
-									array(
-										'name'		=> __('Template Name', 'theme-blvd-layout-builder' ),
-										'id' 		=> 'post_title',
-										'desc'		=> null,
-										'type' 		=> 'text'
-									),
-									array(
-										'name' 		=> __('Template ID', 'theme-blvd-layout-builder' ),
-										'id' 		=> 'post_name',
-										'desc'		=> null,
-										'type' 		=> 'text'
-									)
-								);
+								<h3><?php esc_html_e('Page Information', 'theme-blvd-layout-builder' ); ?></h3>
 
-								// Display form element
-								$form = themeblvd_option_fields( 'template_info', $options, $settings, false );
-								echo $form[0];
-								?>
-							</div><!-- .tb-widget-content (end) -->
-						</div><!-- .post-box (end) -->
+								<div class="tb-widget-content">
 
-						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-							<div id="layout-merge" class="postbox postbox-layout-merge closed">
-								<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
-								<h3 class="hndle"><?php esc_html_e('Merge Layout', 'theme-blvd-layout-builder' ); ?></h3>
-								<div class="tb-widget-content hide">
-									<div id="section-post_title" class="section  section-text">
-									    <div class="option">
-									        <div class="controls">
-									            <?php echo $this->layout_select( '', 'apply', '_tb_apply_layout', $template_id ); ?>
-									        </div>
-											<div class="explain">
-												<?php esc_html_e('Select a template or sample layout to merge with the current template.', 'theme-blvd-layout-builder'); ?>
-											</div>
-											<div class="clear"></div>
-									    </div>
-									</div>
+									<ul class="page-info">
+										<li>
+											<span class="label"><?php esc_html_e('Title', 'theme-blvd-layout-builder'); ?></span>
+											<span class="value"><?php echo esc_html( $template->post_title ); ?></span>
+										</li>
+										<li>
+											<span class="label"><?php esc_html_e('ID', 'theme-blvd-layout-builder'); ?></span>
+											<span class="value"><?php echo esc_html( $template_id ); ?></span>
+										</li>
+										<li>
+											<?php
+											$status = __( 'Unknown', 'theme-blvd-layout-builder' );
+
+											$statuses = get_post_statuses();
+
+											if ( ! empty( $statuses[ $template->post_status ] ) ) {
+												$status = $statuses[ $template->post_status ];
+											}
+											?>
+											<span class="label"><?php esc_html_e('Status', 'theme-blvd-layout-builder'); ?></span>
+											<span class="value"><?php echo esc_html( $status ); ?></span>
+										</li>
+										<li>
+											<?php
+											$author = get_userdata( $template->post_author );
+											$author = $author->user_nicename;
+											?>
+											<span class="label"><?php esc_html_e('Author', 'theme-blvd-layout-builder'); ?></span>
+											<span class="value"><?php echo esc_html( $author ); ?></span>
+										</li>
+										<li>
+											<?php $labels = get_post_type_labels( get_post_type_object( $_REQUEST['post_type'] ) ); ?>
+											<a href="<?php echo esc_url( admin_url( 'post.php?post=' . $template_id . '&action=edit' ) ); ?>" class="button-secondary">
+												<?php echo $labels->edit_item; ?>
+											</a>
+											<a href="<?php echo esc_url( get_permalink( $template_id ) ); ?>" target="_blank" class="button-secondary">
+												<?php echo $labels->view_item; ?>
+											</a>
+										</li>
+									</ul>
+
 								</div><!-- .tb-widget-content (end) -->
-							</div><!-- .post-box (end) -->
-						<?php endif; ?>
 
-						<?php if ( version_compare(TB_FRAMEWORK_VERSION, '2.5.0', '>=') ) : ?>
-							<div id="custom-styles" class="postbox postbox-custom-styles closed">
-								<div class="handlediv" title="<?php esc_attr_e('Click to toggle', 'theme-blvd-layout-builder'); ?>"><br></div>
-								<h3 class="hndle"><?php esc_html_e('Custom CSS', 'theme-blvd-layout-builder' ); ?></h3>
-								<div class="tb-widget-content hide">
+							<?php else : ?>
+
+								<h3 class="hndle"><?php esc_html_e('Template Information', 'theme-blvd-layout-builder' ); ?></h3>
+
+								<div class="tb-widget-content">
 									<?php
 									// Current settings
 									$settings = array(
-										'custom_styles'	=> get_post_meta($template_id, '_tb_builder_styles', true)
+										'post_title' 	=> $template->post_title,
+										'post_name'		=> $template->post_name
 									);
 
 									// Setup attribute options
 									$options = array(
 										array(
-											'name'		=> '',
-											'id' 		=> 'custom_styles',
+											'name'		=> __('Template Name', 'theme-blvd-layout-builder' ),
+											'id' 		=> 'post_title',
 											'desc'		=> null,
-											'type' 		=> 'code',
-											'lang'		=> 'css',
-											'editor_id' => 'tb-custom-styles-textarea', // HTML ID to match custom styles input on Edit Page screen.
+											'type' 		=> 'text'
+										),
+										array(
+											'name' 		=> __('Template ID', 'theme-blvd-layout-builder' ),
+											'id' 		=> 'post_name',
+											'desc'		=> null,
+											'type' 		=> 'text'
 										)
 									);
 
@@ -944,6 +1144,35 @@ class Theme_Blvd_Layout_Builder {
 									echo $form[0];
 									?>
 								</div><!-- .tb-widget-content (end) -->
+
+							<?php endif; ?>
+
+							<div class="tb-publish-layout">
+								<?php if ( $is_post ) : ?>
+									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Layout', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Layout', 'theme-blvd-layout-builder' ); ?></a>
+								<?php else : ?>
+									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?></a>
+								<?php endif; ?>
+								<span class="spinner"></span>
+							</div><!-- #major-publishing-actions -->
+
+						</div><!-- .post-box (end) -->
+
+						<?php if ( TB_BUILDER_DEBUG ) : ?>
+							<div id="layout-publish" class="postbox postbox-publish">
+								<h3><?php esc_html_e( 'DEBUG', 'theme-blvd-layout-builder' ); ?></h3>
+								<div class="submitbox">
+									<div class="publish-actions">
+										<div id="publishing-action">
+											<?php if ( $is_post ) : ?>
+												<input class="button-primary" value="<?php esc_attr_e( 'Update Layout (non-ajax)', 'theme-blvd-layout-builder' ); ?>" type="submit" />
+											<?php else : ?>
+												<input class="button-primary" value="<?php esc_attr_e( 'Update Template (non-ajax)', 'theme-blvd-layout-builder' ); ?>" type="submit" />
+											<?php endif; ?>
+										</div>
+										<div class="clear"></div>
+									</div><!-- .publish-actions -->
+								</div><!-- .submitbox (end) -->
 							</div><!-- .post-box (end) -->
 						<?php endif; ?>
 
@@ -1013,6 +1242,117 @@ class Theme_Blvd_Layout_Builder {
 		}
 	}
 
+	/**
+	 * Make parent menu item "Pages" active when editing
+	 * a layout.
+	 *
+	 * @since 2.3.0
+	 */
+	public function parent_file( $parent_file ) {
+
+		if ( $this->is_layout_editor() ) {
+
+			$GLOBALS['plugin_page'] = null; // A hack to make WP think it's not a plugin page.
+
+			$post_type = 'page';
+
+			if ( ! empty( $_REQUEST['post_type'] ) ) {
+
+				$post_type = $_REQUEST['post_type'];
+
+			}
+
+			$parent_file = 'edit.php?post_type=' . $post_type;
+
+		}
+
+		return $parent_file;
+
+	}
+
+	/**
+	 * And make it so "All Pages" is active when
+	 * editing layout.
+	 *
+	 * @since 2.3.0
+	 */
+	public function submenu_file( $submenu_file ) {
+
+		if ( $this->is_layout_editor() ) {
+
+			$post_type = 'page';
+
+			if ( ! empty( $_REQUEST['post_type'] ) ) {
+
+				$post_type = $_REQUEST['post_type'];
+
+			}
+
+			$submenu_file = 'edit.php?post_type=' . $post_type;
+
+		}
+
+		return $submenu_file;
+
+	}
+
+	/**
+	 * Add <title> for edit layout screen.
+	 *
+	 * Not quite sure why WordPress leaves it blank
+	 * for our edit layout screen; so we're filtering
+	 * it in.
+	 *
+	 * @since 2.3.0
+	 */
+	public function admin_title( $admin_title ) {
+
+		if ( $this->is_layout_editor() ) {
+
+			$admin_title = __( 'Edit Layout', 'theme-blvd-layout-builder' ) . $admin_title;
+
+		}
+
+		return $admin_title;
+
+	}
+
+	/**
+	 * Add an "Edit Layout" link to the pages table for each
+	 * page with a custom layout applied.
+	 *
+	 * With the separation of WordPress 5's editor and the
+	 * layout builder, this will make it quicker to access
+	 * the layout builder.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  array   $actions Action links.
+	 * @param  WP_Post $post    Post object.
+	 * @return array   $actions Maybe modified action links.
+	 */
+	public function page_row_actions( $actions, $post ) {
+
+		$new_action = array(
+			'edit-layout' => sprintf(
+				'<a href="%1$s" aria-label="%2$s">%2$s</a>',
+				esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&post_id=' . $post->ID . '&referer=view-all' ) ),
+				__( 'Custom Layout', 'theme-blvd-layout-builder' )
+			)
+		);
+
+		$offset = array_search( 'edit', array_keys( $actions ), true );
+
+		$actions = array_merge(
+			array_slice( $actions, 0, $offset + 1 ),
+			$new_action,
+			array_slice( $actions, $offset + 1 )
+		);
+
+		return $actions;
+
+	}
+
 	/*--------------------------------------------*/
 	/* Builder Data Handling
 	/*--------------------------------------------*/
@@ -1067,8 +1407,8 @@ class Theme_Blvd_Layout_Builder {
 							if ( $element['type'] == 'columns' ) {
 								for ( $i = 1; $i <= 5; $i++ ) {
 									$col_id = '_tb_builder_'.$element_id.'_col_'.strval($i);
-								    $column = get_post_meta( $data['existing'], $col_id, true );
-								    update_post_meta( $post_id, $col_id, $column );
+									$column = get_post_meta( $data['existing'], $col_id, true );
+									update_post_meta( $post_id, $col_id, $column );
 								}
 							}
 						}
@@ -1232,11 +1572,11 @@ class Theme_Blvd_Layout_Builder {
 							}
 
 							for ( $i = 1; $i <= $total; $i++ ) {
-							    if ( isset( $element['columns']['col_'.$i] ) ) {
-							    	$columns[$element_id.'_col_'.$i] = $element['columns']['col_'.$i];
-							    } else {
-							    	$columns[$element_id.'_col_'.$i] = array(); // We need to save empty columns!
-							    }
+								if ( isset( $element['columns']['col_'.$i] ) ) {
+									$columns[$element_id.'_col_'.$i] = $element['columns']['col_'.$i];
+								} else {
+									$columns[$element_id.'_col_'.$i] = array(); // We need to save empty columns!
+								}
 							}
 							unset($element['columns']);
 						}
@@ -1342,6 +1682,11 @@ class Theme_Blvd_Layout_Builder {
 			if ( isset( $data['tb_layout_options'] ) ) {
 				update_post_meta( $post_id, 'settings', $data['tb_layout_options'] );
 			}
+		}
+
+		// Apply "Custom Layout" page template when saving layout.
+		if ( 'page' === get_post_type( $post_id ) ) {
+			update_post_meta( $post_id, '_wp_page_template', 'template_builder.php' );
 		}
 
 		// Template Info
@@ -2120,24 +2465,18 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function builder_init() {
 
-		global $pagenow;
-		global $typenow;
+		if ( $this->is_classic_editor() ) {
 
-		$post_types = apply_filters( 'themeblvd_editor_builder_post_types', array('page') );
+			add_action( 'save_post', array( $this, 'save_post' ) );
 
-		if ( $post_types ) {
-			foreach ( $post_types as $post_type ) {
-				if ( ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) && $typenow == $post_type ) {
+			add_action( 'edit_form_after_title', array( $this, 'builder' ) );
 
-					add_action( 'save_post', array( $this, 'save_post' ) );
-					add_action( 'edit_form_after_title', array( $this, 'builder' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 
-					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
-					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 
-				}
-			}
 		}
+
 	}
 
 	/**
@@ -2182,7 +2521,7 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/**
-	 * Display Builder in WP's editor.
+	 * Display Builder in WP's classic editor.
 	 *
 	 * @since 2.0.0
 	 */
@@ -2206,11 +2545,9 @@ class Theme_Blvd_Layout_Builder {
 		$sync_hide = 'hide';
 
 		if ( $sync_id ) {
-
 			$sync_post_id = themeblvd_post_id_by_name( $sync_id, 'tb_layout' );
 			$edit_hide = 'hide';
 			$sync_hide = '';
-
 		}
 
 		$page_template = get_post_meta( $post->ID, '_wp_page_template', true );
@@ -3767,7 +4104,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( $type != 'column' ) {
 
 			$options['hide'] = array(
-		    	'id' 		=> 'hide',
+				'id' 		=> 'hide',
 				'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'multicheck',
@@ -3791,7 +4128,7 @@ class Theme_Blvd_Layout_Builder {
 					unset( $options['hide'] );
 
 					$options['visibility'] = array(
-				    	'id' 		=> 'visibility',
+						'id' 		=> 'visibility',
 						'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 						'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 						'type'		=> 'multicheck',
@@ -3808,7 +4145,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		$options['classes'] = array(
-	    	'id' 		=> 'classes',
+			'id' 		=> 'classes',
 			'name'		=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
 			'desc'		=> __( 'Enter any CSS classes you\'d like attached.', 'theme-blvd-layout-builder' ),
 			'type'		=> 'text',
@@ -3825,9 +4162,9 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function body_class( $classes ) {
 
-		$page = get_current_screen();
+		$screen = get_current_screen();
 
-		if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+		if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 
 			$classes = explode( " ", $classes );
 
@@ -3847,6 +4184,146 @@ class Theme_Blvd_Layout_Builder {
 	}
 
 	/*--------------------------------------------*/
+	/* Helpers
+	/*--------------------------------------------*/
+
+	/**
+	 * Check if the current post type is supported by the
+	 * layout builder.
+	 *
+	 * @TODO Re-check this function as Gutenberg is merged
+	 * into WordPress 5.0; can we pull all post type new
+	 * editor supports?
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  string $type Post type.
+	 * @return bool         Whether the post type is supported.
+	 */
+	public function is_supported_post_type( $type = null ) {
+
+		if ( ! $type ) {
+
+			$screen = get_current_screen();
+
+			$type = $screen->post_type;
+
+		}
+
+		/**
+		 * Filters the post types that builder interface
+		 * appears on.
+		 *
+		 * @since 2.3.0
+		 */
+		$types = apply_filters(
+			'themeblvd_editor_builder_post_types',
+			array( 'post', 'page' ) // @TODO Exend to any post types Gutenberg supports?
+		);
+
+		if ( in_array( $type, $types ) ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is the classic editor.
+	 *
+	 * The new WordPress editor seems to fire all of the
+	 * old action hooks; so this check helps to eliminate
+	 * outputting unnecessary stuff into the new editor
+	 * interface.
+	 *
+	 * @TODO Re-check this function as Gutenberg is merged
+	 * into WordPress 5.0. It will probably need to be changed.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the classic edior.
+	 */
+	public function is_classic_editor( $screen = null ) {
+
+		if ( isset( $_REQUEST['classic-editor'] ) ) {
+
+			if ( ! $screen ) {
+
+				$screen = get_current_screen();
+
+			}
+
+			if ( 'post' == $screen->base && 'page' == $screen->id ) {
+
+				if ( $this->is_supported_post_type( $screen->post_type ) ) {
+
+					return true;
+
+				}
+			}
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is he layout editor interface.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the layout editor.
+	 */
+	public function is_layout_editor( $screen = null ) {
+
+		if ( ! $screen ) {
+
+			$screen = get_current_screen();
+
+		}
+
+		if ( 'admin_page_tb-edit-layout' == $screen->base ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
+	 * Check if this is he template editor interface.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param  WP_Screen $screen Current screen object from get_current_screen().
+	 * @return bool              Whether it's the template editor.
+	 */
+	public function is_template_editor( $screen = null ) {
+
+		if ( ! $screen ) {
+
+			$screen = get_current_screen();
+
+		}
+
+		if ( 'toplevel_page_' . $this->id == $screen->base ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/*--------------------------------------------*/
 	/* Hidden Modals
 	/*--------------------------------------------*/
 
@@ -3860,9 +4337,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_editor' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'admin_notices', array( $this, 'display_editor' ), 100 );
 			}
 		}
@@ -3881,9 +4358,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_icon_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', array( $this, 'display_icon_browser' ) );
 			}
 		}
@@ -3902,9 +4379,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_post_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' && $page->id == 'page' ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', 'themeblvd_post_browser' );
 			}
 		}
@@ -3920,9 +4397,9 @@ class Theme_Blvd_Layout_Builder {
 		// Requires Framework 2.5+
 		if ( function_exists( 'themeblvd_texture_browser' ) ) {
 
-			$page = get_current_screen();
+			$screen = get_current_screen();
 
-			if ( $page->base == 'toplevel_page_'.$this->id || ( $page->base == 'post' &&  $page->id == 'page' ) ) {
+			if ( $this->is_template_editor( $screen ) || $this->is_layout_editor( $screen ) || $this->is_classic_editor( $screen ) ) {
 				add_action( 'in_admin_header', 'themeblvd_texture_browser' );
 			}
 		}
