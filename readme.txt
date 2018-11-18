@@ -58,8 +58,8 @@ This plugin works with the following themes only.
 
 == Changelog ==
 
-= 2.3.0 - XX/XX/XXXX =
-* New: Added WordPress 5 compatibility.
+= 2.3.0 - 11/18/2018 =
+* New: Added compatibility for WordPress 5's new block editor ([see article](https://docs.themeblvd.com/article/74-layout-builder-with-gutenberg)).
 * Fixed: When saving a custom layout as a template, the "Custom CSS" option was not getting saved with the new template.
 
 = 2.2.7 - 02/08/2018 =
