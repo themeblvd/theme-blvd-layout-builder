@@ -233,9 +233,9 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @since 1.0.0
 	 */
-	public function load_scripts() {
+	 public function load_scripts() {
 
-		global $pagenow;
+ 		global $pagenow;
 
 		$suffix = '.min';
 
@@ -332,50 +332,50 @@ class Theme_Blvd_Layout_Builder {
 			));
 
 			wp_add_inline_script(
-		        'theme-blvd-layout-builder',
-		        sprintf(
-		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "css", %s ); } );',
+				'theme-blvd-layout-builder',
+				sprintf(
+					'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "css", %s ); } );',
 					wp_json_encode( $settings )
-		        )
-			);
+				)
+		);
 
-			$settings = wp_enqueue_code_editor( array(
-				'type' => 'text/html',
-			));
+		$settings = wp_enqueue_code_editor( array(
+			'type' => 'text/html',
+		));
 
-			wp_add_inline_script(
-		        'theme-blvd-layout-builder',
-		        sprintf(
-		            'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "html", %s ); } );',
-					wp_json_encode( $settings )
-		        )
-			);
-
-		}
-
-		// Add JS locals when needed.
-		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
-
-			/*
-			 * Edit Page Screen: This is a fallback for prior to
-			 * framework v2.3 where framework metabox scripts were
-			 * not localized by default.
-			 */
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
-				wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
-			}
-		} else {
-
-			/*
-			 * Localize script for actual builder page; not needed
-			 * for framework 2.7+
-			 */
-			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
-				wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
-			}
-		}
+		wp_add_inline_script(
+			'theme-blvd-layout-builder',
+			sprintf(
+				'jQuery( function() { window.themeblvd.options.addCodeEditorLang( "html", %s ); } );',
+				wp_json_encode( $settings )
+			)
+		);
 
 	}
+
+	// Add JS locals when needed.
+	if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
+
+		/*
+		 * Edit Page Screen: This is a fallback for prior to
+		 * framework v2.3 where framework metabox scripts were
+		 * not localized by default.
+		 */
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.3.0', '<' ) ) {
+			wp_localize_script( 'tb_meta_box-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+	} else {
+
+		/*
+		 * Localize script for actual builder page; not needed
+		 * for framework 2.7+
+		 */
+		if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+			wp_localize_script( 'theme-blvd-layout-builder', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+	}
+
+ 	}
 
 	/**
 	 * Add javascript locals for Builder onto framework js
@@ -541,24 +541,24 @@ class Theme_Blvd_Layout_Builder {
 			<div id="optionsframework" class="tb-options-wrap wrap">
 
 				<div class="admin-module-header">
-			    	<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
-			    </div>
+					<?php do_action( 'themeblvd_admin_module_header', 'builder' ); ?>
+				</div>
 
 				<?php if ( ! $is_post ) : ?>
-				    <h2 class="nav-tab-wrapper">
-				        <a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?></a>
-				        <a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Add Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Add Template', 'theme-blvd-layout-builder' ); ?></a>
-				        <?php if ( $active == 'edit' ) : ?>
-				       		<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?></span>
-				       	<?php endif; ?>
-				    </h2>
+				<h2 class="nav-tab-wrapper">
+					<a href="<?php echo admin_url('admin.php?page='.$this->id); ?>" class="nav-tab<?php if ($active == 'manage') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Manage Templates', 'theme-blvd-layout-builder' ); ?></a>
+					<a href="<?php echo admin_url('admin.php?page='.$this->id.'&tab=add'); ?>" class="nav-tab<?php if ($active == 'add') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Add Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Add Template', 'theme-blvd-layout-builder' ); ?></a>
+					<?php if ( $active == 'edit' ) : ?>
+						<span class="nav-tab<?php if ($active == 'edit') echo ' nav-tab-active'; ?>" title="<?php esc_attr_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Edit Template', 'theme-blvd-layout-builder' ); ?></span>
+					<?php endif; ?>
+				</h2>
 				<?php endif; ?>
 
-			    <?php
-			    // Display notices
-			    do_action('themeblvd_builder_update');
+				<?php
+				// Display notices
+				do_action('themeblvd_builder_update');
 
-			    // Display correct admin page
+				// Display correct admin page
 				switch( $active ) {
 
 					case 'manage' :
@@ -577,8 +577,8 @@ class Theme_Blvd_Layout_Builder {
 				?>
 
 				<div class="admin-module-footer">
-			    	<?php do_action( 'themeblvd_admin_module_footer', 'builder' ); ?>
-			    </div><!-- .admin-module-footer (end) -->
+					<?php do_action( 'themeblvd_admin_module_footer', 'builder' ); ?>
+				</div><!-- .admin-module-footer (end) -->
 
 			</div><!-- #optionsframework (end) -->
 		</div><!-- #builder_blvd (end) -->
@@ -594,8 +594,8 @@ class Theme_Blvd_Layout_Builder {
 		$templates = get_posts( array( 'post_type' => 'tb_layout', 'numberposts' => -1, 'orderby' => 'title', 'order' => 'ASC' ) );
 		?>
 		<div id="manage_layouts" class="metabox-holder">
-	    	<form id="manage_builder" action="<?php echo admin_url('admin.php?page='.$this->id); ?>" method="post">
-	    		<?php echo '<input type="hidden" name="tb_nonce" value="'.wp_create_nonce( 'delete_template' ).'" />'; ?>
+			<form id="manage_builder" action="<?php echo admin_url('admin.php?page='.$this->id); ?>" method="post">
+				<?php echo '<input type="hidden" name="tb_nonce" value="'.wp_create_nonce( 'delete_template' ).'" />'; ?>
 				<div class="tablenav top clearfix">
 					<div class="alignleft actions">
 						<select name="action">
@@ -819,7 +819,7 @@ class Theme_Blvd_Layout_Builder {
 							<span class="tb-loader ajax-loading">
 								<i class="tb-icon-spinner"></i>
 							</span>
-				            <div class="clear"></div>
+							<div class="clear"></div>
 						</div>
 					</div><!-- .postbox (end) -->
 				</div><!-- .metabox-holder (end) -->
@@ -1407,8 +1407,8 @@ class Theme_Blvd_Layout_Builder {
 							if ( $element['type'] == 'columns' ) {
 								for ( $i = 1; $i <= 5; $i++ ) {
 									$col_id = '_tb_builder_'.$element_id.'_col_'.strval($i);
-								    $column = get_post_meta( $data['existing'], $col_id, true );
-								    update_post_meta( $post_id, $col_id, $column );
+									$column = get_post_meta( $data['existing'], $col_id, true );
+									update_post_meta( $post_id, $col_id, $column );
 								}
 							}
 						}
@@ -1572,11 +1572,11 @@ class Theme_Blvd_Layout_Builder {
 							}
 
 							for ( $i = 1; $i <= $total; $i++ ) {
-							    if ( isset( $element['columns']['col_'.$i] ) ) {
-							    	$columns[$element_id.'_col_'.$i] = $element['columns']['col_'.$i];
-							    } else {
-							    	$columns[$element_id.'_col_'.$i] = array(); // We need to save empty columns!
-							    }
+								if ( isset( $element['columns']['col_'.$i] ) ) {
+									$columns[$element_id.'_col_'.$i] = $element['columns']['col_'.$i];
+								} else {
+									$columns[$element_id.'_col_'.$i] = array(); // We need to save empty columns!
+								}
 							}
 							unset($element['columns']);
 						}
@@ -4104,7 +4104,7 @@ class Theme_Blvd_Layout_Builder {
 		if ( $type != 'column' ) {
 
 			$options['hide'] = array(
-		    	'id' 		=> 'hide',
+				'id' 		=> 'hide',
 				'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 				'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 				'type'		=> 'multicheck',
@@ -4128,7 +4128,7 @@ class Theme_Blvd_Layout_Builder {
 					unset( $options['hide'] );
 
 					$options['visibility'] = array(
-				    	'id' 		=> 'visibility',
+						'id' 		=> 'visibility',
 						'name'		=> __( 'Responsive Visibility', 'theme-blvd-layout-builder' ),
 						'desc'		=> __( 'Select any resolutions you\'d like to <em>hide</em> this item on. This is optional, but can be utilized to deliver different content to different devices.', 'theme-blvd-layout-builder' ),
 						'type'		=> 'multicheck',
@@ -4145,7 +4145,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		$options['classes'] = array(
-	    	'id' 		=> 'classes',
+			'id' 		=> 'classes',
 			'name'		=> __( 'CSS Classes', 'theme-blvd-layout-builder' ),
 			'desc'		=> __( 'Enter any CSS classes you\'d like attached.', 'theme-blvd-layout-builder' ),
 			'type'		=> 'text',
