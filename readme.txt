@@ -21,23 +21,11 @@ You can build these layouts directly into your WordPress pages through the stand
 
 = Theme Compatibility =
 
-This plugin works with the following themes only.
-
-**Theme Blvd Framework 2.7+ Themes**
+This plugin has been built to work with the following themes:
 
 * [Jump Start](https://wpjumpstart.com)
 * [Denali](http://themeblvd.com/links/buy-denali)
 * [Gnar](http://themeblvd.com/links/buy-gnar)
-
-**Theme Blvd Framework 2.4 Themes**
-
-* [Akita](http://themeforest.net/item/akita-responsive-wordpress-theme/1530025?ref=themeblvd)
-* [Alyeska](http://themeforest.net/item/alyeska-responsive-wordpress-theme/164366?ref=themeblvd)
-* [Arcadian](http://themeforest.net/item/the-arcadian-responsive-wordpress-theme/1266406?ref=themeblvd)
-* [Barely Corporate](http://themeforest.net/item/barely-corporate-responsive-wordpress-theme/93069?ref=themeblvd)
-* [Breakout](http://www.mojo-themes.com/item/breakout-premium-wordpress-theme/?r=themeblvd)
-* [Commodore](http://themeforest.net/item/commodore-responsive-wordpress-theme/111713?ref=themeblvd)
-* [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
 
 == Installation ==
 
@@ -59,6 +47,7 @@ This plugin works with the following themes only.
 == Changelog ==
 
 = 2.3.1 - XX/XX/2018 =
+* Fixed: Classic editor's legacy layout builder not displaying in some circumstances.
 
 = 2.3.0 - 11/18/2018 =
 * New: Added compatibility for WordPress 5's new block editor ([see article](https://docs.themeblvd.com/article/74-layout-builder-with-gutenberg)).

@@ -4249,7 +4249,11 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function is_classic_editor( $screen = null ) {
 
-		if ( isset( $_REQUEST['classic-editor'] ) ) {
+		if (
+			version_compare( $GLOBALS['wp_version'], '5', '<' ) ||
+			( function_exists( 'classic_editor_init_actions' ) && 'replace' === get_option( 'classic-editor-replace' ) ) ||
+			isset( $_REQUEST['classic-editor'] )
+		) {
 
 			if ( ! $screen ) {
 
