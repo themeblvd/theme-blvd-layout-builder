@@ -46,7 +46,7 @@ This plugin has been built to work with the following themes:
 
 == Changelog ==
 
-= 2.3.1 - XX/XX/2018 =
+= 2.3.1 - 11/19/2018 =
 * Improvement: "Custom Layout" links on "All Pages" view now displays either "Apply Custom Layout" or "Edit Custom Layout" depending on whether the given page has the custom layout page template applied or not.
 * Fixed: Classic editor's legacy layout builder not displaying in some circumstances.
 
