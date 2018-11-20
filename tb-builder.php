@@ -2,13 +2,13 @@
 /*
 Plugin Name: Theme Blvd Layout Builder
 Description: When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
-Version: 2.3.0
+Version: 2.3.1
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 License: MIT
 */
 
-define( 'TB_BUILDER_PLUGIN_VERSION', '2.3.0' );
+define( 'TB_BUILDER_PLUGIN_VERSION', '2.3.1' );
 define( 'TB_BUILDER_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_BUILDER_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 

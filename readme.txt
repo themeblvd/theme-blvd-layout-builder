@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.3.0
+Stable Tag: 2.3.1
 Tested up to: 5.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
@@ -57,6 +57,8 @@ This plugin works with the following themes only.
 3. Editing a template.
 
 == Changelog ==
+
+= 2.3.1 - XX/XX/2018 =
 
 = 2.3.0 - 11/18/2018 =
 * New: Added compatibility for WordPress 5's new block editor ([see article](https://docs.themeblvd.com/article/74-layout-builder-with-gutenberg)).
@@ -289,5 +291,5 @@ This plugin works with the following themes only.
 
 == Upgrade Notice ==
 
-= 2.3.0 =
+= 2.3.1 =
 Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
