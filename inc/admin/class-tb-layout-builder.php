@@ -1149,10 +1149,15 @@ class Theme_Blvd_Layout_Builder {
 
 							<div class="tb-publish-layout">
 								<?php if ( $is_post ) : ?>
-									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Layout', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Layout', 'theme-blvd-layout-builder' ); ?></a>
+									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Apply Layout', 'theme-blvd-layout-builder' ); ?>">
+										<?php esc_html_e( 'Update Layout', 'theme-blvd-layout-builder' ); ?>
+									</a>
 								<?php else : ?>
-									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>"><?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?></a>
+									<a href="#" class="ajax-save-template button-primary" title="<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>">
+										<?php esc_html_e( 'Update Template', 'theme-blvd-layout-builder' ); ?>
+									</a>
 								<?php endif; ?>
+
 								<span class="spinner"></span>
 							</div><!-- #major-publishing-actions -->
 
@@ -1333,11 +1338,17 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function page_row_actions( $actions, $post ) {
 
+		$text = __( 'Apply Custom Layout', 'theme-blvd-layout-builder' );
+
+		if ( 'template_builder.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
+			$text = __( 'Edit Custom Layout', 'theme-blvd-layout-builder' );
+		}
+
 		$new_action = array(
 			'edit-layout' => sprintf(
 				'<a href="%1$s" aria-label="%2$s">%2$s</a>',
 				esc_url( admin_url( 'admin.php?page=tb-edit-layout&post_type=page&post_id=' . $post->ID . '&referer=view-all' ) ),
-				__( 'Custom Layout', 'theme-blvd-layout-builder' )
+				$text
 			)
 		);
 
