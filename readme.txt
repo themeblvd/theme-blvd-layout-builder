@@ -47,6 +47,7 @@ This plugin has been built to work with the following themes:
 == Changelog ==
 
 = 2.3.2 - 11/20/2018 =
+* Fixed: Classic editor forcing "Custom Layout" page template to be saved.
 
 = 2.3.1 - 11/19/2018 =
 * Improvement: "Custom Layout" links on "All Pages" view now displays either "Apply Custom Layout" or "Edit Custom Layout" depending on whether the given page has the custom layout page template applied or not.

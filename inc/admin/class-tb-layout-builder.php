@@ -1696,7 +1696,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Apply "Custom Layout" page template when saving layout.
-		if ( 'page' === get_post_type( $post_id ) ) {
+		if ( 'page' === get_post_type( $post_id ) && !$this->is_classic_editor() ) {
 			update_post_meta( $post_id, '_wp_page_template', 'template_builder.php' );
 		}
 
