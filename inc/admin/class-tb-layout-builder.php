@@ -1338,6 +1338,10 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function page_row_actions( $actions, $post ) {
 
+		if ( 'page' !== $post->post_type ) {
+			return $actions;
+		}
+
 		$text = __( 'Apply Custom Layout', 'theme-blvd-layout-builder' );
 
 		if ( 'template_builder.php' == get_post_meta( $post->ID, '_wp_page_template', true ) ) {
