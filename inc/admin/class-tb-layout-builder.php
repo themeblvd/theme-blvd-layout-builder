@@ -4264,27 +4264,59 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function is_classic_editor( $screen = null ) {
 
-		if (
-			version_compare( $GLOBALS['wp_version'], '5', '<' ) ||
-			( function_exists( 'classic_editor_init_actions' ) && 'replace' === get_option( 'classic-editor-replace' ) ) ||
-			isset( $_REQUEST['classic-editor'] )
-		) {
-
-			if ( ! $screen ) {
-
-				$screen = get_current_screen();
-
-			}
-
-			if ( 'post' == $screen->base && 'page' == $screen->id ) {
-
-				if ( $this->is_supported_post_type( $screen->post_type ) ) {
-
-					return true;
-
-				}
-			}
+		if ( ! $screen ) {
+			$screen = get_current_screen();
 		}
+
+		if ( 'post' != $screen->base || 'page' != $screen->id ) {
+			return false;
+		}
+
+		if ( ! $this->is_supported_post_type( $screen->post_type ) ) {
+			return false;
+		}
+
+		if ( version_compare( $GLOBALS['wp_version'], '5', '<' ) ) {
+			return true;
+		}
+
+		$is_classic_editor_plugin_installed = class_exists( 'Classic_Editor' );
+
+		/*
+		 * It's too difficult to determine accurately if classic editor
+		 * should show; so I'm just going to plop it in the edit page
+		 * screen when the plugin is installed.
+		 */
+		if ( $is_classic_editor_plugin_installed ) {
+			return true;
+		}
+
+		// if ( ! $is_classic_editor_plugin_installed ) {
+		// 	return false;
+		// }
+
+		// if ( isset( $_REQUEST['classic-editor'] ) ) {
+		// 	return true;
+		// }
+
+		// $option = get_option( 'classic-editor-replace' );
+
+		// if ( $option === 'block' || $option === 'no-replace' ) { // Backwards compat for option.
+		// 	$editor = 'block';
+		// } else {
+		// 	// empty( $option ) || $option === 'classic' || $option === 'replace'.
+		// 	$editor = 'classic';
+		// }
+
+		// $allow_users = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
+
+		// if ( 'classic' === $editor && ! $allow_users ) {
+		// 	return true;
+		// }
+
+		// if ( $allow_users && 'classic' === get_user_option( 'classic-editor-settings' ) ) {
+		// 	return true;
+		// }
 
 		return false;
 
