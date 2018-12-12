@@ -2480,9 +2480,15 @@ class Theme_Blvd_Layout_Builder {
 	 */
 	public function builder_init() {
 
-		if ( $this->is_classic_editor() ) {
+		$screen = get_current_screen();
 
-			add_action( 'save_post', array( $this, 'save_post' ) );
+		if ( 'post' == $screen->base && 'page' == $screen->id ) {
+			if ( $this->is_supported_post_type( $screen->post_type ) ) {
+				add_action( 'save_post', array( $this, 'save_post' ) );
+			}
+		}
+
+		if ( $this->is_classic_editor( $screen ) ) {
 
 			add_action( 'edit_form_after_title', array( $this, 'builder' ) );
 
@@ -4283,7 +4289,7 @@ class Theme_Blvd_Layout_Builder {
 
 		if ( $is_classic_editor_plugin_installed ) {
 
-			$post_id = (int) $_GET['post'];
+			$post_id = ! empty( $_GET['post'] ) ? (int) $_GET['post'] : 0;
 
 			$allow_users = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
 
