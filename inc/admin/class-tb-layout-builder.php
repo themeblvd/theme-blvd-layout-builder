@@ -4249,13 +4249,10 @@ class Theme_Blvd_Layout_Builder {
 	/**
 	 * Check if this is the classic editor.
 	 *
-	 * The new WordPress editor seems to fire all of the
-	 * old action hooks; so this check helps to eliminate
-	 * outputting unnecessary stuff into the new editor
+	 * The new WordPress block editor seems to fire all of
+	 * the old action hooks; so this check helps to eliminate
+	 * outputting unnecessary stuff into the new block editor
 	 * interface.
-	 *
-	 * @TODO Re-check this function as Gutenberg is merged
-	 * into WordPress 5.0. It will probably need to be changed.
 	 *
 	 * @since 2.3.0
 	 *
@@ -4276,47 +4273,33 @@ class Theme_Blvd_Layout_Builder {
 			return false;
 		}
 
-		if ( version_compare( $GLOBALS['wp_version'], '5', '<' ) ) {
+		$is_pre_gutenberg = version_compare( $GLOBALS['wp_version'], '5', '<' );
+
+		if ( $is_pre_gutenberg ) {
 			return true;
 		}
 
 		$is_classic_editor_plugin_installed = class_exists( 'Classic_Editor' );
 
-		/*
-		 * It's too difficult to determine accurately if classic editor
-		 * should show; so I'm just going to plop it in the edit page
-		 * screen when the plugin is installed.
-		 */
 		if ( $is_classic_editor_plugin_installed ) {
-			return true;
+
+			$post_id = (int) $_GET['post'];
+
+			$allow_users = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
+
+			if ( $post_id && $allow_users && ! isset( $_GET['classic-editor__forget'] ) ) {
+
+				$was_saved_with_classic_editor = ( 'classic-editor' === get_post_meta( $post_id, 'classic-editor-remember', true ) );
+
+				if ( $was_saved_with_classic_editor ) {
+					return true;
+				}
+			}
+
+			if ( isset( $_GET['classic-editor'] ) ) {
+				return true;
+			}
 		}
-
-		// if ( ! $is_classic_editor_plugin_installed ) {
-		// 	return false;
-		// }
-
-		// if ( isset( $_REQUEST['classic-editor'] ) ) {
-		// 	return true;
-		// }
-
-		// $option = get_option( 'classic-editor-replace' );
-
-		// if ( $option === 'block' || $option === 'no-replace' ) { // Backwards compat for option.
-		// 	$editor = 'block';
-		// } else {
-		// 	// empty( $option ) || $option === 'classic' || $option === 'replace'.
-		// 	$editor = 'classic';
-		// }
-
-		// $allow_users = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
-
-		// if ( 'classic' === $editor && ! $allow_users ) {
-		// 	return true;
-		// }
-
-		// if ( $allow_users && 'classic' === get_user_option( 'classic-editor-settings' ) ) {
-		// 	return true;
-		// }
 
 		return false;
 

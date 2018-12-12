@@ -47,10 +47,11 @@ This plugin has been built to work with the following themes:
 == Changelog ==
 
 = 2.3.4 - 12/11/2018 =
+* Fixed: More stable compatibility with the official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin; there were some instances when Classic Editor plugin is installed, where saving from the block editor would result in corrupted data in the page's attached custom layout.
 * Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.3 - 12/10/2018 =
-* Fixed: Classic editor's legacy layout builder not displaying because of recent updates to the official Classic Editor plugin.
+* Fixed: Classic editor's legacy layout builder not displaying because of recent updates to the official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
 
 = 2.3.2 - 11/20/2018 =
 * Fixed: Classic editor forcing "Custom Layout" page template to be saved.
