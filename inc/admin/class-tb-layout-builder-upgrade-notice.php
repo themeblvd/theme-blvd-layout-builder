@@ -48,9 +48,9 @@ class Theme_Blvd_Layout_Builder_Upgrade_Notice {
 	 */
 	public function in_plugin_update_message( $args, $response ) {
 
-		if ( ! empty( $args['upgrade_notice'] ) ) {
+		$message = '';
 
-			$message = '';
+		if ( ! empty( $args['upgrade_notice'] ) ) {
 
 			$notice = $args['upgrade_notice'];
 
