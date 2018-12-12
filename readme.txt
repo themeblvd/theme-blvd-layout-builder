@@ -47,9 +47,10 @@ This plugin has been built to work with the following themes:
 == Changelog ==
 
 = 2.3.5 - 12/12/2018 =
+* Fixed: More integration issues with official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
 
 = 2.3.4 - 12/11/2018 =
-* Fixed: More stable compatibility with the official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin; there were some instances when Classic Editor plugin is installed, where saving from the block editor would result in corrupted data in the page's attached custom layout.
+* Fixed: More integration issues with official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
 * Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.3 - 12/10/2018 =
