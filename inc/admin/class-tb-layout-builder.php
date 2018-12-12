@@ -4291,9 +4291,10 @@ class Theme_Blvd_Layout_Builder {
 
 			$post_id = ! empty( $_GET['post'] ) ? (int) $_GET['post'] : 0;
 
-			$allow_users = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
+			$allow_users_to_switch_editors = ( 'allow' === get_option( 'classic-editor-allow-users' ) );
 
-			if ( $post_id && $allow_users && ! isset( $_GET['classic-editor__forget'] ) ) {
+			// Is the classic editor "remembering" to use the classic editor?
+			if ( $post_id && $allow_users_to_switch_editors && ! isset( $_GET['classic-editor__forget'] ) ) {
 
 				$was_saved_with_classic_editor = ( 'classic-editor' === get_post_meta( $post_id, 'classic-editor-remember', true ) );
 
@@ -4302,7 +4303,17 @@ class Theme_Blvd_Layout_Builder {
 				}
 			}
 
+			// Is the classic editor being explicitly switched to?
 			if ( isset( $_GET['classic-editor'] ) ) {
+				return true;
+			}
+
+			$option = get_option( 'classic-editor-replace' );
+
+			$use_classic_editor = ( empty( $option ) || $option === 'classic' || $option === 'replace' );
+
+			// Is the user forced to use classic editor and not allowed to switch?
+			if ( ! $allow_users_to_switch_editors && $use_classic_editor ) {
 				return true;
 			}
 		}
