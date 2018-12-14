@@ -70,6 +70,8 @@ class Theme_Blvd_Layout_Builder_Upgrade_Notice {
 
 			$theme_name = $theme_data->get( 'Name' );
 
+			$required = '';
+
 			/*
 			 * Loop through themes extracted from data
 			 * upgrade string.

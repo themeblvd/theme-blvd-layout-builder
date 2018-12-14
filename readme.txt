@@ -47,13 +47,13 @@ This plugin has been built to work with the following themes:
 == Changelog ==
 
 = 2.3.6 - XX/XX/XXXX =
+* Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.5 - 12/12/2018 =
 * Fixed: More integration issues with official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
 
 = 2.3.4 - 12/11/2018 =
 * Fixed: More integration issues with official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
-* Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.3 - 12/10/2018 =
 * Fixed: Classic editor's legacy layout builder not displaying because of recent updates to the official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
