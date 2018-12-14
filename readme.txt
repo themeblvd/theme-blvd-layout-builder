@@ -46,6 +46,8 @@ This plugin has been built to work with the following themes:
 
 == Changelog ==
 
+= 2.3.6 - XX/XX/XXXX =
+
 = 2.3.5 - 12/12/2018 =
 * Fixed: More integration issues with official [Classic Editor](https://wordpress.org/plugins/classic-editor) plugin.
 
@@ -295,5 +297,5 @@ This plugin has been built to work with the following themes:
 
 == Upgrade Notice ==
 
-= 2.3.5 =
+= 2.3.6 =
 Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
