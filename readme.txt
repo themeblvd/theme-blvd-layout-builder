@@ -47,6 +47,7 @@ This plugin has been built to work with the following themes:
 == Changelog ==
 
 = 2.3.6 - XX/XX/XXXX =
+* Fixed: Template sync setting wasn't saving when editing a layout from WordPress 5's new block editor.
 * Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.5 - 12/12/2018 =

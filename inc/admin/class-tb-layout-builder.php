@@ -1002,7 +1002,7 @@ class Theme_Blvd_Layout_Builder {
 
 							<!-- EDIT LAYOUT (start) -->
 
-							<div id="tb-edit-layout">
+							<div id="tb-edit-layout" class="<?php echo $edit_hide; ?>">
 
 								<div class="ajax-overlay full-overlay">
 									<span class="tb-loader ajax-loading">
@@ -1716,6 +1716,20 @@ class Theme_Blvd_Layout_Builder {
 
 			// Update Post info
 			wp_update_post( $post_atts );
+
+		}
+
+		// Template Sync
+		if ( ! empty( $data['_tb_custom_layout'] ) ) {
+
+			$template = explode('=>', $data['_tb_custom_layout']);
+			$template = wp_kses( $template[2], array() );
+
+			update_post_meta( $post_id, '_tb_custom_layout', $template );
+
+		} else {
+
+			update_post_meta( $post_id, '_tb_custom_layout', false );
 
 		}
 
@@ -2520,20 +2534,6 @@ class Theme_Blvd_Layout_Builder {
 		// Verfiy nonce
 		if ( ! isset( $_POST['tb_nonce'] ) || ! wp_verify_nonce( $_POST['tb_nonce'], 'tb_save_layout' ) ) {
 			return;
-		}
-
-		// Save template sync
-		if ( ! empty( $_POST['_tb_custom_layout'] ) ) {
-
-			$template = explode('=>', $_POST['_tb_custom_layout']);
-			$template = wp_kses( $template[2], array() );
-
-			update_post_meta( $post_id, '_tb_custom_layout', $template );
-
-		} else {
-
-			update_post_meta( $post_id, '_tb_custom_layout', false );
-
 		}
 
 		// Save layout to post
