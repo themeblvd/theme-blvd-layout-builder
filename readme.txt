@@ -2,7 +2,7 @@
 Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: layouts, custom, homepage, builder, Theme Blvd, themeblvd, Jason Bobich
-Stable Tag: 2.3.5
+Stable Tag: 2.3.6
 Tested up to: 5.0
 
 When using a Theme Blvd theme, this plugin gives you slick interface to build custom layouts.
@@ -21,11 +21,20 @@ You can build these layouts directly into your WordPress pages through the stand
 
 = Theme Compatibility =
 
-This plugin has been built to work with the following themes:
+This plugin has been built to work with the following theme:
 
 * [Jump Start](https://wpjumpstart.com)
+
+The following themes may work to varying degrees with this plugin, but are unfortunately no longer supported:
+
 * [Denali](http://themeblvd.com/links/buy-denali)
 * [Gnar](http://themeblvd.com/links/buy-gnar)
+* [Alyeska](http://themeforest.net/item/alyeska-responsive-wordpress-theme/164366?ref=themeblvd)
+* [Akita](http://themeforest.net/item/akita-responsive-wordpress-theme/1530025?ref=themeblvd)
+* [Swagger](http://themeforest.net/item/swagger-responsive-wordpress-theme/930581?ref=themeblvd)
+* [Barely Corporate](http://themeforest.net/item/barely-corporate-responsive-wordpress-theme/93069?ref=themeblvd)
+* [The Arcadian](http://themeforest.net/item/the-arcadian-responsive-wordpress-theme/1266406?ref=themeblvd)
+* [Commodore](http://themeforest.net/item/commodore-responsive-wordpress-theme/111713?ref=themeblvd)
 
 == Installation ==
 
@@ -46,7 +55,7 @@ This plugin has been built to work with the following themes:
 
 == Changelog ==
 
-= 2.3.6 - XX/XX/XXXX =
+= 2.3.6 - 01/23/2019 =
 * Fixed: Template sync setting wasn't saving when editing a layout from WordPress 5's new block editor.
 * Fixed: When saving a page from the classic editor, couldn't change page templates away from "Custom Layout".
 * Fixed: Occasional upgrade notice PHP warnings.
@@ -300,4 +309,4 @@ This plugin has been built to work with the following themes:
 == Upgrade Notice ==
 
 = 2.3.6 =
-Compatible Themes: Jump Start 2.0+, Denali 1.0+, Gnar 1.0+, Akita 2.1.17+, Alyeska 3.1.17+, Arcadian 2.1.8+, Barely Corporate 4.1.17+, Commodore 3.0.14+, Swagger 2.1.17+
+Compatible Themes: Jump Start 2.2+
