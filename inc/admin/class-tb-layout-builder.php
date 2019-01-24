@@ -1532,8 +1532,9 @@ class Theme_Blvd_Layout_Builder {
 	 *
 	 * @param string $post_id ID of template, or ID of post with layout
 	 * @param array $data All data passed from form to be saved
+	 * @param boolean $is_classic_editor Whether called from the Edit Page screen.
 	 */
-	public function save_layout( $post_id, $data ) {
+	public function save_layout( $post_id, $data, $is_classic_editor = false ) {
 
 		// DEBUG
 		// echo '<pre>'; print_r($data); echo '</pre>';
@@ -1700,7 +1701,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Apply "Custom Layout" page template when saving layout.
-		if ( 'page' === get_post_type( $post_id ) && !$this->is_classic_editor() ) {
+		if ( 'page' === get_post_type( $post_id ) && !$is_classic_editor ) {
 			update_post_meta( $post_id, '_wp_page_template', 'template_builder.php' );
 		}
 
@@ -2537,7 +2538,7 @@ class Theme_Blvd_Layout_Builder {
 		}
 
 		// Save layout to post
-		$this->save_layout( $post_id, $_POST );
+		$this->save_layout( $post_id, $_POST, true );
 
 	}
 

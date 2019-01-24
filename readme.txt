@@ -48,6 +48,7 @@ This plugin has been built to work with the following themes:
 
 = 2.3.6 - XX/XX/XXXX =
 * Fixed: Template sync setting wasn't saving when editing a layout from WordPress 5's new block editor.
+* Fixed: When saving a page from the classic editor, couldn't change page templates away from "Custom Layout".
 * Fixed: Occasional upgrade notice PHP warnings.
 
 = 2.3.5 - 12/12/2018 =
